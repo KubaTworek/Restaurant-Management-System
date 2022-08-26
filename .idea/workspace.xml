@@ -13,6 +13,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -64,6 +65,8 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="pl.jakubtworek.RestaurantManagementSystem.service" />
+      <recent name="pl.jakubtworek.RestaurantManagementSystem.dao" />
       <recent name="pl.jakubtworek.RestaurantManagementSystem.entity" />
     </key>
   </component>
@@ -96,7 +99,7 @@
       <option name="presentableId" value="Default" />
       <updated>1661460361488</updated>
       <workItem from="1661460371794" duration="2353000" />
-      <workItem from="1661463604776" duration="5104000" />
+      <workItem from="1661463604776" duration="7279000" />
     </task>
     <servers />
   </component>
