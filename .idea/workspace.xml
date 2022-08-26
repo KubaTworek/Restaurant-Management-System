@@ -51,11 +51,15 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Facets" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.37859607" />
     <property name="settings.editor.selected.configurable" value="reference.settings.project.maven.repository.indices" />
@@ -70,7 +74,22 @@
       <recent name="pl.jakubtworek.RestaurantManagementSystem.entity" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.EmployeeServiceTest">
+    <configuration name="EmployeeServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Restaurant-Management-System" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.EmployeeServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="RestaurantManagementSystemApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="Restaurant-Management-System" />
       <extension name="coverage">
@@ -86,6 +105,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.EmployeeServiceTest" />
         <item itemvalue="Spring Boot.RestaurantManagementSystemApplication" />
       </list>
     </recent_temporary>
@@ -99,7 +119,7 @@
       <option name="presentableId" value="Default" />
       <updated>1661460361488</updated>
       <workItem from="1661460371794" duration="2353000" />
-      <workItem from="1661463604776" duration="7279000" />
+      <workItem from="1661463604776" duration="11917000" />
     </task>
     <servers />
   </component>

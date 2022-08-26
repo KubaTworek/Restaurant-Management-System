@@ -5,4 +5,5 @@ import pl.jakubtworek.RestaurantManagementSystem.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.entity.Job;
 
 public interface JobDAO extends JpaRepository<Job, Integer> {
+    Job findByName(String jobName);
 }

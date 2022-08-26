@@ -24,7 +24,7 @@ public class Job {
     private String name;
 
     @OneToMany(mappedBy = "job", cascade = { ALL })
-    @JsonManagedReference(value="employee_id")
+    @JsonManagedReference(value="job_id")
     private List<Employee> employees;
 
     public Job() {
