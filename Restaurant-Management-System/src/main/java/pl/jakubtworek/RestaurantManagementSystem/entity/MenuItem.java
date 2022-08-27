@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="MenuItem")
+@Table(name="Menu_Item")
 @Component
 public class MenuItem {
     @Id
@@ -23,7 +23,7 @@ public class MenuItem {
     @Column(name="price")
     private double price;
 
-    @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(name="menu_id")
     @JsonBackReference(value="menu_id")
     private Menu menu;
@@ -32,8 +32,8 @@ public class MenuItem {
                 cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                         CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(
-            name="Order_MenuItem",
-            joinColumns = @JoinColumn(name="menuItem_id"),
+            name="Order_Menu_Item",
+            joinColumns = @JoinColumn(name="menu_item_id"),
             inverseJoinColumns = @JoinColumn(name="order_id")
     )
     private List<Order> orders;

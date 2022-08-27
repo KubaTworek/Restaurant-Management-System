@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.REMOVE;
 
 @Entity
 @Table(name="Menu")
@@ -22,7 +23,7 @@ public class Menu {
     @Column(name="name")
     private String name;
 
-    @OneToMany(mappedBy = "menu", cascade = { ALL })
+    @OneToMany(mappedBy = "menu", cascade = { REMOVE, ALL })
     @JsonManagedReference(value="menu_id")
     private List<MenuItem> menuItems;
 

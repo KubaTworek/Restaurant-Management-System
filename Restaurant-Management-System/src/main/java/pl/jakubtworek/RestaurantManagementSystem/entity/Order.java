@@ -38,9 +38,9 @@ public class Order {
                 cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                 CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(
-            name="Order_MenuItem",
+            name="Order_Menu_Item",
             joinColumns = @JoinColumn(name="order_id"),
-            inverseJoinColumns = @JoinColumn(name="menuItem_id")
+            inverseJoinColumns = @JoinColumn(name="menu_item_id")
     )
     private List<MenuItem> menuItems;
 

@@ -3,38 +3,52 @@ package pl.jakubtworek.RestaurantManagementSystem.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.dao.MenuDAO;
+import pl.jakubtworek.RestaurantManagementSystem.entity.Employee;
+import pl.jakubtworek.RestaurantManagementSystem.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.entity.MenuItem;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class MenuServiceImpl implements MenuItemService{
+public class MenuServiceImpl implements MenuService{
 
-    @Autowired
-    private MenuDAO menuDAO;
+    private final MenuDAO menuDAO;
 
-    @Override
-    public List<MenuItem> findAll() {
-        return null;
+    public MenuServiceImpl(MenuDAO menuDAO) {
+        this.menuDAO = menuDAO;
     }
 
     @Override
-    public MenuItem findById(int theId) {
-        return null;
+    public List<Menu> findAll() {
+        return menuDAO.findAll();
     }
 
     @Override
-    public void save(MenuItem theMenuItem) {
+    public Menu findById(int theId) {
+        Optional<Menu> result = menuDAO.findById(theId);
 
+        Menu theMenu = null;
+
+        if (result.isPresent()) {
+            theMenu = result.get();
+        }
+
+        return theMenu;
+    }
+
+    @Override
+    public void save(Menu theMenu) {
+        menuDAO.save(theMenu);
     }
 
     @Override
     public void deleteById(int theId) {
-
+        menuDAO.deleteById(theId);
     }
 
     @Override
-    public List<MenuItem> findByMenu(String menuName) {
-        return null;
+    public Menu findByName(String menuName) {
+        return menuDAO.findByName(menuName);
     }
 }
