@@ -49,7 +49,7 @@ public class OrderRestControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    @Autowired
+/*    @Autowired
     private MenuService menuService;
 
     @Autowired
@@ -134,6 +134,6 @@ public class OrderRestControllerTest {
     @AfterEach
     public void setupAfterTransaction() {
         jdbc.execute("DELETE FROM Menu");
-    }
+    }*/
 
 }

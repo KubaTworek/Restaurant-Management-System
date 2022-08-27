@@ -24,7 +24,7 @@ public class Menu {
     private String name;
 
     @OneToMany(mappedBy = "menu", cascade = { REMOVE, ALL })
-    @JsonManagedReference(value="menu_id")
+    @JsonManagedReference
     private List<MenuItem> menuItems;
 
     public Menu() {

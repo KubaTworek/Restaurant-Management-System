@@ -1,8 +1,7 @@
 package pl.jakubtworek.RestaurantManagementSystem.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -24,7 +23,7 @@ public class Job {
     private String name;
 
     @OneToMany(mappedBy = "job", cascade = { ALL })
-    @JsonManagedReference(value="job_id")
+    @JsonManagedReference
     private List<Employee> employees;
 
     public Job() {

@@ -28,7 +28,7 @@ public class Employee {
 
     @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="job_id")
-    @JsonBackReference(value="job_id")
+    @JsonBackReference
     private Job job;
 
     @ManyToMany(fetch=FetchType.LAZY,
