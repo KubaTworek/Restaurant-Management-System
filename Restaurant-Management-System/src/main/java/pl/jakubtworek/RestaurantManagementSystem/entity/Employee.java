@@ -3,6 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.springframework.stereotype.Component;
 
@@ -13,9 +14,6 @@ import java.util.List;
 @Entity
 @Table(name="Employee")
 @Component
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class Employee {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -41,6 +39,7 @@ public class Employee {
             joinColumns = @JoinColumn(name="employee_id"),
             inverseJoinColumns = @JoinColumn(name="order_id")
     )
+    @JsonIgnore
     private List<Order> orders;
 
     public Employee() {

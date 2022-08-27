@@ -13,9 +13,6 @@ import java.util.List;
 @Entity
 @Table(name="Orders")
 @Component
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class Order {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

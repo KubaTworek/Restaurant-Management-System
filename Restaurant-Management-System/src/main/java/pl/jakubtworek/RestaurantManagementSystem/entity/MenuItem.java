@@ -3,6 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.springframework.stereotype.Component;
 
@@ -13,9 +14,6 @@ import java.util.List;
 @Entity
 @Table(name="Menu_Item")
 @Component
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class MenuItem {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -30,7 +28,7 @@ public class MenuItem {
 
     @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(name="menu_id")
-    @JsonBackReference(value="menu_id")
+    @JsonBackReference
     private Menu menu;
 
     @ManyToMany(fetch=FetchType.LAZY,
@@ -41,6 +39,7 @@ public class MenuItem {
             joinColumns = @JoinColumn(name="menu_item_id"),
             inverseJoinColumns = @JoinColumn(name="order_id")
     )
+    @JsonIgnore
     private List<Order> orders;
 
     public MenuItem() {
