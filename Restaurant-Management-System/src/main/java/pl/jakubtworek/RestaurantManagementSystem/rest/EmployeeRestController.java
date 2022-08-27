@@ -30,16 +30,17 @@ public class EmployeeRestController {
         return employeeService.findById(employeeId);
     }
 
-    @PostMapping("/employee")
-    public Employee saveEmployee(@RequestBody Employee theEmployee){
+    @PostMapping("/{jobName}/employee")
+    public Employee saveEmployee(@PathVariable String jobName,@RequestBody Employee theEmployee){
         theEmployee.setId(0);
+        theEmployee.setJob(employeeService.findJobByName(jobName));
         employeeService.save(theEmployee);
 
         return theEmployee;
     }
 
     @DeleteMapping("/employee/{employeeId}")
-    public String deleteCategory(@PathVariable int employeeId) throws Exception {
+    public String deleteEmployee(@PathVariable int employeeId) throws Exception {
         if(employeeService.findById(employeeId) == null) throw new Exception("Employee id not found - " + employeeId);
         employeeService.deleteById(employeeId);
 

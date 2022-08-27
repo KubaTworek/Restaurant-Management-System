@@ -29,13 +29,15 @@ public class OrderRestController {
         return orderService.findById(orderId);
     }
 
-    @PostMapping("/order")
-    public Order saveOrder(@RequestBody Order theOrder){
+    @PostMapping("/{typeOfOrder}/order")
+    public Order saveOrder(@PathVariable String typeOfOrder,@RequestBody Order theOrder){
         theOrder.setId(0);
+        theOrder.setTypeOfOrder(orderService.findTypeByName(typeOfOrder));
         orderService.save(theOrder);
 
         return theOrder;
     }
+
 
     @DeleteMapping("/order/{orderId}")
     public String deleteOrder(@PathVariable int orderId) throws Exception {

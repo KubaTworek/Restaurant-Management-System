@@ -1,6 +1,7 @@
 package pl.jakubtworek.RestaurantManagementSystem.service;
 
 import pl.jakubtworek.RestaurantManagementSystem.entity.Employee;
+import pl.jakubtworek.RestaurantManagementSystem.entity.Job;
 
 import java.util.List;
 
@@ -11,4 +12,5 @@ public interface EmployeeService {
     void deleteById(int theId);
 
     List<Employee> findByJob(String jobName);
+    Job findJobByName(String jobName);
 }

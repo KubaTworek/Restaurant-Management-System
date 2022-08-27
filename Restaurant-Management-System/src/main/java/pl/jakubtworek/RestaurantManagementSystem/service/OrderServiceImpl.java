@@ -1,14 +1,19 @@
 package pl.jakubtworek.RestaurantManagementSystem.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.dao.EmployeeDAO;
 import pl.jakubtworek.RestaurantManagementSystem.dao.OrderDAO;
 import pl.jakubtworek.RestaurantManagementSystem.dao.TypeOfOrderDAO;
 import pl.jakubtworek.RestaurantManagementSystem.entity.Employee;
+import pl.jakubtworek.RestaurantManagementSystem.entity.MenuItem;
 import pl.jakubtworek.RestaurantManagementSystem.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.entity.TypeOfOrder;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +23,9 @@ public class OrderServiceImpl implements OrderService{
     private final OrderDAO orderDAO;
     private final TypeOfOrderDAO typeOfOrderDAO;
     private final EmployeeDAO employeeDAO;
+
+    @Autowired
+    private JdbcTemplate jdbc;
 
     public OrderServiceImpl(OrderDAO orderDAO, TypeOfOrderDAO typeOfOrderDAO, EmployeeDAO employeeDAO) {
         this.orderDAO = orderDAO;
@@ -45,7 +53,21 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public void save(Order theOrder) {
+        theOrder.setPrice(countingOrderPrice(theOrder));
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:ss");
+        theOrder.setDate(dateFormat.format(date));
+        theOrder.setHourOrder(timeFormat.format(date));
+
+        List<MenuItem> menuItems = theOrder.getMenuItems();
+        theOrder.setMenuItems(null);
+
         orderDAO.save(theOrder);
+
+        for(MenuItem menuItem : menuItems){
+            jdbc.execute("INSERT INTO Order_Menu_Item(id,order_id,menu_item_id) VALUES (0,"+theOrder.getId()+","+menuItem.getId()+")");
+        }
     }
 
     @Override
@@ -83,5 +105,18 @@ public class OrderServiceImpl implements OrderService{
         List<Order> orders = orderDAO.findAll();
         orders.removeIf(order -> (order.getHourAway() != null));
         return orders;
+    }
+
+    @Override
+    public TypeOfOrder findTypeByName(String typeName){
+        return typeOfOrderDAO.findByType(typeName);
+    }
+
+    public double countingOrderPrice(Order theOrder){
+        double price = 0;
+        for(MenuItem tempMenuItem : theOrder.getMenuItems()){
+            price += tempMenuItem.getPrice();
+        }
+        return price;
     }
 }

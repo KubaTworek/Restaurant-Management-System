@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.jakubtworek.RestaurantManagementSystem.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.entity.MenuItem;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuItemService;
+import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
 
 import java.util.List;
 
@@ -13,9 +14,11 @@ import java.util.List;
 public class MenuItemRestController {
 
     private final MenuItemService menuItemService;
+    private final MenuService menuService;
 
-    public MenuItemRestController(MenuItemService menuItemService) {
+    public MenuItemRestController(MenuItemService menuItemService, MenuService menuService) {
         this.menuItemService = menuItemService;
+        this.menuService = menuService;
     }
 
     @GetMapping("/menuItems")
@@ -30,16 +33,17 @@ public class MenuItemRestController {
         return menuItemService.findById(menuItemId);
     }
 
-    @PostMapping("/menuItem")
-    public MenuItem saveMenu(@RequestBody MenuItem theMenuItem){
+    @PostMapping("/{menuName}/menuItem")
+    public MenuItem saveMenuItem(@PathVariable String menuName, @RequestBody MenuItem theMenuItem){
         theMenuItem.setId(0);
+        theMenuItem.setMenu(menuService.findByName(menuName));
         menuItemService.save(theMenuItem);
 
         return theMenuItem;
     }
 
     @DeleteMapping("/menuItem/{menuItemId}")
-    public String deleteMenu(@PathVariable int menuItemId) throws Exception {
+    public String deleteMenuItem(@PathVariable int menuItemId) throws Exception {
         if(menuItemService.findById(menuItemId) == null) throw new Exception("Employee id not found - " + menuItemId);
         menuItemService.deleteById(menuItemId);
 
