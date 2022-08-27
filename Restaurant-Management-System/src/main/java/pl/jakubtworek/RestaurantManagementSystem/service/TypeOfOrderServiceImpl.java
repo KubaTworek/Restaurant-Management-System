@@ -14,27 +14,7 @@ public class TypeOfOrderServiceImpl implements TypeOfOrderService{
     private TypeOfOrderDAO typeOfOrderDAO;
 
     @Override
-    public List<TypeOfOrder> findAll() {
-        return null;
-    }
-
-    @Override
-    public TypeOfOrder findById(int theId) {
-        return null;
-    }
-
-    @Override
-    public void save(TypeOfOrder theTypeOfOrder) {
-
-    }
-
-    @Override
-    public void deleteById(int theId) {
-
-    }
-
-    @Override
     public TypeOfOrder findByType(String typeName) {
-        return null;
+        return typeOfOrderDAO.findByType(typeName);
     }
 }

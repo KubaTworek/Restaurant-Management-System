@@ -2,6 +2,8 @@ package pl.jakubtworek.RestaurantManagementSystem.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -11,6 +13,9 @@ import java.util.List;
 @Entity
 @Table(name="Employee")
 @Component
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Employee {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

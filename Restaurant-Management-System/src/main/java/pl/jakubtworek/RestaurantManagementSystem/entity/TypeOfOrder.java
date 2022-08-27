@@ -11,7 +11,7 @@ import java.util.List;
 import static javax.persistence.CascadeType.ALL;
 
 @Entity
-@Table(name="TypeOfOrder")
+@Table(name="Type_Of_Order")
 @Component
 public class TypeOfOrder {
     @Id
@@ -23,7 +23,7 @@ public class TypeOfOrder {
     private String type;
 
     @OneToMany(mappedBy = "typeOfOrder", cascade = { ALL })
-    @JsonManagedReference(value="typeOfOrder_id")
+    @JsonManagedReference(value="type_of_order_id")
     private List<Order> orders;
 
     public TypeOfOrder() {

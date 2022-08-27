@@ -9,6 +9,5 @@ import java.util.List;
 
 public interface OrderDAO extends JpaRepository<Order, Integer> {
     List<Order> findByDate(String theDate);
-    //List<Order> findByEmployee(Employee theEmployee);
     List<Order> findByTypeOfOrder(TypeOfOrder theTypeOfOrder);
 }

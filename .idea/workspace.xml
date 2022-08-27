@@ -69,6 +69,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="pl.jakubtworek.RestaurantManagementSystem.rest" />
       <recent name="pl.jakubtworek.RestaurantManagementSystem.service" />
       <recent name="pl.jakubtworek.RestaurantManagementSystem.dao" />
       <recent name="pl.jakubtworek.RestaurantManagementSystem.entity" />
@@ -81,17 +82,17 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.MenuItemServiceTest">
-    <configuration name="EmployeeServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.EmployeeRestControllerTest">
+    <configuration name="EmployeeRestControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Restaurant-Management-System" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.service.*" />
+          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.rest.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.EmployeeServiceTest" />
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.rest" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.rest.EmployeeRestControllerTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -112,7 +113,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MenuServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="OrderServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Restaurant-Management-System" />
       <extension name="coverage">
         <pattern>
@@ -121,22 +122,22 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.MenuServiceTest" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.OrderServiceTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RestaurantManagementSystemApplicationTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="TypeOfOrderServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Restaurant-Management-System" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.*" />
+          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.service.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.RestaurantManagementSystemApplicationTests" />
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.TypeOfOrderServiceTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -157,11 +158,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.MenuItemServiceTest" />
-        <item itemvalue="JUnit.MenuServiceTest" />
-        <item itemvalue="JUnit.RestaurantManagementSystemApplicationTests" />
+        <item itemvalue="JUnit.EmployeeRestControllerTest" />
         <item itemvalue="Spring Boot.RestaurantManagementSystemApplication" />
-        <item itemvalue="JUnit.EmployeeServiceTest" />
+        <item itemvalue="JUnit.OrderServiceTest" />
+        <item itemvalue="JUnit.TypeOfOrderServiceTest" />
+        <item itemvalue="JUnit.MenuItemServiceTest" />
       </list>
     </recent_temporary>
   </component>
@@ -174,7 +175,7 @@
       <option name="presentableId" value="Default" />
       <updated>1661460361488</updated>
       <workItem from="1661460371794" duration="2353000" />
-      <workItem from="1661463604776" duration="17407000" />
+      <workItem from="1661463604776" duration="26754000" />
     </task>
     <servers />
   </component>

@@ -2,6 +2,8 @@ package pl.jakubtworek.RestaurantManagementSystem.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -9,8 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="Order")
+@Table(name="Orders")
 @Component
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Order {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -23,15 +28,15 @@ public class Order {
     @Column(name="date")
     private String date;
 
-    @Column(name="hourOrder")
+    @Column(name="hour_order")
     private String hourOrder;
 
-    @Column(name="hourAway")
+    @Column(name="hour_away")
     private String hourAway;
 
     @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name="typeOfOrder_id")
-    @JsonBackReference(value="typeOfOrder_id")
+    @JoinColumn(name="type_of_order_id")
+    @JsonBackReference(value="type_of_order_id")
     private TypeOfOrder typeOfOrder;
 
     @ManyToMany(fetch=FetchType.LAZY,
