@@ -72,16 +72,16 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public List<Order> findMadeOrders(String dateAway) {
+    public List<Order> findMadeOrders() {
         List<Order> orders = orderDAO.findAll();
-        orders.removeIf(order -> (order.getHourAway() != null));
+        orders.removeIf(order -> (order.getHourAway() == null));
         return orders;
     }
 
     @Override
-    public List<Order> findUnmadeOrders(String dateAway) {
+    public List<Order> findUnmadeOrders() {
         List<Order> orders = orderDAO.findAll();
-        orders.removeIf(order -> (order.getHourAway() == null));
+        orders.removeIf(order -> (order.getHourAway() != null));
         return orders;
     }
 }

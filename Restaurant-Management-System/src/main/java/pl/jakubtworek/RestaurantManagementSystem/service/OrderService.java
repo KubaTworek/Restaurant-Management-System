@@ -14,6 +14,6 @@ public interface OrderService {
     List<Order> findByDate(String theDate);
     List<Order> findByEmployee(int employeeId);
     List<Order> findByTypeOfOrder(String typeName);
-    List<Order> findMadeOrders(String dateAway);
-    List<Order> findUnmadeOrders(String dateAway);
+    List<Order> findMadeOrders();
+    List<Order> findUnmadeOrders();
 }

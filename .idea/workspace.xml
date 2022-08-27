@@ -128,16 +128,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="OrderServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="TypeOfOrderRestControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Restaurant-Management-System" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.service.*" />
+          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.rest.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.OrderServiceTest" />
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.rest" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.rest.TypeOfOrderRestControllerTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -159,10 +159,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Spring Boot.RestaurantManagementSystemApplication" />
+        <item itemvalue="JUnit.TypeOfOrderRestControllerTest" />
         <item itemvalue="JUnit.MenuItemServiceTest" />
         <item itemvalue="JUnit.MenuRestControllerTest" />
         <item itemvalue="JUnit.EmployeeRestControllerTest" />
-        <item itemvalue="JUnit.OrderServiceTest" />
       </list>
     </recent_temporary>
   </component>
@@ -175,7 +175,7 @@
       <option name="presentableId" value="Default" />
       <updated>1661460361488</updated>
       <workItem from="1661460371794" duration="2353000" />
-      <workItem from="1661463604776" duration="30369000" />
+      <workItem from="1661463604776" duration="32536000" />
     </task>
     <servers />
   </component>
