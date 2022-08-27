@@ -14,10 +14,6 @@ public class EmployeeRestController {
 
     private final EmployeeService employeeService;
 
-    @Autowired
-    private JdbcTemplate jdbc;
-
-
     public EmployeeRestController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
@@ -51,7 +47,7 @@ public class EmployeeRestController {
     }
 
     @GetMapping("/employees/{jobName}")
-    public List<Employee> getEmployeeById(@PathVariable String jobName) throws Exception {
+    public List<Employee> getEmployeeByJobName(@PathVariable String jobName) throws Exception {
         if(employeeService.findByJob(jobName) == null) throw new Exception("Employee id not found - " + jobName);
 
         return employeeService.findByJob(jobName);
