@@ -6,6 +6,9 @@ import pl.jakubtworek.RestaurantManagementSystem.dao.EmployeeDAO;
 import pl.jakubtworek.RestaurantManagementSystem.dao.JobDAO;
 import pl.jakubtworek.RestaurantManagementSystem.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.entity.Job;
+import pl.jakubtworek.RestaurantManagementSystem.model.CooksQueue;
+import pl.jakubtworek.RestaurantManagementSystem.model.Kitchen;
+import pl.jakubtworek.RestaurantManagementSystem.model.OrdersQueue;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +23,9 @@ public class EmployeeServiceImpl implements EmployeeService{
         this.employeeDAO = employeeDAO;
         this.jobDAO = jobDAO;
     }
+
+    @Autowired
+    private CooksQueue cooksQueue;
 
     @Override
     public List<Employee> findAll() {
@@ -42,6 +48,9 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public void save(Employee theEmployee) {
         employeeDAO.save(theEmployee);
+        if(theEmployee.getJob().getId()==1) {
+            cooksQueue.add(theEmployee);
+        }
     }
 
     @Override
@@ -57,5 +66,12 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public Job findJobByName(String jobName){
         return jobDAO.findByName(jobName);
+    }
+
+    @Override
+    public void addCooksToKitchen(){
+        for(Employee employee : findByJob("Cook")){
+            cooksQueue.add(employee);
+        }
     }
 }

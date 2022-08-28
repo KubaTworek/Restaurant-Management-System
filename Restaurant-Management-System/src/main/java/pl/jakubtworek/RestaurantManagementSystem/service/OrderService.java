@@ -12,6 +12,7 @@ public interface OrderService {
     void save(Order theOrder);
     void deleteById(int theId);
 
+    void update(Order theOrder);
     List<Order> findByDate(String theDate);
     List<Order> findByEmployee(int employeeId);
     List<Order> findByTypeOfOrder(String typeName);

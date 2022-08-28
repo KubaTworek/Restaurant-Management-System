@@ -13,4 +13,5 @@ public interface EmployeeService {
 
     List<Employee> findByJob(String jobName);
     Job findJobByName(String jobName);
+    void addCooksToKitchen();
 }

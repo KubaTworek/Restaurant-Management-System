@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.springframework.stereotype.Component;
+import pl.jakubtworek.RestaurantManagementSystem.model.OrdersQueue;
 
 import javax.persistence.*;
 import java.util.ArrayList;

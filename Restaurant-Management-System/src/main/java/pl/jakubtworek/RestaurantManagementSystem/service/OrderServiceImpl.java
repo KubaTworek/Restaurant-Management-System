@@ -6,13 +6,13 @@ import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.dao.EmployeeDAO;
 import pl.jakubtworek.RestaurantManagementSystem.dao.OrderDAO;
 import pl.jakubtworek.RestaurantManagementSystem.dao.TypeOfOrderDAO;
-import pl.jakubtworek.RestaurantManagementSystem.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.entity.MenuItem;
 import pl.jakubtworek.RestaurantManagementSystem.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.entity.TypeOfOrder;
+import pl.jakubtworek.RestaurantManagementSystem.model.Kitchen;
+import pl.jakubtworek.RestaurantManagementSystem.model.OrdersQueue;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +23,9 @@ public class OrderServiceImpl implements OrderService{
     private final OrderDAO orderDAO;
     private final TypeOfOrderDAO typeOfOrderDAO;
     private final EmployeeDAO employeeDAO;
+
+    @Autowired
+    private OrdersQueue ordersQueue;
 
     @Autowired
     private JdbcTemplate jdbc;
@@ -68,6 +71,14 @@ public class OrderServiceImpl implements OrderService{
         for(MenuItem menuItem : menuItems){
             jdbc.execute("INSERT INTO Order_Menu_Item(id,order_id,menu_item_id) VALUES (0,"+theOrder.getId()+","+menuItem.getId()+")");
         }
+
+        theOrder.setMenuItems(menuItems);
+        ordersQueue.add(theOrder);
+    }
+    @Override
+    public void update(Order theOrder){
+
+        orderDAO.save(theOrder);
     }
 
     @Override
