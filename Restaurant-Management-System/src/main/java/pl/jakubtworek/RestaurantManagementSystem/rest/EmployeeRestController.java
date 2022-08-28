@@ -54,9 +54,10 @@ public class EmployeeRestController {
         return employeeService.findByJob(jobName);
     }
 
-    @GetMapping("/addCooksToKitchen")
+    @GetMapping("/startRestaurant")
     public void addCooksToKitchen(){
         employeeService.addCooksToKitchen();
+        employeeService.addWaitersToKitchen();
+        employeeService.addDeliveriesToKitchen();
     }
-
 }

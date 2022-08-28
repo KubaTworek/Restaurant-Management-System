@@ -6,9 +6,7 @@ import pl.jakubtworek.RestaurantManagementSystem.dao.EmployeeDAO;
 import pl.jakubtworek.RestaurantManagementSystem.dao.JobDAO;
 import pl.jakubtworek.RestaurantManagementSystem.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.entity.Job;
-import pl.jakubtworek.RestaurantManagementSystem.model.CooksQueue;
-import pl.jakubtworek.RestaurantManagementSystem.model.Kitchen;
-import pl.jakubtworek.RestaurantManagementSystem.model.OrdersQueue;
+import pl.jakubtworek.RestaurantManagementSystem.model.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +24,12 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Autowired
     private CooksQueue cooksQueue;
+
+    @Autowired
+    private WaiterQueue waiterQueue;
+
+    @Autowired
+    private DeliveryQueue deliveryQueue;
 
     @Override
     public List<Employee> findAll() {
@@ -51,6 +55,12 @@ public class EmployeeServiceImpl implements EmployeeService{
         if(theEmployee.getJob().getId()==1) {
             cooksQueue.add(theEmployee);
         }
+        if(theEmployee.getJob().getId()==2) {
+            waiterQueue.add(theEmployee);
+        }
+        if(theEmployee.getJob().getId()==3) {
+            deliveryQueue.add(theEmployee);
+        }
     }
 
     @Override
@@ -72,6 +82,20 @@ public class EmployeeServiceImpl implements EmployeeService{
     public void addCooksToKitchen(){
         for(Employee employee : findByJob("Cook")){
             cooksQueue.add(employee);
+        }
+    }
+
+    @Override
+    public void addWaitersToKitchen(){
+        for(Employee employee : findByJob("Waiter")){
+            waiterQueue.add(employee);
+        }
+    }
+
+    @Override
+    public void addDeliveriesToKitchen(){
+        for(Employee employee : findByJob("DeliveryMan")){
+            deliveryQueue.add(employee);
         }
     }
 }

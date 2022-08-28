@@ -1,19 +1,10 @@
 package pl.jakubtworek.RestaurantManagementSystem.model;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import pl.jakubtworek.RestaurantManagementSystem.dao.OrderDAO;
 import pl.jakubtworek.RestaurantManagementSystem.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.entity.MenuItem;
 import pl.jakubtworek.RestaurantManagementSystem.entity.Order;
-import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 @Service
 public class Kitchen implements Observer{
@@ -25,7 +16,10 @@ public class Kitchen implements Observer{
     private JdbcTemplate jdbc;
 
     @Autowired
-    private OrderService orderService;
+    private OrdersMadeOnsiteQueue ordersMadeOnsiteQueue;
+
+    @Autowired
+    private OrdersMadeDeliveryQueue ordersMadeDeliveryQueue;
 
     public Kitchen(OrdersQueue ordersQueue, CooksQueue cooksQueue) {
         this.ordersQueue = ordersQueue;
@@ -60,18 +54,8 @@ public class Kitchen implements Observer{
                     }
                 }
                 cooksQueue.add(cook);
-                Date date = new Date();
-                SimpleDateFormat timeFormat = new SimpleDateFormat("hh:ss");
-                order.setHourAway(timeFormat.format(date));
-
-                List<MenuItem> menuItems = order.getMenuItems();
-                order.setMenuItems(null);
-
-                orderService.update(order);
-
-                for(MenuItem menuItem : menuItems){
-                    jdbc.execute("INSERT INTO Order_Menu_Item(id,order_id,menu_item_id) VALUES (0,"+order.getId()+","+menuItem.getId()+")");
-                }
+                if(order.getTypeOfOrder().getId()==1)ordersMadeDeliveryQueue.add(order);
+                if(order.getTypeOfOrder().getId()==2)ordersMadeOnsiteQueue.add(order);
             }
         };
         new Thread(r).start();
