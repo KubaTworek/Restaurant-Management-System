@@ -1,5 +1,5 @@
 # Restaurant Management System
-> Project is web app based on CRUD methods. Backend was written in Java and Spring. REST API was prepared for possible improvement this project in future.  Frontend was made in Thymeleaf. Project of database was created with using best practices. Database was implemented in MySql. Restaurant gives us oppurtunity to manage menu, orders and employees. It gives us possibility to get some stats about restaurant and managing all staff. App was written with Clean Code and OOP programming practice. Unit tests were code using JUnit and Mockito.
+> Project is REST API based on CRUD methods. Project was written in Java and Spring. Project of database was created with using best practices. Database was implemented in MySql. Restaurant gives us oppurtunity to manage menu, orders and employees. It gives us possibility to get some stats about restaurant and managing all staff. App was written with Clean Code and OOP programming practice. Unit tests were code using JUnit and Mockito.
 
 ## Table of Contents
 * [General Info](#general-information)
@@ -19,8 +19,8 @@
 - Java
 - SpringBoot
 - Hibernate
-- Thymeleaf, HTML, CSS, Bootstrap
 - MySQL, JSON
+- REST API, Postman
 
 
 ## Database
@@ -40,11 +40,13 @@ Project is: _in_progress_
 ## Room for Improvement
 
 Room for improvement:
-- Everything
 - Add frontend build in Angular
 
 To do:
-
+- add daily income
+- add possibility of refusing to take order by client
+- add tips
+- add priority to on-site orders
 
 ## Contact
 Created by me :)
