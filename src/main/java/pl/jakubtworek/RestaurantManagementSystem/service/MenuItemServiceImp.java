@@ -2,10 +2,10 @@ package pl.jakubtworek.RestaurantManagementSystem.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.jakubtworek.RestaurantManagementSystem.dao.MenuDAO;
-import pl.jakubtworek.RestaurantManagementSystem.dao.MenuItemDAO;
-import pl.jakubtworek.RestaurantManagementSystem.entity.Menu;
-import pl.jakubtworek.RestaurantManagementSystem.entity.MenuItem;
+import pl.jakubtworek.RestaurantManagementSystem.repository.MenuRepository;
+import pl.jakubtworek.RestaurantManagementSystem.repository.MenuItemRepository;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,19 +14,19 @@ import java.util.Optional;
 public class MenuItemServiceImp implements MenuItemService{
 
     @Autowired
-    private MenuItemDAO menuItemDAO;
+    private MenuItemRepository menuItemRepository;
 
     @Autowired
-    private MenuDAO menuDAO;
+    private MenuRepository menuRepository;
 
     @Override
     public List<MenuItem> findAll() {
-        return menuItemDAO.findAll();
+        return menuItemRepository.findAll();
     }
 
     @Override
     public MenuItem findById(int theId) {
-        Optional<MenuItem> result = menuItemDAO.findById(theId);
+        Optional<MenuItem> result = menuItemRepository.findById(theId);
 
         MenuItem theMenuItem = null;
 
@@ -39,17 +39,17 @@ public class MenuItemServiceImp implements MenuItemService{
 
     @Override
     public void save(MenuItem theMenuItem) {
-        menuItemDAO.save(theMenuItem);
+        menuItemRepository.save(theMenuItem);
     }
 
     @Override
     public void deleteById(int theId) {
-        menuItemDAO.deleteById(theId);
+        menuItemRepository.deleteById(theId);
     }
 
     @Override
     public List<MenuItem> findByMenu(String menuName) {
-        Menu theMenu = menuDAO.findByName(menuName);
-        return menuItemDAO.findByMenu(theMenu);
+        Menu theMenu = menuRepository.findByName(menuName);
+        return menuItemRepository.findByMenu(theMenu);
     }
 }

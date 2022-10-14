@@ -1,9 +1,7 @@
-package pl.jakubtworek.RestaurantManagementSystem.rest;
+package pl.jakubtworek.RestaurantManagementSystem.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import pl.jakubtworek.RestaurantManagementSystem.entity.Menu;
-import pl.jakubtworek.RestaurantManagementSystem.entity.MenuItem;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuItemService;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
 
@@ -11,12 +9,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/")
-public class MenuItemRestController {
+public class MenuItemController {
 
     private final MenuItemService menuItemService;
     private final MenuService menuService;
 
-    public MenuItemRestController(MenuItemService menuItemService, MenuService menuService) {
+    public MenuItemController(MenuItemService menuItemService, MenuService menuService) {
         this.menuItemService = menuItemService;
         this.menuService = menuService;
     }

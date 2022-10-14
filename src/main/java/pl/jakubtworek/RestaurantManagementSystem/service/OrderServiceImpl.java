@@ -3,14 +3,13 @@ package pl.jakubtworek.RestaurantManagementSystem.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import pl.jakubtworek.RestaurantManagementSystem.dao.EmployeeDAO;
-import pl.jakubtworek.RestaurantManagementSystem.dao.OrderDAO;
-import pl.jakubtworek.RestaurantManagementSystem.dao.TypeOfOrderDAO;
-import pl.jakubtworek.RestaurantManagementSystem.entity.MenuItem;
-import pl.jakubtworek.RestaurantManagementSystem.entity.Order;
-import pl.jakubtworek.RestaurantManagementSystem.entity.TypeOfOrder;
-import pl.jakubtworek.RestaurantManagementSystem.model.Kitchen;
-import pl.jakubtworek.RestaurantManagementSystem.model.OrdersQueue;
+import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
+import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
+import pl.jakubtworek.RestaurantManagementSystem.repository.TypeOfOrderRepository;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
+import pl.jakubtworek.RestaurantManagementSystem.model.business.OrdersQueue;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,9 +19,9 @@ import java.util.Optional;
 @Service
 public class OrderServiceImpl implements OrderService{
 
-    private final OrderDAO orderDAO;
-    private final TypeOfOrderDAO typeOfOrderDAO;
-    private final EmployeeDAO employeeDAO;
+    private final OrderRepository orderRepository;
+    private final TypeOfOrderRepository typeOfOrderRepository;
+    private final EmployeeRepository employeeRepository;
 
     @Autowired
     private OrdersQueue ordersQueue;
@@ -30,20 +29,20 @@ public class OrderServiceImpl implements OrderService{
     @Autowired
     private JdbcTemplate jdbc;
 
-    public OrderServiceImpl(OrderDAO orderDAO, TypeOfOrderDAO typeOfOrderDAO, EmployeeDAO employeeDAO) {
-        this.orderDAO = orderDAO;
-        this.typeOfOrderDAO = typeOfOrderDAO;
-        this.employeeDAO = employeeDAO;
+    public OrderServiceImpl(OrderRepository orderRepository, TypeOfOrderRepository typeOfOrderRepository, EmployeeRepository employeeRepository) {
+        this.orderRepository = orderRepository;
+        this.typeOfOrderRepository = typeOfOrderRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     @Override
     public List<Order> findAll() {
-        return orderDAO.findAll();
+        return orderRepository.findAll();
     }
 
     @Override
     public Order findById(int theId) {
-        Optional<Order> result = orderDAO.findById(theId);
+        Optional<Order> result = orderRepository.findById(theId);
 
         Order theOrder = null;
 
@@ -66,7 +65,7 @@ public class OrderServiceImpl implements OrderService{
         List<MenuItem> menuItems = theOrder.getMenuItems();
         theOrder.setMenuItems(null);
 
-        orderDAO.save(theOrder);
+        orderRepository.save(theOrder);
 
         for(MenuItem menuItem : menuItems){
             jdbc.execute("INSERT INTO Order_Menu_Item(id,order_id,menu_item_id) VALUES (0,"+theOrder.getId()+","+menuItem.getId()+")");
@@ -78,49 +77,49 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public void update(Order theOrder){
 
-        orderDAO.save(theOrder);
+        orderRepository.save(theOrder);
     }
 
     @Override
     public void deleteById(int theId) {
-        orderDAO.deleteById(theId);
+        orderRepository.deleteById(theId);
     }
 
     @Override
     public List<Order> findByDate(String theDate) {
-        return orderDAO.findByDate(theDate);
+        return orderRepository.findByDate(theDate);
     }
 
     @Override
     public List<Order> findByTypeOfOrder(String typeName) {
-        TypeOfOrder typeOfOrder = typeOfOrderDAO.findByType(typeName);
-        return orderDAO.findByTypeOfOrder(typeOfOrder);
+        TypeOfOrder typeOfOrder = typeOfOrderRepository.findByType(typeName);
+        return orderRepository.findByTypeOfOrder(typeOfOrder);
     }
 
     @Override
     public List<Order> findByEmployee(int employeeId) {
-        List<Order> orders = orderDAO.findAll();
-        orders.removeIf(order -> !(order.getEmployees().contains(employeeDAO.findById(employeeId))));
+        List<Order> orders = orderRepository.findAll();
+        orders.removeIf(order -> !(order.getEmployees().contains(employeeRepository.findById(employeeId))));
         return orders;
     }
 
     @Override
     public List<Order> findMadeOrders() {
-        List<Order> orders = orderDAO.findAll();
+        List<Order> orders = orderRepository.findAll();
         orders.removeIf(order -> (order.getHourAway() == null));
         return orders;
     }
 
     @Override
     public List<Order> findUnmadeOrders() {
-        List<Order> orders = orderDAO.findAll();
+        List<Order> orders = orderRepository.findAll();
         orders.removeIf(order -> (order.getHourAway() != null));
         return orders;
     }
 
     @Override
     public TypeOfOrder findTypeByName(String typeName){
-        return typeOfOrderDAO.findByType(typeName);
+        return typeOfOrderRepository.findByType(typeName);
     }
 
     public double countingOrderPrice(Order theOrder){

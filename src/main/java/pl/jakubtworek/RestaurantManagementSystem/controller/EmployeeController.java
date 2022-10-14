@@ -1,20 +1,18 @@
-package pl.jakubtworek.RestaurantManagementSystem.rest;
+package pl.jakubtworek.RestaurantManagementSystem.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
-import pl.jakubtworek.RestaurantManagementSystem.entity.Employee;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/")
-public class EmployeeRestController {
+public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    public EmployeeRestController(EmployeeService employeeService) {
+    public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
 

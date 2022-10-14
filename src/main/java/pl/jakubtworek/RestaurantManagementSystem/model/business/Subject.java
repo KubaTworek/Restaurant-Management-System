@@ -1,4 +1,4 @@
-package pl.jakubtworek.RestaurantManagementSystem.model;
+package pl.jakubtworek.RestaurantManagementSystem.model.business;
 
 public interface Subject {
     public void registerObserver(Observer o);

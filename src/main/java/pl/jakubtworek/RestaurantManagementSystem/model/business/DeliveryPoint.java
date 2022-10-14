@@ -1,11 +1,11 @@
-package pl.jakubtworek.RestaurantManagementSystem.model;
+package pl.jakubtworek.RestaurantManagementSystem.model.business;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import pl.jakubtworek.RestaurantManagementSystem.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.entity.MenuItem;
-import pl.jakubtworek.RestaurantManagementSystem.entity.Order;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 
 import java.text.SimpleDateFormat;
@@ -13,10 +13,10 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class WaiterPoint implements Observer{
+public class DeliveryPoint implements Observer{
 
-    private WaiterQueue waiterQueue;
-    private OrdersMadeOnsiteQueue ordersMadeOnsiteQueue;
+    private DeliveryQueue deliveryQueue;
+    private OrdersMadeDeliveryQueue ordersMadeDeliveryQueue;
 
     @Autowired
     private JdbcTemplate jdbc;
@@ -24,19 +24,18 @@ public class WaiterPoint implements Observer{
     @Autowired
     private OrderService orderService;
 
-
-    public WaiterPoint(WaiterQueue waiterQueue, OrdersMadeOnsiteQueue ordersMadeOnsiteQueue) {
-        this.waiterQueue = waiterQueue;
-        this.ordersMadeOnsiteQueue = ordersMadeOnsiteQueue;
-        waiterQueue.registerObserver(this);
-        ordersMadeOnsiteQueue.registerObserver(this);
+    public DeliveryPoint(DeliveryQueue deliveryQueue, OrdersMadeDeliveryQueue ordersMadeDeliveryQueue) {
+        this.deliveryQueue = deliveryQueue;
+        this.ordersMadeDeliveryQueue = ordersMadeDeliveryQueue;
+        deliveryQueue.registerObserver(this);
+        ordersMadeDeliveryQueue.registerObserver(this);
     }
 
     public void startDelivering() {
-        if(ordersMadeOnsiteQueue.size()>0 && waiterQueue.size()>0){
-            Employee employee = waiterQueue.get();
-            Order order = ordersMadeOnsiteQueue.get();
-            int time = 1;
+        if(ordersMadeDeliveryQueue.size()>0 && deliveryQueue.size()>0){
+            Employee employee = deliveryQueue.get();
+            Order order = ordersMadeDeliveryQueue.get();
+            int time = 2;
             jdbc.execute("INSERT INTO Order_Employee(id,order_id,employee_id) VALUES (0,"+order.getId()+","+employee.getId()+")");
             startDeliveringOrder(employee,order,time);
         }
@@ -47,7 +46,7 @@ public class WaiterPoint implements Observer{
         startDelivering();
     }
 
-    public void startDeliveringOrder(Employee waiter, Order order, int time) {
+    public void startDeliveringOrder(Employee delivery, Order order, int time) {
         Runnable r = new Runnable() {
             public void run() {
                 for(int i = 0; i<time; i++){
@@ -57,7 +56,7 @@ public class WaiterPoint implements Observer{
                         e.printStackTrace();
                     }
                 }
-                waiterQueue.add(waiter);
+                deliveryQueue.add(delivery);
 
                 Date date = new Date();
                 SimpleDateFormat timeFormat = new SimpleDateFormat("hh:ss");

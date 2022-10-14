@@ -1,9 +1,6 @@
 package pl.jakubtworek.RestaurantManagementSystem.service;
 
-import pl.jakubtworek.RestaurantManagementSystem.entity.Order;
-import pl.jakubtworek.RestaurantManagementSystem.entity.TypeOfOrder;
-
-import java.util.List;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 
 public interface TypeOfOrderService {
     TypeOfOrder findByType(String typeName);

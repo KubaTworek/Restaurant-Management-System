@@ -1,19 +1,17 @@
-package pl.jakubtworek.RestaurantManagementSystem.rest;
+package pl.jakubtworek.RestaurantManagementSystem.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import pl.jakubtworek.RestaurantManagementSystem.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.entity.Menu;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/")
-public class MenuRestController {
+public class MenuController {
     private final MenuService menuService;
 
-    public MenuRestController(MenuService menuService) {
+    public MenuController(MenuService menuService) {
         this.menuService = menuService;
     }
 

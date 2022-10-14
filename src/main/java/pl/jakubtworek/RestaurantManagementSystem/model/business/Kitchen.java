@@ -1,10 +1,10 @@
-package pl.jakubtworek.RestaurantManagementSystem.model;
+package pl.jakubtworek.RestaurantManagementSystem.model.business;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import pl.jakubtworek.RestaurantManagementSystem.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.entity.Order;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 
 @Service
 public class Kitchen implements Observer{

@@ -1,8 +1,7 @@
 package pl.jakubtworek.RestaurantManagementSystem.service;
 
-import pl.jakubtworek.RestaurantManagementSystem.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.entity.Order;
-import pl.jakubtworek.RestaurantManagementSystem.entity.TypeOfOrder;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 
 import java.util.List;
 

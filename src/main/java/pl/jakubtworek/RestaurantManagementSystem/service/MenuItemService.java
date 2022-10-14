@@ -1,7 +1,6 @@
 package pl.jakubtworek.RestaurantManagementSystem.service;
 
-import pl.jakubtworek.RestaurantManagementSystem.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.entity.MenuItem;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
 
 import java.util.List;
 

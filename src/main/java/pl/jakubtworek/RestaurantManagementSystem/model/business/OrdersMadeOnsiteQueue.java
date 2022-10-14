@@ -1,8 +1,8 @@
-package pl.jakubtworek.RestaurantManagementSystem.model;
+package pl.jakubtworek.RestaurantManagementSystem.model.business;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import pl.jakubtworek.RestaurantManagementSystem.entity.Order;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

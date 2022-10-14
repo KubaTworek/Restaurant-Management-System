@@ -1,10 +1,8 @@
-package pl.jakubtworek.RestaurantManagementSystem.entity;
+package pl.jakubtworek.RestaurantManagementSystem.model.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;

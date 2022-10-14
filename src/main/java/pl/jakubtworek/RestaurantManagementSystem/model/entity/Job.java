@@ -1,4 +1,4 @@
-package pl.jakubtworek.RestaurantManagementSystem.entity;
+package pl.jakubtworek.RestaurantManagementSystem.model.entity;
 
 
 import com.fasterxml.jackson.annotation.*;
