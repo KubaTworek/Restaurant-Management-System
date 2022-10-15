@@ -8,7 +8,7 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 import java.util.List;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Integer> {
+public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByDate(String theDate);
     List<Order> findByTypeOfOrder(TypeOfOrder theTypeOfOrder);
 }

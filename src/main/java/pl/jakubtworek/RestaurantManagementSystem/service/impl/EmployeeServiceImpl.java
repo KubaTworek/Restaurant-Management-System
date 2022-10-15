@@ -40,12 +40,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Optional<Employee> findById(int theId) {
+    public Optional<Employee> findById(Long theId) {
         return employeeRepository.findById(theId);
     }
 
     @Override
-    public void save(Employee theEmployee) {
+    public Employee save(Employee theEmployee) {
         employeeRepository.save(theEmployee);
         if(theEmployee.getJob().getId()==1) {
             cooksQueue.add(theEmployee);
@@ -56,10 +56,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         if(theEmployee.getJob().getId()==3) {
             deliveryQueue.add(theEmployee);
         }
+        return theEmployee;
     }
 
     @Override
-    public void deleteById(int theId) {
+    public void deleteById(Long theId) {
         employeeRepository.deleteById(theId);
     }
 

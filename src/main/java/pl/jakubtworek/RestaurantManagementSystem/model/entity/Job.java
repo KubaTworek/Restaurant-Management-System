@@ -3,8 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.model.entity;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.modelmapper.ModelMapper;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.JobDTO;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.JobDTO;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ public class Job {
         tempEmployee.setJob(this);
     }
 
-    public JobDTO convertEntityToDTO() {
+    public pl.jakubtworek.RestaurantManagementSystem.controller.employee.@javax.validation.constraints.NotNull(message = "Job cannot be null.") JobDTO convertEntityToDTO() {
         return new ModelMapper().map(this, JobDTO.class);
     }
 }

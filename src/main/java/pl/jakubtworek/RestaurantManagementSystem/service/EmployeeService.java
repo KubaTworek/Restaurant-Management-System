@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface EmployeeService {
     List<Employee> findAll();
-    Optional<Employee> findById(int theId);
-    void save(Employee theEmployee);
-    void deleteById(int theId);
+    Optional<Employee> findById(Long theId);
+    Employee save(Employee theEmployee);
+    void deleteById(Long theId);
     List<Employee> findByJob(String jobName);
     Optional<Job> findJobByName(String jobName);
     void addCooksToKitchen();

@@ -8,12 +8,12 @@ import java.util.Optional;
 
 public interface OrderService {
     List<Order> findAll();
-    Optional<Order> findById(int theId);
+    Optional<Order> findById(Long theId);
     Order save(Order theOrder);
-    void deleteById(int theId);
+    void deleteById(Long theId);
     void update(Order theOrder);
     List<Order> findByDate(String theDate);
-    List<Order> findByEmployee(int employeeId);
+    List<Order> findByEmployee(Long employeeId);
     List<Order> findByTypeOfOrder(String typeName);
     List<Order> findMadeOrders();
     List<Order> findUnmadeOrders();

@@ -42,7 +42,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Optional<Order> findById(int theId) {
+    public Optional<Order> findById(Long theId) {
         return orderRepository.findById(theId);
     }
 
@@ -75,7 +75,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void deleteById(int theId) {
+    public void deleteById(Long theId) {
         orderRepository.deleteById(theId);
     }
 
@@ -93,7 +93,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findByEmployee(int employeeId) {
+    public List<Order> findByEmployee(Long employeeId) {
         List<Order> orders = orderRepository.findAll();
         if(employeeRepository.findById(employeeId).isPresent()){
             orders.removeIf(order -> !(order.getEmployees().contains(employeeRepository.findById(employeeId).get())));
