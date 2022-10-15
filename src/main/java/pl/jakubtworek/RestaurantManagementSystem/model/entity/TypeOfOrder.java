@@ -3,6 +3,9 @@ package pl.jakubtworek.RestaurantManagementSystem.model.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 import lombok.*;
+import org.modelmapper.ModelMapper;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.JobDTO;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.TypeOfOrderDTO;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -38,5 +41,9 @@ public class TypeOfOrder {
 
         orders.add(tempOrder);
         tempOrder.setTypeOfOrder(this);
+    }
+
+    public TypeOfOrderDTO convertEntityToDTO() {
+        return new ModelMapper().map(this, TypeOfOrderDTO.class);
     }
 }
