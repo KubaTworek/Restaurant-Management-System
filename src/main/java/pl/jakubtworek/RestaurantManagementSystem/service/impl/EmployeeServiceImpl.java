@@ -1,4 +1,4 @@
-package pl.jakubtworek.RestaurantManagementSystem.service;
+package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,29 +9,30 @@ import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
 import pl.jakubtworek.RestaurantManagementSystem.repository.JobRepository;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
+import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class EmployeeServiceImpl implements EmployeeService{
+public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final JobRepository jobRepository;
+    private final CooksQueue cooksQueue;
+    private final WaiterQueue waiterQueue;
+    private final DeliveryQueue deliveryQueue;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository, JobRepository jobRepository) {
+
+    @Autowired
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, JobRepository jobRepository, CooksQueue cooksQueue, WaiterQueue waiterQueue, DeliveryQueue deliveryQueue) {
         this.employeeRepository = employeeRepository;
         this.jobRepository = jobRepository;
+        this.cooksQueue = cooksQueue;
+        this.waiterQueue = waiterQueue;
+        this.deliveryQueue = deliveryQueue;
     }
-
-    @Autowired
-    private CooksQueue cooksQueue;
-
-    @Autowired
-    private WaiterQueue waiterQueue;
-
-    @Autowired
-    private DeliveryQueue deliveryQueue;
 
     @Override
     public List<Employee> findAll() {
@@ -39,16 +40,8 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
-    public Employee findById(int theId) {
-        Optional<Employee> result = employeeRepository.findById(theId);
-
-        Employee theEmployee = null;
-
-        if (result.isPresent()) {
-            theEmployee = result.get();
-        }
-
-        return theEmployee;
+    public Optional<Employee> findById(int theId) {
+        return employeeRepository.findById(theId);
     }
 
     @Override
@@ -72,11 +65,14 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public List<Employee> findByJob(String jobName) {
-        return employeeRepository.findByJob(findJobByName(jobName));
+        if (findJobByName(jobName).isPresent()){
+            return employeeRepository.findByJob(findJobByName(jobName).get());
+        }
+        return Collections.emptyList();
     }
 
     @Override
-    public Job findJobByName(String jobName){
+    public Optional<Job> findJobByName(String jobName){
         return jobRepository.findByName(jobName);
     }
 

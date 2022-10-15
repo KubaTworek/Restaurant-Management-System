@@ -1,17 +1,20 @@
-package pl.jakubtworek.RestaurantManagementSystem.service;
+package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuRepository;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
+import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MenuServiceImpl implements MenuService{
+public class MenuServiceImpl implements MenuService {
 
     private final MenuRepository menuRepository;
 
+    @Autowired
     public MenuServiceImpl(MenuRepository menuRepository) {
         this.menuRepository = menuRepository;
     }
@@ -22,21 +25,13 @@ public class MenuServiceImpl implements MenuService{
     }
 
     @Override
-    public Menu findById(int theId) {
-        Optional<Menu> result = menuRepository.findById(theId);
-
-        Menu theMenu = null;
-
-        if (result.isPresent()) {
-            theMenu = result.get();
-        }
-
-        return theMenu;
+    public Optional<Menu> findById(int theId) {
+        return menuRepository.findById(theId);
     }
 
     @Override
-    public void save(Menu theMenu) {
-        menuRepository.save(theMenu);
+    public Menu save(Menu theMenu) {
+        return menuRepository.save(theMenu);
     }
 
     @Override
@@ -45,7 +40,7 @@ public class MenuServiceImpl implements MenuService{
     }
 
     @Override
-    public Menu findByName(String menuName) {
+    public Optional<Menu> findByName(String menuName) {
         return menuRepository.findByName(menuName);
     }
 }
