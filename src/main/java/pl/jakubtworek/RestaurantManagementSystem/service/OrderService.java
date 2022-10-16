@@ -1,5 +1,6 @@
 package pl.jakubtworek.RestaurantManagementSystem.service;
 
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 
@@ -13,9 +14,8 @@ public interface OrderService {
     void deleteById(Long theId);
     void update(Order theOrder);
     List<Order> findByDate(String theDate);
-    List<Order> findByEmployee(Long employeeId);
-    List<Order> findByTypeOfOrder(String typeName);
+    List<Order> findByEmployee(Employee employee);
+    List<Order> findByTypeOfOrder(TypeOfOrder typeOfOrder);
     List<Order> findMadeOrders();
     List<Order> findUnmadeOrders();
-    Optional<TypeOfOrder> findTypeByName(String typeName);
 }

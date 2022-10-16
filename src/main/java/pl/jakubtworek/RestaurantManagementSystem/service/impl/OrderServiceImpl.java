@@ -3,6 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
 import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
 import pl.jakubtworek.RestaurantManagementSystem.repository.TypeOfOrderRepository;
@@ -22,16 +23,12 @@ import java.util.Optional;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final TypeOfOrderRepository typeOfOrderRepository;
-    private final EmployeeRepository employeeRepository;
     private final OrdersQueue ordersQueue;
     private final JdbcTemplate jdbc;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, TypeOfOrderRepository typeOfOrderRepository, EmployeeRepository employeeRepository, OrdersQueue ordersQueue, JdbcTemplate jdbc) {
+    public OrderServiceImpl(OrderRepository orderRepository, OrdersQueue ordersQueue, JdbcTemplate jdbc) {
         this.orderRepository = orderRepository;
-        this.typeOfOrderRepository = typeOfOrderRepository;
-        this.employeeRepository = employeeRepository;
         this.ordersQueue = ordersQueue;
         this.jdbc = jdbc;
     }
@@ -85,21 +82,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findByTypeOfOrder(String typeName) {
-        if(typeOfOrderRepository.findByType(typeName).isPresent()){
-            return orderRepository.findByTypeOfOrder(typeOfOrderRepository.findByType(typeName).get());
-        }
-        return Collections.emptyList();
+    public List<Order> findByTypeOfOrder(TypeOfOrder typeOfOrder) {
+        return orderRepository.findByTypeOfOrder(typeOfOrder);
     }
 
     @Override
-    public List<Order> findByEmployee(Long employeeId) {
-        List<Order> orders = orderRepository.findAll();
-        if(employeeRepository.findById(employeeId).isPresent()){
-            orders.removeIf(order -> !(order.getEmployees().contains(employeeRepository.findById(employeeId).get())));
-            return orders;
-        }
-        return Collections.emptyList();
+    public List<Order> findByEmployee(Employee employee) {
+        return orderRepository.findByEmployees(employee);
     }
 
     @Override
@@ -114,11 +103,6 @@ public class OrderServiceImpl implements OrderService {
         List<Order> orders = orderRepository.findAll();
         orders.removeIf(order -> (order.getHourAway() != null));
         return orders;
-    }
-
-    @Override
-    public Optional<TypeOfOrder> findTypeByName(String typeName){
-        return typeOfOrderRepository.findByType(typeName);
     }
 
     public double countingOrderPrice(Order theOrder){

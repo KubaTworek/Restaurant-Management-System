@@ -1,4 +1,4 @@
-package pl.jakubtworek.RestaurantManagementSystem.model.dto.response;
+package pl.jakubtworek.RestaurantManagementSystem.model.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

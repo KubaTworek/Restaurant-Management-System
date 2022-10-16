@@ -1,14 +1,23 @@
-package pl.jakubtworek.RestaurantManagementSystem.model.dto;
+package pl.jakubtworek.RestaurantManagementSystem.controller.order;
 
+import lombok.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.RepresentationModel;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeDTO;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 public class OrderDTO extends RepresentationModel<OrderDTO> {
 
     private Long id;
@@ -25,13 +34,13 @@ public class OrderDTO extends RepresentationModel<OrderDTO> {
     private String hourAway;
 
     @NotNull(message = "Type of order cannot be null.")
-    private TypeOfOrder typeOfOrder;
+    private TypeOfOrderDTO typeOfOrder;
 
-    private List<MenuItem> menuItems;
+    private List<MenuItemDTO> menuItems;
 
-    private List<Employee> employees;
+    private List<EmployeeDTO> employees;
 
-    public OrderDTO convertDTOToEntity() {
-        return new ModelMapper().map(this, OrderDTO.class);
+    public Order convertDTOToEntity() {
+        return new ModelMapper().map(this, Order.class);
     }
 }

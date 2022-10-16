@@ -1,4 +1,4 @@
-package pl.jakubtworek.RestaurantManagementSystem.model.dto;
+package pl.jakubtworek.RestaurantManagementSystem.controller.order;
 
 import lombok.*;
 import org.modelmapper.ModelMapper;
@@ -14,14 +14,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class TypeOfOrderDTO extends RepresentationModel<TypeOfOrderDTO> {
+public class TypeOfOrderDTO {
 
     private Long id;
 
     @NotNull(message = "Type of order cannot be null.")
     private String type;
-
-    private List<Order> orders;
 
     public TypeOfOrder convertDTOToEntity() {
         return new ModelMapper().map(this, TypeOfOrder.class);

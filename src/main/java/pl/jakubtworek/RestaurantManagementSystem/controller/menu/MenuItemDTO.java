@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class MenuItemDTO extends RepresentationModel<MenuItemDTO> {
+public class MenuItemDTO {
 
     private Long id;
 
