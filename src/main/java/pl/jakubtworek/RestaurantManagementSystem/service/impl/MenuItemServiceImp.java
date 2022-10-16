@@ -30,7 +30,7 @@ public class MenuItemServiceImp implements MenuItemService {
     }
 
     @Override
-    public Optional<MenuItem> findById(int theId) {
+    public Optional<MenuItem> findById(Long theId) {
         return menuItemRepository.findById(theId);
     }
 
@@ -40,7 +40,7 @@ public class MenuItemServiceImp implements MenuItemService {
     }
 
     @Override
-    public void deleteById(int theId) {
+    public void deleteById(Long theId) {
         menuItemRepository.deleteById(theId);
     }
 

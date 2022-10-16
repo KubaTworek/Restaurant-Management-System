@@ -7,8 +7,8 @@ import java.util.Optional;
 
 public interface MenuItemService {
     List<MenuItem> findAll();
-    Optional<MenuItem> findById(int theId);
+    Optional<MenuItem> findById(Long theId);
     MenuItem save(MenuItem theMenuItem);
-    void deleteById(int theId);
+    void deleteById(Long theId);
     List<MenuItem> findByMenu(String menuName);
 }
