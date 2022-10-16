@@ -18,9 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 @RestController
 @RequestMapping("/")
 public class EmployeeController {
@@ -128,17 +125,5 @@ public class EmployeeController {
         employeeService.addCooksToKitchen();
         employeeService.addWaitersToKitchen();
         employeeService.addDeliveriesToKitchen();
-    }
-
-    private void createSelfLink(Employee employee, EmployeeDTO employeeDTO) {
-        Link selfLink = WebMvcLinkBuilder.linkTo(EmployeeController.class).slash(employee.getId()).withSelfRel();
-        employeeDTO.add(selfLink);
-    }
-
-    private void createSelfLinkInCollections(final EmployeeDTO accountDTO)
-            throws EmployeeNotFoundException {
-        Link selfLink = linkTo(methodOn(EmployeeController.class).employeeService.findById(accountDTO.getId()))
-                .withSelfRel().expand();
-        accountDTO.add(selfLink);
     }
 }

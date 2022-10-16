@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class TypeOfOrderDTO extends RepresentationModel<JobDTO> {
+public class TypeOfOrderDTO extends RepresentationModel<TypeOfOrderDTO> {
 
     private Long id;
 

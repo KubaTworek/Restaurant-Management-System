@@ -41,7 +41,7 @@ public class Job {
         tempEmployee.setJob(this);
     }
 
-    public pl.jakubtworek.RestaurantManagementSystem.controller.employee.@javax.validation.constraints.NotNull(message = "Job cannot be null.") JobDTO convertEntityToDTO() {
+    public JobDTO convertEntityToDTO() {
         return new ModelMapper().map(this, JobDTO.class);
     }
 }

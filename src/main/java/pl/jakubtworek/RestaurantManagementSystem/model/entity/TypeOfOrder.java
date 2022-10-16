@@ -1,10 +1,8 @@
 package pl.jakubtworek.RestaurantManagementSystem.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.modelmapper.ModelMapper;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.JobDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.TypeOfOrderDTO;
 
 import javax.persistence.*;

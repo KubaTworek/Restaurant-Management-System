@@ -55,7 +55,7 @@ public class Employee {
         tempOrder.add(this);
     }
 
-    public pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeDTO convertEntityToDTO() {
+    public EmployeeDTO convertEntityToDTO() {
         return new ModelMapper().map(this, EmployeeDTO.class);
     }
 }

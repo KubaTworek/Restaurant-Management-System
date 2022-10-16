@@ -25,7 +25,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public Optional<Menu> findById(int theId) {
+    public Optional<Menu> findById(Long theId) {
         return menuRepository.findById(theId);
     }
 
@@ -35,7 +35,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public void deleteById(int theId) {
+    public void deleteById(Long theId) {
         menuRepository.deleteById(theId);
     }
 
