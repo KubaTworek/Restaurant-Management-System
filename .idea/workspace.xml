@@ -8,10 +8,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/employee/EmployeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/employee/EmployeeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/menu/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/menu/MenuController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/menu/MenuItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/menu/MenuItemController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/menu/MenuItemDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/menu/MenuItemDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/order/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/order/OrderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/order/OrderDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/order/OrderDTO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -207,7 +205,7 @@
       <workItem from="1665776642586" duration="5801000" />
       <workItem from="1665849702504" duration="14428000" />
       <workItem from="1665936857935" duration="9302000" />
-      <workItem from="1666037443786" duration="2054000" />
+      <workItem from="1666037443786" duration="2860000" />
     </task>
     <servers />
   </component>

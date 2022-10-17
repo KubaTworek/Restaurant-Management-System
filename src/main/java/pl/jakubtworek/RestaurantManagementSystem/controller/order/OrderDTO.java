@@ -22,13 +22,10 @@ public class OrderDTO extends RepresentationModel<OrderDTO> {
 
     private Long id;
 
-    @NotNull(message = "Price of order cannot be null.")
     private double price;
 
-    @NotNull(message = "Date of order cannot be null.")
     private String date;
 
-    @NotNull(message = "Hour of order cannot be null.")
     private String hourOrder;
 
     private String hourAway;
@@ -36,6 +33,7 @@ public class OrderDTO extends RepresentationModel<OrderDTO> {
     @NotNull(message = "Type of order cannot be null.")
     private TypeOfOrderDTO typeOfOrder;
 
+    @NotNull(message = "Menu items cannot be null.")
     private List<MenuItemDTO> menuItems;
 
     private List<EmployeeDTO> employees;

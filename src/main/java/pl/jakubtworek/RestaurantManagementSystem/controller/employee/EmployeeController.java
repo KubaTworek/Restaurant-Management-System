@@ -40,7 +40,7 @@ public class EmployeeController {
         List<EmployeeDTO> employeeDTOS = new ArrayList<>();
         employees.forEach(e -> employeeDTOS.add(e.convertEntityToDTO()));
 
-        employeeDTOS.forEach(dto -> dto.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash("employee").slash(dto.getId()).withSelfRel()));
+        employeeDTOS.forEach(dto -> dto.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash("employees").slash(dto.getId()).withSelfRel()));
 
         response.setData(employeeDTOS);
 
@@ -56,7 +56,7 @@ public class EmployeeController {
             Employee employeeFound = employee.get();
             EmployeeDTO dto = employeeFound.convertEntityToDTO();
 
-            dto.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash("employee").slash(dto.getId()).withSelfRel());
+            dto.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash("employees").slash(dto.getId()).withSelfRel());
             response.setData(dto);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
@@ -78,7 +78,7 @@ public class EmployeeController {
             dto.setJob(employeeService.findJobByName(jobName).get().convertEntityToDTO());
             Employee employee = employeeService.save(dto.convertDTOToEntity());
             EmployeeDTO employeeDTO = employee.convertEntityToDTO();
-            dto.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash("employee").slash(dto.getId()).withSelfRel());
+            dto.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash("employees").slash(dto.getId()).withSelfRel());
             response.setData(employeeDTO);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         }
@@ -109,7 +109,7 @@ public class EmployeeController {
             List<EmployeeDTO> employeeDTOS = new ArrayList<>();
             employees.forEach(e -> employeeDTOS.add(e.convertEntityToDTO()));
 
-            employeeDTOS.forEach(dto -> dto.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash("employee").slash(dto.getId()).withSelfRel()));
+            employeeDTOS.forEach(dto -> dto.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash("employees").slash(dto.getId()).withSelfRel()));
 
             response.setData(employeeDTOS);
 

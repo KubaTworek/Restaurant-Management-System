@@ -12,7 +12,7 @@
 * [Project Status](#project-status)
 * [Room for Improvement](#room-for-improvement)
 * [Contact](#contact)
-* 
+
 
 ## General Information
 - Restaurant management system gives us opportunity to adding, modifying, deleting menu items. There is a possibility to manage employees as Cooks, Delievers and Waiters. Also we can adding two types of orders: delivery and on-site. We got a real-time working kitchen, where it is used multi-threading to making food. Everything is saved in relational database.
@@ -53,6 +53,18 @@ This API provides HTTP endpoint's and tools for the following:
 * Find unique employee in restaurant (by id): `GET/employees/{employeeId}`
 * Find employees in restaurant (by job name): `GET/employees/{jobName}`
 
+Request Body [Employee]
+```
+{
+     "firstName": varchar(20),
+     "lastName": varchar(20),
+     "job": {
+        "id": Long,
+        "name": varchar(20)
+     }
+}
+```
+
 # Menu
 * Create a menu: `POST/menu`
 * Create a menu item and add to menu (by menu name): `POST/menu-items/{menuName}`
@@ -60,8 +72,27 @@ This API provides HTTP endpoint's and tools for the following:
 * Delete a menu item (by id): `DELETE/menu-items/{menuItemId}`
 * Find every menu in restaurant: `GET/menu`
 * Find unique menu in restaurant (by id): `GET/menu/{menuId}`
-* Find unique menu item in restaurant (by id): `GET/menu-item/{menuItemId}`
+* Find unique menu item in restaurant (by id): `GET/menu-items/{menuItemId}`
 * Find menu in restaurant (by menu name): `GET/menu/{menuName}`
+
+Request Body [Menu]
+```
+{
+     "name": varchar(20),
+}
+```
+
+Request Body [Menu-Item]
+```
+{
+     "name": varchar(20),
+     "price": double,
+     "menu": {
+        "id": Long,
+        "name": varchar(20)
+     }
+}
+```
 
 # Order
 * Create an order with type of order: `POST/orders/{typeOfOrder}`
@@ -73,6 +104,26 @@ This API provides HTTP endpoint's and tools for the following:
 * Find orders in restaurant (by employee id): `GET/orders/employee/{employeeId}`
 * Find made orders in restaurant: `GET/orders/ready`
 * Find unmade orders in restaurant: `GET/orders/unready`
+  
+Request Body [Order]
+```
+{
+     "typeOfOrder": {
+        "id": Long,
+        "name": varchar(20)
+     },
+      "menuItems": [
+    {
+        "id": Long
+    },
+    {
+        "id": Long
+    },
+    {
+        "id": Long
+    }
+}
+```
 
 
 ## Database

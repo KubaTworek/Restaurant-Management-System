@@ -47,9 +47,9 @@ public class OrderController {
         orders.forEach(o -> orderDTOS.add(o.convertEntityToDTO()));
 
         orderDTOS.forEach(dto -> {
-            dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("order/id").slash(dto.getId()).withSelfRel());
+            dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("orders").slash(dto.getId()).withSelfRel());
             for(EmployeeDTO e: dto.getEmployees()){
-                e.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("employee").slash(e.getId()).withSelfRel());
+                e.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("employees").slash(e.getId()).withSelfRel());
             }
         });
 
@@ -68,9 +68,9 @@ public class OrderController {
             Order orderFound = order.get();
             OrderDTO dto = orderFound.convertEntityToDTO();
 
-            dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("order/id").slash(dto.getId()).withSelfRel());
+            dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("orders").slash(dto.getId()).withSelfRel());
             for(EmployeeDTO e: dto.getEmployees()){
-                e.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("employee").slash(e.getId()).withSelfRel());
+                e.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("employees").slash(e.getId()).withSelfRel());
             }
 
             response.setData(dto);
@@ -94,9 +94,9 @@ public class OrderController {
             dto.setTypeOfOrder(typeOfOrderService.findByType(typeOfOrder).get().convertEntityToDTO());
             Order order = orderService.save(dto.convertDTOToEntity());
             OrderDTO orderDTO = order.convertEntityToDTO();
-            dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("order/id").slash(dto.getId()).withSelfRel());
+            dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("orders").slash(dto.getId()).withSelfRel());
             for(EmployeeDTO e: dto.getEmployees()){
-                e.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("employee").slash(e.getId()).withSelfRel());
+                e.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("employees").slash(e.getId()).withSelfRel());
             }
             response.setData(orderDTO);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -132,9 +132,9 @@ public class OrderController {
         orders.forEach(o -> orderDTOS.add(o.convertEntityToDTO()));
 
         orderDTOS.forEach(dto -> {
-            dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("order/id").slash(dto.getId()).withSelfRel());
+            dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("orders").slash(dto.getId()).withSelfRel());
             for(EmployeeDTO e: dto.getEmployees()){
-                e.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("employee").slash(e.getId()).withSelfRel());
+                e.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("employees").slash(e.getId()).withSelfRel());
             }
         });
 
@@ -154,9 +154,9 @@ public class OrderController {
             orders.forEach(o -> orderDTOS.add(o.convertEntityToDTO()));
 
             orderDTOS.forEach(dto -> {
-                dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("order/id").slash(dto.getId()).withSelfRel());
+                dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("orders").slash(dto.getId()).withSelfRel());
                 for(EmployeeDTO e: dto.getEmployees()){
-                    e.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("employee").slash(e.getId()).withSelfRel());
+                    e.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("employees").slash(e.getId()).withSelfRel());
                 }
             });
 
@@ -179,9 +179,9 @@ public class OrderController {
             orders.forEach(o -> orderDTOS.add(o.convertEntityToDTO()));
 
             orderDTOS.forEach(dto -> {
-                dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("order/id").slash(dto.getId()).withSelfRel());
+                dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("orders").slash(dto.getId()).withSelfRel());
                 for(EmployeeDTO e: dto.getEmployees()){
-                    e.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("employee").slash(e.getId()).withSelfRel());
+                    e.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("employees").slash(e.getId()).withSelfRel());
                 }
             });
 
@@ -206,9 +206,9 @@ public class OrderController {
         orders.forEach(o -> orderDTOS.add(o.convertEntityToDTO()));
 
         orderDTOS.forEach(dto -> {
-            dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("order/id").slash(dto.getId()).withSelfRel());
+            dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("orders").slash(dto.getId()).withSelfRel());
             for(EmployeeDTO e: dto.getEmployees()){
-                e.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("employee").slash(e.getId()).withSelfRel());
+                e.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("employees").slash(e.getId()).withSelfRel());
             }
         });
 
@@ -230,9 +230,9 @@ public class OrderController {
         orders.forEach(o -> orderDTOS.add(o.convertEntityToDTO()));
 
         orderDTOS.forEach(dto -> {
-            dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("order/id").slash(dto.getId()).withSelfRel());
+            dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("orders").slash(dto.getId()).withSelfRel());
             for(EmployeeDTO e: dto.getEmployees()){
-                e.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("employee").slash(e.getId()).withSelfRel());
+                e.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("employees").slash(e.getId()).withSelfRel());
             }
         });
 
