@@ -1,5 +1,6 @@
 package pl.jakubtworek.RestaurantManagementSystem.controller.menu;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.RepresentationModel;
@@ -25,6 +26,9 @@ public class MenuItemDTO {
 
     @NotNull(message = "Price cannot be null.")
     private double price;
+
+    @JsonIgnore
+    private Menu menu;
 
     public MenuItem convertDTOToEntity() {
         return new ModelMapper().map(this, MenuItem.class);

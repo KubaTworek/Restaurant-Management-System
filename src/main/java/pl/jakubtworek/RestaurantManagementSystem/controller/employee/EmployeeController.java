@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/employees")
 public class EmployeeController {
 
     private final EmployeeService employeeService;
@@ -28,7 +28,7 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/employees")
+    @GetMapping("/")
     public ResponseEntity<Response<List<EmployeeDTO>>> getEmployees() throws EmployeeNotFoundException {
         Response<List<EmployeeDTO>> response = new Response<>();
         List<Employee> employees = employeeService.findAll();
@@ -47,7 +47,7 @@ public class EmployeeController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/employee/{employeeId}")
+    @GetMapping("/{employeeId}")
     public ResponseEntity<Response<EmployeeDTO>> getEmployeeById(@PathVariable Long employeeId) throws EmployeeNotFoundException {
         Response<EmployeeDTO> response = new Response<>();
         Optional<Employee> employee = employeeService.findById(employeeId);
@@ -63,7 +63,7 @@ public class EmployeeController {
         throw new EmployeeNotFoundException("There are employees in restaurant with that id: " + employeeId);
     }
 
-    @PostMapping("/{jobName}/employee")
+    @PostMapping("/{jobName}")
     public ResponseEntity<Response<EmployeeDTO>> saveEmployee(@PathVariable String jobName,@RequestBody EmployeeDTO dto, BindingResult result) throws JobNotFoundException {
 
         Response<EmployeeDTO> response = new Response<>();
@@ -86,7 +86,7 @@ public class EmployeeController {
         throw new JobNotFoundException("There are no job like that in restaurant with that name: " + jobName);
     }
 
-    @DeleteMapping("/employee/{employeeId}")
+    @DeleteMapping("/{employeeId}")
     public ResponseEntity<Response<String>> deleteEmployee(@PathVariable Long employeeId) throws Exception {
         if(employeeService.findById(employeeId).isPresent()){
             employeeService.deleteById(employeeId);
@@ -99,7 +99,7 @@ public class EmployeeController {
         throw new EmployeeNotFoundException("Employee id not found - " + employeeId);
     }
 
-    @GetMapping("/employees/{jobName}")
+    @GetMapping("/{jobName}")
     public ResponseEntity<Response<List<EmployeeDTO>>> getEmployeeByJobName(@PathVariable String jobName) throws JobNotFoundException {
 
         if (employeeService.findJobByName(jobName).isPresent()) {

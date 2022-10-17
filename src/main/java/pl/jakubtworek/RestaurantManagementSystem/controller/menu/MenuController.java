@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/menu")
 public class MenuController {
     private final MenuService menuService;
 
@@ -25,7 +25,7 @@ public class MenuController {
         this.menuService = menuService;
     }
 
-    @GetMapping("/menus")
+    @GetMapping("/")
     public ResponseEntity<Response<List<MenuDTO>>> getMenus() throws MenuNotFoundException {
         Response<List<MenuDTO>> response = new Response<>();
         List<Menu> menus = menuService.findAll();
@@ -44,7 +44,7 @@ public class MenuController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/menu/id/{menuId}")
+    @GetMapping("/{menuId}")
     public ResponseEntity<Response<MenuDTO>> getMenuById(@PathVariable Long menuId) throws MenuNotFoundException {
         Response<MenuDTO> response = new Response<>();
         Optional<Menu> menu = menuService.findById(menuId);
@@ -61,7 +61,7 @@ public class MenuController {
         throw new MenuNotFoundException("There are no menu in restaurant with that id: " + menuId);
     }
 
-    @PostMapping("/menu")
+    @PostMapping("/")
     public ResponseEntity<Response<MenuDTO>> saveMenu(@RequestBody MenuDTO dto, BindingResult result){
         Response<MenuDTO> response = new Response<>();
 
@@ -79,7 +79,7 @@ public class MenuController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/menu/{menuId}")
+    @DeleteMapping("/{menuId}")
     public ResponseEntity<Response<String>> deleteMenu(@PathVariable Long menuId) throws MenuNotFoundException {
         if(menuService.findById(menuId).isPresent()){
             menuService.deleteById(menuId);
@@ -92,7 +92,7 @@ public class MenuController {
         throw new MenuNotFoundException("Menu id not found - " + menuId);
     }
 
-    @GetMapping("/menu/name/{name}")
+    @GetMapping("/{name}")
     public ResponseEntity<Response<MenuDTO>> getMenuByName(@PathVariable String name) throws Exception {
         Response<MenuDTO> response = new Response<>();
         Optional<Menu> menu = menuService.findByName(name);
