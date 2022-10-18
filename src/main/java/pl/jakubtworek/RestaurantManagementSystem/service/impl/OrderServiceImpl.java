@@ -42,26 +42,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order save(Order theOrder) {
-        theOrder.setPrice(countingOrderPrice(theOrder));
-        Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:ss");
-        theOrder.setDate(dateFormat.format(date));
-        theOrder.setHourOrder(timeFormat.format(date));
-
-        List<MenuItem> menuItems = theOrder.getMenuItems();
-        theOrder.setMenuItems(null);
-
-        orderRepository.save(theOrder);
-
-        for(MenuItem menuItem : menuItems){
-            jdbc.execute("INSERT INTO order_menu_item(id,order_id,menu_item_id) VALUES (0,"+theOrder.getId()+","+menuItem.getId()+")");
-        }
-
-        theOrder.setMenuItems(menuItems);
-        ordersQueue.add(theOrder);
-
-        return theOrder;
+        return orderRepository.save(theOrder);
     }
     @Override
     public void update(Order theOrder){
@@ -100,13 +81,5 @@ public class OrderServiceImpl implements OrderService {
         List<Order> orders = orderRepository.findAll();
         orders.removeIf(order -> (order.getHourAway() != null));
         return orders;
-    }
-
-    public double countingOrderPrice(Order theOrder){
-        double price = 0;
-        for(MenuItem tempMenuItem : theOrder.getMenuItems()){
-            price += tempMenuItem.getPrice();
-        }
-        return price;
     }
 }

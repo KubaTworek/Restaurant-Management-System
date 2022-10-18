@@ -108,17 +108,24 @@ Request Body [Order]
 ```
 {
     "typeOfOrder": {
-        "id": Long
+        "id": Long,
+        "type": varchar(20)
     },
       "menuItems": [
     {
-        "id": Long
+        "id": Long,
+        "name": varchar(20),
+        "price": Double
     },
     {
-        "id": Long
+        "id": Long,
+        "name": varchar(20),
+        "price": Double
     },
     {
-        "id": Long
+        "id": Long,
+        "name": varchar(20),
+        "price": Double
     }
 }
 ```

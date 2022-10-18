@@ -1,11 +1,11 @@
 package pl.jakubtworek.RestaurantManagementSystem.model.entity;
 
-import com.sun.istack.NotNull;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderDTO;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,15 +24,12 @@ public class Order {
     private Long id;
 
     @Column(name="price")
-    @NotNull
     private double price;
 
     @Column(name="date")
-    @NotNull
     private String date;
 
     @Column(name="hour_order")
-    @NotNull
     private String hourOrder;
 
     @Column(name="hour_away")
@@ -40,6 +37,7 @@ public class Order {
 
     @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="type_of_order_id")
+    @NotNull
     private TypeOfOrder typeOfOrder;
 
     @ManyToMany(fetch=FetchType.LAZY,

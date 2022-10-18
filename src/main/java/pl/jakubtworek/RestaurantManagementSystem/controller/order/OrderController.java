@@ -6,16 +6,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeController;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeDTO;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemDTO;
 import pl.jakubtworek.RestaurantManagementSystem.exception.JobNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.exception.OrderNotFoundException;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.response.Response;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 import pl.jakubtworek.RestaurantManagementSystem.service.TypeOfOrderService;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +38,7 @@ public class OrderController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<Response<List<OrderDTO>>> getOrders() throws OrderNotFoundException {
         Response<List<OrderDTO>> response = new Response<>();
         List<Order> orders = orderService.findAll();
@@ -46,9 +51,9 @@ public class OrderController {
         orders.forEach(o -> orderDTOS.add(o.convertEntityToDTO()));
 
         orderDTOS.forEach(dto -> {
-            dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("orders").slash(dto.getId()).withSelfRel());
+            dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash(dto.getId()).withSelfRel());
             for(EmployeeDTO e: dto.getEmployees()){
-                e.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("employees").slash(e.getId()).withSelfRel());
+                e.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash(e.getId()).withSelfRel());
             }
         });
 
@@ -67,9 +72,9 @@ public class OrderController {
             Order orderFound = order.get();
             OrderDTO dto = orderFound.convertEntityToDTO();
 
-            dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("orders").slash(dto.getId()).withSelfRel());
+            dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash(dto.getId()).withSelfRel());
             for(EmployeeDTO e: dto.getEmployees()){
-                e.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("employees").slash(e.getId()).withSelfRel());
+                e.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash(e.getId()).withSelfRel());
             }
 
             response.setData(dto);
@@ -78,8 +83,8 @@ public class OrderController {
         throw new OrderNotFoundException("There are order in restaurant with that id: " + orderId);
     }
 
-    @PostMapping("/{typeOfOrder}")
-    public ResponseEntity<Response<OrderDTO>> saveOrder(@PathVariable String typeOfOrder, @RequestBody OrderDTO dto, BindingResult result) throws OrderNotFoundException {
+    @PostMapping("")
+    public ResponseEntity<Response<OrderDTO>> saveOrder(@RequestBody OrderDTO dto, BindingResult result) {
 
         Response<OrderDTO> response = new Response<>();
 
@@ -88,20 +93,24 @@ public class OrderController {
             return ResponseEntity.badRequest().body(response);
         }
 
-        if(typeOfOrderService.findByType(typeOfOrder).isPresent()){
-            dto.setId(Long.parseLong("0"));
-            dto.setTypeOfOrder(typeOfOrderService.findByType(typeOfOrder).get().convertEntityToDTO());
-            Order order = orderService.save(dto.convertDTOToEntity());
-            OrderDTO orderDTO = order.convertEntityToDTO();
-            dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("orders").slash(dto.getId()).withSelfRel());
-            for(EmployeeDTO e: dto.getEmployees()){
-                e.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("employees").slash(e.getId()).withSelfRel());
-            }
-            response.setData(orderDTO);
-            return new ResponseEntity<>(response, HttpStatus.CREATED);
-        }
+        dto.setId(Long.parseLong("0"));
 
-        throw new OrderNotFoundException("There are no type of orders: " + typeOfOrder);
+        dto.setPrice(countingOrderPrice(dto));
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:ss");
+        dto.setDate(dateFormat.format(date));
+        dto.setHourOrder(timeFormat.format(date));
+
+        Order order = orderService.save(dto.convertDTOToEntity());
+        order.setTypeOfOrder(dto.getTypeOfOrder().convertDTOToEntity());
+        order.getTypeOfOrder().add(order);
+
+        OrderDTO orderDTO = order.convertEntityToDTO();
+        dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash(dto.getId()).withSelfRel());
+
+        response.setData(orderDTO);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
 
@@ -131,9 +140,9 @@ public class OrderController {
         orders.forEach(o -> orderDTOS.add(o.convertEntityToDTO()));
 
         orderDTOS.forEach(dto -> {
-            dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("orders").slash(dto.getId()).withSelfRel());
+            dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash(dto.getId()).withSelfRel());
             for(EmployeeDTO e: dto.getEmployees()){
-                e.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("employees").slash(e.getId()).withSelfRel());
+                e.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash(e.getId()).withSelfRel());
             }
         });
 
@@ -153,9 +162,9 @@ public class OrderController {
             orders.forEach(o -> orderDTOS.add(o.convertEntityToDTO()));
 
             orderDTOS.forEach(dto -> {
-                dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("orders").slash(dto.getId()).withSelfRel());
+                dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash(dto.getId()).withSelfRel());
                 for(EmployeeDTO e: dto.getEmployees()){
-                    e.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("employees").slash(e.getId()).withSelfRel());
+                    e.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash(e.getId()).withSelfRel());
                 }
             });
 
@@ -178,9 +187,9 @@ public class OrderController {
             orders.forEach(o -> orderDTOS.add(o.convertEntityToDTO()));
 
             orderDTOS.forEach(dto -> {
-                dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("orders").slash(dto.getId()).withSelfRel());
+                dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash(dto.getId()).withSelfRel());
                 for(EmployeeDTO e: dto.getEmployees()){
-                    e.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("employees").slash(e.getId()).withSelfRel());
+                    e.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash(e.getId()).withSelfRel());
                 }
             });
 
@@ -192,7 +201,7 @@ public class OrderController {
         throw new JobNotFoundException("There are no order in restaurant made by employee with id: " + employeeId);
     }
 
-    @GetMapping("/orders/ready")
+    @GetMapping("/ready")
     public ResponseEntity<Response<List<OrderDTO>>> getOrderMade() throws Exception {
         Response<List<OrderDTO>> response = new Response<>();
         List<Order> orders = orderService.findMadeOrders();
@@ -205,9 +214,9 @@ public class OrderController {
         orders.forEach(o -> orderDTOS.add(o.convertEntityToDTO()));
 
         orderDTOS.forEach(dto -> {
-            dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("orders").slash(dto.getId()).withSelfRel());
+            dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash(dto.getId()).withSelfRel());
             for(EmployeeDTO e: dto.getEmployees()){
-                e.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("employees").slash(e.getId()).withSelfRel());
+                e.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash(e.getId()).withSelfRel());
             }
         });
 
@@ -216,7 +225,7 @@ public class OrderController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/orders/unready")
+    @GetMapping("/unready")
     public ResponseEntity<Response<List<OrderDTO>>> getOrderUnmade() throws Exception {
         Response<List<OrderDTO>> response = new Response<>();
         List<Order> orders = orderService.findUnmadeOrders();
@@ -229,14 +238,22 @@ public class OrderController {
         orders.forEach(o -> orderDTOS.add(o.convertEntityToDTO()));
 
         orderDTOS.forEach(dto -> {
-            dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("orders").slash(dto.getId()).withSelfRel());
+            dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash(dto.getId()).withSelfRel());
             for(EmployeeDTO e: dto.getEmployees()){
-                e.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash("employees").slash(e.getId()).withSelfRel());
+                e.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash(e.getId()).withSelfRel());
             }
         });
 
         response.setData(orderDTOS);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    private double countingOrderPrice(OrderDTO theOrder){
+        double price = 0;
+        for(MenuItemDTO tempMenuItem : theOrder.getMenuItems()){
+            price += tempMenuItem.getPrice();
+        }
+        return price;
     }
 }
