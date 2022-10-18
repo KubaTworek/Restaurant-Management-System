@@ -19,5 +19,4 @@ public class ResponseError {
 
     @NotNull(message="Details cannot be null")
     private String details;
-
 }

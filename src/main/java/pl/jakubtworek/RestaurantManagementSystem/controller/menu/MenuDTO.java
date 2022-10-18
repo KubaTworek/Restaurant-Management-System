@@ -3,10 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.controller.menu;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.RepresentationModel;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;

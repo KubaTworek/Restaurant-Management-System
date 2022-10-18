@@ -73,12 +73,11 @@ Request Body [Employee]
 * Find every menu in restaurant: `GET/menu`
 * Find unique menu in restaurant (by id): `GET/menu/{menuId}`
 * Find unique menu item in restaurant (by id): `GET/menu-items/{menuItemId}`
-* Find menu in restaurant (by menu name): `GET/menu/{menuName}`
 
 Request Body [Menu]
 ```
 {
-     "name": varchar(20),
+     "name": varchar(20)
 }
 ```
 
@@ -108,10 +107,9 @@ Request Body [Menu-Item]
 Request Body [Order]
 ```
 {
-     "typeOfOrder": {
-        "id": Long,
-        "name": varchar(20)
-     },
+    "typeOfOrder": {
+        "id": Long
+    },
       "menuItems": [
     {
         "id": Long

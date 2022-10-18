@@ -5,10 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.RepresentationModel;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;

@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class MenuItemDTO {
+public class GetMenuItemDTO {
 
     private Long id;
 
@@ -20,6 +20,9 @@ public class MenuItemDTO {
 
     @NotNull(message = "Price cannot be null.")
     private double price;
+
+    @NotNull(message = "Menu cannot be null.")
+    private MenuDTO menu;
 
     public MenuItem convertDTOToEntity() {
         return new ModelMapper().map(this, MenuItem.class);

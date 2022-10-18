@@ -3,7 +3,6 @@ package pl.jakubtworek.RestaurantManagementSystem.model.entity;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.modelmapper.ModelMapper;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemDTO;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderDTO;
 
 import javax.persistence.*;

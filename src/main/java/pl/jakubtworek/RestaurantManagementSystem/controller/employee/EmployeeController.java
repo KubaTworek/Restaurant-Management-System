@@ -28,7 +28,7 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<Response<List<EmployeeDTO>>> getEmployees() throws EmployeeNotFoundException {
         Response<List<EmployeeDTO>> response = new Response<>();
         List<Employee> employees = employeeService.findAll();
@@ -40,14 +40,14 @@ public class EmployeeController {
         List<EmployeeDTO> employeeDTOS = new ArrayList<>();
         employees.forEach(e -> employeeDTOS.add(e.convertEntityToDTO()));
 
-        employeeDTOS.forEach(dto -> dto.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash("employees").slash(dto.getId()).withSelfRel()));
+        employeeDTOS.forEach(dto -> dto.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash(dto.getId()).withSelfRel()));
 
         response.setData(employeeDTOS);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/{employeeId}")
+    @GetMapping("/id/{employeeId}")
     public ResponseEntity<Response<EmployeeDTO>> getEmployeeById(@PathVariable Long employeeId) throws EmployeeNotFoundException {
         Response<EmployeeDTO> response = new Response<>();
         Optional<Employee> employee = employeeService.findById(employeeId);
@@ -56,15 +56,15 @@ public class EmployeeController {
             Employee employeeFound = employee.get();
             EmployeeDTO dto = employeeFound.convertEntityToDTO();
 
-            dto.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash("employees").slash(dto.getId()).withSelfRel());
+            dto.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash(dto.getId()).withSelfRel());
             response.setData(dto);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
         throw new EmployeeNotFoundException("There are employees in restaurant with that id: " + employeeId);
     }
 
-    @PostMapping("/{jobName}")
-    public ResponseEntity<Response<EmployeeDTO>> saveEmployee(@PathVariable String jobName,@RequestBody EmployeeDTO dto, BindingResult result) throws JobNotFoundException {
+    @PostMapping("")
+    public ResponseEntity<Response<EmployeeDTO>> saveEmployee(@RequestBody EmployeeDTO dto, BindingResult result) throws JobNotFoundException {
 
         Response<EmployeeDTO> response = new Response<>();
 
@@ -73,17 +73,13 @@ public class EmployeeController {
             return ResponseEntity.badRequest().body(response);
         }
 
-        if(employeeService.findJobByName(jobName).isPresent()){
-            dto.setId(Long.parseLong("0"));
-            dto.setJob(employeeService.findJobByName(jobName).get().convertEntityToDTO());
-            Employee employee = employeeService.save(dto.convertDTOToEntity());
-            EmployeeDTO employeeDTO = employee.convertEntityToDTO();
-            dto.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash("employees").slash(dto.getId()).withSelfRel());
-            response.setData(employeeDTO);
-            return new ResponseEntity<>(response, HttpStatus.CREATED);
-        }
+        dto.setId(Long.parseLong("0"));
 
-        throw new JobNotFoundException("There are no job like that in restaurant with that name: " + jobName);
+        Employee employee = employeeService.save(dto.convertDTOToEntity());
+        EmployeeDTO employeeDTO = employee.convertEntityToDTO();
+        dto.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash(dto.getId()).withSelfRel());
+        response.setData(employeeDTO);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{employeeId}")
@@ -93,13 +89,13 @@ public class EmployeeController {
 
             Response<String> response = new Response<>();
 
-            response.setData("Deleted category is - " + employeeId);
+            response.setData("Deleted employee has id: " + employeeId);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
         throw new EmployeeNotFoundException("Employee id not found - " + employeeId);
     }
 
-    @GetMapping("/{jobName}")
+    @GetMapping("job/{jobName}")
     public ResponseEntity<Response<List<EmployeeDTO>>> getEmployeeByJobName(@PathVariable String jobName) throws JobNotFoundException {
 
         if (employeeService.findJobByName(jobName).isPresent()) {
@@ -109,7 +105,7 @@ public class EmployeeController {
             List<EmployeeDTO> employeeDTOS = new ArrayList<>();
             employees.forEach(e -> employeeDTOS.add(e.convertEntityToDTO()));
 
-            employeeDTOS.forEach(dto -> dto.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash("employees").slash(dto.getId()).withSelfRel()));
+            employeeDTOS.forEach(dto -> dto.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash(dto.getId()).withSelfRel()));
 
             response.setData(employeeDTOS);
 
