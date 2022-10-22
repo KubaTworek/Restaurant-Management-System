@@ -11,7 +11,6 @@ import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeDTO
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemDTO;
 import pl.jakubtworek.RestaurantManagementSystem.exception.JobNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.exception.OrderNotFoundException;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.response.Response;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
