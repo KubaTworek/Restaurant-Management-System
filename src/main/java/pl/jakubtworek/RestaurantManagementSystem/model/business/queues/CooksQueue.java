@@ -1,4 +1,4 @@
-package pl.jakubtworek.RestaurantManagementSystem.model.business;
+package pl.jakubtworek.RestaurantManagementSystem.model.business.queues;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -10,9 +10,9 @@ import java.util.Queue;
 
 @Component
 @Scope("singleton")
-public class CooksQueue implements Subject{
+public class CooksQueue implements Subject {
     private final Queue<Employee> cooks = new LinkedList<>();
-    private ArrayList<Observer> observerList;
+    private final ArrayList<Observer> observerList;
 
     public CooksQueue() {
         this.observerList = new ArrayList<>();

@@ -1,4 +1,6 @@
-package pl.jakubtworek.RestaurantManagementSystem.model.business;
+package pl.jakubtworek.RestaurantManagementSystem.model.business.queues;
+
+import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.Observer;
 
 public interface Subject {
     public void registerObserver(Observer o);

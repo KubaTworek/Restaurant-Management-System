@@ -2,9 +2,9 @@ package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.jakubtworek.RestaurantManagementSystem.model.business.CooksQueue;
-import pl.jakubtworek.RestaurantManagementSystem.model.business.DeliveryQueue;
-import pl.jakubtworek.RestaurantManagementSystem.model.business.WaiterQueue;
+import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.CooksQueue;
+import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.DeliveryQueue;
+import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.WaiterQueue;
 import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
 import pl.jakubtworek.RestaurantManagementSystem.repository.JobRepository;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;

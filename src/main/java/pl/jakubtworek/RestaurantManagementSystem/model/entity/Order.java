@@ -50,7 +50,7 @@ public class Order {
     )
     private List<MenuItem> menuItems;
 
-    @ManyToMany(fetch=FetchType.LAZY,
+    @ManyToMany(fetch=FetchType.EAGER,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(
@@ -64,18 +64,20 @@ public class Order {
         if(menuItems == null) {
             menuItems = new ArrayList<>();
         }
-
-        menuItems.add(tempMenuItem);
-        tempMenuItem.add(this);
+        if(!menuItems.contains(tempMenuItem)){
+            menuItems.add(tempMenuItem);
+            tempMenuItem.add(this);
+        }
     }
 
     public void add(Employee tempEmployee) {
         if(employees == null) {
             employees = new ArrayList<>();
         }
-
-        employees.add(tempEmployee);
-        tempEmployee.add(this);
+        if(!employees.contains(tempEmployee)){
+            employees.add(tempEmployee);
+            tempEmployee.add(this);
+        }
     }
 
     public OrderDTO convertEntityToDTO() {

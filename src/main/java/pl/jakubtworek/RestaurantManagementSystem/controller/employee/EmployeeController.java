@@ -114,11 +114,4 @@ public class EmployeeController {
 
         throw new JobNotFoundException("There are no job like that in restaurant with that name: " + jobName);
     }
-
-    @GetMapping("/startRestaurant")
-    public void addCooksToKitchen(){
-        employeeService.addCooksToKitchen();
-        employeeService.addWaitersToKitchen();
-        employeeService.addDeliveriesToKitchen();
-    }
 }
