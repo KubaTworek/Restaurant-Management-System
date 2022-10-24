@@ -36,7 +36,7 @@ public class Employee {
     @JoinColumn(name="job_id")
     private Job job;
 
-    @ManyToMany(fetch=FetchType.EAGER,
+    @ManyToMany(fetch=FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(
