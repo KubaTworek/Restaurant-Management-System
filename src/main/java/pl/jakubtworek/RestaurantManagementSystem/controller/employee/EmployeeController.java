@@ -11,7 +11,7 @@ import pl.jakubtworek.RestaurantManagementSystem.exception.JobNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 
-import java.util.ArrayList;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 

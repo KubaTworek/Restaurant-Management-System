@@ -100,11 +100,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public boolean checkIfEmployeeIsNull(Long id){
-        return findById(id).isPresent();
+        return findById(id).isEmpty();
     }
 
     @Override
     public boolean checkIfJobIsNull(String name){
-        return findJobByName(name).isPresent();
+        return findJobByName(name).isEmpty();
     }
 }
