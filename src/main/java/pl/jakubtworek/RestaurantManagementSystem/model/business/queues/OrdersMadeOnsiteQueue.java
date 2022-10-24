@@ -1,8 +1,8 @@
-package pl.jakubtworek.RestaurantManagementSystem.model.business;
+package pl.jakubtworek.RestaurantManagementSystem.model.business.queues;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -10,25 +10,25 @@ import java.util.Queue;
 
 @Component
 @Scope("singleton")
-public class WaiterQueue implements Subject{
-    private final Queue<Employee> waiters = new LinkedList<>();
-    private ArrayList<Observer> observerList;
+public class OrdersMadeOnsiteQueue implements Subject {
+    private final Queue<Order> ordersMadeOnsite = new LinkedList<>();
+    private final ArrayList<Observer> observerList;
 
-    public WaiterQueue() {
+    public OrdersMadeOnsiteQueue() {
         this.observerList = new ArrayList<>();
     }
 
-    public void add(Employee waiter){
-        waiters.add(waiter);
+    public void add(Order order){
+        ordersMadeOnsite.add(order);
         notifyObservers();
     }
 
-    public Employee get(){
-        return waiters.poll();
+    public Order get(){
+        return ordersMadeOnsite.poll();
     }
 
     public int size(){
-        return waiters.size();
+        return ordersMadeOnsite.size();
     }
 
     @Override

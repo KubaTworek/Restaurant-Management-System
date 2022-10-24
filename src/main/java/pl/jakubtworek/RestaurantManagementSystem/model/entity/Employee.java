@@ -50,9 +50,10 @@ public class Employee {
         if(orders == null) {
             orders = new ArrayList<>();
         }
-
-        orders.add(tempOrder);
-        tempOrder.add(this);
+        if(!orders.contains(tempOrder)){
+            orders.add(tempOrder);
+            tempOrder.add(this);
+        }
     }
 
     public EmployeeDTO convertEntityToDTO() {

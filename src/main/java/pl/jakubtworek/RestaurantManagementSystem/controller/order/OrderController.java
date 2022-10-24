@@ -11,6 +11,7 @@ import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeDTO
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemDTO;
 import pl.jakubtworek.RestaurantManagementSystem.exception.JobNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.exception.OrderNotFoundException;
+import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.response.Response;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
@@ -30,11 +31,14 @@ public class OrderController {
     private final TypeOfOrderService typeOfOrderService;
     private final EmployeeService employeeService;
 
+    private final OrdersQueue ordersQueue;
+
     @Autowired
-    public OrderController(OrderService orderService, TypeOfOrderService typeOfOrderService, EmployeeService employeeService) {
+    public OrderController(OrderService orderService, TypeOfOrderService typeOfOrderService, EmployeeService employeeService, OrdersQueue ordersQueue) {
         this.orderService = orderService;
         this.typeOfOrderService = typeOfOrderService;
         this.employeeService = employeeService;
+        this.ordersQueue = ordersQueue;
     }
 
     @GetMapping("")
@@ -102,6 +106,9 @@ public class OrderController {
         dto.setHourOrder(timeFormat.format(date));
 
         Order order = orderService.save(dto.convertDTOToEntity());
+
+        ordersQueue.add(order);
+
         order.setTypeOfOrder(dto.getTypeOfOrder().convertDTOToEntity());
         order.getTypeOfOrder().add(order);
 

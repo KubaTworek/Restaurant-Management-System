@@ -1,31 +1,27 @@
 package pl.jakubtworek.RestaurantManagementSystem.model.business;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 
 @Service
-public class Kitchen implements Observer{
+public class Kitchen implements Observer {
 
-    private CooksQueue cooksQueue;
-    private OrdersQueue ordersQueue;
-
-    @Autowired
-    private JdbcTemplate jdbc;
-
-    @Autowired
-    private OrdersMadeOnsiteQueue ordersMadeOnsiteQueue;
+    private final CooksQueue cooksQueue;
+    private final OrdersQueue ordersQueue;
+    private final OrdersMadeOnsiteQueue ordersMadeOnsiteQueue;
+    private final OrdersMadeDeliveryQueue ordersMadeDeliveryQueue;
 
     @Autowired
-    private OrdersMadeDeliveryQueue ordersMadeDeliveryQueue;
-
-    public Kitchen(OrdersQueue ordersQueue, CooksQueue cooksQueue) {
+    public Kitchen(OrdersQueue ordersQueue, CooksQueue cooksQueue, OrdersMadeOnsiteQueue ordersMadeOnsiteQueue, OrdersMadeDeliveryQueue ordersMadeDeliveryQueue) {
         this.ordersQueue = ordersQueue;
         this.cooksQueue = cooksQueue;
         ordersQueue.registerObserver(this);
         cooksQueue.registerObserver(this);
+        this.ordersMadeOnsiteQueue = ordersMadeOnsiteQueue;
+        this.ordersMadeDeliveryQueue = ordersMadeDeliveryQueue;
     }
 
     public void startCooking() {
@@ -33,7 +29,7 @@ public class Kitchen implements Observer{
             Employee employee = cooksQueue.get();
             Order order = ordersQueue.get();
             int time = order.getMenuItems().size();
-            jdbc.execute("INSERT INTO Order_Employee(id,order_id,employee_id) VALUES (0,"+order.getId()+","+employee.getId()+")");
+            order.add(employee);
             startDoingOrder(employee,order,time);
         }
     }
@@ -44,19 +40,17 @@ public class Kitchen implements Observer{
     }
 
     public void startDoingOrder(Employee cook, Order order, int time) {
-        Runnable r = new Runnable() {
-            public void run() {
-                for(int i = 0; i<time; i++){
-                    try {
-                        Thread.sleep(30000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+        Runnable r = () -> {
+            for(int i = 0; i<time; i++){
+                try {
+                    Thread.sleep(1000); // czas
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-                cooksQueue.add(cook);
-                if(order.getTypeOfOrder().getId()==1)ordersMadeDeliveryQueue.add(order);
-                if(order.getTypeOfOrder().getId()==2)ordersMadeOnsiteQueue.add(order);
             }
+            cooksQueue.add(cook);
+            if(order.getTypeOfOrder().getId()==1)ordersMadeDeliveryQueue.add(order);
+            if(order.getTypeOfOrder().getId()==2)ordersMadeOnsiteQueue.add(order);
         };
         new Thread(r).start();
     }
