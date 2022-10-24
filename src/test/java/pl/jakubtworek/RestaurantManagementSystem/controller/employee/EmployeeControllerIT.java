@@ -110,7 +110,7 @@ class EmployeeControllerIT {
 
     @Test
     void saveEmployee() throws Exception {
-        Job job = new Job(3L, "Cleaner", null);
+        Job job = new Job(4L, "Cleaner", null);
         Employee employee = new Employee(4L, "James", "Smith", job, null);
 
         MvcResult mvcResult = mockMvc.perform(post("/employees")
@@ -124,7 +124,7 @@ class EmployeeControllerIT {
         assertThat(employeeGet.getId()).isEqualTo(0L);
         assertThat(employeeGet.getFirstName()).isEqualTo("James");
         assertThat(employeeGet.getLastName()).isEqualTo("Smith");
-        assertThat(employeeGet.getJob().getId()).isEqualTo(3L);
+        assertThat(employeeGet.getJob().getId()).isEqualTo(4L);
         assertThat(employeeGet.getJob().getName()).isEqualTo("Cleaner");
     }
 
