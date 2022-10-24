@@ -66,7 +66,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<Employee> findByJob(String jobName) {
-        if (findJobByName(jobName).isPresent()){
+        if (!checkIfJobIsNull(jobName)){
             return employeeRepository.findByJob(findJobByName(jobName).get());
         }
         return Collections.emptyList();
@@ -96,5 +96,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         for(Employee employee : findByJob("DeliveryMan")){
             deliveryQueue.add(employee);
         }
+    }
+
+    @Override
+    public boolean checkIfEmployeeIsNull(Long id){
+        return findById(id).isPresent();
+    }
+
+    @Override
+    public boolean checkIfJobIsNull(String name){
+        return findJobByName(name).isPresent();
     }
 }

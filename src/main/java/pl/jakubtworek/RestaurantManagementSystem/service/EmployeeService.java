@@ -16,4 +16,6 @@ public interface EmployeeService {
     void addCooksToKitchen();
     void addWaitersToKitchen();
     void addDeliveriesToKitchen();
+    boolean checkIfEmployeeIsNull(Long id);
+    boolean checkIfJobIsNull(String name);
 }
