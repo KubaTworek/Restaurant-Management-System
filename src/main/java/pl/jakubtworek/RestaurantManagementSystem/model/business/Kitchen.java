@@ -24,34 +24,45 @@ public class Kitchen implements Observer {
         this.ordersMadeDeliveryQueue = ordersMadeDeliveryQueue;
     }
 
-    public void startCooking() {
-        if(ordersQueue.size()>0 && cooksQueue.size()>0){
-            Employee employee = cooksQueue.get();
-            Order order = ordersQueue.get();
-            int time = order.getMenuItems().size();
-            order.add(employee);
-            startDoingOrder(employee,order,time);
-        }
-    }
-
     @Override
     public void update(){
         startCooking();
     }
 
-    public void startDoingOrder(Employee cook, Order order, int time) {
+    private void startCooking() {
+        if(isExistsCookAndOrder()){
+            Employee employee = cooksQueue.get();
+            Order order = ordersQueue.get();
+            order.add(employee);
+            startDoingOrder(employee,order,order.getMenuItems().size());
+        }
+    }
+
+    private void startDoingOrder(Employee cook, Order order, int time) {
         Runnable r = () -> {
-            for(int i = 0; i<time; i++){
-                try {
-                    Thread.sleep(1000); // czas
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+            preparing(time);
             cooksQueue.add(cook);
-            if(order.getTypeOfOrder().getId()==1)ordersMadeDeliveryQueue.add(order);
-            if(order.getTypeOfOrder().getId()==2)ordersMadeOnsiteQueue.add(order);
+            serveOrder(order);
         };
         new Thread(r).start();
+    }
+
+    private boolean isExistsCookAndOrder(){
+        return ordersQueue.size()>0 && cooksQueue.size()>0;
+    }
+
+    private void serveOrder(Order order){
+        if(order.getTypeOfOrder().getId()==1) ordersMadeDeliveryQueue.add(order);
+        if(order.getTypeOfOrder().getId()==2) ordersMadeOnsiteQueue.add(order);
+    }
+
+    private void preparing(int time){
+        for(int i = 0; i<time; i++){
+            try {
+                Thread.sleep(1000); // czas
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

@@ -34,45 +34,56 @@ public class WaiterPlace implements Observer {
         this.jdbc = jdbc;
     }
 
-    public void startDelivering() {
-        if(ordersMadeOnsiteQueue.size()>0 && waiterQueue.size()>0){
-            Employee employee = waiterQueue.get();
-            Order order = ordersMadeOnsiteQueue.get();
-            int time = 1;
-            order.add(employee);
-            startDeliveringOrder(employee,order,time);
-        }
-    }
-
     @Override
     public void update(){
         startDelivering();
     }
 
-    public void startDeliveringOrder(Employee waiter, Order order, int time) {
+    private void startDelivering() {
+        if(isExistsWaiterAndOrder()){
+            Employee employee = waiterQueue.get();
+            Order order = ordersMadeOnsiteQueue.get();
+            order.add(employee);
+            startDeliveringOrder(employee,order);
+        }
+    }
+
+    private void startDeliveringOrder(Employee waiter, Order order) {
         Runnable r = () -> {
-            for(int i = 0; i<time; i++){
-                try {
-                    Thread.sleep(1000); //czas
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+            preparing();
             waiterQueue.add(waiter);
-
-            Date date = new Date();
-            SimpleDateFormat timeFormat = new SimpleDateFormat("hh:ss");
-            order.setHourAway(timeFormat.format(date));
-
-            List<MenuItem> menuItems = order.getMenuItems();
-            order.setMenuItems(null);
-
-            orderService.update(order);
-
-            for(MenuItem menuItem : menuItems){
-                jdbc.execute("INSERT INTO order_menu_item(id,order_id,menu_item_id) VALUES (0,"+order.getId()+","+menuItem.getId()+")");
-            }
+            setHourAwayToOrder(order);
+            addMenuItemsToOrder(order);
         };
         new Thread(r).start();
+    }
+
+    private boolean isExistsWaiterAndOrder(){
+        return ordersMadeOnsiteQueue.size()>0 && waiterQueue.size()>0;
+    }
+
+    private void setHourAwayToOrder(Order order){
+        Date date = new Date();
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:ss");
+        order.setHourAway(timeFormat.format(date));
+    }
+
+    private void addMenuItemsToOrder(Order order){
+        List<MenuItem> menuItems = order.getMenuItems();
+        order.setMenuItems(null);
+
+        orderService.update(order);
+
+        for(MenuItem menuItem : menuItems){
+            jdbc.execute("INSERT INTO order_menu_item(id,order_id,menu_item_id) VALUES (0,"+order.getId()+","+menuItem.getId()+")");
+        }
+    }
+
+    private void preparing(){
+        try {
+            Thread.sleep(1000); //czas
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

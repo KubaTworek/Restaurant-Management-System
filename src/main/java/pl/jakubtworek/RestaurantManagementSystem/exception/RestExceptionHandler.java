@@ -35,7 +35,7 @@ public class RestExceptionHandler {
 
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
-    @ExceptionHandler(value = Exception.class)
+/*    @ExceptionHandler(value = Exception.class)
     public ResponseEntity<ErrorResponse> handleException(HttpServletRequest request, Exception e) {
         ErrorResponse error = new ErrorResponse();
         error.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
@@ -44,5 +44,5 @@ public class RestExceptionHandler {
                 HandlerMapping.PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE);
 
         return new ResponseEntity<>(error, HttpStatus.NOT_ACCEPTABLE);
-    }
+    }*/
 }
