@@ -12,7 +12,6 @@ public interface EmployeeService {
     Employee save(Employee theEmployee);
     void deleteById(Long theId);
     List<Employee> findByJob(String jobName);
-    Optional<Job> findJobByName(String jobName);
     void addCooksToKitchen();
     void addWaitersToKitchen();
     void addDeliveriesToKitchen();

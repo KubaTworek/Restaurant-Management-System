@@ -47,15 +47,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee save(Employee theEmployee) {
         employeeRepository.save(theEmployee);
-        if(theEmployee.getJob().getId()==1) {
-            cooksQueue.add(theEmployee);
-        }
-        if(theEmployee.getJob().getId()==2) {
-            waiterQueue.add(theEmployee);
-        }
-        if(theEmployee.getJob().getId()==3) {
-            deliveryQueue.add(theEmployee);
-        }
+        addToProperGroup(theEmployee);
         return theEmployee;
     }
 
@@ -67,14 +59,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Employee> findByJob(String jobName) {
         if (!checkIfJobIsNull(jobName)){
-            return employeeRepository.findByJob(findJobByName(jobName).get());
+            Job job = findJobByName(jobName).get();
+            return employeeRepository.findByJob(job);
         }
         return Collections.emptyList();
-    }
-
-    @Override
-    public Optional<Job> findJobByName(String jobName){
-        return jobRepository.findByName(jobName);
     }
 
     @Override
@@ -98,6 +86,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
+    private Optional<Job> findJobByName(String jobName){
+        return jobRepository.findByName(jobName);
+    }
+
     @Override
     public boolean checkIfEmployeeIsNull(Long id){
         return findById(id).isEmpty();
@@ -106,5 +98,17 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public boolean checkIfJobIsNull(String name){
         return findJobByName(name).isEmpty();
+    }
+
+    private void addToProperGroup(Employee theEmployee) {
+        if(theEmployee.getJob().getId()==1L) {
+            cooksQueue.add(theEmployee);
+        }
+        if(theEmployee.getJob().getId()==2L) {
+            waiterQueue.add(theEmployee);
+        }
+        if(theEmployee.getJob().getId()==3L) {
+            deliveryQueue.add(theEmployee);
+        }
     }
 }

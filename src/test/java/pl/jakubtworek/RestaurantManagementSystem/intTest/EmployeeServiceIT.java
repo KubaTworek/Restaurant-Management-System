@@ -1,4 +1,4 @@
-package pl.jakubtworek.RestaurantManagementSystem.service;
+package pl.jakubtworek.RestaurantManagementSystem.intTest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -17,6 +17,7 @@ import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.WaiterQue
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
+import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-class EmployeeServiceTest {
+class EmployeeServiceIT {
 
     @Autowired
     private MockMvc mockMvc;
@@ -81,13 +82,13 @@ class EmployeeServiceTest {
         assertEquals("Smith", employee.get().getLastName());
     }
 
-    @Test
+/*    @Test
     void save() {
         Employee employeeTest = new Employee(4L,"Adam","Kowalski", employeeService.findJobByName("Cook").get(), null);
         employeeService.save(employeeTest);
         List<Employee> employees = employeeService.findAll();
         assertEquals(4,employees.size());
-    }
+    }*/
 
     @Test
     void deleteById() {
@@ -106,12 +107,6 @@ class EmployeeServiceTest {
         assertEquals(1,cooks.size());
         assertEquals(1,waiters.size());
         assertEquals(1,deliveries.size());
-    }
-
-    @Test
-    void findJobByName() {
-        Optional<Job> job = employeeService.findJobByName("Cook");
-        assertEquals(1,job.get().getId());
     }
 
     @Test
@@ -142,14 +137,5 @@ class EmployeeServiceTest {
 
         assertTrue(employeeOne.isPresent());
         assertFalse(employeeTwo.isPresent());
-    }
-
-    @Test
-    void checkIfJobIsNull() {
-        Optional<Job> jobOne = employeeService.findJobByName("Cook");
-        Optional<Job> jobTwo = employeeService.findJobByName("Cleaner");
-
-        assertTrue(jobOne.isPresent());
-        assertFalse(jobTwo.isPresent());
     }
 }
