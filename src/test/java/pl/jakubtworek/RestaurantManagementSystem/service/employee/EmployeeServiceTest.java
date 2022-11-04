@@ -105,8 +105,8 @@ public class EmployeeServiceTest {
     public void verifyIsEmployeeIsDeleted(){
         // when
         employeeService.deleteById(1L);
-        // then
 
+        // then
         verify(employeeRepository).deleteById(1L);
     }
 

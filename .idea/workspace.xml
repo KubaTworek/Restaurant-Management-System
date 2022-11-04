@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6804a3ab-3eba-4f33-a440-5fed16101a6e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/controller/employee/EmployeeControllerTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/service/employee/EmployeeServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/service/menu/MenuItemServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/service/menu/MenuServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/service/EmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/service/EmployeeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/service/impl/EmployeeServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/service/impl/EmployeeServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/controller/employee/EmployeeControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/EmployeeControllerIT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/service/EmployeeServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/EmployeeServiceIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/controller/employee/EmployeeControllerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/EmployeeControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/EmployeeControllerIT.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,82 +121,91 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.EmployeeServiceTest">
-    <configuration name="All in Restaurant-Management-System" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Restaurant-Management-System" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="TEST_OBJECT" value="package" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="EmployeeServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.MenuServiceTest">
+    <configuration name="EmployeeControllerIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Restaurant-Management-System" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.service.employee.*" />
+          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.intTest.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.employee" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.employee.EmployeeServiceTest" />
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.EmployeeControllerIT" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="EmployeeServiceTest.shouldReturnAllEmployees" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="EmployeeControllerTest.getEmployees" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Restaurant-Management-System" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.service.employee.*" />
+          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.controller.employee.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.employee" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.employee.EmployeeServiceTest" />
-      <option name="METHOD_NAME" value="shouldReturnAllEmployees" />
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.controller.employee" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeControllerTest" />
+      <option name="METHOD_NAME" value="getEmployees" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="EmployeeServiceTest.shouldReturnCreatedEmployee" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="EmployeeServiceIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Restaurant-Management-System" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.service.employee.*" />
+          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.intTest.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.employee" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.employee.EmployeeServiceTest" />
-      <option name="METHOD_NAME" value="shouldReturnCreatedEmployee" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.EmployeeServiceIT" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RestaurantManagementSystemApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+    <configuration name="MenuServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Restaurant-Management-System" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="pl.jakubtworek.RestaurantManagementSystem.RestaurantManagementSystemApplication" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.*" />
+          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.service.menu.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.menu" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.menu.MenuServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MenuServiceTest.shouldReturnAllMenus" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Restaurant-Management-System" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.service.menu.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.menu" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.menu.MenuServiceTest" />
+      <option name="METHOD_NAME" value="shouldReturnAllMenus" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.EmployeeServiceTest" />
-        <item itemvalue="JUnit.EmployeeServiceTest.shouldReturnCreatedEmployee" />
-        <item itemvalue="JUnit.EmployeeServiceTest.shouldReturnAllEmployees" />
-        <item itemvalue="JUnit.All in Restaurant-Management-System" />
-        <item itemvalue="Spring Boot.RestaurantManagementSystemApplication" />
+        <item itemvalue="JUnit.MenuServiceTest" />
+        <item itemvalue="JUnit.MenuServiceTest.shouldReturnAllMenus" />
+        <item itemvalue="JUnit.EmployeeControllerTest.getEmployees" />
+        <item itemvalue="JUnit.EmployeeServiceIT" />
+        <item itemvalue="JUnit.EmployeeControllerIT" />
       </list>
     </recent_temporary>
   </component>
@@ -216,7 +223,7 @@
       <workItem from="1665849702504" duration="14428000" />
       <workItem from="1665936857935" duration="9302000" />
       <workItem from="1666037443786" duration="8080000" />
-      <workItem from="1667581456932" duration="5374000" />
+      <workItem from="1667581456932" duration="7529000" />
     </task>
     <servers />
   </component>
@@ -236,16 +243,5 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/service/employee/EmployeeServiceTest.java</url>
-          <line>124</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
