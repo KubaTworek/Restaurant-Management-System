@@ -76,7 +76,7 @@ public class MenuServiceTest {
 
 
     @Test
-    public void verifyIsEmployeeIsDeleted(){
+    public void verifyIsMenuIsDeleted(){
         // when
         menuService.deleteById(1L);
 
