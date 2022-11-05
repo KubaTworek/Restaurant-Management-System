@@ -1,13 +1,11 @@
 package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
-import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueue;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 
 import java.util.List;
@@ -17,14 +15,10 @@ import java.util.Optional;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final OrdersQueue ordersQueue;
-    private final JdbcTemplate jdbc;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, OrdersQueue ordersQueue, JdbcTemplate jdbc) {
+    public OrderServiceImpl(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
-        this.ordersQueue = ordersQueue;
-        this.jdbc = jdbc;
     }
 
     @Override

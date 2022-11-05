@@ -24,10 +24,7 @@ import static org.mockito.Mockito.when;
 public class TypeOfOrderServiceTest {
     @Mock
     private TypeOfOrderRepository typeOfOrderRepository;
-
     private TypeOfOrderService typeOfOrderService;
-
-
 
     @BeforeEach
     public void setUp() {

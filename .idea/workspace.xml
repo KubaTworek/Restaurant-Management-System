@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6804a3ab-3eba-4f33-a440-5fed16101a6e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/service/order/OrderServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/service/order/TypeOfOrderServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/service/impl/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/service/impl/OrderServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/service/order/OrderServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/service/order/OrderServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/service/order/TypeOfOrderServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/service/order/TypeOfOrderServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,7 +120,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.TypeOfOrderServiceTest.shouldReturnTypeOfOrder_whenCorrectNameIsPassed">
+  <component name="RunManager" selected="JUnit.OrderServiceTest">
     <configuration name="MenuItemServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Restaurant-Management-System" />
       <extension name="coverage">
@@ -134,48 +136,48 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MenuItemServiceTest.shouldReturnAllMenus" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="OrderServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Restaurant-Management-System" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.service.menu.*" />
+          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.service.order.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.menu" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.menu.MenuItemServiceTest" />
-      <option name="METHOD_NAME" value="shouldReturnAllMenus" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MenuServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Restaurant-Management-System" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.service.menu.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.menu" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.menu.MenuServiceTest" />
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.order" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.order.OrderServiceTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MenuServiceTest.shouldReturnAllMenus" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="OrderServiceTest.shouldReturnAllUnmadeOrders" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Restaurant-Management-System" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.service.menu.*" />
+          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.service.order.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.menu" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.menu.MenuServiceTest" />
-      <option name="METHOD_NAME" value="shouldReturnAllMenus" />
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.order" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.order.OrderServiceTest" />
+      <option name="METHOD_NAME" value="shouldReturnAllUnmadeOrders" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrderServiceTest.shouldReturnOneOrder_whenTypeOfOrderIsPass" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Restaurant-Management-System" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.service.order.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.order" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.order.OrderServiceTest" />
+      <option name="METHOD_NAME" value="shouldReturnOneOrder_whenTypeOfOrderIsPass" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -199,11 +201,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.OrderServiceTest" />
+        <item itemvalue="JUnit.OrderServiceTest.shouldReturnAllUnmadeOrders" />
+        <item itemvalue="JUnit.OrderServiceTest.shouldReturnOneOrder_whenTypeOfOrderIsPass" />
         <item itemvalue="JUnit.TypeOfOrderServiceTest.shouldReturnTypeOfOrder_whenCorrectNameIsPassed" />
         <item itemvalue="JUnit.MenuItemServiceTest" />
-        <item itemvalue="JUnit.MenuItemServiceTest.shouldReturnAllMenus" />
-        <item itemvalue="JUnit.MenuServiceTest" />
-        <item itemvalue="JUnit.MenuServiceTest.shouldReturnAllMenus" />
       </list>
     </recent_temporary>
   </component>
@@ -221,7 +223,7 @@
       <workItem from="1665849702504" duration="14428000" />
       <workItem from="1665936857935" duration="9302000" />
       <workItem from="1666037443786" duration="8080000" />
-      <workItem from="1667581456932" duration="9804000" />
+      <workItem from="1667581456932" duration="11041000" />
     </task>
     <servers />
   </component>
