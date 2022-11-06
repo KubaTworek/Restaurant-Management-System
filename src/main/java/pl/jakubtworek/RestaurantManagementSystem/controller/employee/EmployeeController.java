@@ -27,8 +27,8 @@ public class EmployeeController {
 
     @GetMapping
     public ResponseEntity<List<EmployeeDTO>> getEmployees() {
-        List<Employee> employees = employeeService.findAll();
-        List<EmployeeDTO> employeesDTO = createDTOList(employees);
+        List<Employee> employeesFound = employeeService.findAll();
+        List<EmployeeDTO> employeesDTO = createDTOList(employeesFound);
 
         return new ResponseEntity<>(employeesDTO, HttpStatus.OK);
     }
@@ -48,12 +48,12 @@ public class EmployeeController {
 
     @PostMapping
     public ResponseEntity<EmployeeDTO> saveEmployee(@RequestBody EmployeeDTO dto) {
-
         dto.setId(0L);
-        employeeService.save(dto.convertDTOToEntity());
-        addLinkToDTO(dto);
+        Employee employeeFound = employeeService.save(dto.convertDTOToEntity());
+        EmployeeDTO employeeDTO = employeeFound.convertEntityToDTO();
+        addLinkToDTO(employeeDTO);
 
-        return new ResponseEntity<>(dto, HttpStatus.CREATED);
+        return new ResponseEntity<>(employeeDTO, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{employeeId}")
@@ -61,7 +61,6 @@ public class EmployeeController {
         if(employeeService.checkIfEmployeeIsNull(employeeId)) {
             throw new EmployeeNotFoundException("There are employees in restaurant with that id: " + employeeId);
         }
-
         employeeService.deleteById(employeeId);
 
         return new ResponseEntity<>("Deleted employee has id: " + employeeId, HttpStatus.OK);
@@ -72,9 +71,8 @@ public class EmployeeController {
         if(employeeService.checkIfJobIsNull(jobName)) {
             throw new JobNotFoundException("There are no job like that in restaurant with that name: " + jobName);
         }
-
-        List<Employee> employees = employeeService.findByJob(jobName);
-        List<EmployeeDTO> employeesDTO = createDTOList(employees);
+        List<Employee> employeesFound = employeeService.findByJob(jobName);
+        List<EmployeeDTO> employeesDTO = createDTOList(employeesFound);
 
         return new ResponseEntity<>(employeesDTO, HttpStatus.OK);
     }

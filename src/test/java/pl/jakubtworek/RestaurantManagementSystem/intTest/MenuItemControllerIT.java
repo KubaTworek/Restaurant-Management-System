@@ -18,10 +18,6 @@ import pl.jakubtworek.RestaurantManagementSystem.controller.menu.GetMenuItemDTO;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuDTO;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemDTO;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -63,7 +59,7 @@ public class MenuItemControllerIT {
     }
 
     @Test
-    void getMenuItemById() throws Exception {
+    void shouldReturnMenuItemById() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get("/menu-items/1"))
                 .andExpect(status().is(200))
                 .andReturn();
@@ -76,7 +72,7 @@ public class MenuItemControllerIT {
     }
 
     @Test
-    void getMenuItemByWrongId() throws Exception {
+    void shouldReturnErrorResponse_whenAskedForNonExistingMenuItem() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get("/menu-items/4"))
                 .andExpect(status().isNotFound())
                 .andReturn();
@@ -88,7 +84,7 @@ public class MenuItemControllerIT {
     }
 
     @Test
-    void saveMenuItem() throws Exception {
+    void shouldReturnCreatedMenuItem() throws Exception {
         MenuDTO menu = new MenuDTO(3L, "Alcohol", null);
         GetMenuItemDTO menuItem = new GetMenuItemDTO(4L, "Beer", 5.99, menu);
 
@@ -104,7 +100,7 @@ public class MenuItemControllerIT {
         assertThat(menuItemGet.getPrice()).isEqualTo(5.99);}
 
     @Test
-    void deleteMenu() throws Exception {
+    void shouldReturnResponseConfirmingDeletedMenu() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/menu-items/1"))
                 .andExpect(status().isOk())
                 .andReturn();

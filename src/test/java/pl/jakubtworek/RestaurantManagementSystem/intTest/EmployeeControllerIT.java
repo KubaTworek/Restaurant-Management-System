@@ -1,5 +1,6 @@
 package pl.jakubtworek.RestaurantManagementSystem.intTest;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,9 +15,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeDTO;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.JobDTO;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -28,7 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 public class EmployeeControllerIT {
-
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -38,13 +40,11 @@ public class EmployeeControllerIT {
 
     @Value("${sql.script.create.employees}")
     private String sqlAddEmployees;
-
     @Value("${sql.script.create.jobs}")
     private String sqlAddJobs;
 
     @Value("${sql.script.delete.employees}")
     private String sqlDeleteEmployees;
-
     @Value("${sql.script.delete.jobs}")
     private String sqlDeleteJobs;
 
@@ -61,7 +61,7 @@ public class EmployeeControllerIT {
     }
 
     @Test
-    void getEmployees() throws Exception {
+    void shouldReturnAllEmployees() throws Exception {
         mockMvc.perform(get("/employees"))
                 .andExpect(status().is(200))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -69,22 +69,22 @@ public class EmployeeControllerIT {
     }
 
     @Test
-    void getEmployeeById() throws Exception {
+    void shouldReturnEmployeeById() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get("/employees/id/1"))
                 .andExpect(status().is(200))
                 .andReturn();
-        Employee employee = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Employee.class);
+        EmployeeDTO employee = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EmployeeDTO.class);
 
         assertThat(employee).isNotNull();
-        assertThat(employee.getId()).isEqualTo(1L);
+        assertThat(employee.getId()).isNotNull();
         assertThat(employee.getFirstName()).isEqualTo("John");
         assertThat(employee.getLastName()).isEqualTo("Smith");
-        assertThat(employee.getJob().getId()).isEqualTo(1L);
+        assertThat(employee.getJob().getId()).isNotNull();
         assertThat(employee.getJob().getName()).isEqualTo("Cook");
     }
 
     @Test
-    void getEmployeeByWrongId() throws Exception {
+    void shouldReturnErrorResponse_whenAskedForNonExistingEmployee() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get("/employees/id/4"))
                 .andExpect(status().isNotFound())
                 .andReturn();
@@ -96,27 +96,27 @@ public class EmployeeControllerIT {
     }
 
     @Test
-    void saveEmployee() throws Exception {
-        Job job = new Job(3L, "Cleaner", null);
-        Employee employee = new Employee(4L, "James", "Smith", job, null);
+    void shouldReturnCreatedEmployee() throws Exception {
+        JobDTO job = new JobDTO(3L, "Cleaner");
+        EmployeeDTO employee = new EmployeeDTO(4L, "James", "Smith", job);
 
         MvcResult mvcResult = mockMvc.perform(post("/employees")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(employee)))
                 .andExpect(status().isCreated())
                 .andReturn();
-        Employee employeeGet = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Employee.class);
+        EmployeeDTO employeeReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EmployeeDTO.class);
 
-        assertThat(employeeGet).isNotNull();
-        assertThat(employeeGet.getId()).isEqualTo(0L);
-        assertThat(employeeGet.getFirstName()).isEqualTo("James");
-        assertThat(employeeGet.getLastName()).isEqualTo("Smith");
-        assertThat(employeeGet.getJob().getId()).isEqualTo(3L);
-        assertThat(employeeGet.getJob().getName()).isEqualTo("Cleaner");
+        assertThat(employeeReturned).isNotNull();
+        assertThat(employeeReturned.getId()).isNotNull();
+        assertThat(employeeReturned.getFirstName()).isEqualTo("James");
+        assertThat(employeeReturned.getLastName()).isEqualTo("Smith");
+        assertThat(employeeReturned.getJob().getId()).isNotNull();
+        assertThat(employeeReturned.getJob().getName()).isEqualTo("Cleaner");
     }
 
     @Test
-    void deleteEmployee() throws Exception {
+    void shouldReturnResponseConfirmingDeletedEmployee() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/employees/1"))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -126,15 +126,24 @@ public class EmployeeControllerIT {
     }
 
     @Test
-    void getEmployeeByJobName() throws Exception {
-        mockMvc.perform(get("/employees/job/cook")
+    void shouldReturnEmployees_whenJobNameIsPassed() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(get("/employees/job/cook")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)));
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andReturn();
+        List<EmployeeDTO> employeesReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<EmployeeDTO>>(){});
+
+        assertThat(employeesReturned).isNotNull();
+        assertThat(employeesReturned.get(0)).isNotNull();
+        assertThat(employeesReturned.get(0).getFirstName()).isEqualTo("John");
+        assertThat(employeesReturned.get(0).getLastName()).isEqualTo("Smith");
+        assertThat(employeesReturned.get(0).getJob().getId()).isNotNull();
+        assertThat(employeesReturned.get(0).getJob().getName()).isEqualTo("Cook");
     }
 
     @Test
-    void getEmployeeByWrongJobName() throws Exception {
+    void shouldReturnResponse_whenWrongJobNameIsPassed() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get("/employees/job/something")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())

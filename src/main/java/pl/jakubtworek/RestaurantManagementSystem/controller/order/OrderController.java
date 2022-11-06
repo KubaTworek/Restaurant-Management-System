@@ -4,31 +4,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeController;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemDTO;
 import pl.jakubtworek.RestaurantManagementSystem.exception.EmployeeNotFoundException;
-import pl.jakubtworek.RestaurantManagementSystem.exception.JobNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.exception.OrderNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.exception.TypeOfOrderNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
-import pl.jakubtworek.RestaurantManagementSystem.model.response.Response;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 import pl.jakubtworek.RestaurantManagementSystem.service.TypeOfOrderService;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -50,10 +43,10 @@ public class OrderController {
 
     @GetMapping
     public ResponseEntity<List<OrderDTO>> getOrders() {
-        List<Order> orders = orderService.findAll();
-        List<OrderDTO> orderDTOS = createDTOList(orders);
+        List<Order> ordersFound = orderService.findAll();
+        List<OrderDTO> ordersDTO = createDTOList(ordersFound);
 
-        return new ResponseEntity<>(orderDTOS, HttpStatus.OK);
+        return new ResponseEntity<>(ordersDTO, HttpStatus.OK);
     }
 
     @GetMapping("/{orderId}")
@@ -62,27 +55,26 @@ public class OrderController {
             throw new OrderNotFoundException("There are no order in restaurant with that id: " + orderId);
         }
         Order orderFound = orderService.findById(orderId).get();
-        OrderDTO dto = orderFound.convertEntityToDTO();
-        addLinkToDTO(dto);
+        OrderDTO orderDTO = orderFound.convertEntityToDTO();
+        addLinkToDTO(orderDTO);
 
-        return new ResponseEntity<>(dto, HttpStatus.OK);
+        return new ResponseEntity<>(orderDTO, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<OrderDTO> saveOrder(@RequestBody OrderDTO dto) {
-
         dto.setId(0L);
         dto.setPrice(countingOrderPrice(dto));
 
         setDataForDTO(dto);
 
-        Order order = orderService.save(dto.convertDTOToEntity());
-        ordersQueue.add(order);
+        Order orderSaved = orderService.save(dto.convertDTOToEntity());
+        ordersQueue.add(orderSaved);
 
-        order.setTypeOfOrder(dto.getTypeOfOrder().convertDTOToEntity());
-        order.getTypeOfOrder().add(order);
+        orderSaved.setTypeOfOrder(dto.getTypeOfOrder().convertDTOToEntity());
+        orderSaved.getTypeOfOrder().add(orderSaved);
 
-        OrderDTO orderDTO = order.convertEntityToDTO();
+        OrderDTO orderDTO = orderSaved.convertEntityToDTO();
         addLinkToDTO(orderDTO);
 
         return new ResponseEntity<>(orderDTO, HttpStatus.CREATED);
@@ -101,11 +93,10 @@ public class OrderController {
 
     @GetMapping("/date/{date}")
     public ResponseEntity<List<OrderDTO>> getOrderByDate(@PathVariable String date) {
+        List<Order> ordersFound = orderService.findByDate(date);
+        List<OrderDTO> ordersDTO = createDTOList(ordersFound);
 
-        List<Order> orders = orderService.findByDate(date);
-        List<OrderDTO> orderDTOS = createDTOList(orders);
-
-        return new ResponseEntity<>(orderDTOS, HttpStatus.OK);
+        return new ResponseEntity<>(ordersDTO, HttpStatus.OK);
     }
 
     @GetMapping("/type-of-order/{typeOfOrderName}")
@@ -113,11 +104,11 @@ public class OrderController {
         if(typeOfOrderService.checkIfTypeOfOrderIsNull(typeOfOrderName)) {
             throw new TypeOfOrderNotFoundException("There are no type of orders like that in restaurant with that name: " + typeOfOrderName);
         }
-        TypeOfOrder typeOfOrder = typeOfOrderService.findByType(typeOfOrderName).get();
-        List<Order> orders = orderService.findByTypeOfOrder(typeOfOrder);
-        List<OrderDTO> orderDTOS = createDTOList(orders);
+        TypeOfOrder typeOfOrderFound = typeOfOrderService.findByType(typeOfOrderName).get();
+        List<Order> ordersFound = orderService.findByTypeOfOrder(typeOfOrderFound);
+        List<OrderDTO> ordersDTO = createDTOList(ordersFound);
 
-        return new ResponseEntity<>(orderDTOS, HttpStatus.OK);
+        return new ResponseEntity<>(ordersDTO, HttpStatus.OK);
     }
 
     @GetMapping("/employee/{employeeId}")
@@ -125,27 +116,27 @@ public class OrderController {
         if(employeeService.checkIfEmployeeIsNull(employeeId)) {
             throw new EmployeeNotFoundException("There are no temployees  with that id: " + employeeId);
         }
-        Employee employee = employeeService.findById(employeeId).get();
-        List<Order> orders = orderService.findByEmployee(employee);
-        List<OrderDTO> orderDTOS = createDTOList(orders);
+        Employee employeeFound = employeeService.findById(employeeId).get();
+        List<Order> ordersFound = orderService.findByEmployee(employeeFound);
+        List<OrderDTO> ordersDTO = createDTOList(ordersFound);
 
-        return new ResponseEntity<>(orderDTOS, HttpStatus.OK);
+        return new ResponseEntity<>(ordersDTO, HttpStatus.OK);
     }
 
     @GetMapping("/ready")
     public ResponseEntity<List<OrderDTO>> getOrderMade() throws Exception {
-        List<Order> orders = orderService.findMadeOrders();
-        List<OrderDTO> orderDTOS = createDTOList(orders);
+        List<Order> ordersFound = orderService.findMadeOrders();
+        List<OrderDTO> ordersDTO = createDTOList(ordersFound);
 
-        return new ResponseEntity<>(orderDTOS, HttpStatus.OK);
+        return new ResponseEntity<>(ordersDTO, HttpStatus.OK);
     }
 
     @GetMapping("/unready")
     public ResponseEntity<List<OrderDTO>> getOrderUnmade() {
-        List<Order> orders = orderService.findUnmadeOrders();
-        List<OrderDTO> orderDTOS = createDTOList(orders);
+        List<Order> ordersFound = orderService.findUnmadeOrders();
+        List<OrderDTO> ordersDTO = createDTOList(ordersFound);
 
-        return new ResponseEntity<>(orderDTOS, HttpStatus.OK);
+        return new ResponseEntity<>(ordersDTO, HttpStatus.OK);
     }
 
     private double countingOrderPrice(OrderDTO theOrder){
