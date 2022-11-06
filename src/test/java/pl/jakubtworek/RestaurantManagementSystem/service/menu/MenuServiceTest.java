@@ -1,12 +1,8 @@
 package pl.jakubtworek.RestaurantManagementSystem.service.menu;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
@@ -32,8 +28,8 @@ public class MenuServiceTest {
         menuRepository = mock(MenuRepository.class);
 
         menuService = new MenuServiceImpl(
-                menuRepository
-        );
+                menuRepository,
+                menuFactory);
     }
 
     @Test

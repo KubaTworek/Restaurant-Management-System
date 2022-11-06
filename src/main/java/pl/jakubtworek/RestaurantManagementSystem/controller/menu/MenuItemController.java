@@ -5,17 +5,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.jakubtworek.RestaurantManagementSystem.exception.MenuItemNotFoundException;
+import pl.jakubtworek.RestaurantManagementSystem.exception.MenuNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuItemService;
+import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
 
 @RestController
 @RequestMapping("/menu-items")
 public class MenuItemController {
     private final MenuItemService menuItemService;
+    private final MenuService menuService;
 
     @Autowired
-    public MenuItemController(MenuItemService menuItemService) {
+    public MenuItemController(MenuItemService menuItemService, MenuService menuService) {
         this.menuItemService = menuItemService;
+        this.menuService = menuService;
     }
 
     @GetMapping("/{menuItemId}")
@@ -30,7 +34,10 @@ public class MenuItemController {
     }
 
     @PostMapping
-    public ResponseEntity<MenuItemDTO> saveMenuItem(@RequestBody GetMenuItemDTO dto) {
+    public ResponseEntity<MenuItemDTO> saveMenuItem(@RequestBody GetMenuItemDTO dto) throws MenuNotFoundException {
+        if(menuService.checkIsMenuIsNull(dto.getMenu())){
+            throw new MenuNotFoundException("There are no menu in restaurant with that name: " + dto.getMenu());
+        }
         MenuItem menuItemSaved = menuItemService.save(dto);
         MenuItemDTO menuItemDTO = menuItemSaved.convertEntityToDTO();
 

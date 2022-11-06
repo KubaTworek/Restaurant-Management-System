@@ -3,6 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.GetMenuDTO;
+import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuRepository;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
@@ -14,10 +15,12 @@ import java.util.Optional;
 public class MenuServiceImpl implements MenuService {
 
     private final MenuRepository menuRepository;
+    private final MenuFactory menuFactory;
 
     @Autowired
-    public MenuServiceImpl(MenuRepository menuRepository) {
+    public MenuServiceImpl(MenuRepository menuRepository, MenuFactory menuFactory) {
         this.menuRepository = menuRepository;
+        this.menuFactory = menuFactory;
     }
 
     @Override
@@ -32,8 +35,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public Menu save(GetMenuDTO menuDTO) {
-        menuDTO.setId(0L);
-        Menu menu = menuDTO.convertDTOToEntity();
+        Menu menu = menuFactory.createMenu(menuDTO);
         menuRepository.save(menu);
         return menu;
     }
@@ -51,5 +53,9 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public boolean checkIsMenuIsNull(Long id) {
         return findById(id).isEmpty();
+    }
+    @Override
+    public boolean checkIsMenuIsNull(String name) {
+        return findByName(name).isEmpty();
     }
 }

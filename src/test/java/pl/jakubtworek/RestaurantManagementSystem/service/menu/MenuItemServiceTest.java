@@ -3,15 +3,12 @@ package pl.jakubtworek.RestaurantManagementSystem.service.menu;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.GetMenuItemDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuItemRepository;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuItemService;
-import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
 import pl.jakubtworek.RestaurantManagementSystem.service.impl.MenuItemServiceImp;
-import pl.jakubtworek.RestaurantManagementSystem.service.impl.MenuServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +34,8 @@ public class MenuItemServiceTest {
 
         menuItemService = new MenuItemServiceImp(
                 menuItemRepository,
-                menuRepository
-        );
+                menuRepository,
+                menuItemFactory);
     }
 
     @Test

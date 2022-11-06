@@ -22,7 +22,7 @@ public class GetMenuItemDTO {
     private double price;
 
     @NotNull(message = "Menu cannot be null.")
-    private MenuDTO menu;
+    private String menu;
 
     public MenuItem convertDTOToEntity() {
         return new ModelMapper().map(this, MenuItem.class);
