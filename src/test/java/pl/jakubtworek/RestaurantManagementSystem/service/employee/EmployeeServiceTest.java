@@ -1,20 +1,17 @@
 package pl.jakubtworek.RestaurantManagementSystem.service.employee;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeDTO;
+import pl.jakubtworek.RestaurantManagementSystem.exception.EmployeeNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.CooksQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.DeliveryQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.WaiterQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
+import pl.jakubtworek.RestaurantManagementSystem.model.factories.EmployeeFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
 import pl.jakubtworek.RestaurantManagementSystem.repository.JobRepository;
-import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 import pl.jakubtworek.RestaurantManagementSystem.service.impl.EmployeeServiceImpl;
 
 import java.util.ArrayList;
@@ -23,7 +20,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 public class EmployeeServiceTest {
@@ -34,11 +30,7 @@ public class EmployeeServiceTest {
     @Mock
     private JobRepository jobRepository;
     @Mock
-    private CooksQueue cooksQueue;
-    @Mock
-    private WaiterQueue waiterQueue;
-    @Mock
-    private DeliveryQueue deliveryQueue;
+    private EmployeeFactory employeeFactory;
 
     private EmployeeServiceImpl employeeService;
 
@@ -48,16 +40,12 @@ public class EmployeeServiceTest {
     public void setUp() {
         employeeRepository = mock(EmployeeRepository.class);
         jobRepository = mock(JobRepository.class);
-        cooksQueue = mock(CooksQueue.class);
-        waiterQueue = mock(WaiterQueue.class);
-        deliveryQueue = mock(DeliveryQueue.class);
+        employeeFactory = mock(EmployeeFactory.class);
 
         employeeService = new EmployeeServiceImpl(
                 employeeRepository,
                 jobRepository,
-                cooksQueue,
-                waiterQueue,
-                deliveryQueue);
+                employeeFactory);
     }
 
     @Test

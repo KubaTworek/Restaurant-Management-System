@@ -3,9 +3,12 @@ package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeDTO;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.GetEmployeeDTO;
+import pl.jakubtworek.RestaurantManagementSystem.exception.JobNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.CooksQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.DeliveryQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.WaiterQueue;
+import pl.jakubtworek.RestaurantManagementSystem.model.factories.EmployeeFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
 import pl.jakubtworek.RestaurantManagementSystem.repository.JobRepository;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
@@ -21,18 +24,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final JobRepository jobRepository;
-    private final CooksQueue cooksQueue;
-    private final WaiterQueue waiterQueue;
-    private final DeliveryQueue deliveryQueue;
+    private final EmployeeFactory employeeFactory;
 
 
     @Autowired
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository, JobRepository jobRepository, CooksQueue cooksQueue, WaiterQueue waiterQueue, DeliveryQueue deliveryQueue) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, JobRepository jobRepository, EmployeeFactory employeeFactory) {
         this.employeeRepository = employeeRepository;
         this.jobRepository = jobRepository;
-        this.cooksQueue = cooksQueue;
-        this.waiterQueue = waiterQueue;
-        this.deliveryQueue = deliveryQueue;
+        this.employeeFactory = employeeFactory;
     }
 
     @Override
@@ -46,11 +45,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee save(EmployeeDTO employeeDTO) {
-        employeeDTO.setId(0L);
-        Employee employee = employeeDTO.convertDTOToEntity();
+    public Employee save(GetEmployeeDTO employeeDTO) {
+        Employee employee = employeeFactory.createEmployee(employeeDTO);
         employeeRepository.save(employee);
-        addToProperGroup(employee);
         return employee;
     }
 
@@ -68,27 +65,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         return Collections.emptyList();
     }
 
-    @Override
-    public void addCooksToKitchen(){
-        for(Employee employee : findByJob("Cook")){
-            cooksQueue.add(employee);
-        }
-    }
-
-    @Override
-    public void addWaitersToKitchen(){
-        for(Employee employee : findByJob("Waiter")){
-            waiterQueue.add(employee);
-        }
-    }
-
-    @Override
-    public void addDeliveriesToKitchen(){
-        for(Employee employee : findByJob("DeliveryMan")){
-            deliveryQueue.add(employee);
-        }
-    }
-
     private Optional<Job> findJobByName(String jobName){
         return jobRepository.findByName(jobName);
     }
@@ -101,17 +77,5 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public boolean checkIfJobIsNull(String name){
         return findJobByName(name).isEmpty();
-    }
-
-    private void addToProperGroup(Employee theEmployee) {
-        if(theEmployee.getJob().getId()==1L) {
-            cooksQueue.add(theEmployee);
-        }
-        if(theEmployee.getJob().getId()==2L) {
-            waiterQueue.add(theEmployee);
-        }
-        if(theEmployee.getJob().getId()==3L) {
-            deliveryQueue.add(theEmployee);
-        }
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeDTO;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.GetEmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.JobDTO;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
 
@@ -97,8 +98,7 @@ public class EmployeeControllerIT {
 
     @Test
     void shouldReturnCreatedEmployee() throws Exception {
-        JobDTO job = new JobDTO(3L, "Cleaner");
-        EmployeeDTO employee = new EmployeeDTO(4L, "James", "Smith", job);
+        GetEmployeeDTO employee = new GetEmployeeDTO(4L, "James", "Smith", "Cook");
 
         MvcResult mvcResult = mockMvc.perform(post("/employees")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -112,7 +112,7 @@ public class EmployeeControllerIT {
         assertThat(employeeReturned.getFirstName()).isEqualTo("James");
         assertThat(employeeReturned.getLastName()).isEqualTo("Smith");
         assertThat(employeeReturned.getJob().getId()).isNotNull();
-        assertThat(employeeReturned.getJob().getName()).isEqualTo("Cleaner");
+        assertThat(employeeReturned.getJob().getName()).isEqualTo("Cook");
     }
 
     @Test
