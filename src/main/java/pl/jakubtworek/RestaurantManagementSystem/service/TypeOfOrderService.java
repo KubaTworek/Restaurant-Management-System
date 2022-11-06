@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface TypeOfOrderService {
     Optional<TypeOfOrder> findByType(String typeName);
+    boolean checkIfTypeOfOrderIsNull(String name);
 }

@@ -18,4 +18,5 @@ public interface OrderService {
     List<Order> findByTypeOfOrder(TypeOfOrder typeOfOrder);
     List<Order> findMadeOrders();
     List<Order> findUnmadeOrders();
+    boolean checkIfOrderIsNull(Long id);
 }

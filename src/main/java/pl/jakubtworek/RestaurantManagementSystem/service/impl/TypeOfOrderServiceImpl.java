@@ -22,4 +22,9 @@ public class TypeOfOrderServiceImpl implements TypeOfOrderService {
     public Optional<TypeOfOrder> findByType(String typeName) {
         return typeOfOrderRepository.findByType(typeName);
     }
+
+    @Override
+    public boolean checkIfTypeOfOrderIsNull(String name){
+        return findByType(name).isEmpty();
+    }
 }

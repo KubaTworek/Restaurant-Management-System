@@ -73,4 +73,9 @@ public class OrderServiceImpl implements OrderService {
         orders.removeIf(order -> (order.getHourAway() != null));
         return orders;
     }
+
+    @Override
+    public boolean checkIfOrderIsNull(Long id){
+        return findById(id).isEmpty();
+    }
 }
