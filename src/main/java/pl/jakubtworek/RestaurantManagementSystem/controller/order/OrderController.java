@@ -31,14 +31,11 @@ public class OrderController {
     private final TypeOfOrderService typeOfOrderService;
     private final EmployeeService employeeService;
 
-    private final OrdersQueue ordersQueue;
-
     @Autowired
-    public OrderController(OrderService orderService, TypeOfOrderService typeOfOrderService, EmployeeService employeeService, OrdersQueue ordersQueue) {
+    public OrderController(OrderService orderService, TypeOfOrderService typeOfOrderService, EmployeeService employeeService) {
         this.orderService = orderService;
         this.typeOfOrderService = typeOfOrderService;
         this.employeeService = employeeService;
-        this.ordersQueue = ordersQueue;
     }
 
     @GetMapping
@@ -63,17 +60,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<OrderDTO> saveOrder(@RequestBody OrderDTO dto) {
-        dto.setId(0L);
-        dto.setPrice(countingOrderPrice(dto));
-
-        setDataForDTO(dto);
-
-        Order orderSaved = orderService.save(dto.convertDTOToEntity());
-        ordersQueue.add(orderSaved);
-
-        orderSaved.setTypeOfOrder(dto.getTypeOfOrder().convertDTOToEntity());
-        orderSaved.getTypeOfOrder().add(orderSaved);
-
+        Order orderSaved = orderService.save(dto);
         OrderDTO orderDTO = orderSaved.convertEntityToDTO();
         addLinkToDTO(orderDTO);
 
@@ -124,7 +111,7 @@ public class OrderController {
     }
 
     @GetMapping("/ready")
-    public ResponseEntity<List<OrderDTO>> getOrderMade() throws Exception {
+    public ResponseEntity<List<OrderDTO>> getOrderMade() {
         List<Order> ordersFound = orderService.findMadeOrders();
         List<OrderDTO> ordersDTO = createDTOList(ordersFound);
 
@@ -137,22 +124,6 @@ public class OrderController {
         List<OrderDTO> ordersDTO = createDTOList(ordersFound);
 
         return new ResponseEntity<>(ordersDTO, HttpStatus.OK);
-    }
-
-    private double countingOrderPrice(OrderDTO theOrder){
-        double price = 0;
-        for(MenuItemDTO tempMenuItem : theOrder.getMenuItems()){
-            price += tempMenuItem.getPrice();
-        }
-        return price;
-    }
-
-    private void setDataForDTO(OrderDTO dto){
-        LocalDateTime localDateTime = LocalDateTime.now();
-        DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter time = DateTimeFormatter.ofPattern("hh:mm");
-        dto.setDate(date.format(localDateTime));
-        dto.setHourOrder(time.format(localDateTime));
     }
 
     private List<OrderDTO> createDTOList(List<Order> orderEntities){

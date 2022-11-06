@@ -2,6 +2,7 @@ package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.CooksQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.DeliveryQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.WaiterQueue;
@@ -45,10 +46,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee save(Employee theEmployee) {
-        employeeRepository.save(theEmployee);
-        addToProperGroup(theEmployee);
-        return theEmployee;
+    public Employee save(EmployeeDTO employeeDTO) {
+        employeeDTO.setId(0L);
+        Employee employee = employeeDTO.convertDTOToEntity();
+        employeeRepository.save(employee);
+        addToProperGroup(employee);
+        return employee;
     }
 
     @Override

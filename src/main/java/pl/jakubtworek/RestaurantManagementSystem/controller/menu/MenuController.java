@@ -44,8 +44,7 @@ public class MenuController {
 
     @PostMapping
     public ResponseEntity<MenuDTO> saveMenu(@RequestBody MenuDTO dto) {
-        dto.setId(0L);
-        Menu menuSaved = menuService.save(dto.convertDTOToEntity());
+        Menu menuSaved = menuService.save(dto);
         MenuDTO menuDTO = menuSaved.convertEntityToDTO();
         addLinkToDTO(menuDTO);
 

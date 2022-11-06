@@ -31,10 +31,7 @@ public class MenuItemController {
 
     @PostMapping
     public ResponseEntity<MenuItemDTO> saveMenuItem(@RequestBody GetMenuItemDTO dto) {
-        dto.setId(0L);
-        MenuItem menuItemSaved = menuItemService.save(dto.convertDTOToEntity());
-        menuItemSaved.setMenu(dto.getMenu().convertDTOToEntity());
-        menuItemSaved.getMenu().add(menuItemSaved);
+        MenuItem menuItemSaved = menuItemService.save(dto);
         MenuItemDTO menuItemDTO = menuItemSaved.convertEntityToDTO();
 
         return new ResponseEntity<>(menuItemDTO, HttpStatus.CREATED);

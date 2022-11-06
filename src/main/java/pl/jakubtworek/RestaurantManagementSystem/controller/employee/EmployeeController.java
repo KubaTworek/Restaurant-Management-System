@@ -48,9 +48,8 @@ public class EmployeeController {
 
     @PostMapping
     public ResponseEntity<EmployeeDTO> saveEmployee(@RequestBody EmployeeDTO dto) {
-        dto.setId(0L);
-        Employee employeeFound = employeeService.save(dto.convertDTOToEntity());
-        EmployeeDTO employeeDTO = employeeFound.convertEntityToDTO();
+        Employee employeeSaved = employeeService.save(dto);
+        EmployeeDTO employeeDTO = employeeSaved.convertEntityToDTO();
         addLinkToDTO(employeeDTO);
 
         return new ResponseEntity<>(employeeDTO, HttpStatus.CREATED);
