@@ -2,8 +2,7 @@ package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.GetMenuDTO;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuRepository;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
@@ -32,7 +31,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public Menu save(MenuDTO menuDTO) {
+    public Menu save(GetMenuDTO menuDTO) {
         menuDTO.setId(0L);
         Menu menu = menuDTO.convertDTOToEntity();
         menuRepository.save(menu);
