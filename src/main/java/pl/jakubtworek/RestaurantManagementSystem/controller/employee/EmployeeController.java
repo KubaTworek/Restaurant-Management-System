@@ -25,7 +25,7 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<List<EmployeeDTO>> getEmployees() {
         List<Employee> employees = employeeService.findAll();
         List<EmployeeDTO> employeesDTO = createDTOList(employees);

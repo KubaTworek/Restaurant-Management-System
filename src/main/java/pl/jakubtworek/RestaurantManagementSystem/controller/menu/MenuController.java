@@ -6,7 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeController;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeDTO;
+import pl.jakubtworek.RestaurantManagementSystem.exception.EmployeeNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.exception.MenuNotFoundException;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.response.Response;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
@@ -14,6 +18,7 @@ import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/menu")
@@ -25,70 +30,60 @@ public class MenuController {
         this.menuService = menuService;
     }
 
-    @GetMapping("")
-    public ResponseEntity<Response<List<MenuDTO>>> getMenus() throws MenuNotFoundException {
-        Response<List<MenuDTO>> response = new Response<>();
+    @GetMapping
+    public ResponseEntity<List<MenuDTO>> getMenus() {
         List<Menu> menus = menuService.findAll();
+        List<MenuDTO> menuDTOS = createDTOList(menus);
 
-        if (menus.isEmpty()) {
-            throw new MenuNotFoundException("There are no menus in restaurant");
-        }
-
-        List<MenuDTO> menuDTOS = new ArrayList<>();
-        menus.forEach(e -> menuDTOS.add(e.convertEntityToDTO()));
-
-        menuDTOS.forEach(dto -> dto.add(WebMvcLinkBuilder.linkTo(MenuController.class).slash(dto.getId()).withSelfRel()));
-
-        response.setData(menuDTOS);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(menuDTOS, HttpStatus.OK);
     }
 
     @GetMapping("/{menuId}")
-    public ResponseEntity<Response<MenuDTO>> getMenuById(@PathVariable Long menuId) throws MenuNotFoundException {
-        Response<MenuDTO> response = new Response<>();
-        Optional<Menu> menu = menuService.findById(menuId);
-
-        if(menu.isPresent()) {
-            Menu menuFound = menu.get();
-            MenuDTO dto = menuFound.convertEntityToDTO();
-
-            dto.add(WebMvcLinkBuilder.linkTo(MenuController.class).slash(dto.getId()).withSelfRel());
-            response.setData(dto);
-
-            return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<MenuDTO> getMenuById(@PathVariable Long menuId) throws MenuNotFoundException {
+        if(menuService.checkIsMenuIsNull(menuId)){
+            throw new MenuNotFoundException("There are no menu in restaurant with that id: " + menuId);
         }
-        throw new MenuNotFoundException("There are no menu in restaurant with that id: " + menuId);
+
+        Menu menuFound = menuService.findById(menuId).get();
+        MenuDTO dto = menuFound.convertEntityToDTO();
+        addLinkToDTO(dto);
+
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    @PostMapping("")
-    public ResponseEntity<Response<MenuDTO>> saveMenu(@RequestBody MenuDTO dto, BindingResult result){
-        Response<MenuDTO> response = new Response<>();
+    @PostMapping
+    public ResponseEntity<MenuDTO> saveMenu(@RequestBody MenuDTO dto) {
 
-        if (result.hasErrors()) {
-            result.getAllErrors().forEach(error -> response.addErrorMsgToResponse(error.getDefaultMessage()));
-            return ResponseEntity.badRequest().body(response);
-        }
-
-        dto.setId(Long.parseLong("0"));
+        dto.setId(0L);
         Menu menu = menuService.save(dto.convertDTOToEntity());
         MenuDTO menuDTO = menu.convertEntityToDTO();
-        dto.add(WebMvcLinkBuilder.linkTo(MenuController.class).slash(dto.getId()).withSelfRel());
-        response.setData(menuDTO);
+        addLinkToDTO(menuDTO);
 
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(menuDTO, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{menuId}")
-    public ResponseEntity<Response<String>> deleteMenu(@PathVariable Long menuId) throws MenuNotFoundException {
-        if(menuService.findById(menuId).isPresent()){
-            menuService.deleteById(menuId);
-
-            Response<String> response = new Response<>();
-
-            response.setData("Deleted menu is - " + menuId);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<String> deleteMenu(@PathVariable Long menuId) throws MenuNotFoundException {
+        if(menuService.checkIsMenuIsNull(menuId)) {
+            throw new MenuNotFoundException("There are menu in restaurant with that id: " + menuId);
         }
-        throw new MenuNotFoundException("Menu id not found - " + menuId);
+        menuService.deleteById(menuId);
+
+        return new ResponseEntity<>("Deleted menu has id: " + menuId, HttpStatus.OK);
+    }
+
+    private List<MenuDTO> createDTOList(List<Menu> menuEntities){
+        List<MenuDTO> menusDTO = menuEntities
+                .stream()
+                .map(Menu::convertEntityToDTO)
+                .collect(Collectors.toList());
+
+        menusDTO.forEach(this::addLinkToDTO);
+
+        return menusDTO;
+    }
+
+    private void addLinkToDTO(MenuDTO dto){
+        dto.add(WebMvcLinkBuilder.linkTo(MenuController.class).slash(dto.getId()).withSelfRel());
     }
 }

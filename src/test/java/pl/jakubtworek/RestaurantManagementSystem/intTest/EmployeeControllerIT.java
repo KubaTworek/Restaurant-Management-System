@@ -62,7 +62,7 @@ public class EmployeeControllerIT {
 
     @Test
     void getEmployees() throws Exception {
-        mockMvc.perform(get("/employees/"))
+        mockMvc.perform(get("/employees"))
                 .andExpect(status().is(200))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(3)));

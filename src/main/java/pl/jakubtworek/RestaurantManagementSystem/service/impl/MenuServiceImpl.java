@@ -43,4 +43,9 @@ public class MenuServiceImpl implements MenuService {
     public Optional<Menu> findByName(String menuName) {
         return menuRepository.findByName(menuName);
     }
+
+    @Override
+    public boolean checkIsMenuIsNull(Long id) {
+        return findById(id).isEmpty();
+    }
 }

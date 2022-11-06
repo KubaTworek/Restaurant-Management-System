@@ -11,4 +11,5 @@ public interface MenuService {
     Menu save(Menu theMenu);
     void deleteById(Long theId);
     Optional<Menu> findByName(String theName);
+    boolean checkIsMenuIsNull(Long id);
 }
