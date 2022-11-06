@@ -59,7 +59,10 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderDTO> saveOrder(@RequestBody OrderDTO dto) {
+    public ResponseEntity<OrderDTO> saveOrder(@RequestBody GetOrderDTO dto) throws TypeOfOrderNotFoundException {
+        if(typeOfOrderService.checkIfTypeOfOrderIsNull(dto.getTypeOfOrder())){
+            throw new TypeOfOrderNotFoundException("There are no that type of order in restaurant with name: " + dto.getTypeOfOrder());
+        }
         Order orderSaved = orderService.save(dto);
         OrderDTO orderDTO = orderSaved.convertEntityToDTO();
         addLinkToDTO(orderDTO);

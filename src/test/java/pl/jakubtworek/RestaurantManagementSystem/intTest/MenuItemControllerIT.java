@@ -85,8 +85,7 @@ public class MenuItemControllerIT {
 
     @Test
     void shouldReturnCreatedMenuItem() throws Exception {
-        MenuDTO menu = new MenuDTO(3L, "Alcohol", null);
-        GetMenuItemDTO menuItem = new GetMenuItemDTO(4L, "Beer", 5.99, menu);
+        GetMenuItemDTO menuItem = new GetMenuItemDTO(4L, "Beer", 5.99, "Drinks");
 
         MvcResult mvcResult = mockMvc.perform(post("/menu-items")
                         .contentType(MediaType.APPLICATION_JSON)

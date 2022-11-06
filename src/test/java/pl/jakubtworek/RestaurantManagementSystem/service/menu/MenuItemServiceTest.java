@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
+import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuItemFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuItemRepository;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuItemService;
@@ -25,12 +26,15 @@ public class MenuItemServiceTest {
     private MenuRepository menuRepository;
     @Mock
     private MenuItemRepository menuItemRepository;
+    @Mock
+    private MenuItemFactory menuItemFactory;
     private MenuItemService menuItemService;
 
     @BeforeEach
     public void setUp() {
         menuRepository = mock(MenuRepository.class);
         menuItemRepository = mock(MenuItemRepository.class);
+        menuItemFactory = mock(MenuItemFactory.class);
 
         menuItemService = new MenuItemServiceImp(
                 menuItemRepository,

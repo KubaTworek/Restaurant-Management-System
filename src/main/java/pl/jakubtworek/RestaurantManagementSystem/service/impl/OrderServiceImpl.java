@@ -3,9 +3,11 @@ package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemDTO;
+import pl.jakubtworek.RestaurantManagementSystem.controller.order.GetOrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
+import pl.jakubtworek.RestaurantManagementSystem.model.factories.OrderFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
@@ -21,12 +23,14 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final OrdersQueue ordersQueue;
+    private final OrderFactory orderFactory;
 
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, OrdersQueue ordersQueue) {
+    public OrderServiceImpl(OrderRepository orderRepository, OrdersQueue ordersQueue, OrderFactory orderFactory) {
         this.orderRepository = orderRepository;
         this.ordersQueue = ordersQueue;
+        this.orderFactory = orderFactory;
     }
 
     @Override
@@ -40,14 +44,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order save(OrderDTO orderDTO) {
-        orderDTO.setId(0L);
-        orderDTO.setPrice(countingOrderPrice(orderDTO));
-        setDataForDTO(orderDTO);
-        Order order = orderDTO.convertDTOToEntity();
-        ordersQueue.add(order);
-        order.setTypeOfOrder(orderDTO.getTypeOfOrder().convertDTOToEntity());
-        order.getTypeOfOrder().add(order);
+    public Order save(GetOrderDTO orderDTO) {
+        Order order = orderFactory.createOrder(orderDTO);
         orderRepository.save(order);
         return order;
     }
@@ -95,19 +93,7 @@ public class OrderServiceImpl implements OrderService {
         return findById(id).isEmpty();
     }
 
-    private double countingOrderPrice(OrderDTO theOrder){
-        double price = 0;
-        for(MenuItemDTO tempMenuItem : theOrder.getMenuItems()){
-            price += tempMenuItem.getPrice();
-        }
-        return price;
-    }
 
-    private void setDataForDTO(OrderDTO dto){
-        LocalDateTime localDateTime = LocalDateTime.now();
-        DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter time = DateTimeFormatter.ofPattern("hh:mm");
-        dto.setDate(date.format(localDateTime));
-        dto.setHourOrder(time.format(localDateTime));
-    }
+
+
 }
