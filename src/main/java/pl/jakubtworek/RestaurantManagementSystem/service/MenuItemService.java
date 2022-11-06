@@ -11,4 +11,6 @@ public interface MenuItemService {
     MenuItem save(MenuItem theMenuItem);
     void deleteById(Long theId);
     List<MenuItem> findByMenu(String menuName);
+    boolean checkIsMenuItemIsNull(Long id);
+
 }

@@ -1,16 +1,21 @@
 package pl.jakubtworek.RestaurantManagementSystem.controller.menu;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.jakubtworek.RestaurantManagementSystem.exception.MenuItemNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.exception.MenuNotFoundException;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.model.response.Response;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuItemService;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/menu-items")
@@ -23,50 +28,35 @@ public class MenuItemController {
     }
 
     @GetMapping("/{menuItemId}")
-    public ResponseEntity<Response<MenuItemDTO>> getMenuItemById(@PathVariable Long menuItemId) throws Exception {
-        Response<MenuItemDTO> response = new Response<>();
-        Optional<MenuItem> menuItem = menuItemService.findById(menuItemId);
-
-        if(menuItem.isPresent()) {
-            MenuItem menuItemFound = menuItem.get();
-            MenuItemDTO dto = menuItemFound.convertEntityToDTO();
-
-            response.setData(dto);
-
-            return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<MenuItemDTO> getMenuItemById(@PathVariable Long menuItemId) throws MenuItemNotFoundException {
+        if(menuItemService.checkIsMenuItemIsNull(menuItemId)){
+            throw new MenuItemNotFoundException("There are no menu item in restaurant with that id: " + menuItemId);
         }
-        throw new MenuNotFoundException("There are no menu item in restaurant with that id: " + menuItemId);
+
+        MenuItem menuItemFound = menuItemService.findById(menuItemId).get();
+        MenuItemDTO dto = menuItemFound.convertEntityToDTO();
+
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    @PostMapping("")
-    public ResponseEntity<Response<MenuItemDTO>> saveMenuItem(@RequestBody GetMenuItemDTO dto, BindingResult result) {
-        Response<MenuItemDTO> response = new Response<>();
-
-        if (result.hasErrors()) {
-            result.getAllErrors().forEach(error -> response.addErrorMsgToResponse(error.getDefaultMessage()));
-            return ResponseEntity.badRequest().body(response);
-        }
-
-        dto.setId(Long.parseLong("0"));
+    @PostMapping
+    public ResponseEntity<MenuItemDTO> saveMenuItem(@RequestBody GetMenuItemDTO dto) {
+        dto.setId(0L);
         MenuItem menuItem = menuItemService.save(dto.convertDTOToEntity());
         menuItem.setMenu(dto.getMenu().convertDTOToEntity());
         menuItem.getMenu().add(menuItem);
         MenuItemDTO menuItemDTO = menuItem.convertEntityToDTO();
-        response.setData(menuItemDTO);
 
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(menuItemDTO, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{menuItemId}")
-    public ResponseEntity<Response<String>> deleteMenuItem(@PathVariable Long menuItemId) throws Exception {
-        if(menuItemService.findById(menuItemId).isPresent()){
-            menuItemService.deleteById(menuItemId);
-
-            Response<String> response = new Response<>();
-
-            response.setData("Deleted menu item is - " + menuItemId);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<String> deleteMenuItem(@PathVariable Long menuItemId) throws MenuItemNotFoundException {
+        if(menuItemService.checkIsMenuItemIsNull(menuItemId)){
+            throw new MenuItemNotFoundException("There are no menu item in restaurant with that id: " + menuItemId);
         }
-        throw new MenuNotFoundException("Menu item id not found - " + menuItemId);
+        menuItemService.deleteById(menuItemId);
+
+        return new ResponseEntity<>("Deleted menu item has id: " + menuItemId, HttpStatus.OK);
     }
 }

@@ -66,6 +66,16 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleException(MenuItemNotFoundException exc){
+        ErrorResponse error = new ErrorResponse();
+
+        error.setStatus(HttpStatus.NOT_FOUND.value());
+        error.setMessage(exc.getMessage());
+
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
 /*    @ExceptionHandler(value = Exception.class)
     public ResponseEntity<ErrorResponse> handleException(HttpServletRequest request, Exception e) {
         ErrorResponse error = new ErrorResponse();

@@ -50,4 +50,9 @@ public class MenuItemServiceImp implements MenuItemService {
         }
         return Collections.emptyList();
     }
+
+    @Override
+    public boolean checkIsMenuItemIsNull(Long id) {
+        return findById(id).isEmpty();
+    }
 }
