@@ -118,7 +118,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.EmployeeFactoryTest">
+  <component name="RunManager" selected="JUnit.MenuFactoryTest">
     <configuration name="EmployeeControllerIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Restaurant-Management-System" />
       <extension name="coverage">
@@ -165,18 +165,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="EmployeeServiceTest.shouldReturnCreatedEmployee" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="MenuFactoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Restaurant-Management-System" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.service.employee.*" />
+          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.model.factories.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.employee" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.service.employee.EmployeeServiceTest" />
-      <option name="METHOD_NAME" value="shouldReturnCreatedEmployee" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.model.factories" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuFactoryTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -197,11 +196,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.MenuFactoryTest" />
         <item itemvalue="JUnit.EmployeeFactoryTest" />
         <item itemvalue="JUnit.EmployeeFactoryTest.shouldReturnCook_whenProvideCook" />
         <item itemvalue="JUnit.pl.jakubtworek.RestaurantManagementSystem.intTest in Restaurant-Management-System" />
         <item itemvalue="JUnit.EmployeeControllerIT" />
-        <item itemvalue="JUnit.EmployeeServiceTest.shouldReturnCreatedEmployee" />
       </list>
     </recent_temporary>
   </component>
