@@ -22,14 +22,12 @@ import java.util.Optional;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final OrdersQueue ordersQueue;
     private final OrderFactory orderFactory;
 
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, OrdersQueue ordersQueue, OrderFactory orderFactory) {
+    public OrderServiceImpl(OrderRepository orderRepository, OrderFactory orderFactory) {
         this.orderRepository = orderRepository;
-        this.ordersQueue = ordersQueue;
         this.orderFactory = orderFactory;
     }
 

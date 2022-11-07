@@ -25,18 +25,15 @@ public class OrderServiceTest {
     @Mock
     private OrderRepository orderRepository;
     @Mock
-    private OrdersQueue ordersQueue;
-    @Mock
     private OrderFactory orderFactory;
     private OrderService orderService;
 
     @BeforeEach
     public void setUp() {
         orderRepository = mock(OrderRepository.class);
-        ordersQueue = mock(OrdersQueue.class);
         orderFactory = mock(OrderFactory.class);
 
-        orderService = new OrderServiceImpl(orderRepository, ordersQueue, orderFactory);
+        orderService = new OrderServiceImpl(orderRepository, orderFactory);
     }
 
     @Test

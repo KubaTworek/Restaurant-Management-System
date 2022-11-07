@@ -34,9 +34,6 @@ public class EmployeeE2E {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Sql("sql.script.create.job")
-    private
-
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnAllEmployees() throws Exception {
