@@ -19,14 +19,6 @@ public class GetOrderDTO extends RepresentationModel<GetOrderDTO> {
 
     private Long id;
 
-    private double price;
-
-    private String date;
-
-    private String hourOrder;
-
-    private String hourAway;
-
     @NotNull(message = "Type of order cannot be null.")
     private String typeOfOrder;
 
