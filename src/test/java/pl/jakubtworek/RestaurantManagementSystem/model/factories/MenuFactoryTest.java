@@ -6,6 +6,7 @@ import pl.jakubtworek.RestaurantManagementSystem.controller.menu.GetMenuDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 public class MenuFactoryTest {
@@ -26,5 +27,6 @@ public class MenuFactoryTest {
 
         // then
         assertEquals("Food", menu.getName());
+        assertNull(menu.getMenuItems());
     }
 }
