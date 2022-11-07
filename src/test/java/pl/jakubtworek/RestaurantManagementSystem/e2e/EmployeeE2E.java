@@ -1,24 +1,17 @@
-package pl.jakubtworek.RestaurantManagementSystem.intTest;
+package pl.jakubtworek.RestaurantManagementSystem.e2e;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import pl.jakubtworek.RestaurantManagementSystem.RestaurantManagementSystemApplication;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeController;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.GetEmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
@@ -35,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @Sql(scripts = "/schema.sql")
-public class EmployeeControllerIT {
+public class EmployeeE2E {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
