@@ -10,10 +10,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.GetMenuDTO;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuDTO;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
 
@@ -31,25 +33,9 @@ public class MenuControllerIT {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
-    @Autowired
-    private JdbcTemplate jdbc;
-
-    @Value("${sql.script.create.menus}")
-    private String sqlAddMenus;
-    @Value("${sql.script.delete.menus}")
-    private String sqlDeleteMenus;
-
-    @BeforeEach
-    void setup() {
-        jdbc.execute(sqlAddMenus);
-    }
-
-    @AfterEach
-    void delete() {
-        jdbc.execute(sqlDeleteMenus);
-    }
 
     @Test
+    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnAllMenu() throws Exception {
         mockMvc.perform(get("/menu"))
                 .andExpect(status().is(200))
@@ -58,6 +44,7 @@ public class MenuControllerIT {
     }
 
     @Test
+    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnMenuById() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get("/menu/1"))
                 .andExpect(status().is(200))
@@ -70,6 +57,7 @@ public class MenuControllerIT {
     }
 
     @Test
+    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnErrorResponse_whenAskedForNonExistingMenu() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get("/menu/3"))
                 .andExpect(status().isNotFound())
@@ -83,7 +71,7 @@ public class MenuControllerIT {
 
     @Test
     void shouldReturnCreatedMenu() throws Exception {
-        MenuDTO menu = new MenuDTO(3L, "Alcohol", null);
+        GetMenuDTO menu = new GetMenuDTO(0L, "Alcohol");
 
         MvcResult mvcResult = mockMvc.perform(post("/menu")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -97,6 +85,7 @@ public class MenuControllerIT {
     }
 
     @Test
+    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnResponseConfirmingDeletedMenu() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/menu/2"))
                 .andExpect(status().isOk())

@@ -11,13 +11,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import pl.jakubtworek.RestaurantManagementSystem.RestaurantManagementSystemApplication;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeController;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.GetEmployeeDTO;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.JobDTO;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
 
 import java.util.List;
@@ -31,37 +34,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
+@Sql(scripts = "/schema.sql")
 public class EmployeeControllerIT {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
-    @Autowired
-    private JdbcTemplate jdbc;
 
-    @Value("${sql.script.create.employees}")
-    private String sqlAddEmployees;
-    @Value("${sql.script.create.jobs}")
-    private String sqlAddJobs;
-
-    @Value("${sql.script.delete.employees}")
-    private String sqlDeleteEmployees;
-    @Value("${sql.script.delete.jobs}")
-    private String sqlDeleteJobs;
-
-    @BeforeEach
-    void setup() {
-        jdbc.execute(sqlAddJobs);
-        jdbc.execute(sqlAddEmployees);
-    }
-
-    @AfterEach
-    void delete() {
-        jdbc.execute(sqlDeleteEmployees);
-        jdbc.execute(sqlDeleteJobs);
-    }
+    @Sql("sql.script.create.job")
+    private
 
     @Test
+    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnAllEmployees() throws Exception {
         mockMvc.perform(get("/employees"))
                 .andExpect(status().is(200))
@@ -70,6 +54,7 @@ public class EmployeeControllerIT {
     }
 
     @Test
+    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnEmployeeById() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get("/employees/id/1"))
                 .andExpect(status().is(200))
@@ -85,6 +70,7 @@ public class EmployeeControllerIT {
     }
 
     @Test
+    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnErrorResponse_whenAskedForNonExistingEmployee() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get("/employees/id/4"))
                 .andExpect(status().isNotFound())
@@ -97,6 +83,7 @@ public class EmployeeControllerIT {
     }
 
     @Test
+    @Sql(statements = "INSERT INTO `job` VALUES (1,'Cook'), (2,'Waiter'), (3,'DeliveryMan')")
     void shouldReturnCreatedEmployee() throws Exception {
         GetEmployeeDTO employee = new GetEmployeeDTO(4L, "James", "Smith", "Cook");
 
@@ -116,6 +103,7 @@ public class EmployeeControllerIT {
     }
 
     @Test
+    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnResponseConfirmingDeletedEmployee() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/employees/1"))
                 .andExpect(status().isOk())
@@ -126,8 +114,9 @@ public class EmployeeControllerIT {
     }
 
     @Test
+    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnEmployees_whenJobNameIsPassed() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/employees/job/cook")
+        MvcResult mvcResult = mockMvc.perform(get("/employees/job/Cook")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -143,6 +132,7 @@ public class EmployeeControllerIT {
     }
 
     @Test
+    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnResponse_whenWrongJobNameIsPassed() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get("/employees/job/something")
                         .contentType(MediaType.APPLICATION_JSON))

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.GetEmployeeDTO;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.GetMenuItemDTO;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemDTO;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.GetOrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.CooksQueue;
@@ -58,8 +59,8 @@ public class OrderFactoryTest {
     @Test
     public void shouldReturnOnsiteOrder(){
         // given
-        MenuItemDTO menuItem1 = new MenuItemDTO(1L, "Apple", 2.99);
-        MenuItemDTO menuItem2 = new MenuItemDTO(2L, "Coke", 1.99);
+        GetMenuItemDTO menuItem1 = new GetMenuItemDTO(1L, "Apple", 2.99, "Food");
+        GetMenuItemDTO menuItem2 = new GetMenuItemDTO(2L, "Coke", 1.99, "Drinks");
         GetOrderDTO orderDTO = new GetOrderDTO(1L, "On-site", List.of(menuItem1, menuItem2));
 
         // when
@@ -77,7 +78,7 @@ public class OrderFactoryTest {
     @Test
     public void shouldReturnDeliveryOrder(){
         // given
-        MenuItemDTO menuItem = new MenuItemDTO(1L, "Meat", 10.99);
+        GetMenuItemDTO menuItem = new GetMenuItemDTO(1L, "Meat", 10.99, "Food");
         GetOrderDTO orderDTO = new GetOrderDTO(1L, "Delivery", List.of(menuItem));
 
         // when
