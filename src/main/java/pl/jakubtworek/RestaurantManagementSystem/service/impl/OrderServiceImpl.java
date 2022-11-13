@@ -2,7 +2,7 @@ package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.jakubtworek.RestaurantManagementSystem.controller.order.GetOrderDTO;
+import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.OrderFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
@@ -37,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order save(GetOrderDTO orderDTO) {
+    public Order save(OrderRequest orderDTO) {
         Order order = orderFactory.createOrder(orderDTO);
         orderRepository.save(order);
         return order;

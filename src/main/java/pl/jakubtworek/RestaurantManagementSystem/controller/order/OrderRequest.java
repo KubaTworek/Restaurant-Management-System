@@ -2,7 +2,6 @@ package pl.jakubtworek.RestaurantManagementSystem.controller.order;
 
 import lombok.*;
 import org.modelmapper.ModelMapper;
-import org.springframework.hateoas.RepresentationModel;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 
@@ -14,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class GetOrderDTO extends RepresentationModel<GetOrderDTO> {
+public class OrderRequest {
 
     private Long id;
 
@@ -24,7 +23,7 @@ public class GetOrderDTO extends RepresentationModel<GetOrderDTO> {
     @NotNull(message = "Menu items cannot be null.")
     private List<MenuItemRequest> menuItems;
 
-    public Order convertDTOToEntity() {
+    public Order convertRequestToEntity() {
         return new ModelMapper().map(this, Order.class);
     }
 }

@@ -32,7 +32,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuItemUtils.createMenuItem;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuItemUtils.createChickenMenuItem;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.createMenu;
 
 @SpringBootTest
@@ -82,7 +82,7 @@ public class MenuItemControllerIT {
     @Test
     void shouldReturnMenuItemById() throws Exception {
         // given
-        Optional<MenuItem> expectedMenuItem = createMenuItem();
+        Optional<MenuItem> expectedMenuItem = createChickenMenuItem();
 
         // when
         when(menuItemRepository.findById(eq(1L))).thenReturn(expectedMenuItem);
@@ -136,7 +136,7 @@ public class MenuItemControllerIT {
     @Test
     void shouldReturnResponseConfirmingDeletedMenu() throws Exception {
         // given
-        Optional<MenuItem> expectedMenuItem = createMenuItem();
+        Optional<MenuItem> expectedMenuItem = createChickenMenuItem();
 
         // when
         when(menuItemRepository.findById(eq(1L))).thenReturn(expectedMenuItem);

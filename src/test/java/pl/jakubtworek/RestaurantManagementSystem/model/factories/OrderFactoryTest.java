@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemResponse;
-import pl.jakubtworek.RestaurantManagementSystem.controller.order.GetOrderDTO;
+import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
@@ -54,7 +54,7 @@ public class OrderFactoryTest {
         // given
         MenuItemRequest menuItem1 = new MenuItemRequest(1L, "Apple", 2.99, "Food");
         MenuItemRequest menuItem2 = new MenuItemRequest(2L, "Coke", 1.99, "Drinks");
-        GetOrderDTO orderDTO = new GetOrderDTO(1L, "On-site", List.of(menuItem1, menuItem2));
+        OrderRequest orderDTO = new OrderRequest(1L, "On-site", List.of(menuItem1, menuItem2));
 
         // when
         Order order = orderFactory.createOrder(orderDTO);
@@ -72,7 +72,7 @@ public class OrderFactoryTest {
     public void shouldReturnDeliveryOrder(){
         // given
         MenuItemRequest menuItem = new MenuItemRequest(1L, "Meat", 10.99, "Food");
-        GetOrderDTO orderDTO = new GetOrderDTO(1L, "Delivery", List.of(menuItem));
+        OrderRequest orderDTO = new OrderRequest(1L, "Delivery", List.of(menuItem));
 
         // when
         Order order = orderFactory.createOrder(orderDTO);

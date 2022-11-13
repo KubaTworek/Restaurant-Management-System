@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class OrderDTO extends RepresentationModel<OrderDTO> {
+public class OrderResponse extends RepresentationModel<OrderResponse> {
 
     private Long id;
 
@@ -28,14 +28,10 @@ public class OrderDTO extends RepresentationModel<OrderDTO> {
     private String hourAway;
 
     @NotNull(message = "Type of order cannot be null.")
-    private TypeOfOrderDTO typeOfOrder;
+    private TypeOfOrderResponse typeOfOrder;
 
     @NotNull(message = "Menu items cannot be null.")
     private List<MenuItemResponse> menuItems;
 
     private List<EmployeeResponse> employees;
-
-    public Order convertDTOToEntity() {
-        return new ModelMapper().map(this, Order.class);
-    }
 }

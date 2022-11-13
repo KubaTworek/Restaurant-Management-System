@@ -5,25 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6804a3ab-3eba-4f33-a440-5fed16101a6e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/utils/MenuItemUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/utils/OrderUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/menu/GetMenuItemDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/menu/MenuItemRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/menu/MenuItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/menu/MenuItemController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/menu/MenuItemDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/menu/MenuItemResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/menu/MenuResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/menu/MenuResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/order/GetOrderDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/order/GetOrderDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/order/OrderDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/order/OrderDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/model/entity/MenuItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/model/entity/MenuItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/model/factories/MenuItemFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/model/factories/MenuItemFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/order/GetOrderDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/order/OrderRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/order/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/order/OrderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/order/OrderDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/order/OrderResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/order/TypeOfOrderDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/order/TypeOfOrderResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/model/entity/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/model/entity/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/model/entity/TypeOfOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/model/entity/TypeOfOrder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/model/factories/OrderFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/model/factories/OrderFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/service/MenuItemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/service/MenuItemService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/service/impl/MenuItemServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/service/impl/MenuItemServiceImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/service/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/service/OrderService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/service/impl/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/service/impl/OrderServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/controller/menu/MenuItemControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/controller/menu/MenuItemControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/e2e/MenuItemE2E.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/e2e/MenuItemE2ETest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/controller/order/OrderControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/controller/order/OrderControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/e2e/OrderE2E.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/e2e/OrderE2ETest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/controller/MenuItemControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/controller/MenuItemControllerIT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/model/factories/MenuItemFactoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/model/factories/MenuItemFactoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/controller/OrderControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/controller/OrderControllerIT.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/model/factories/OrderFactoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/model/factories/OrderFactoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/utils/MenuItemUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/utils/MenuItemUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/inserting-data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/inserting-data.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,23 +137,8 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.MenuItemControllerTest">
-    <configuration name="MenuControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Restaurant-Management-System" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.controller.menu.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.controller.menu" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuControllerTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MenuItemControllerIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.OrderControllerTest">
+    <configuration name="OrderControllerIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Restaurant-Management-System" />
       <extension name="coverage">
         <pattern>
@@ -162,44 +147,44 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller.MenuItemControllerIT" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller.OrderControllerIT" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MenuItemControllerIT.shouldReturnMenuItemById" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="OrderControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Restaurant-Management-System" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller.*" />
+          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.controller.order.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller.MenuItemControllerIT" />
-      <option name="METHOD_NAME" value="shouldReturnMenuItemById" />
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.controller.order" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrderControllerTest.shouldReturnOrders_whenEmployeeIsPassed" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Restaurant-Management-System" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.controller.order.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.controller.order" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderControllerTest" />
+      <option name="METHOD_NAME" value="shouldReturnOrders_whenEmployeeIsPassed" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MenuItemControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Restaurant-Management-System" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.controller.menu.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.controller.menu" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemControllerTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MenuItemE2ETest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="OrderE2ETest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Restaurant-Management-System" />
       <extension name="coverage">
         <pattern>
@@ -208,8 +193,24 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.e2e" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.e2e.MenuItemE2ETest" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.e2e.OrderE2ETest" />
       <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrderE2ETest.shouldReturnAllOrders" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Restaurant-Management-System" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.e2e.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.e2e" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.e2e.OrderE2ETest" />
+      <option name="METHOD_NAME" value="shouldReturnAllOrders" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -223,11 +224,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.MenuItemControllerTest" />
-        <item itemvalue="JUnit.MenuItemControllerIT" />
-        <item itemvalue="JUnit.MenuItemE2ETest" />
-        <item itemvalue="JUnit.MenuItemControllerIT.shouldReturnMenuItemById" />
-        <item itemvalue="JUnit.MenuControllerTest" />
+        <item itemvalue="JUnit.OrderControllerTest" />
+        <item itemvalue="JUnit.OrderControllerIT" />
+        <item itemvalue="JUnit.OrderControllerTest.shouldReturnOrders_whenEmployeeIsPassed" />
+        <item itemvalue="JUnit.OrderE2ETest" />
+        <item itemvalue="JUnit.OrderE2ETest.shouldReturnAllOrders" />
       </list>
     </recent_temporary>
   </component>
@@ -249,7 +250,7 @@
       <workItem from="1667746499347" duration="33155000" />
       <workItem from="1667841282781" duration="10174000" />
       <workItem from="1667866916870" duration="3271000" />
-      <workItem from="1668306694835" duration="17220000" />
+      <workItem from="1668306694835" duration="24814000" />
     </task>
     <servers />
   </component>
