@@ -6,12 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeController;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeDTO;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemDTO;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeResponse;
 import pl.jakubtworek.RestaurantManagementSystem.exception.EmployeeNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.exception.OrderNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.exception.TypeOfOrderNotFoundException;
-import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
@@ -19,8 +17,6 @@ import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 import pl.jakubtworek.RestaurantManagementSystem.service.TypeOfOrderService;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -142,7 +138,7 @@ public class OrderController {
 
     private void addLinkToDTO(OrderDTO dto){
         dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash(dto.getId()).withSelfRel());
-        for(EmployeeDTO e: dto.getEmployees()){
+        for(EmployeeResponse e: dto.getEmployees()){
             e.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash(e.getId()).withSelfRel());
         }
     }

@@ -3,9 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.controller.order;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.RepresentationModel;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.GetMenuItemDTO;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 
 import javax.validation.constraints.NotNull;

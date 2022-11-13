@@ -26,33 +26,33 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<EmployeeDTO>> getEmployees() {
+    public ResponseEntity<List<EmployeeResponse>> getEmployees() {
         List<Employee> employeesFound = employeeService.findAll();
-        List<EmployeeDTO> employeesDTO = createDTOList(employeesFound);
+        List<EmployeeResponse> employeesResponse = createResponseList(employeesFound);
 
-        return new ResponseEntity<>(employeesDTO, HttpStatus.OK);
+        return new ResponseEntity<>(employeesResponse, HttpStatus.OK);
     }
 
     @GetMapping("/id")
-    public ResponseEntity<EmployeeDTO> getEmployeeById(@RequestParam Long id) throws EmployeeNotFoundException {
+    public ResponseEntity<EmployeeResponse> getEmployeeById(@RequestParam Long id) throws EmployeeNotFoundException {
         if(employeeService.checkIfEmployeeIsNull(id)) {
             throw new EmployeeNotFoundException("There are no employees in restaurant with that id: " + id);
         }
 
         Employee employeeFound = employeeService.findById(id).get();
-        EmployeeDTO dto = employeeFound.convertEntityToDTO();
-        addLinkToDTO(dto);
+        EmployeeResponse response = employeeFound.convertEntityToResponse();
+        addLinkToResponse(response);
 
-        return new ResponseEntity<>(dto,HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeDTO> saveEmployee(@RequestBody GetEmployeeDTO dto) {
+    public ResponseEntity<EmployeeResponse> saveEmployee(@RequestBody EmployeeRequest dto) {
         Employee employeeSaved = employeeService.save(dto);
-        EmployeeDTO employeeDTO = employeeSaved.convertEntityToDTO();
-        addLinkToDTO(employeeDTO);
+        EmployeeResponse response = employeeSaved.convertEntityToResponse();
+        addLinkToResponse(response);
 
-        return new ResponseEntity<>(employeeDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/id")
@@ -66,28 +66,28 @@ public class EmployeeController {
     }
 
     @GetMapping("/job")
-    public ResponseEntity<List<EmployeeDTO>> getEmployeeByJobName(@RequestParam String job) throws JobNotFoundException {
+    public ResponseEntity<List<EmployeeResponse>> getEmployeeByJobName(@RequestParam String job) throws JobNotFoundException {
         if(employeeService.checkIfJobIsNull(job)) {
             throw new JobNotFoundException("There are no job like that in restaurant with that name: " + job);
         }
         List<Employee> employeesFound = employeeService.findByJob(job);
-        List<EmployeeDTO> employeesDTO = createDTOList(employeesFound);
+        List<EmployeeResponse> employeesResponse = createResponseList(employeesFound);
 
-        return new ResponseEntity<>(employeesDTO, HttpStatus.OK);
+        return new ResponseEntity<>(employeesResponse, HttpStatus.OK);
     }
 
-    private List<EmployeeDTO> createDTOList(List<Employee> employeesEntity){
-        List<EmployeeDTO> employeesDTO = employeesEntity
+    private List<EmployeeResponse> createResponseList(List<Employee> employeesEntity){
+        List<EmployeeResponse> employeesResponse = employeesEntity
                 .stream()
-                .map(Employee::convertEntityToDTO)
+                .map(Employee::convertEntityToResponse)
                 .collect(Collectors.toList());
 
-        employeesDTO.forEach(this::addLinkToDTO);
+        employeesResponse.forEach(this::addLinkToResponse);
 
-        return employeesDTO;
+        return employeesResponse;
     }
 
-    private void addLinkToDTO(EmployeeDTO dto){
+    private void addLinkToResponse(EmployeeResponse dto){
         dto.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash(dto.getId()).withSelfRel());
     }
 }

@@ -11,14 +11,14 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeDTO;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.GetEmployeeDTO;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeResponse;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @Sql(scripts = "/schema.sql")
-public class EmployeeE2E {
+public class EmployeeEndToEnd {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -35,107 +35,126 @@ public class EmployeeE2E {
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnAllEmployees() throws Exception {
-        mockMvc.perform(get("/employees"))
-                .andExpect(status().is(200))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", hasSize(3)));
+        // when
+        MvcResult mvcResult = mockMvc.perform(get("/employees")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andReturn();
+        List<EmployeeResponse> employeesReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
+        });
+
+        // then
+        assertEquals("John", employeesReturned.get(0).getFirstName());
+        assertEquals("Smith", employeesReturned.get(0).getLastName());
+        assertEquals("Cook", employeesReturned.get(0).getJob().getName());
+
+        assertEquals("James", employeesReturned.get(1).getFirstName());
+        assertEquals("Patel", employeesReturned.get(1).getLastName());
+        assertEquals("Waiter", employeesReturned.get(1).getJob().getName());
+
+        assertEquals("Ann", employeesReturned.get(2).getFirstName());
+        assertEquals("Mary", employeesReturned.get(2).getLastName());
+        assertEquals("DeliveryMan", employeesReturned.get(2).getJob().getName());
     }
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnEmployeeById() throws Exception {
+        // when
         MvcResult mvcResult = mockMvc.perform(get("/employees/id")
                         .param("id", String.valueOf(1L)))
                 .andExpect(status().is(200))
                 .andReturn();
-        EmployeeDTO employee = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EmployeeDTO.class);
+        EmployeeResponse employeeReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EmployeeResponse.class);
 
-        assertThat(employee).isNotNull();
-        assertThat(employee.getId()).isNotNull();
-        assertThat(employee.getFirstName()).isEqualTo("John");
-        assertThat(employee.getLastName()).isEqualTo("Smith");
-        assertThat(employee.getJob().getId()).isNotNull();
-        assertThat(employee.getJob().getName()).isEqualTo("Cook");
+        // then
+        assertEquals("John", employeeReturned.getFirstName());
+        assertEquals("Smith", employeeReturned.getLastName());
+        assertEquals("Cook", employeeReturned.getJob().getName());
     }
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnErrorResponse_whenAskedForNonExistingEmployee() throws Exception {
+        // when
         MvcResult mvcResult = mockMvc.perform(get("/employees/id")
                         .param("id", String.valueOf(4L)))
                 .andExpect(status().isNotFound())
                 .andReturn();
         ErrorResponse response = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
 
-        assertThat(response).isNotNull();
-        assertThat(response.getStatus()).isEqualTo(404);
-        assertThat(response.getMessage()).isEqualTo("There are no employees in restaurant with that id: 4");
+        // then
+        assertEquals(404, response.getStatus());
+        assertEquals("There are no employees in restaurant with that id: 4", response.getMessage());
     }
 
     @Test
     @Sql(statements = "INSERT INTO `job` VALUES (1,'Cook'), (2,'Waiter'), (3,'DeliveryMan')")
     void shouldReturnCreatedEmployee() throws Exception {
-        GetEmployeeDTO employee = new GetEmployeeDTO(4L, "James", "Smith", "Cook");
+        // given
+        EmployeeRequest employee = new EmployeeRequest(0L, "James", "Morgan", "Cook");
 
+        // when
         MvcResult mvcResult = mockMvc.perform(post("/employees")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(employee)))
                 .andExpect(status().isCreated())
                 .andReturn();
-        EmployeeDTO employeeReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EmployeeDTO.class);
+        EmployeeResponse employeeReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EmployeeResponse.class);
 
-        assertThat(employeeReturned).isNotNull();
-        assertThat(employeeReturned.getId()).isNotNull();
-        assertThat(employeeReturned.getFirstName()).isEqualTo("James");
-        assertThat(employeeReturned.getLastName()).isEqualTo("Smith");
-        assertThat(employeeReturned.getJob().getId()).isNotNull();
-        assertThat(employeeReturned.getJob().getName()).isEqualTo("Cook");
+        // when
+        assertEquals("James", employeeReturned.getFirstName());
+        assertEquals("Morgan", employeeReturned.getLastName());
+        assertEquals("Cook", employeeReturned.getJob().getName());
     }
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnResponseConfirmingDeletedEmployee() throws Exception {
+        // when
         MvcResult mvcResult = mockMvc.perform(delete("/employees/id")
                         .param("id", String.valueOf(1L)))
                 .andExpect(status().isOk())
                 .andReturn();
         String response = mvcResult.getResponse().getContentAsString();
 
-        assertThat(response).isEqualTo("Deleted employee has id: 1");
+        // then
+        assertEquals("Deleted employee has id: 1", response);
     }
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnEmployees_whenJobNameIsPassed() throws Exception {
+        // when
         MvcResult mvcResult = mockMvc.perform(get("/employees/job")
                         .param("job", "Cook")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andReturn();
-        List<EmployeeDTO> employeesReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<EmployeeDTO>>(){});
+        List<EmployeeResponse> employeesReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
+        });
 
-        assertThat(employeesReturned).isNotNull();
-        assertThat(employeesReturned.get(0)).isNotNull();
-        assertThat(employeesReturned.get(0).getFirstName()).isEqualTo("John");
-        assertThat(employeesReturned.get(0).getLastName()).isEqualTo("Smith");
-        assertThat(employeesReturned.get(0).getJob().getId()).isNotNull();
-        assertThat(employeesReturned.get(0).getJob().getName()).isEqualTo("Cook");
+        // then
+        assertEquals("John", employeesReturned.get(0).getFirstName());
+        assertEquals("Smith", employeesReturned.get(0).getLastName());
+        assertEquals("Cook", employeesReturned.get(0).getJob().getName());
     }
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnResponse_whenWrongJobNameIsPassed() throws Exception {
+        // when
         MvcResult mvcResult = mockMvc.perform(get("/employees/job")
                         .param("job", "something")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andReturn();
-
         ErrorResponse response = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
 
-        assertThat(response).isNotNull();
-        assertThat(response.getStatus()).isEqualTo(404);
-        assertThat(response.getMessage()).isEqualTo("There are no job like that in restaurant with that name: something");
+        // then
+        assertEquals(404, response.getStatus());
+        assertEquals("There are no job like that in restaurant with that name: something", response.getMessage());
     }
 }

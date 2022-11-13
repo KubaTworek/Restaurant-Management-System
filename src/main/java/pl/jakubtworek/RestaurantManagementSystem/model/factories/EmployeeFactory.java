@@ -1,7 +1,7 @@
 package pl.jakubtworek.RestaurantManagementSystem.model.factories;
 
 import org.springframework.stereotype.Component;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.GetEmployeeDTO;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.CooksQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.DeliveryQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.WaiterQueue;
@@ -22,7 +22,7 @@ public class EmployeeFactory {
         this.deliveryQueue = deliveryQueue;
     }
 
-    public Employee createEmployee(GetEmployeeDTO employeeDTO) {
+    public Employee createEmployee(EmployeeRequest employeeDTO) {
         String jobName = employeeDTO.getJob();
         switch(jobName){
             case "Cook":
@@ -36,7 +36,7 @@ public class EmployeeFactory {
         }
     }
 
-    private Employee createCook(GetEmployeeDTO employeeDTO){
+    private Employee createCook(EmployeeRequest employeeDTO){
         Employee employee = new Employee();
         employee.setId(0L);
         employee.setFirstName(employeeDTO.getFirstName());
@@ -46,7 +46,7 @@ public class EmployeeFactory {
         return employee;
     }
 
-    private Employee createWaiter(GetEmployeeDTO employeeDTO){
+    private Employee createWaiter(EmployeeRequest employeeDTO){
         Employee employee = new Employee();
         employee.setId(0L);
         employee.setFirstName(employeeDTO.getFirstName());
@@ -56,7 +56,7 @@ public class EmployeeFactory {
         return employee;
     }
 
-    private Employee createDeliveryMan(GetEmployeeDTO employeeDTO){
+    private Employee createDeliveryMan(EmployeeRequest employeeDTO){
         Employee employee = new Employee();
         employee.setId(0L);
         employee.setFirstName(employeeDTO.getFirstName());

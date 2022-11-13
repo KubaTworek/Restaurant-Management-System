@@ -1,18 +1,15 @@
 package pl.jakubtworek.RestaurantManagementSystem.model.factories;
 
-import org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.GetEmployeeDTO;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.CooksQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.DeliveryQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.WaiterQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
-import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
 import pl.jakubtworek.RestaurantManagementSystem.repository.JobRepository;
-import pl.jakubtworek.RestaurantManagementSystem.service.impl.EmployeeServiceImpl;
 
 import java.util.Optional;
 
@@ -58,7 +55,7 @@ public class EmployeeFactoryTest {
     @Test
     public void shouldReturnCook_whenProvideCook(){
         // given
-        GetEmployeeDTO employeeDTO = new GetEmployeeDTO(1L, "John", "Smith", "Cook");
+        EmployeeRequest employeeDTO = new EmployeeRequest(1L, "John", "Smith", "Cook");
 
         // when
         Employee employee = employeeFactory.createEmployee(employeeDTO);
@@ -72,7 +69,7 @@ public class EmployeeFactoryTest {
     @Test
     public void shouldReturnWaiter_whenProvideWaiter(){
         // given
-        GetEmployeeDTO employeeDTO = new GetEmployeeDTO(1L, "John", "Smith", "Waiter");
+        EmployeeRequest employeeDTO = new EmployeeRequest(1L, "John", "Smith", "Waiter");
 
         // when
         Employee employee = employeeFactory.createEmployee(employeeDTO);
@@ -86,7 +83,7 @@ public class EmployeeFactoryTest {
     @Test
     public void shouldReturnDeliveryman_whenProvideDeliveryman(){
         // given
-        GetEmployeeDTO employeeDTO = new GetEmployeeDTO(1L, "John", "Smith", "DeliveryMan");
+        EmployeeRequest employeeDTO = new EmployeeRequest(1L, "John", "Smith", "DeliveryMan");
 
         // when
         Employee employee = employeeFactory.createEmployee(employeeDTO);
@@ -100,7 +97,7 @@ public class EmployeeFactoryTest {
     @Test
     public void shouldReturnNull_whenProvideWrongJob(){
         // given
-        GetEmployeeDTO employeeDTO = new GetEmployeeDTO(1L, "John", "Smith", "Wrong");
+        EmployeeRequest employeeDTO = new EmployeeRequest(1L, "John", "Smith", "Wrong");
 
         // when
         Employee employee = employeeFactory.createEmployee(employeeDTO);

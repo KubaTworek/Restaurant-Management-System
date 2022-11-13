@@ -13,7 +13,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 
 import java.util.List;
@@ -21,15 +20,16 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 public class EmployeeControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -47,48 +47,72 @@ public class EmployeeControllerTest {
         employeeController = new EmployeeController(
                 employeeService
         );
-        when(employeeService.findAll()).thenReturn(List.of(spy(new Employee(1L, "John", "Smith", new Job(1L,"Cook",List.of()), List.of()))));
-        when(employeeService.findById(eq(1L))).thenReturn(Optional.of(spy(new Employee(1L, "John", "Smith", new Job(1L,"Cook",List.of()), List.of()))));
-        when(employeeService.checkIfEmployeeIsNull(eq(4L))).thenReturn(true);
-        when(employeeService.checkIfJobIsNull(eq("something"))).thenReturn(true);
-        when(employeeService.findByJob(eq("Cook"))).thenReturn(List.of(spy(new Employee(1L, "John", "Smith", new Job(1L,"Cook",List.of()), List.of()))));
     }
 
     @Test
     void shouldReturnAllEmployees() throws Exception {
-        mockMvc.perform(get("/employees"))
-                .andExpect(status().is(200))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", hasSize(1)));
+        // given
+        List<Employee> expectedEmployees = createEmployees();
+
+        // when
+        when(employeeService.findAll()).thenReturn(expectedEmployees);
+
+        MvcResult mvcResult = mockMvc.perform(get("/employees")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andReturn();
+        List<EmployeeResponse> employeesReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
+        });
+
+        // then
+        assertEquals("John", employeesReturned.get(0).getFirstName());
+        assertEquals("Smith", employeesReturned.get(0).getLastName());
+        assertEquals("Cook", employeesReturned.get(0).getJob().getName());
+
+        assertEquals("James", employeesReturned.get(1).getFirstName());
+        assertEquals("Patel", employeesReturned.get(1).getLastName());
+        assertEquals("Waiter", employeesReturned.get(1).getJob().getName());
+
+        assertEquals("Ann", employeesReturned.get(2).getFirstName());
+        assertEquals("Mary", employeesReturned.get(2).getLastName());
+        assertEquals("DeliveryMan", employeesReturned.get(2).getJob().getName());
     }
 
     @Test
     void shouldReturnEmployeeById() throws Exception {
+        // given
+        Optional<Employee> expectedEmployee = createEmployee();
+
+        // when
+        when(employeeService.findById(eq(1L))).thenReturn(expectedEmployee);
+
         MvcResult mvcResult = mockMvc.perform(get("/employees/id")
                         .param("id", String.valueOf(1L)))
                 .andExpect(status().is(200))
                 .andReturn();
-        EmployeeDTO employee = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EmployeeDTO.class);
+        EmployeeResponse employeeReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EmployeeResponse.class);
 
-        assertThat(employee).isNotNull();
-        assertThat(employee.getId()).isNotNull();
-        assertThat(employee.getFirstName()).isEqualTo("John");
-        assertThat(employee.getLastName()).isEqualTo("Smith");
-        assertThat(employee.getJob().getId()).isNotNull();
-        assertThat(employee.getJob().getName()).isEqualTo("Cook");
+        // then
+        assertEquals("John", employeeReturned.getFirstName());
+        assertEquals("Smith", employeeReturned.getLastName());
+        assertEquals("Cook", employeeReturned.getJob().getName());
     }
 
     @Test
     void shouldReturnErrorResponse_whenAskedForNonExistingEmployee() throws Exception {
+        // when
+        when(employeeService.checkIfEmployeeIsNull(eq(4L))).thenReturn(true);
+
         MvcResult mvcResult = mockMvc.perform(get("/employees/id")
                         .param("id", String.valueOf(4L)))
                 .andExpect(status().isNotFound())
                 .andReturn();
         ErrorResponse response = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
 
-        assertThat(response).isNotNull();
-        assertThat(response.getStatus()).isEqualTo(404);
-        assertThat(response.getMessage()).isEqualTo("There are no employees in restaurant with that id: 4");
+        // then
+        assertEquals(404, response.getStatus());
+        assertEquals("There are no employees in restaurant with that id: 4", response.getMessage());
     }
 
 /*    @Test
@@ -113,45 +137,54 @@ public class EmployeeControllerTest {
 
     @Test
     void shouldReturnResponseConfirmingDeletedEmployee() throws Exception {
+        // when
         MvcResult mvcResult = mockMvc.perform(delete("/employees/id")
                         .param("id", String.valueOf(1L)))
                 .andExpect(status().isOk())
                 .andReturn();
         String response = mvcResult.getResponse().getContentAsString();
 
-        assertThat(response).isEqualTo("Deleted employee has id: 1");
+        // then
+        assertEquals("Deleted employee has id: 1", response);
     }
 
     @Test
     void shouldReturnEmployees_whenJobNameIsPassed() throws Exception {
+        // given
+        List<Employee> expectedCooks = createCooks();
+
+        // when
+        when(employeeService.findByJob(eq("Cook"))).thenReturn(expectedCooks);
+
         MvcResult mvcResult = mockMvc.perform(get("/employees/job")
                         .param("job", "Cook")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andReturn();
-        List<EmployeeDTO> employeesReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<EmployeeDTO>>(){});
+        List<EmployeeResponse> employeesReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
+        });
 
-        assertThat(employeesReturned).isNotNull();
-        assertThat(employeesReturned.get(0)).isNotNull();
-        assertThat(employeesReturned.get(0).getFirstName()).isEqualTo("John");
-        assertThat(employeesReturned.get(0).getLastName()).isEqualTo("Smith");
-        assertThat(employeesReturned.get(0).getJob().getId()).isNotNull();
-        assertThat(employeesReturned.get(0).getJob().getName()).isEqualTo("Cook");
+        // then
+        assertEquals("John", employeesReturned.get(0).getFirstName());
+        assertEquals("Smith", employeesReturned.get(0).getLastName());
+        assertEquals("Cook", employeesReturned.get(0).getJob().getName());
     }
 
     @Test
     void shouldReturnResponse_whenWrongJobNameIsPassed() throws Exception {
+        // when
+        when(employeeService.checkIfJobIsNull(eq("something"))).thenReturn(true);
+
         MvcResult mvcResult = mockMvc.perform(get("/employees/job")
                         .param("job", "something")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andReturn();
-
         ErrorResponse response = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
 
-        assertThat(response).isNotNull();
-        assertThat(response.getStatus()).isEqualTo(404);
-        assertThat(response.getMessage()).isEqualTo("There are no job like that in restaurant with that name: something");
+        // then
+        assertEquals(404, response.getStatus());
+        assertEquals("There are no job like that in restaurant with that name: something", response.getMessage());
     }
 }

@@ -1,9 +1,6 @@
 package pl.jakubtworek.RestaurantManagementSystem.controller.employee;
 
 import lombok.*;
-import org.modelmapper.ModelMapper;
-import org.springframework.hateoas.RepresentationModel;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 
 import javax.validation.constraints.NotNull;
 
@@ -12,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class GetEmployeeDTO extends RepresentationModel<GetEmployeeDTO> {
+public class EmployeeRequest {
 
     private Long id;
 
@@ -24,8 +21,4 @@ public class GetEmployeeDTO extends RepresentationModel<GetEmployeeDTO> {
 
     @NotNull(message = "Job cannot be null.")
     private String job;
-    
-    public Employee convertDTOToEntity() {
-        return new ModelMapper().map(this, Employee.class);
-    }
 }
