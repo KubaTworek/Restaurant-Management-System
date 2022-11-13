@@ -5,18 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6804a3ab-3eba-4f33-a440-5fed16101a6e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/repository/MenuItemRepositoryIT.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/repository/TypeOfOrderRepositoryIT.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/service/impl/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/service/impl/OrderServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/e2e/EmployeeE2E.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/e2e/EmployeeE2E.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/repository/EmployeeRespositoryIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/repository/EmployeeRepositoryIT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/repository/JobRespositoryIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/repository/JobRespositoryIT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/repository/MenuItemRespositoryIT.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/repository/MenuRespositoryIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/repository/MenuRepositoryIT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/repository/OrderRespositoryIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/repository/OrderRepositoryIT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/repository/TypeOfOrderRespositoryIT.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/service/order/OrderServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/service/order/OrderServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/controller/EmployeeControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/controller/EmployeeControllerIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/controller/MenuControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/controller/MenuControllerIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/controller/MenuItemControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/controller/MenuItemControllerIT.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,28 +68,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "last_opened_file_path": "/home/kuba/Documents/GitHub/Restaurant-Management-System/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/controller",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.46967897",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "spring.configuration.checksum": "3c94d622f76a6677308c588e4261b285"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/kuba/Documents/GitHub/Restaurant-Management-System/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/controller&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.46967897&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;3c94d622f76a6677308c588e4261b285&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/controller" />
@@ -130,81 +122,80 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.OrderRepositoryIT">
-    <configuration name="OrderRepositoryIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.MenuItemControllerIT.shouldReturnCreatedMenuItem">
+    <configuration name="MenuControllerIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Restaurant-Management-System" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.intTest.repository.*" />
+          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.repository" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.repository.OrderRepositoryIT" />
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller.MenuControllerIT" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="OrderRepositoryIT.shouldReturnAllOrders" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="MenuControllerIT.shouldReturnResponseConfirmingDeletedMenu" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Restaurant-Management-System" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.intTest.repository.*" />
+          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.repository" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.repository.OrderRepositoryIT" />
-      <option name="METHOD_NAME" value="shouldReturnAllOrders" />
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller.MenuControllerIT" />
+      <option name="METHOD_NAME" value="shouldReturnResponseConfirmingDeletedMenu" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="OrderRepositoryIT.shouldReturnLowerSizeOfList_whenDeleteOne" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="MenuItemControllerIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Restaurant-Management-System" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.intTest.repository.*" />
+          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.repository" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.repository.OrderRepositoryIT" />
-      <option name="METHOD_NAME" value="shouldReturnLowerSizeOfList_whenDeleteOne" />
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller.MenuItemControllerIT" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MenuItemControllerIT.shouldReturnCreatedMenuItem" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Restaurant-Management-System" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller.MenuItemControllerIT" />
+      <option name="METHOD_NAME" value="shouldReturnCreatedMenuItem" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="OrderRepositoryIT.shouldReturnOneOrder" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="MenuItemControllerIT.shouldReturnMenuItemById" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Restaurant-Management-System" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.intTest.repository.*" />
+          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.repository" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.repository.OrderRepositoryIT" />
-      <option name="METHOD_NAME" value="shouldReturnOneOrder" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="OrderRepositoryIT.shouldReturnOrders_whenPassTypeOfOrder" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Restaurant-Management-System" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.intTest.repository.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.repository" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.repository.OrderRepositoryIT" />
-      <option name="METHOD_NAME" value="shouldReturnOrders_whenPassTypeOfOrder" />
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller.MenuItemControllerIT" />
+      <option name="METHOD_NAME" value="shouldReturnMenuItemById" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -219,11 +210,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.OrderRepositoryIT" />
-        <item itemvalue="JUnit.OrderRepositoryIT.shouldReturnOrders_whenPassTypeOfOrder" />
-        <item itemvalue="JUnit.OrderRepositoryIT.shouldReturnLowerSizeOfList_whenDeleteOne" />
-        <item itemvalue="JUnit.OrderRepositoryIT.shouldReturnOneOrder" />
-        <item itemvalue="JUnit.OrderRepositoryIT.shouldReturnAllOrders" />
+        <item itemvalue="JUnit.MenuItemControllerIT.shouldReturnCreatedMenuItem" />
+        <item itemvalue="JUnit.MenuItemControllerIT" />
+        <item itemvalue="JUnit.MenuControllerIT" />
+        <item itemvalue="JUnit.MenuItemControllerIT.shouldReturnMenuItemById" />
+        <item itemvalue="JUnit.MenuControllerIT.shouldReturnResponseConfirmingDeletedMenu" />
       </list>
     </recent_temporary>
   </component>
@@ -243,7 +234,8 @@
       <workItem from="1666037443786" duration="8080000" />
       <workItem from="1667581456932" duration="11735000" />
       <workItem from="1667746499347" duration="33155000" />
-      <workItem from="1667841282781" duration="9901000" />
+      <workItem from="1667841282781" duration="10174000" />
+      <workItem from="1667866916870" duration="3271000" />
     </task>
     <servers />
   </component>
