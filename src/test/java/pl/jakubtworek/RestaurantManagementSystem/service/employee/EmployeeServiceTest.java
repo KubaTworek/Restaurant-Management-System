@@ -3,10 +3,6 @@ package pl.jakubtworek.RestaurantManagementSystem.service.employee;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import pl.jakubtworek.RestaurantManagementSystem.exception.EmployeeNotFoundException;
-import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.CooksQueue;
-import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.DeliveryQueue;
-import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.WaiterQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.EmployeeFactory;
@@ -24,7 +20,6 @@ import static org.mockito.Mockito.*;
 
 public class EmployeeServiceTest {
 
-
     @Mock
     private EmployeeRepository employeeRepository;
     @Mock
@@ -33,8 +28,6 @@ public class EmployeeServiceTest {
     private EmployeeFactory employeeFactory;
 
     private EmployeeServiceImpl employeeService;
-
-
 
     @BeforeEach
     public void setUp() {
