@@ -17,7 +17,7 @@ import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRes
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
-import pl.jakubtworek.RestaurantManagementSystem.model.factories.EmployeeFactory;
+import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.EmployeeFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
 import pl.jakubtworek.RestaurantManagementSystem.repository.JobRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;

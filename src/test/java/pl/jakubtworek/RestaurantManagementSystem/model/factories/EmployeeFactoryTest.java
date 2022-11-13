@@ -9,6 +9,7 @@ import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.DeliveryQ
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.WaiterQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
+import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.EmployeeFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.JobRepository;
 
 import java.util.Optional;
@@ -58,7 +59,7 @@ public class EmployeeFactoryTest {
         EmployeeRequest employeeDTO = new EmployeeRequest(1L, "John", "Smith", "Cook");
 
         // when
-        Employee employee = employeeFactory.createEmployee(employeeDTO);
+        Employee employee = employeeFactory.createEmployeeFormula(employeeDTO).createEmployee();
 
         // then
         assertEquals("John", employee.getFirstName());
@@ -72,7 +73,7 @@ public class EmployeeFactoryTest {
         EmployeeRequest employeeDTO = new EmployeeRequest(1L, "John", "Smith", "Waiter");
 
         // when
-        Employee employee = employeeFactory.createEmployee(employeeDTO);
+        Employee employee = employeeFactory.createEmployeeFormula(employeeDTO).createEmployee();
 
         // then
         assertEquals("John", employee.getFirstName());
@@ -86,23 +87,11 @@ public class EmployeeFactoryTest {
         EmployeeRequest employeeDTO = new EmployeeRequest(1L, "John", "Smith", "DeliveryMan");
 
         // when
-        Employee employee = employeeFactory.createEmployee(employeeDTO);
+        Employee employee = employeeFactory.createEmployeeFormula(employeeDTO).createEmployee();
 
         // then
         assertEquals("John", employee.getFirstName());
         assertEquals("Smith", employee.getLastName());
         assertEquals("DeliveryMan", employee.getJob().getName());
-    }
-
-    @Test
-    public void shouldReturnNull_whenProvideWrongJob(){
-        // given
-        EmployeeRequest employeeDTO = new EmployeeRequest(1L, "John", "Smith", "Wrong");
-
-        // when
-        Employee employee = employeeFactory.createEmployee(employeeDTO);
-
-        // then
-        assertNull(employee);
     }
 }

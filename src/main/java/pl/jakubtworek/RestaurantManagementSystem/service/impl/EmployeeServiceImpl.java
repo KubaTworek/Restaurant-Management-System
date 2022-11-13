@@ -3,7 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
-import pl.jakubtworek.RestaurantManagementSystem.model.factories.EmployeeFactory;
+import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.EmployeeFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
 import pl.jakubtworek.RestaurantManagementSystem.repository.JobRepository;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
@@ -41,7 +41,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee save(EmployeeRequest employeeDTO) {
-        Employee employee = employeeFactory.createEmployee(employeeDTO);
+        Employee employee = employeeFactory.createEmployeeFormula(employeeDTO).createEmployee();
         employeeRepository.save(employee);
         return employee;
     }

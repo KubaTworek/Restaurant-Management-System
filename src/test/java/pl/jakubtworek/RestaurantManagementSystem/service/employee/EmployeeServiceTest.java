@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
-import pl.jakubtworek.RestaurantManagementSystem.model.factories.EmployeeFactory;
+import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.EmployeeFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
 import pl.jakubtworek.RestaurantManagementSystem.repository.JobRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.impl.EmployeeServiceImpl;
