@@ -13,8 +13,7 @@ import pl.jakubtworek.RestaurantManagementSystem.repository.TypeOfOrderRepositor
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -58,6 +57,6 @@ public class TypeOfOrderRepositoryIT {
         assertEquals(30.99, typeOfOrder.get().getOrders().get(0).getPrice());
         assertEquals("2022-08-22", typeOfOrder.get().getOrders().get(0).getDate());
         assertEquals("12:05", typeOfOrder.get().getOrders().get(0).getHourOrder());
-        assertEquals("12:15", typeOfOrder.get().getOrders().get(0).getHourAway());
+        assertNull(typeOfOrder.get().getOrders().get(0).getHourAway());
     }
 }

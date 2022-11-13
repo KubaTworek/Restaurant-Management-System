@@ -120,7 +120,15 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.OrderControllerTest">
+  <component name="RunManager" selected="JUnit.All in Restaurant-Management-System">
+    <configuration name="All in Restaurant-Management-System" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Restaurant-Management-System" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="OrderControllerIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Restaurant-Management-System" />
       <extension name="coverage">
@@ -182,22 +190,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="OrderE2ETest.shouldReturnAllOrders" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Restaurant-Management-System" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.e2e.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.e2e" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.e2e.OrderE2ETest" />
-      <option name="METHOD_NAME" value="shouldReturnAllOrders" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="RestaurantManagementSystemApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="Restaurant-Management-System" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="pl.jakubtworek.RestaurantManagementSystem.RestaurantManagementSystemApplication" />
@@ -207,11 +199,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.All in Restaurant-Management-System" />
         <item itemvalue="JUnit.OrderControllerTest" />
         <item itemvalue="JUnit.OrderControllerIT" />
         <item itemvalue="JUnit.OrderControllerTest.shouldReturnOrders_whenEmployeeIsPassed" />
         <item itemvalue="JUnit.OrderE2ETest" />
-        <item itemvalue="JUnit.OrderE2ETest.shouldReturnAllOrders" />
       </list>
     </recent_temporary>
   </component>

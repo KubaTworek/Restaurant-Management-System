@@ -15,8 +15,7 @@ import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.spy;
 
 @SpringBootTest
@@ -51,7 +50,7 @@ public class OrderRepositoryIT {
         assertEquals(30.99, orders.get(1).getPrice());
         assertEquals("2022-08-22", orders.get(1).getDate());
         assertEquals("12:05", orders.get(1).getHourOrder());
-        assertEquals("12:15", orders.get(1).getHourAway());
+        assertNull(orders.get(1).getHourAway());
         assertEquals(2, orders.get(1).getTypeOfOrder().getId());
         assertEquals("Delivery", orders.get(1).getTypeOfOrder().getType());
         assertEquals(1, orders.get(1).getEmployees().size());
