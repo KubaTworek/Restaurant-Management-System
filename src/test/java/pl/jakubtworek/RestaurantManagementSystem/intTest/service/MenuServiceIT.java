@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -34,19 +33,16 @@ public class MenuServiceIT {
 
         // then
         assertEquals(2, menuList.size());
-        assertEquals(1, menuList.get(0).getId());
+
         assertEquals("Drinks", menuList.get(0).getName());
         assertEquals(1, menuList.get(0).getMenuItems().size());
-        assertEquals(2, menuList.get(0).getMenuItems().get(0).getId());
         assertEquals("Coke", menuList.get(0).getMenuItems().get(0).getName());
         assertEquals(1.99, menuList.get(0).getMenuItems().get(0).getPrice());
-        assertEquals(2, menuList.get(1).getId());
+
         assertEquals("Food", menuList.get(1).getName());
         assertEquals(2, menuList.get(1).getMenuItems().size());
-        assertEquals(1, menuList.get(1).getMenuItems().get(0).getId());
         assertEquals("Chicken", menuList.get(1).getMenuItems().get(0).getName());
         assertEquals(10.99, menuList.get(1).getMenuItems().get(0).getPrice());
-        assertEquals(3, menuList.get(1).getMenuItems().get(1).getId());
         assertEquals("Tiramisu", menuList.get(1).getMenuItems().get(1).getName());
         assertEquals(5.99, menuList.get(1).getMenuItems().get(1).getPrice());
     }
@@ -58,11 +54,8 @@ public class MenuServiceIT {
         Optional<Menu> menu = menuService.findById(1L);
 
         // then
-        assertNotNull(menu.get());
-        assertEquals(1, menu.get().getId());
         assertEquals("Drinks", menu.get().getName());
         assertEquals(1, menu.get().getMenuItems().size());
-        assertEquals(2, menu.get().getMenuItems().get(0).getId());
         assertEquals("Coke", menu.get().getMenuItems().get(0).getName());
         assertEquals(1.99, menu.get().getMenuItems().get(0).getPrice());
     }
@@ -91,11 +84,8 @@ public class MenuServiceIT {
         Optional<Menu> menu = menuService.findByName("Drinks");
 
         // then
-        assertNotNull(menu.get());
-        assertEquals(1, menu.get().getId());
         assertEquals("Drinks", menu.get().getName());
         assertEquals(1, menu.get().getMenuItems().size());
-        assertEquals(2, menu.get().getMenuItems().get(0).getId());
         assertEquals("Coke", menu.get().getMenuItems().get(0).getName());
         assertEquals(1.99, menu.get().getMenuItems().get(0).getPrice());
     }
