@@ -6,7 +6,6 @@ import org.mockito.Mock;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuItemFactory;
-import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuItemFactoryTest;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuItemRepository;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuItemService;
@@ -118,5 +117,4 @@ public class MenuItemServiceTest {
         menuItems.add(menuItem3);
         return menuItems;
     }
-
 }
