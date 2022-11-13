@@ -22,35 +22,35 @@ public class MenuItemController {
         this.menuService = menuService;
     }
 
-    @GetMapping("/{menuItemId}")
-    public ResponseEntity<MenuItemDTO> getMenuItemById(@PathVariable Long menuItemId) throws MenuItemNotFoundException {
-        if(menuItemService.checkIsMenuItemIsNull(menuItemId)){
-            throw new MenuItemNotFoundException("There are no menu item in restaurant with that id: " + menuItemId);
+    @GetMapping("/id")
+    public ResponseEntity<MenuItemResponse> getMenuItemById(@RequestParam Long id) throws MenuItemNotFoundException {
+        if(menuItemService.checkIsMenuItemIsNull(id)){
+            throw new MenuItemNotFoundException("There are no menu item in restaurant with that id: " + id);
         }
-        MenuItem menuItemFound = menuItemService.findById(menuItemId).get();
-        MenuItemDTO menuItemDTO = menuItemFound.convertEntityToDTO();
+        MenuItem menuItemFound = menuItemService.findById(id).get();
+        MenuItemResponse menuItemResponse = menuItemFound.convertEntityToResponse();
 
-        return new ResponseEntity<>(menuItemDTO, HttpStatus.OK);
+        return new ResponseEntity<>(menuItemResponse, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<MenuItemDTO> saveMenuItem(@RequestBody GetMenuItemDTO dto) throws MenuNotFoundException {
+    public ResponseEntity<MenuItemResponse> saveMenuItem(@RequestBody MenuItemRequest dto) throws MenuNotFoundException {
         if(menuService.checkIsMenuIsNull(dto.getMenu())){
             throw new MenuNotFoundException("There are no menu in restaurant with that name: " + dto.getMenu());
         }
         MenuItem menuItemSaved = menuItemService.save(dto);
-        MenuItemDTO menuItemDTO = menuItemSaved.convertEntityToDTO();
+        MenuItemResponse menuItemResponse = menuItemSaved.convertEntityToResponse();
 
-        return new ResponseEntity<>(menuItemDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(menuItemResponse, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{menuItemId}")
-    public ResponseEntity<String> deleteMenuItem(@PathVariable Long menuItemId) throws MenuItemNotFoundException {
-        if(menuItemService.checkIsMenuItemIsNull(menuItemId)){
-            throw new MenuItemNotFoundException("There are no menu item in restaurant with that id: " + menuItemId);
+    @DeleteMapping("/id")
+    public ResponseEntity<String> deleteMenuItem(@RequestParam Long id) throws MenuItemNotFoundException {
+        if(menuItemService.checkIsMenuItemIsNull(id)){
+            throw new MenuItemNotFoundException("There are no menu item in restaurant with that id: " + id);
         }
-        menuItemService.deleteById(menuItemId);
+        menuItemService.deleteById(id);
 
-        return new ResponseEntity<>("Deleted menu item has id: " + menuItemId, HttpStatus.OK);
+        return new ResponseEntity<>("Deleted menu item has id: " + id, HttpStatus.OK);
     }
 }

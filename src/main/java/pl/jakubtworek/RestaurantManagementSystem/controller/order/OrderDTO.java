@@ -4,7 +4,7 @@ import lombok.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.RepresentationModel;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeResponse;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemDTO;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemResponse;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 
 import javax.validation.constraints.NotNull;
@@ -31,7 +31,7 @@ public class OrderDTO extends RepresentationModel<OrderDTO> {
     private TypeOfOrderDTO typeOfOrder;
 
     @NotNull(message = "Menu items cannot be null.")
-    private List<MenuItemDTO> menuItems;
+    private List<MenuItemResponse> menuItems;
 
     private List<EmployeeResponse> employees;
 

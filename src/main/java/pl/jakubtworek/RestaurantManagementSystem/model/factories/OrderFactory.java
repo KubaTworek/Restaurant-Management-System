@@ -1,8 +1,7 @@
 package pl.jakubtworek.RestaurantManagementSystem.model.factories;
 
 import org.springframework.stereotype.Component;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.GetMenuItemDTO;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemDTO;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.GetOrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
@@ -65,7 +64,7 @@ public class OrderFactory {
 
     private double countingOrderPrice(GetOrderDTO orderDTO){
         double price = 0;
-        for(GetMenuItemDTO tempMenuItem : orderDTO.getMenuItems()){
+        for(MenuItemRequest tempMenuItem : orderDTO.getMenuItems()){
             price += tempMenuItem.getPrice();
         }
         return price;

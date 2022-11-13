@@ -3,7 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.model.factories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.GetMenuItemDTO;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
@@ -37,7 +37,7 @@ public class MenuItemFactoryTest {
     @Test
     public void shouldReturnMenuItem() {
         // given
-        GetMenuItemDTO menuItemDTO = new GetMenuItemDTO(1L, "Apple", 1.99, "Food");
+        MenuItemRequest menuItemDTO = new MenuItemRequest(1L, "Apple", 1.99, "Food");
 
         // when
         MenuItem menuItem = menuItemFactory.createMenuItem(menuItemDTO);

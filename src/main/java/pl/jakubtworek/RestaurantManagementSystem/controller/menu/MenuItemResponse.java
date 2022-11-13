@@ -1,8 +1,6 @@
 package pl.jakubtworek.RestaurantManagementSystem.controller.menu;
 
 import lombok.*;
-import org.modelmapper.ModelMapper;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
 
 import javax.validation.constraints.NotNull;
 
@@ -11,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class MenuItemDTO {
+public class MenuItemResponse {
 
     private Long id;
 
@@ -20,8 +18,4 @@ public class MenuItemDTO {
 
     @NotNull(message = "Price cannot be null.")
     private double price;
-
-    public MenuItem convertDTOToEntity() {
-        return new ModelMapper().map(this, MenuItem.class);
-    }
 }
