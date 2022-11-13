@@ -1,62 +1,40 @@
-package pl.jakubtworek.RestaurantManagementSystem.controller.menu;
+package pl.jakubtworek.RestaurantManagementSystem.e2e;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.transaction.annotation.Transactional;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuRequest;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuResponse;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
-import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.createMenu;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.createMenuList;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class MenuControllerTest {
+@Transactional
+public class MenuE2ETest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
-    @MockBean
-    private MenuService menuService;
-
-    @Autowired
-    private MenuController menuController;
-
-    @BeforeEach
-    public void setup() {
-        mock(MenuService.class);
-
-        menuController = new MenuController(
-                menuService
-        );
-    }
 
     @Test
+    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnAllMenu() throws Exception {
-        // given
-        List<Menu> expectedMenu = createMenuList();
-
         // when
-        when(menuService.findAll()).thenReturn(expectedMenu);
-
         MvcResult mvcResult = mockMvc.perform(get("/menu"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
@@ -77,13 +55,9 @@ public class MenuControllerTest {
     }
 
     @Test
+    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnMenuById() throws Exception {
-        // given
-        Optional<Menu> expectedMenu = createMenu();
-
         // when
-        when(menuService.findById(eq(1L))).thenReturn(expectedMenu);
-
         MvcResult mvcResult = mockMvc.perform(get("/menu/id")
                         .param("id", String.valueOf(1L)))
                 .andExpect(status().isOk())
@@ -97,10 +71,9 @@ public class MenuControllerTest {
     }
 
     @Test
+    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnErrorResponse_whenAskedForNonExistingMenu() throws Exception {
         // when
-        when(menuService.checkIsMenuIsNull(eq(3L))).thenReturn(true);
-
         MvcResult mvcResult = mockMvc.perform(get("/menu/id")
                         .param("id", String.valueOf(3L)))
                 .andExpect(status().isNotFound())
@@ -112,29 +85,27 @@ public class MenuControllerTest {
         assertEquals("There are no menu in restaurant with that id: 3", response.getMessage());
     }
 
-/*    @Test
+    @Test
     void shouldReturnCreatedMenu() throws Exception {
-        GetMenuDTO menu = new GetMenuDTO(0L, "Alcohol");
+        // given
+        MenuRequest menu = new MenuRequest(0L, "Alcohol");
 
+        // when
         MvcResult mvcResult = mockMvc.perform(post("/menu")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(menu)))
                 .andExpect(status().isCreated())
                 .andReturn();
-        MenuDTO menuReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), MenuDTO.class);
+        MenuResponse menuReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), MenuResponse.class);
 
-        assertThat(menuReturned).isNotNull();
-        assertThat(menuReturned.getName()).isEqualTo("Alcohol");
-    }*/
+        // then
+        assertEquals("Alcohol", menuReturned.getName());
+    }
 
     @Test
+    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnResponseConfirmingDeletedMenu() throws Exception {
-        // given
-        Optional<Menu> expectedMenu = createMenu();
-
         // when
-        when(menuService.findById(eq(1L))).thenReturn(expectedMenu);
-
         MvcResult mvcResult = mockMvc.perform(delete("/menu/id")
                         .param("id", String.valueOf(1L)))
                 .andExpect(status().isOk())

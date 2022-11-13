@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @Sql(scripts = "/schema.sql")
-public class EmployeeEndToEnd {
+public class EmployeeE2ETest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired

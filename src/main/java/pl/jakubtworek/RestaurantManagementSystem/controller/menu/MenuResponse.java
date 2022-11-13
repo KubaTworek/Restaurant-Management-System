@@ -13,14 +13,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class GetMenuDTO extends RepresentationModel<GetMenuDTO> {
+public class MenuResponse extends RepresentationModel<MenuResponse> {
 
     private Long id;
 
     @NotNull(message = "Menu name cannot be null.")
     private String name;
 
-    public Menu convertDTOToEntity() {
-        return new ModelMapper().map(this, Menu.class);
-    }
+    private List<MenuItemDTO> menuItems;
 }
