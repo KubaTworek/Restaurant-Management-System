@@ -3,7 +3,6 @@ package pl.jakubtworek.RestaurantManagementSystem.service.order;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
@@ -151,7 +150,6 @@ public class OrderServiceTest {
         // then
         assertEquals(1,ordersReturned.size());
     }
-
 
     private List<Order> createOrders() {
         List<Order> orders = new ArrayList<>();

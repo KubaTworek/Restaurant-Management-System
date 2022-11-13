@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.spy;
 
 @SpringBootTest
@@ -39,22 +39,18 @@ public class OrderServiceIT {
         // then
         assertEquals(2, orders.size());
 
-        assertEquals(1, orders.get(0).getId());
         assertEquals(12.99, orders.get(0).getPrice());
         assertEquals("2022-08-22", orders.get(0).getDate());
         assertEquals("12:00", orders.get(0).getHourOrder());
         assertEquals("12:15", orders.get(0).getHourAway());
-        assertEquals(1, orders.get(0).getTypeOfOrder().getId());
         assertEquals("On-site", orders.get(0).getTypeOfOrder().getType());
         assertEquals(1, orders.get(0).getEmployees().size());
         assertEquals(2, orders.get(0).getMenuItems().size());
 
-        assertEquals(2, orders.get(1).getId());
         assertEquals(30.99, orders.get(1).getPrice());
         assertEquals("2022-08-22", orders.get(1).getDate());
         assertEquals("12:05", orders.get(1).getHourOrder());
-        assertEquals("12:15", orders.get(1).getHourAway());
-        assertEquals(2, orders.get(1).getTypeOfOrder().getId());
+        assertNull(orders.get(1).getHourAway());
         assertEquals("Delivery", orders.get(1).getTypeOfOrder().getType());
         assertEquals(1, orders.get(1).getEmployees().size());
         assertEquals(2, orders.get(1).getMenuItems().size());
@@ -67,13 +63,10 @@ public class OrderServiceIT {
         Optional<Order> order = orderService.findById(1L);
 
         // then
-        assertNotNull(order.get());
-        assertEquals(1, order.get().getId());
         assertEquals(12.99, order.get().getPrice());
         assertEquals("2022-08-22", order.get().getDate());
         assertEquals("12:00", order.get().getHourOrder());
         assertEquals("12:15", order.get().getHourAway());
-        assertEquals(1, order.get().getTypeOfOrder().getId());
         assertEquals("On-site", order.get().getTypeOfOrder().getType());
         assertEquals(1, order.get().getEmployees().size());
         assertEquals(2, order.get().getMenuItems().size());
