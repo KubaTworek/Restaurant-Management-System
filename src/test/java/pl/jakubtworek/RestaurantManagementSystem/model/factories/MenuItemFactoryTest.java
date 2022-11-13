@@ -2,45 +2,27 @@ package pl.jakubtworek.RestaurantManagementSystem.model.factories;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
-import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class MenuItemFactoryTest {
-    @Mock
-    private MenuService menuService;
-
+    @Autowired
     private MenuItemFactory menuItemFactory;
-
-    @BeforeEach
-    public void setUp() {
-        menuService = mock(MenuService.class);
-
-        menuItemFactory = new MenuItemFactory(
-                menuService
-                );
-
-        Optional<Menu> foodMenu = Optional.of(new Menu(1L, "Food", null));
-
-        when(menuService.findByName("Food")).thenReturn(foodMenu);
-    }
 
     @Test
     public void shouldReturnMenuItem() {
         // given
+        Menu foodMenu = new Menu(1L, "Food", null);
         MenuItemRequest menuItemDTO = new MenuItemRequest(1L, "Apple", 1.99, "Food");
 
         // when
-        MenuItem menuItem = menuItemFactory.createMenuItem(menuItemDTO);
+        MenuItem menuItem = menuItemFactory.createMenuItem(menuItemDTO, foodMenu);
 
         // then
         assertEquals("Apple", menuItem.getName());

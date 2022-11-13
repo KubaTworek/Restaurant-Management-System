@@ -76,7 +76,7 @@ public class MenuItemControllerIT {
                 menuRepository,
                 menuFactory
         );
-        menuItemFactory = new MenuItemFactory(menuService);
+        menuItemFactory = new MenuItemFactory();
     }
 
     @Test

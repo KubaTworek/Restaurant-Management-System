@@ -69,11 +69,11 @@ public class MenuItemE2ETest {
                         .content(objectMapper.writeValueAsString(menuItem)))
                 .andExpect(status().isCreated())
                 .andReturn();
-        MenuItemResponse menuItemGet = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), MenuItemResponse.class);
+        MenuItemResponse menuItemReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), MenuItemResponse.class);
 
         // then
-        assertEquals("Beer", menuItem.getName());
-        assertEquals(5.99, menuItem.getPrice());
+        assertEquals("Beer", menuItemReturned.getName());
+        assertEquals(5.99, menuItemReturned.getPrice());
     }
 
     @Test

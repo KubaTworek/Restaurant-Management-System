@@ -3,6 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuItemFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuRepository;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuItemRepository;
@@ -39,7 +40,8 @@ public class MenuItemServiceImp implements MenuItemService {
 
     @Override
     public MenuItem save(MenuItemRequest menuItemDTO) {
-        MenuItem menuItem = menuItemFactory.createMenuItem(menuItemDTO);
+        Menu menu = menuRepository.findByName(menuItemDTO.getMenu()).get();
+        MenuItem menuItem = menuItemFactory.createMenuItem(menuItemDTO, menu);
         menuItemRepository.save(menuItem);
         return menuItem;
     }
