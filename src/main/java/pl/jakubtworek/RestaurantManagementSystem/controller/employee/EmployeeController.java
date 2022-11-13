@@ -33,13 +33,13 @@ public class EmployeeController {
         return new ResponseEntity<>(employeesDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/id/{employeeId}")
-    public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Long employeeId) throws EmployeeNotFoundException {
-        if(employeeService.checkIfEmployeeIsNull(employeeId)) {
-            throw new EmployeeNotFoundException("There are employees in restaurant with that id: " + employeeId);
+    @GetMapping("/id")
+    public ResponseEntity<EmployeeDTO> getEmployeeById(@RequestParam Long id) throws EmployeeNotFoundException {
+        if(employeeService.checkIfEmployeeIsNull(id)) {
+            throw new EmployeeNotFoundException("There are no employees in restaurant with that id: " + id);
         }
 
-        Employee employeeFound = employeeService.findById(employeeId).get();
+        Employee employeeFound = employeeService.findById(id).get();
         EmployeeDTO dto = employeeFound.convertEntityToDTO();
         addLinkToDTO(dto);
 
@@ -55,22 +55,22 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeDTO, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{employeeId}")
-    public ResponseEntity<String> deleteEmployee(@PathVariable Long employeeId) throws EmployeeNotFoundException {
-        if(employeeService.checkIfEmployeeIsNull(employeeId)) {
-            throw new EmployeeNotFoundException("There are employees in restaurant with that id: " + employeeId);
+    @DeleteMapping("/id")
+    public ResponseEntity<String> deleteEmployee(@RequestParam Long id) throws EmployeeNotFoundException {
+        if(employeeService.checkIfEmployeeIsNull(id)) {
+            throw new EmployeeNotFoundException("There are no employees in restaurant with that id: " + id);
         }
-        employeeService.deleteById(employeeId);
+        employeeService.deleteById(id);
 
-        return new ResponseEntity<>("Deleted employee has id: " + employeeId, HttpStatus.OK);
+        return new ResponseEntity<>("Deleted employee has id: " + id, HttpStatus.OK);
     }
 
-    @GetMapping("/job/{jobName}")
-    public ResponseEntity<List<EmployeeDTO>> getEmployeeByJobName(@PathVariable String jobName) throws JobNotFoundException {
-        if(employeeService.checkIfJobIsNull(jobName)) {
-            throw new JobNotFoundException("There are no job like that in restaurant with that name: " + jobName);
+    @GetMapping("/job")
+    public ResponseEntity<List<EmployeeDTO>> getEmployeeByJobName(@RequestParam String job) throws JobNotFoundException {
+        if(employeeService.checkIfJobIsNull(job)) {
+            throw new JobNotFoundException("There are no job like that in restaurant with that name: " + job);
         }
-        List<Employee> employeesFound = employeeService.findByJob(jobName);
+        List<Employee> employeesFound = employeeService.findByJob(job);
         List<EmployeeDTO> employeesDTO = createDTOList(employeesFound);
 
         return new ResponseEntity<>(employeesDTO, HttpStatus.OK);

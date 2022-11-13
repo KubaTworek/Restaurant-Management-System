@@ -4,34 +4,26 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
-import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
-import pl.jakubtworek.RestaurantManagementSystem.repository.JobRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
-import pl.jakubtworek.RestaurantManagementSystem.service.impl.EmployeeServiceImpl;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -72,7 +64,8 @@ public class EmployeeControllerTest {
 
     @Test
     void shouldReturnEmployeeById() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/employees/id/1"))
+        MvcResult mvcResult = mockMvc.perform(get("/employees/id")
+                        .param("id", String.valueOf(1L)))
                 .andExpect(status().is(200))
                 .andReturn();
         EmployeeDTO employee = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EmployeeDTO.class);
@@ -87,14 +80,15 @@ public class EmployeeControllerTest {
 
     @Test
     void shouldReturnErrorResponse_whenAskedForNonExistingEmployee() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/employees/id/4"))
+        MvcResult mvcResult = mockMvc.perform(get("/employees/id")
+                        .param("id", String.valueOf(4L)))
                 .andExpect(status().isNotFound())
                 .andReturn();
         ErrorResponse response = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
 
         assertThat(response).isNotNull();
         assertThat(response.getStatus()).isEqualTo(404);
-        assertThat(response.getMessage()).isEqualTo("There are employees in restaurant with that id: 4");
+        assertThat(response.getMessage()).isEqualTo("There are no employees in restaurant with that id: 4");
     }
 
 /*    @Test
@@ -119,7 +113,8 @@ public class EmployeeControllerTest {
 
     @Test
     void shouldReturnResponseConfirmingDeletedEmployee() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/employees/1"))
+        MvcResult mvcResult = mockMvc.perform(delete("/employees/id")
+                        .param("id", String.valueOf(1L)))
                 .andExpect(status().isOk())
                 .andReturn();
         String response = mvcResult.getResponse().getContentAsString();
@@ -129,7 +124,8 @@ public class EmployeeControllerTest {
 
     @Test
     void shouldReturnEmployees_whenJobNameIsPassed() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/employees/job/Cook")
+        MvcResult mvcResult = mockMvc.perform(get("/employees/job")
+                        .param("job", "Cook")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -146,7 +142,8 @@ public class EmployeeControllerTest {
 
     @Test
     void shouldReturnResponse_whenWrongJobNameIsPassed() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/employees/job/something")
+        MvcResult mvcResult = mockMvc.perform(get("/employees/job")
+                        .param("job", "something")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andReturn();
