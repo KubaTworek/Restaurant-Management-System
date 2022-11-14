@@ -19,6 +19,7 @@ import static javax.persistence.CascadeType.REMOVE;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Menu {
 
     @Id

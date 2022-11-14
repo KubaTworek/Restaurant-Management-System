@@ -7,10 +7,10 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 @Component
 public class MenuFactory {
     public Menu createMenu(MenuRequest menuDTO){
-        Menu menu = new Menu();
-        menu.setId(0L);
-        menu.setName(menuDTO.getName());
-        menu.setMenuItems(null);
-        return menu;
+        return Menu.builder()
+                        .id(0L)
+                        .name(menuDTO.getName())
+                        .menuItems(null)
+                        .build();
     }
 }
