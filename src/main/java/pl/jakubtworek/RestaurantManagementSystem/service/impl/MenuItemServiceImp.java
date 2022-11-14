@@ -1,6 +1,6 @@
 package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
@@ -15,18 +15,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class MenuItemServiceImp implements MenuItemService {
 
     private final MenuItemRepository menuItemRepository;
     private final MenuRepository menuRepository;
     private final MenuItemFactory menuItemFactory;
-
-    @Autowired
-    public MenuItemServiceImp(MenuItemRepository menuItemRepository, MenuRepository menuRepository, MenuItemFactory menuItemFactory) {
-        this.menuItemRepository = menuItemRepository;
-        this.menuRepository = menuRepository;
-        this.menuItemFactory = menuItemFactory;
-    }
 
     @Override
     public List<MenuItem> findAll() {

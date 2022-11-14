@@ -8,7 +8,7 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 
 @RequiredArgsConstructor
 public class DeliveryFormula implements OrderFormula{
-    private final OrderRequest orderDTO;
+    private final OrderRequest orderRequest;
     private final TypeOfOrder typeOfOrder;
     private final OrdersQueue ordersQueue;
     @Override
@@ -19,8 +19,8 @@ public class DeliveryFormula implements OrderFormula{
                 .hourOrder(getTodayTime())
                 .hourAway(null)
                 .date(getTodayDate())
-                .price(countingOrderPrice(orderDTO))
-                .menuItems(orderDTO.convertRequestToEntity().getMenuItems())
+                .price(countingOrderPrice(orderRequest))
+                .menuItems(orderRequest.convertRequestToEntity().getMenuItems())
                 .employees(null)
                 .build();
         ordersQueue.add(order);

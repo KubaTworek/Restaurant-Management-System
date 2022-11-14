@@ -1,6 +1,6 @@
 package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
@@ -14,17 +14,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-
     private final OrderRepository orderRepository;
     private final OrderFactory orderFactory;
-
-
-    @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, OrderFactory orderFactory) {
-        this.orderRepository = orderRepository;
-        this.orderFactory = orderFactory;
-    }
 
     @Override
     public List<Order> findAll() {
@@ -81,8 +74,4 @@ public class OrderServiceImpl implements OrderService {
     public boolean checkIfOrderIsNull(Long id){
         return findById(id).isEmpty();
     }
-
-
-
-
 }

@@ -8,9 +8,10 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 
 @RequiredArgsConstructor
 public class OnsiteFormula implements OrderFormula{
-    private final OrderRequest orderDTO;
+    private final OrderRequest orderRequest;
     private final TypeOfOrder typeOfOrder;
     private final OrdersQueue ordersQueue;
+
     @Override
     public Order createOrder() {
         Order order = Order.builder()
@@ -19,8 +20,8 @@ public class OnsiteFormula implements OrderFormula{
                 .hourOrder(getTodayTime())
                 .hourAway(null)
                 .date(getTodayDate())
-                .price(countingOrderPrice(orderDTO))
-                .menuItems(orderDTO.convertRequestToEntity().getMenuItems())
+                .price(countingOrderPrice(orderRequest))
+                .menuItems(orderRequest.convertRequestToEntity().getMenuItems())
                 .employees(null)
                 .build();
         ordersQueue.add(order);

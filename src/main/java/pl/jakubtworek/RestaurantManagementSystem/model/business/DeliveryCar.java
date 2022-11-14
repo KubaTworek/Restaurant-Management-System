@@ -23,14 +23,13 @@ public class DeliveryCar implements Observer {
     private final JdbcTemplate jdbc;
     private final OrderService orderService;
 
-    @Autowired
     public DeliveryCar(DeliveryQueue deliveryQueue, OrdersMadeDeliveryQueue ordersMadeDeliveryQueue, JdbcTemplate jdbc, OrderService orderService) {
         this.deliveryQueue = deliveryQueue;
         this.ordersMadeDeliveryQueue = ordersMadeDeliveryQueue;
-        deliveryQueue.registerObserver(this);
-        ordersMadeDeliveryQueue.registerObserver(this);
         this.jdbc = jdbc;
         this.orderService = orderService;
+        deliveryQueue.registerObserver(this);
+        ordersMadeDeliveryQueue.registerObserver(this);
     }
 
     @Override

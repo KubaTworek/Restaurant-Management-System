@@ -165,31 +165,7 @@ public class OrderE2ETest {
         });
 
         // then
-        assertEquals(12.99, ordersReturned.get(0).getPrice());
-        assertEquals("2022-08-22", ordersReturned.get(0).getDate());
-        assertEquals("12:00", ordersReturned.get(0).getHourOrder());
-        assertEquals("12:15", ordersReturned.get(0).getHourAway());
-        assertEquals("On-site", ordersReturned.get(0).getTypeOfOrder().getType());
-        assertEquals("Chicken", ordersReturned.get(0).getMenuItems().get(0).getName());
-        assertEquals(10.99, ordersReturned.get(0).getMenuItems().get(0).getPrice());
-        assertEquals("Coke", ordersReturned.get(0).getMenuItems().get(1).getName());
-        assertEquals(1.99, ordersReturned.get(0).getMenuItems().get(1).getPrice());
-        assertEquals("John", ordersReturned.get(0).getEmployees().get(0).getFirstName());
-        assertEquals("Smith", ordersReturned.get(0).getEmployees().get(0).getLastName());
-        assertEquals("Cook", ordersReturned.get(0).getEmployees().get(0).getJob().getName());
-
-        assertEquals(30.99, ordersReturned.get(1).getPrice());
-        assertEquals("2022-08-22", ordersReturned.get(1).getDate());
-        assertEquals("12:05", ordersReturned.get(1).getHourOrder());
-        assertNull(ordersReturned.get(1).getHourAway());
-        assertEquals("Delivery", ordersReturned.get(1).getTypeOfOrder().getType());
-        assertEquals("Tiramisu", ordersReturned.get(1).getMenuItems().get(0).getName());
-        assertEquals(5.99, ordersReturned.get(1).getMenuItems().get(0).getPrice());
-        assertEquals("Coke", ordersReturned.get(1).getMenuItems().get(1).getName());
-        assertEquals(1.99, ordersReturned.get(1).getMenuItems().get(1).getPrice());
-        assertEquals("John", ordersReturned.get(1).getEmployees().get(0).getFirstName());
-        assertEquals("Smith", ordersReturned.get(1).getEmployees().get(0).getLastName());
-        assertEquals("Cook", ordersReturned.get(1).getEmployees().get(0).getJob().getName());
+        assertEquals(2, ordersReturned.size());
     }
 
     @Test

@@ -11,13 +11,11 @@ import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
 
-@Entity
-@Table(name="type_of_order")
 @Getter
-@Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="type_of_order")
+@Entity
 public class TypeOfOrder {
 
     @Id

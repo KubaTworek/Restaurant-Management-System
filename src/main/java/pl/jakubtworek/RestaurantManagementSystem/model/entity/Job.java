@@ -2,8 +2,6 @@ package pl.jakubtworek.RestaurantManagementSystem.model.entity;
 
 import com.sun.istack.NotNull;
 import lombok.*;
-import org.modelmapper.ModelMapper;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.JobDTO;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,13 +9,11 @@ import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
 
-@Entity
-@Table(name="Job")
 @Getter
-@Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="job")
+@Entity
 public class Job {
 
     @Id
@@ -39,9 +35,5 @@ public class Job {
 
         employees.add(tempEmployee);
         tempEmployee.setJob(this);
-    }
-
-    public JobDTO convertEntityToDTO() {
-        return new ModelMapper().map(this, JobDTO.class);
     }
 }

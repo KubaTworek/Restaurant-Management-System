@@ -1,6 +1,6 @@
 package pl.jakubtworek.RestaurantManagementSystem.controller.menu;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,16 +11,11 @@ import pl.jakubtworek.RestaurantManagementSystem.service.MenuItemService;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/menu-items")
 public class MenuItemController {
     private final MenuItemService menuItemService;
     private final MenuService menuService;
-
-    @Autowired
-    public MenuItemController(MenuItemService menuItemService, MenuService menuService) {
-        this.menuItemService = menuItemService;
-        this.menuService = menuService;
-    }
 
     @GetMapping("/id")
     public ResponseEntity<MenuItemResponse> getMenuItemById(@RequestParam Long id) throws MenuItemNotFoundException {

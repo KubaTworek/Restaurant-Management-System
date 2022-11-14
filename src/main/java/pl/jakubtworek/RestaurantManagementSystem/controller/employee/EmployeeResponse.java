@@ -5,11 +5,10 @@ import org.springframework.hateoas.RepresentationModel;
 
 import javax.validation.constraints.NotNull;
 
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 public class EmployeeResponse extends RepresentationModel<EmployeeResponse> {
 
     private Long id;

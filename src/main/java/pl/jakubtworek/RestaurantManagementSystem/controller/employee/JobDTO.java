@@ -6,11 +6,10 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 
 import javax.validation.constraints.NotNull;
 
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 public class JobDTO {
 
     private Long id;

@@ -1,6 +1,6 @@
 package pl.jakubtworek.RestaurantManagementSystem.controller.order;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,18 +21,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/orders")
 public class OrderController {
     private final OrderService orderService;
     private final TypeOfOrderService typeOfOrderService;
     private final EmployeeService employeeService;
-
-    @Autowired
-    public OrderController(OrderService orderService, TypeOfOrderService typeOfOrderService, EmployeeService employeeService) {
-        this.orderService = orderService;
-        this.typeOfOrderService = typeOfOrderService;
-        this.employeeService = employeeService;
-    }
 
     @GetMapping
     public ResponseEntity<List<OrderResponse>> getOrders() {

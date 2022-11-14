@@ -9,14 +9,12 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name="employee")
 @Getter
-@Setter
-@ToString
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Table(name="employee")
+@Entity
 public class Employee {
 
     @Id
@@ -55,6 +53,10 @@ public class Employee {
             orders.add(tempOrder);
             tempOrder.add(this);
         }
+    }
+
+    public void setJob(Job job) {
+        this.job = job;
     }
 
     public EmployeeResponse convertEntityToResponse() {

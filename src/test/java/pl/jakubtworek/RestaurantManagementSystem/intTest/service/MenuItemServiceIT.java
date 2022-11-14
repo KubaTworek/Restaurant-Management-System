@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-@Sql(scripts = "/schema.sql")
 public class MenuItemServiceIT {
 
     @Autowired

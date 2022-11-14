@@ -9,15 +9,15 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name="menu_item")
 @Getter
 @Setter
-@ToString
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Table(name="menu_item")
+@Entity
 public class MenuItem {
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id")
@@ -53,6 +53,10 @@ public class MenuItem {
             orders.add(tempOrder);
             tempOrder.add(this);
         }
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
     }
 
     public MenuItemResponse convertEntityToResponse() {

@@ -1,6 +1,6 @@
 package pl.jakubtworek.RestaurantManagementSystem.model.factories.order;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueue;
@@ -8,7 +8,7 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 import pl.jakubtworek.RestaurantManagementSystem.repository.TypeOfOrderRepository;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OrderFactory {
     private final TypeOfOrderRepository typeOfOrderRepository;
     private final OrdersQueue ordersQueue;

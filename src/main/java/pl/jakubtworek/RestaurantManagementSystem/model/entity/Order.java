@@ -9,14 +9,13 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name="orders")
 @Getter
 @Setter
-@ToString
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Table(name="orders")
+@Entity
 public class Order {
 
     @Id

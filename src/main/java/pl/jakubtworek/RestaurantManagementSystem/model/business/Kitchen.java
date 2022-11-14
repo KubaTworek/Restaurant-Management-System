@@ -14,7 +14,6 @@ public class Kitchen implements Observer {
     private final OrdersMadeOnsiteQueue ordersMadeOnsiteQueue;
     private final OrdersMadeDeliveryQueue ordersMadeDeliveryQueue;
 
-    @Autowired
     public Kitchen(OrdersQueue ordersQueue, CooksQueue cooksQueue, OrdersMadeOnsiteQueue ordersMadeOnsiteQueue, OrdersMadeDeliveryQueue ordersMadeDeliveryQueue) {
         this.ordersQueue = ordersQueue;
         this.cooksQueue = cooksQueue;

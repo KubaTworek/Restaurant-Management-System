@@ -23,8 +23,6 @@ public class WaiterPlace implements Observer {
     private final JdbcTemplate jdbc;
     private final OrderService orderService;
 
-
-    @Autowired
     public WaiterPlace(WaiterQueue waiterQueue, OrdersMadeOnsiteQueue ordersMadeOnsiteQueue, OrderService orderService, JdbcTemplate jdbc) {
         this.waiterQueue = waiterQueue;
         this.ordersMadeOnsiteQueue = ordersMadeOnsiteQueue;

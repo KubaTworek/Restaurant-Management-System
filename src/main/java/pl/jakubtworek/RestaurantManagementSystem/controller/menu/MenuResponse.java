@@ -6,11 +6,10 @@ import org.springframework.hateoas.RepresentationModel;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 public class MenuResponse extends RepresentationModel<MenuResponse> {
 
     private Long id;

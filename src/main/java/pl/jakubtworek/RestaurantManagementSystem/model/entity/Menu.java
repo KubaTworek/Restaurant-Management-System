@@ -12,14 +12,13 @@ import java.util.List;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.REMOVE;
 
-@Entity
-@Table(name="menu")
+
 @Getter
-@Setter
-@ToString
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Table(name="menu")
+@Entity
 public class Menu {
 
     @Id

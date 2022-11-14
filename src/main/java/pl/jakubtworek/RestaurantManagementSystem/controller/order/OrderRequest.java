@@ -8,11 +8,9 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 public class OrderRequest {
 
     private Long id;

@@ -26,5 +26,4 @@ public interface OrderFormula {
         DateTimeFormatter time = DateTimeFormatter.ofPattern("hh:mm");
         return time.format(localDateTime);
     }
-
 }

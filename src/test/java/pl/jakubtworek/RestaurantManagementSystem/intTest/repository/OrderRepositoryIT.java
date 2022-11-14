@@ -21,7 +21,6 @@ import static org.mockito.Mockito.spy;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-@Sql(scripts = "/schema.sql")
 public class OrderRepositoryIT {
 
     @Autowired

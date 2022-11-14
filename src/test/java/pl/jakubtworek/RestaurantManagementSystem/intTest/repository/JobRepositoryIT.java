@@ -17,8 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-@Sql(scripts = "/schema.sql")
-public class JobRespositoryIT {
+public class JobRepositoryIT {
 
     @Autowired
     private JobRepository jobRepository;

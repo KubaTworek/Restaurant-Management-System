@@ -7,11 +7,9 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 
 import javax.validation.constraints.NotNull;
 
-@Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 public class MenuRequest {
 
     private Long id;

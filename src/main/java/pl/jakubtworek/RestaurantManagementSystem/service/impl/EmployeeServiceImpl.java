@@ -1,6 +1,6 @@
 package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.EmployeeFactory;
@@ -15,19 +15,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
-
     private final EmployeeRepository employeeRepository;
     private final JobRepository jobRepository;
     private final EmployeeFactory employeeFactory;
-
-
-    @Autowired
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository, JobRepository jobRepository, EmployeeFactory employeeFactory) {
-        this.employeeRepository = employeeRepository;
-        this.jobRepository = jobRepository;
-        this.employeeFactory = employeeFactory;
-    }
 
     @Override
     public List<Employee> findAll() {

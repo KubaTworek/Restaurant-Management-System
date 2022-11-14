@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-@Sql(scripts = "/schema.sql")
 public class TypeOfOrderRepositoryIT {
 
     @Autowired

@@ -4,11 +4,9 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
-@Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 public class MenuItemRequest {
 
     private Long id;

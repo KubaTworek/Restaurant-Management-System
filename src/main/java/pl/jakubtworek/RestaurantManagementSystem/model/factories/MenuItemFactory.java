@@ -7,7 +7,6 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
 
 @Component
 public class MenuItemFactory {
-
     public MenuItem createMenuItem(MenuItemRequest menuItemDTO, Menu menu){
         return MenuItem.builder()
                 .id(0L)

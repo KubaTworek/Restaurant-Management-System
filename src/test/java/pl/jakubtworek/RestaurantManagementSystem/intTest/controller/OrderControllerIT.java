@@ -12,7 +12,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderController;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderResponse;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
@@ -48,7 +47,6 @@ import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Transactional
 public class OrderControllerIT {
     @Autowired
     private MockMvc mockMvc;

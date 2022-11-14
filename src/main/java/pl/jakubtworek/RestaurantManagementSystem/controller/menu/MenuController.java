@@ -1,6 +1,6 @@
 package pl.jakubtworek.RestaurantManagementSystem.controller.menu;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,14 +13,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/menu")
 public class MenuController {
     private final MenuService menuService;
-
-    @Autowired
-    public MenuController(MenuService menuService) {
-        this.menuService = menuService;
-    }
 
     @GetMapping
     public ResponseEntity<List<MenuResponse>> getMenus() {
