@@ -19,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.createDeliveryOrder;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.createOnsiteOrder;
 
 public class OrderServiceTest {
     @Mock
@@ -128,21 +130,21 @@ public class OrderServiceTest {
     @Test
     public void shouldReturnAllMadeOrders() {
         // given
-        List<Order> orders = createOrders();
-        when(orderRepository.findAll()).thenReturn(orders);
+        List<Order> orders = List.of(createOnsiteOrder().get());
+        when(orderRepository.findOrdersByHourAwayIsNotNull()).thenReturn(orders);
 
         // when
         List<Order> ordersReturned = orderService.findMadeOrders();
 
         // then
-        assertEquals(2,ordersReturned.size());
+        assertEquals(1,ordersReturned.size());
     }
 
     @Test
     public void shouldReturnAllUnmadeOrders() {
         // given
-        List<Order> orders = createOrders();
-        when(orderRepository.findAll()).thenReturn(orders);
+        List<Order> orders = List.of(createDeliveryOrder().get());
+        when(orderRepository.findOrdersByHourAwayIsNull()).thenReturn(orders);
 
         // when
         List<Order> ordersReturned = orderService.findUnmadeOrders();

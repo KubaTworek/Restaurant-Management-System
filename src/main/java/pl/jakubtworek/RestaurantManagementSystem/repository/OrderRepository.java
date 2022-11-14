@@ -13,4 +13,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByDate(String theDate);
     List<Order> findByTypeOfOrder(TypeOfOrder theTypeOfOrder);
     List<Order> findByEmployees(Employee employee);
+    List<Order> findOrdersByHourAwayIsNull();
+    List<Order> findOrdersByHourAwayIsNotNull();
 }

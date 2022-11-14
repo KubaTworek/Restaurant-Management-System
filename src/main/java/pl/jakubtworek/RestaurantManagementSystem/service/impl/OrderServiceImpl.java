@@ -69,16 +69,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> findMadeOrders() {
-        List<Order> orders = orderRepository.findAll();
-        orders.removeIf(order -> (order.getHourAway() == null));
-        return orders;
+        return orderRepository.findOrdersByHourAwayIsNotNull();
     }
 
     @Override
     public List<Order> findUnmadeOrders() {
-        List<Order> orders = orderRepository.findAll();
-        orders.removeIf(order -> (order.getHourAway() != null));
-        return orders;
+        return orderRepository.findOrdersByHourAwayIsNull();
     }
 
     @Override

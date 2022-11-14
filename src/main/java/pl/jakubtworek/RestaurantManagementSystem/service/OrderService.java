@@ -1,5 +1,6 @@
 package pl.jakubtworek.RestaurantManagementSystem.service;
 
+import org.springframework.data.jpa.repository.Query;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
