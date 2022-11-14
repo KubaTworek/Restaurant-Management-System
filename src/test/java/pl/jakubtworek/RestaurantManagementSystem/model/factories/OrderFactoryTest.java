@@ -9,6 +9,7 @@ import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
+import pl.jakubtworek.RestaurantManagementSystem.model.factories.order.OrderFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.TypeOfOrderRepository;
 
 import java.time.LocalDateTime;

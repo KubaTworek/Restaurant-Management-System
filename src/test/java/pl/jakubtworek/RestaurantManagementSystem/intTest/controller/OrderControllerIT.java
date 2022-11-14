@@ -20,7 +20,7 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.EmployeeFactory;
-import pl.jakubtworek.RestaurantManagementSystem.model.factories.OrderFactory;
+import pl.jakubtworek.RestaurantManagementSystem.model.factories.order.OrderFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
 import pl.jakubtworek.RestaurantManagementSystem.repository.JobRepository;
 import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;

@@ -14,11 +14,12 @@ public class WaiterFormula implements EmployeeFormula{
 
     @Override
     public Employee createEmployee() {
-        Employee employee = new Employee();
-        employee.setId(0L);
-        employee.setFirstName(employeeDTO.getFirstName());
-        employee.setLastName(employeeDTO.getLastName());
-        employee.setJob(job);
+        Employee employee = Employee.builder()
+                .id(0L)
+                .firstName(employeeDTO.getFirstName())
+                .lastName(employeeDTO.getLastName())
+                .job(job)
+                .build();
         waiterQueue.add(employee);
         return employee;
     }

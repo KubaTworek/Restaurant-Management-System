@@ -1,4 +1,4 @@
-package pl.jakubtworek.RestaurantManagementSystem.model.factories;
+package pl.jakubtworek.RestaurantManagementSystem.model.factories.order;
 
 import org.springframework.stereotype.Component;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
