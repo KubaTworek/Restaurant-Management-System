@@ -58,7 +58,7 @@ public class OrderFactoryTest {
         OrderRequest orderDTO = new OrderRequest(1L, "On-site", List.of(menuItem1, menuItem2));
 
         // when
-        Order order = orderFactory.createOrder(orderDTO);
+        Order order = orderFactory.createOrder(orderDTO).createOrder();
 
         // then
         assertEquals("On-site", order.getTypeOfOrder().getType());
@@ -76,7 +76,7 @@ public class OrderFactoryTest {
         OrderRequest orderDTO = new OrderRequest(1L, "Delivery", List.of(menuItem));
 
         // when
-        Order order = orderFactory.createOrder(orderDTO);
+        Order order = orderFactory.createOrder(orderDTO).createOrder();
 
         // then
         assertEquals("Delivery", order.getTypeOfOrder().getType());

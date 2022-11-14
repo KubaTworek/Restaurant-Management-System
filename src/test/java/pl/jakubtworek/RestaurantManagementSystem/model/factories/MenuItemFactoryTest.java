@@ -15,6 +15,11 @@ public class MenuItemFactoryTest {
     @Autowired
     private MenuItemFactory menuItemFactory;
 
+    @BeforeEach
+    public void setUp() {
+        menuItemFactory = new MenuItemFactory();
+    }
+
     @Test
     public void shouldReturnMenuItem() {
         // given

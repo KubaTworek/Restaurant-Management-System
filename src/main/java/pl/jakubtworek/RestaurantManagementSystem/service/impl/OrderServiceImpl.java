@@ -38,7 +38,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order save(OrderRequest orderDTO) {
-        Order order = orderFactory.createOrder(orderDTO);
+        Order order = orderFactory.createOrder(orderDTO).createOrder();
         orderRepository.save(order);
         return order;
     }
