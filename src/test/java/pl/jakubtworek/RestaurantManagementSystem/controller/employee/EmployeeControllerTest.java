@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 
 import java.util.List;
@@ -115,23 +116,26 @@ public class EmployeeControllerTest {
     }
 
 /*    @Test
-    @Sql(statements = "INSERT INTO `job` VALUES (1,'Cook'), (2,'Waiter'), (3,'DeliveryMan')")
     void shouldReturnCreatedEmployee() throws Exception {
-        GetEmployeeDTO employee = new GetEmployeeDTO(4L, "James", "Smith", "Cook");
+        // given
+        Employee returnedEmployee = new Employee(0L, "James", "Smith", new Job(1L, "Cook", List.of()), List.of());
+        EmployeeRequest employee = new EmployeeRequest(0L, "James", "Smith", "Cook");
+        EmployeeResponse expectedEmployee = new EmployeeResponse(0L, "James", "Smith", new JobDTO(1L, "Cook"));
+
+        // when
+        when(employeeService.save(employee)).thenReturn(returnedEmployee);
 
         MvcResult mvcResult = mockMvc.perform(post("/employees")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(employee)))
                 .andExpect(status().isCreated())
                 .andReturn();
-        EmployeeDTO employeeReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EmployeeDTO.class);
+        EmployeeResponse employeeReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EmployeeResponse.class);
 
-        assertThat(employeeReturned).isNotNull();
-        assertThat(employeeReturned.getId()).isNotNull();
-        assertThat(employeeReturned.getFirstName()).isEqualTo("James");
-        assertThat(employeeReturned.getLastName()).isEqualTo("Smith");
-        assertThat(employeeReturned.getJob().getId()).isNotNull();
-        assertThat(employeeReturned.getJob().getName()).isEqualTo("Cook");
+        // then
+        assertEquals("John", employeeReturned.getFirstName());
+        assertEquals("Smith", employeeReturned.getLastName());
+        assertEquals("Cook", employeeReturned.getJob().getName());
     }*/
 
     @Test

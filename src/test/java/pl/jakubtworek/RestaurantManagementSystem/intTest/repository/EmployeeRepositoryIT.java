@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
+import pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.spy;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.createEmployee;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -69,17 +71,16 @@ public class EmployeeRepositoryIT {
         assertEquals(2, employee.get().getOrders().size());
     }
 
-/*    @Test
-    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnHigherSizeOfList_whenCreateOne(){
-        Job job = spy(new Job(1L,"Cook",List.of()));
-        Employee employee = spy(new Employee(444L, anyString(), anyString(), job, anyList()));
-        employeeRepository.save(employee);
-        List<Employee> employees = employeeRepository.findAll();
+    @Test
+    public void shouldReturnCreatedEmployee(){
+        Employee employee = new Employee(0L, "John", "Smith", new Job(1L,"Cook",List.of()), List.of());
+        Employee employeeReturned = employeeRepository.save(employee);
 
         // then
-        assertEquals(4, employees.size());
-    }*/
+        assertEquals("James", employeeReturned.getFirstName());
+        assertEquals("Smith", employeeReturned.getLastName());
+        assertEquals("Cook", employeeReturned.getJob().getName());
+    }
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})

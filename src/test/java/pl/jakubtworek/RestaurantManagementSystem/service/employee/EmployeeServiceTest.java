@@ -3,9 +3,12 @@ package pl.jakubtworek.RestaurantManagementSystem.service.employee;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.EmployeeFactory;
+import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.EmployeeFormula;
 import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
 import pl.jakubtworek.RestaurantManagementSystem.repository.JobRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.impl.EmployeeServiceImpl;
@@ -26,6 +29,8 @@ public class EmployeeServiceTest {
     private JobRepository jobRepository;
     @Mock
     private EmployeeFactory employeeFactory;
+    @Mock
+    private EmployeeFormula employeeFormula;
 
     private EmployeeServiceImpl employeeService;
 
@@ -34,6 +39,7 @@ public class EmployeeServiceTest {
         employeeRepository = mock(EmployeeRepository.class);
         jobRepository = mock(JobRepository.class);
         employeeFactory = mock(EmployeeFactory.class);
+        employeeFormula = mock(EmployeeFormula.class);
 
         employeeService = new EmployeeServiceImpl(
                 employeeRepository,
@@ -66,22 +72,22 @@ public class EmployeeServiceTest {
         assertNotNull(employeeReturned);
     }
 
-/*    @Test
+    @Test
     public void shouldReturnCreatedEmployee(){
         // given
-        Employee employee = spy(new Employee());
-        EmployeeDTO employeeDTO = spy(new EmployeeDTO());
-        Job job = spy(new Job());
-        when(employeeRepository.save(any(Employee.class))).thenReturn(employee);
-        when(employee.getJob()).thenReturn(job);
-        when(job.getId()).thenReturn(eq(1L));
+        EmployeeRequest employee = new EmployeeRequest(0L, "James", "Smith", "Cook");
+        Employee expectedEmployee = new Employee(0L, "James", "Smith", new Job(1L,"Cook",List.of()), List.of());
+
+        when(employeeFactory.createEmployeeFormula(any(EmployeeRequest.class))).thenReturn(employeeFormula);
+        when(employeeFormula.createEmployee()).thenReturn(expectedEmployee);
+        when(employeeRepository.save(any(Employee.class))).thenReturn(expectedEmployee);
 
         // when
-        Employee employeeReturned = employeeService.save(employeeDTO);
+        Employee employeeReturned = employeeService.save(employee);
 
         // then
         assertNotNull(employeeReturned);
-    }*/
+    }
 
 
     @Test

@@ -89,7 +89,7 @@ public class EmployeeE2ETest {
     }
 
     @Test
-    @Sql(statements = "INSERT INTO `job` VALUES (1,'Cook'), (2,'Waiter'), (3,'DeliveryMan')")
+    @Sql(statements = "INSERT INTO `job` VALUES (1, 'Cook'), (2, 'Waiter'), (3, 'DeliveryMan')")
     void shouldReturnCreatedEmployee() throws Exception {
         // given
         EmployeeRequest employee = new EmployeeRequest(0L, "James", "Morgan", "Cook");

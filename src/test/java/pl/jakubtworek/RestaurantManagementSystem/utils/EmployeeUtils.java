@@ -22,7 +22,7 @@ public class EmployeeUtils {
     }
 
     public static Optional<Employee> createEmployee(){
-        return Optional.of(spy(new Employee(1L, "John", "Smith", new Job(1L,"Cook",List.of()), List.of())));
+        return Optional.of(new Employee(1L, "John", "Smith", new Job(1L,"Cook",List.of()), List.of()));
     }
 
     public static Optional<Job> createJob(){

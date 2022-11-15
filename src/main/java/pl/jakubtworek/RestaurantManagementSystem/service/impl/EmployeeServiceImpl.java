@@ -34,8 +34,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee save(EmployeeRequest employeeDTO) {
         Employee employee = employeeFactory.createEmployeeFormula(employeeDTO).createEmployee();
-        employeeRepository.save(employee);
-        return employee;
+        return employeeRepository.save(employee);
     }
 
     @Override

@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeController;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeResponse;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
@@ -132,13 +133,15 @@ public class EmployeeControllerIT {
         assertEquals("There are no employees in restaurant with that id: 4", response.getMessage());
     }
 
-/*    @Test
-    @Sql(statements = "INSERT INTO `job` VALUES (1,'Cook'), (2,'Waiter'), (3,'DeliveryMan')")
+    @Test
     void shouldReturnCreatedEmployee() throws Exception {
         // given
-        EmployeeRequest employee = new EmployeeRequest(4L, "James", "Smith", "Cook");
+        EmployeeRequest employee = new EmployeeRequest(0L, "James", "Smith", "Cook");
 
         // when
+        when(jobRepository.findByName(eq("Cook"))).thenReturn(createJob());
+        when(employeeRepository.save(any())).thenReturn(any(Employee.class));
+
         MvcResult mvcResult = mockMvc.perform(post("/employees")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(employee)))
@@ -147,13 +150,10 @@ public class EmployeeControllerIT {
         EmployeeResponse employeeReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EmployeeResponse.class);
 
         // then
-        assertThat(employeeReturned).isNotNull();
-        assertThat(employeeReturned.getId()).isNotNull();
-        assertThat(employeeReturned.getFirstName()).isEqualTo("James");
-        assertThat(employeeReturned.getLastName()).isEqualTo("Smith");
-        assertThat(employeeReturned.getJob().getId()).isNotNull();
-        assertThat(employeeReturned.getJob().getName()).isEqualTo("Cook");
-    }*/
+        assertEquals("James", employeeReturned.getFirstName());
+        assertEquals("Smith", employeeReturned.getLastName());
+        assertEquals("Cook", employeeReturned.getJob().getName());
+    }
 
     @Test
     void shouldReturnResponseConfirmingDeletedEmployee() throws Exception {

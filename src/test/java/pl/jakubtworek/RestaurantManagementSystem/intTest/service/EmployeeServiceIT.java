@@ -6,7 +6,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
+import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.EmployeeFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 
@@ -64,17 +66,17 @@ public class EmployeeServiceIT {
         assertEquals(2, employee.get().getOrders().size());
     }
 
-/*    @Test
-    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnHigherSizeOfList_whenCreateOne(){
-        Job job = spy(new Job(1L,"Cook",List.of()));
-        Employee employee = spy(new Employee(444L, anyString(), anyString(), job, anyList()));
-        employeeRepository.save(employee);
-        List<Employee> employees = employeeRepository.findAll();
+    @Test
+    @Sql(statements = "INSERT INTO `job` VALUES (1, 'Cook'), (2, 'Waiter'), (3, 'DeliveryMan')")
+    public void shouldReturnCreatedEmployee(){
+        EmployeeRequest employee = new EmployeeRequest(0L, "James", "Smith", "Cook");
+        Employee employeeReturned = employeeService.save(employee);
 
         // then
-        assertEquals(4, employees.size());
-    }*/
+        assertEquals("James", employeeReturned.getFirstName());
+        assertEquals("Smith", employeeReturned.getLastName());
+        assertEquals("Cook", employeeReturned.getJob().getName());
+    }
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
