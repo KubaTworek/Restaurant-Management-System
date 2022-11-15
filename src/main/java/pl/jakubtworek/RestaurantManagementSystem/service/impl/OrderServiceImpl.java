@@ -3,6 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.order.OrderFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
@@ -31,13 +32,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order save(OrderRequest orderDTO) {
-        Order order = orderFactory.createOrder(orderDTO).createOrder();
-        orderRepository.save(order);
-        return order;
+        OrderDTO dto = orderFactory.createOrder(orderDTO).createOrder();
+        Order order = dto.convertDTOToEntity();
+        return orderRepository.save(order);
     }
     @Override
-    public void update(Order theOrder){
-        orderRepository.save(theOrder);
+    public void update(OrderDTO theOrder){
+        Order updatedOrder = theOrder.convertDTOToEntity();
+        orderRepository.save(updatedOrder);
     }
 
     @Override

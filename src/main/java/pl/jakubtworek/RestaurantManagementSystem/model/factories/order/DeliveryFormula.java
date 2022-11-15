@@ -3,6 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.model.factories.order;
 import lombok.RequiredArgsConstructor;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueue;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 
@@ -12,8 +13,8 @@ public class DeliveryFormula implements OrderFormula{
     private final TypeOfOrder typeOfOrder;
     private final OrdersQueue ordersQueue;
     @Override
-    public Order createOrder() {
-        Order order = Order.builder()
+    public OrderDTO createOrder() {
+        OrderDTO order = OrderDTO.builder()
                 .id(0L)
                 .typeOfOrder(typeOfOrder)
                 .hourOrder(getTodayTime())

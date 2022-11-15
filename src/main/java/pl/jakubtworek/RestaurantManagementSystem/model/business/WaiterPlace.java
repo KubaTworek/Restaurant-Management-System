@@ -1,17 +1,19 @@
 package pl.jakubtworek.RestaurantManagementSystem.model.business;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.Observer;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersMadeOnsiteQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.WaiterQueue;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -40,18 +42,20 @@ public class WaiterPlace implements Observer {
     private void startDelivering() {
         if(isExistsWaiterAndOrder()){
             Employee employee = waiterQueue.get();
-            Order order = ordersMadeOnsiteQueue.get();
+            OrderDTO order = ordersMadeOnsiteQueue.get();
             order.add(employee);
             startDeliveringOrder(employee,order);
+            order.setHourAway(setHourAwayToOrder());
+            orderService.update(order);
         }
     }
 
-    private void startDeliveringOrder(Employee waiter, Order order) {
+    private void startDeliveringOrder(Employee waiter, OrderDTO order) {
         Runnable r = () -> {
             preparing();
             waiterQueue.add(waiter);
-            setHourAwayToOrder(order);
-            addMenuItemsToOrder(order);
+
+            //addMenuItemsToOrder(order);
         };
         new Thread(r).start();
     }
@@ -60,13 +64,13 @@ public class WaiterPlace implements Observer {
         return ordersMadeOnsiteQueue.size()>0 && waiterQueue.size()>0;
     }
 
-    private void setHourAwayToOrder(Order order){
-        Date date = new Date();
-        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:ss");
-        order.setHourAway(timeFormat.format(date));
+    private String setHourAwayToOrder(){
+        LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeFormatter time = DateTimeFormatter.ofPattern("hh:mm:ss");
+        return time.format(localDateTime);
     }
 
-    private void addMenuItemsToOrder(Order order){
+    private void addMenuItemsToOrder(OrderDTO order){
         List<MenuItem> menuItems = order.getMenuItems();
         order.setMenuItems(null);
 
@@ -79,7 +83,7 @@ public class WaiterPlace implements Observer {
 
     private void preparing(){
         try {
-            Thread.sleep(1000); //czas
+            Thread.sleep(1000); // time
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

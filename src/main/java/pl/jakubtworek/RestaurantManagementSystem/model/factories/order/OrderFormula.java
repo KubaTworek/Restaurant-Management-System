@@ -2,13 +2,14 @@ package pl.jakubtworek.RestaurantManagementSystem.model.factories.order;
 
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public interface OrderFormula {
-    Order createOrder();
+    OrderDTO createOrder();
     default double countingOrderPrice(OrderRequest orderDTO){
         double price = 0;
         for(MenuItemRequest tempMenuItem : orderDTO.getMenuItems()){

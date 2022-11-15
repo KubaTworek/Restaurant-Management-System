@@ -6,12 +6,15 @@ import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.DeliveryQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.Observer;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersMadeDeliveryQueue;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -40,13 +43,14 @@ public class DeliveryCar implements Observer {
     private void startDelivering() {
         if(isExistsDeliveryAndOrder()){
             Employee employee = deliveryQueue.get();
-            Order order = ordersMadeDeliveryQueue.get();
-            order.add(employee);
+            OrderDTO order = ordersMadeDeliveryQueue.get();
+            order.convertDTOToEntity().add(employee);
+            orderService.update(order);
             startDeliveringOrder(employee,order,2);
         }
     }
 
-    private void startDeliveringOrder(Employee delivery, Order order, int time) {
+    private void startDeliveringOrder(Employee delivery, OrderDTO order, int time) {
         Runnable r = () -> {
             preparing();
             deliveryQueue.add(delivery);
@@ -60,13 +64,14 @@ public class DeliveryCar implements Observer {
         return ordersMadeDeliveryQueue.size()>0 && deliveryQueue.size()>0;
     }
 
-    private void setHourAwayToOrder(Order order){
-        Date date = new Date();
-        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:ss");
-        order.setHourAway(timeFormat.format(date));
+    private void setHourAwayToOrder(OrderDTO order){
+        LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeFormatter time = DateTimeFormatter.ofPattern("hh:mm:ss");
+        order.setHourAway(time.format(localDateTime));
+        orderService.update(order);
     }
 
-    private void addMenuItemsToOrder(Order order){
+    private void addMenuItemsToOrder(OrderDTO order){
         List<MenuItem> menuItems = order.getMenuItems();
         order.setMenuItems(null);
 
@@ -79,7 +84,7 @@ public class DeliveryCar implements Observer {
 
     private void preparing(){
         try {
-            Thread.sleep(2000); //czas
+            Thread.sleep(2000); // time
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

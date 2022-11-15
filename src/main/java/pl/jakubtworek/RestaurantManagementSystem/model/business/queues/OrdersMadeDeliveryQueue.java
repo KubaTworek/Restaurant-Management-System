@@ -2,6 +2,7 @@ package pl.jakubtworek.RestaurantManagementSystem.model.business.queues;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 
 import java.util.ArrayList;
@@ -11,19 +12,19 @@ import java.util.Queue;
 @Component
 @Scope("singleton")
 public class OrdersMadeDeliveryQueue implements Subject {
-    private final Queue<Order> ordersMadeDelivery = new LinkedList<>();
+    private final Queue<OrderDTO> ordersMadeDelivery = new LinkedList<>();
     private final ArrayList<Observer> observerList;
 
     public OrdersMadeDeliveryQueue() {
         this.observerList = new ArrayList<>();
     }
 
-    public void add(Order order){
+    public void add(OrderDTO order){
         ordersMadeDelivery.add(order);
         notifyObservers();
     }
 
-    public Order get(){
+    public OrderDTO get(){
         return ordersMadeDelivery.poll();
     }
 

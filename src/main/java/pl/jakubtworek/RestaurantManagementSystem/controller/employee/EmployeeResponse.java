@@ -20,5 +20,5 @@ public class EmployeeResponse extends RepresentationModel<EmployeeResponse> {
     private String lastName;
 
     @NotNull(message = "Job cannot be null.")
-    private JobDTO job;
+    private JobResponse job;
 }

@@ -1,8 +1,6 @@
 package pl.jakubtworek.RestaurantManagementSystem.controller.employee;
 
 import lombok.*;
-import org.modelmapper.ModelMapper;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 
 import javax.validation.constraints.NotNull;
 
@@ -10,14 +8,10 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class JobDTO {
+public class JobResponse {
 
     private Long id;
 
     @NotNull(message = "Job name cannot be null.")
     private String name;
-
-    public Job convertDTOToEntity() {
-        return new ModelMapper().map(this, Job.class);
-    }
 }

@@ -2,6 +2,7 @@ package pl.jakubtworek.RestaurantManagementSystem.service;
 
 import org.springframework.data.jpa.repository.Query;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
@@ -14,7 +15,7 @@ public interface OrderService {
     Optional<Order> findById(Long theId);
     Order save(OrderRequest theOrder);
     void deleteById(Long theId);
-    void update(Order theOrder);
+    void update(OrderDTO theOrder);
     List<Order> findByDate(String theDate);
     List<Order> findByEmployee(Employee employee);
     List<Order> findByTypeOfOrder(TypeOfOrder typeOfOrder);
