@@ -10,7 +10,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
+import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderResponse;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
 
@@ -20,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.springframework.http.RequestEntity.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -113,29 +117,25 @@ public class OrderE2ETest {
         assertThat(response.getMessage()).isEqualTo("There are no order in restaurant with that id: 3");
     }
 
-/*    @Test
+    @Test
     @Sql(statements = {"INSERT INTO `type_of_order` VALUES (1,'On-site'), (2,'Delivery')", "INSERT INTO `menu` VALUES (1,'Drinks'), (2,'Food')", "INSERT INTO `menu_item`(id,name,price,menu_id) VALUES (1,'Chicken',10.99,2), (2,'Coke',1.99,1), (3,'Tiramisu',5.99,2)"})
     void shouldReturnCreatedOrder() throws Exception {
-        GetMenuItemDTO menuItem = new GetMenuItemDTO(4L, "Coke", 2.99, "Drinks");
-        GetOrderDTO order = new GetOrderDTO(0L, "On-site", List.of(menuItem));
+        // given
+        OrderRequest order = new OrderRequest(0L, "On-site", List.of(new MenuItemRequest(1L, "Chicken", 10.99, "Food"), new MenuItemRequest(2L, "Coke", 1.99, "Drinks")));
 
-        MvcResult mvcResult = mockMvc.perform(post("/orders")
+        // when
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/orders")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(order)))
                 .andExpect(status().isCreated())
                 .andReturn();
-        OrderDTO orderReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), OrderDTO.class);
+        OrderResponse orderReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), OrderResponse.class);
 
-        assertThat(orderReturned).isNotNull();
-        assertThat(orderReturned.getId()).isNotNull();
-        assertThat(orderReturned.getHourAway()).isNull();
-        assertThat(orderReturned.getHourOrder()).isNotNull();
-        assertThat(orderReturned.getPrice()).isEqualTo(2.99);
-        assertThat(orderReturned.getDate()).isEqualTo(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        assertThat(orderReturned.getEmployees().size()).isEqualTo(1);
-        assertThat(orderReturned.getTypeOfOrder().getType()).isEqualTo("RandomType");
-        assertThat(orderReturned.getMenuItems().size()).isEqualTo(1);
-    }*/
+        // then
+        assertEquals(12.98, orderReturned.getPrice());
+        assertEquals("On-site", orderReturned.getTypeOfOrder().getType());
+        assertEquals(2, orderReturned.getMenuItems().size());
+    }
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})

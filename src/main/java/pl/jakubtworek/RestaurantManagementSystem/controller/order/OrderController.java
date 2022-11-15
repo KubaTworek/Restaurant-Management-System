@@ -147,8 +147,10 @@ public class OrderController {
 
     private void addLinkToDTO(OrderResponse dto){
         dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash(dto.getId()).withSelfRel());
-        for(EmployeeResponse e: dto.getEmployees()){
-            e.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash(e.getId()).withSelfRel());
+        if(!(dto.getEmployees() == null)){
+            for(EmployeeResponse e: dto.getEmployees()){
+                e.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash(e.getId()).withSelfRel());
+            }
         }
     }
 }

@@ -6,6 +6,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
+import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
@@ -71,18 +73,27 @@ public class OrderServiceIT {
         assertEquals(2, order.get().getMenuItems().size());
     }
 
-/*    @Test
-    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnHigherSizeOfList_whenCreateOne() {
+    @Test
+    @Sql(statements = {"INSERT INTO `type_of_order` VALUES (1,'On-site'), (2,'Delivery')", "INSERT INTO `menu` VALUES (1,'Drinks'), (2,'Food')", "INSERT INTO `menu_item`(id,name,price,menu_id) VALUES (1,'Chicken',10.99,2), (2,'Coke',1.99,1), (3,'Tiramisu',5.99,2)"})
+    public void shouldReturnCreatedOrder() {
+        // given
+        OrderRequest order = new OrderRequest(0L, "On-site", List.of(new MenuItemRequest(1L, "Chicken", 10.99, "Food"), new MenuItemRequest(2L, "Coke", 1.99, "Drinks")));
 
-    }*/
+        // when
+        Order orderReturned = orderService.save(order);
+
+        // then
+        assertEquals(12.98, orderReturned.getPrice());
+        assertEquals("On-site", orderReturned.getTypeOfOrder().getType());
+        assertEquals(2, orderReturned.getMenuItems().size());
+    }
 
 /*    @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnLowerSizeOfList_whenDeleteOne() {
         // when
-        orderRepository.deleteById(1L);
-        List<Order> orders = orderRepository.findAll();
+        orderService.deleteById(1L);
+        List<Order> orders = orderService.findAll();
 
         // then
         assertEquals(1, orders.size());

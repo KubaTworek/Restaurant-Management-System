@@ -6,17 +6,21 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
+import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
+import pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.spy;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.createOnsiteOrder;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -75,11 +79,20 @@ public class OrderRepositoryIT {
         assertEquals(2, order.get().getMenuItems().size());
     }
 
-/*    @Test
+    @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnHigherSizeOfList_whenCreateOne() {
+    public void shouldReturnCreatedOrder() {
+        // given
+        Order order = createOnsiteOrder().get();
 
-    }*/
+        // when
+        Order orderReturned = orderRepository.save(order);
+
+        // then
+        assertEquals(12.99, orderReturned.getPrice());
+        assertEquals("On-site", orderReturned.getTypeOfOrder().getType());
+        assertEquals(2, orderReturned.getMenuItems().size());
+    }
 
 /*    @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
