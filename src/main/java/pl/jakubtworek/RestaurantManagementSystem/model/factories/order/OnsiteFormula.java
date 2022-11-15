@@ -15,7 +15,7 @@ public class OnsiteFormula implements OrderFormula{
 
     @Override
     public OrderDTO createOrder() {
-        OrderDTO order = OrderDTO.builder()
+        return OrderDTO.builder()
                 .id(0L)
                 .typeOfOrder(typeOfOrder)
                 .hourOrder(getTodayTime())
@@ -25,7 +25,5 @@ public class OnsiteFormula implements OrderFormula{
                 .menuItems(orderRequest.convertRequestToEntity().getMenuItems())
                 .employees(null)
                 .build();
-        ordersQueue.add(order);
-        return order;
     }
 }
