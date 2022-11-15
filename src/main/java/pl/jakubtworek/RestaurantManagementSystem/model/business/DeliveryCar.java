@@ -1,12 +1,11 @@
 package pl.jakubtworek.RestaurantManagementSystem.model.business;
 
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.DeliveryQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.Observer;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersMadeDeliveryQueue;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 
 import java.time.LocalDateTime;
@@ -34,16 +33,16 @@ public class DeliveryCar implements Observer {
 
     private void startDelivering() {
         if(isExistsDeliveryAndOrder()){
-            Employee employee = deliveryQueue.get();
+            EmployeeDTO employee = deliveryQueue.get();
             OrderDTO order = ordersMadeDeliveryQueue.get();
-            order.add(employee);
+            order.add(employee.convertDTOToEntity());
             startDeliveringOrder(employee,2);
             order.setHourAway(setHourAwayToOrder());
             orderService.update(order);
         }
     }
 
-    private void startDeliveringOrder(Employee delivery, int time) {
+    private void startDeliveringOrder(EmployeeDTO delivery, int time) {
         Runnable r = () -> {
             preparing();
             deliveryQueue.add(delivery);

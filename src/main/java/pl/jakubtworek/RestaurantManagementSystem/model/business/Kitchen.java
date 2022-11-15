@@ -2,6 +2,7 @@ package pl.jakubtworek.RestaurantManagementSystem.model.business;
 
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.*;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 
@@ -29,14 +30,14 @@ public class Kitchen implements Observer {
 
     private void startCooking() {
         if(isExistsCookAndOrder()){
-            Employee employee = cooksQueue.get();
+            EmployeeDTO employee = cooksQueue.get();
             OrderDTO order = ordersQueue.get();
-            order.add(employee);
+            order.add(employee.convertDTOToEntity());
             startDoingOrder(employee,order,order.getMenuItems().size());
         }
     }
 
-    private void startDoingOrder(Employee cook, OrderDTO order, int time) {
+    private void startDoingOrder(EmployeeDTO cook, OrderDTO order, int time) {
         Runnable r = () -> {
             preparing(time);
             cooksQueue.add(cook);

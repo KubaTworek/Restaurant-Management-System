@@ -4,8 +4,8 @@ import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.Observer;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersMadeOnsiteQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.WaiterQueue;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 
 import java.time.LocalDateTime;
@@ -33,16 +33,16 @@ public class WaiterPlace implements Observer {
 
     private void startDelivering() {
         if(isExistsWaiterAndOrder()){
-            Employee employee = waiterQueue.get();
+            EmployeeDTO employee = waiterQueue.get();
             OrderDTO order = ordersMadeOnsiteQueue.get();
-            order.add(employee);
+            order.add(employee.convertDTOToEntity());
             startDeliveringOrder(employee);
             order.setHourAway(setHourAwayToOrder());
             orderService.update(order);
         }
     }
 
-    private void startDeliveringOrder(Employee waiter) {
+    private void startDeliveringOrder(EmployeeDTO waiter) {
         Runnable r = () -> {
             preparing();
             waiterQueue.add(waiter);
