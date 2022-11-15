@@ -36,8 +36,7 @@ public class MenuItemServiceImp implements MenuItemService {
     public MenuItem save(MenuItemRequest menuItemDTO) {
         Menu menu = menuRepository.findByName(menuItemDTO.getMenu()).get();
         MenuItem menuItem = menuItemFactory.createMenuItem(menuItemDTO, menu);
-        menuItemRepository.save(menuItem);
-        return menuItem;
+        return menuItemRepository.save(menuItem);
     }
 
     @Override

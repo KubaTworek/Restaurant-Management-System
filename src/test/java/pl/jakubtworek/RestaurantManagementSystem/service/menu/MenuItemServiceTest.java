@@ -3,6 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.service.menu;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuItemFactory;
@@ -68,19 +69,25 @@ public class MenuItemServiceTest {
         assertNotNull(menuItemReturned);
     }
 
-/*    @Test
+    @Test
     public void shouldReturnCreatedMenuItem(){
         // given
-        MenuItem menuItem = spy(new MenuItem());
-        GetMenuItemDTO menuItemDTO = spy(new GetMenuItemDTO());
-        when(menuItemRepository.save(menuItem)).thenReturn(menuItem);
+        Optional<Menu> expectedMenu = Optional.of(new Menu(2L, "Food", List.of()));
+        MenuItemRequest menuItem = new MenuItemRequest(0L, "Pizza", 12.99, "Food");
+        MenuItem expectedMenuItem = new MenuItem(0L, "Pizza", 12.99, expectedMenu.get(), List.of());
+
+        when(menuRepository.findByName(eq("Food"))).thenReturn(expectedMenu);
+        when(menuItemFactory.createMenuItem(menuItem, expectedMenu.get())).thenReturn(expectedMenuItem);
+        when(menuItemRepository.save(expectedMenuItem)).thenReturn(expectedMenuItem);
 
         // when
-        MenuItem menuItemReturned = menuItemService.save(menuItemDTO);
+        MenuItem menuItemReturned = menuItemService.save(menuItem);
 
         // then
-        assertNotNull(menuItemReturned);
-    }*/
+        assertEquals("Pizza", menuItemReturned.getName());
+        assertEquals(12.99, menuItemReturned.getPrice());
+        assertEquals("Food", menuItemReturned.getMenu().getName());
+    }
 
 
     @Test

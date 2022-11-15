@@ -73,7 +73,10 @@ public class EmployeeRepositoryIT {
 
     @Test
     public void shouldReturnCreatedEmployee(){
-        Employee employee = new Employee(0L, "John", "Smith", new Job(1L,"Cook",List.of()), List.of());
+        // given
+        Employee employee = new Employee(0L, "James", "Smith", new Job(1L,"Cook",List.of()), List.of());
+
+        // when
         Employee employeeReturned = employeeRepository.save(employee);
 
         // then

@@ -6,6 +6,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
@@ -73,9 +74,17 @@ public class MenuItemRepositoryIT {
     }
 
 /*    @Test
-    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnHigherSizeOfList_whenCreateOne() {
+    public void shouldReturnCreatedMenuItem() {
+        // given
+        MenuItem menuItem = new MenuItem(0L, "Pizza", 12.99, new Menu(2L, "Food", List.of()), List.of());
 
+        // when
+        MenuItem menuItemReturned = menuItemRepository.save(menuItem);
+
+        // then
+        assertEquals("Pizza", menuItemReturned.getName());
+        assertEquals(12.99, menuItemReturned.getPrice());
+        assertEquals("Food", menuItemReturned.getMenu().getName());
     }*/
 
     @Test

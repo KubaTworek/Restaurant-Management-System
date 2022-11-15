@@ -7,13 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuItemService;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,6 +25,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuItemUtils.createChickenMenuItem;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.createMenu;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -86,18 +90,23 @@ public class MenuItemControllerTest {
 
 /*    @Test
     void shouldReturnCreatedMenuItem() throws Exception {
-        GetMenuItemDTO menuItem = new GetMenuItemDTO(4L, "Beer", 5.99, "Drinks");
+        // given
+        MenuItemRequest menuItem = new MenuItemRequest(0L, "Pizza", 12.99, "Food");
+        MenuItem expectedMenuItem = new MenuItem(0L, "Pizza", 12.99, new Menu(2L, "Food", List.of()), List.of());
+
+        // when
+        when(menuItemService.save(menuItem)).thenReturn(expectedMenuItem);
 
         MvcResult mvcResult = mockMvc.perform(post("/menu-items")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(menuItem)))
                 .andExpect(status().isCreated())
                 .andReturn();
-        MenuItemDTO menuItemGet = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), MenuItemDTO.class);
+        MenuItemResponse menuItemResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), MenuItemResponse.class);
 
-        assertThat(menuItemGet).isNotNull();
-        assertThat(menuItemGet.getName()).isEqualTo("Beer");
-        assertThat(menuItemGet.getPrice()).isEqualTo(5.99);
+        // then
+        assertEquals("Pizza", menuItemResponse.getName());
+        assertEquals(12.99, menuItemResponse.getPrice());
     }*/
 
     @Test

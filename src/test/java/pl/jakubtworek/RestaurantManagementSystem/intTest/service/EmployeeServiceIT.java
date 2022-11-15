@@ -69,7 +69,10 @@ public class EmployeeServiceIT {
     @Test
     @Sql(statements = "INSERT INTO `job` VALUES (1, 'Cook'), (2, 'Waiter'), (3, 'DeliveryMan')")
     public void shouldReturnCreatedEmployee(){
+        // given
         EmployeeRequest employee = new EmployeeRequest(0L, "James", "Smith", "Cook");
+
+        // when
         Employee employeeReturned = employeeService.save(employee);
 
         // then
