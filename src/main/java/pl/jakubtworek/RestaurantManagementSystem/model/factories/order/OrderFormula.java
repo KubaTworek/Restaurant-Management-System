@@ -23,7 +23,7 @@ public interface OrderFormula {
     }
     default String getTodayTime(){
         LocalDateTime localDateTime = LocalDateTime.now();
-        DateTimeFormatter time = DateTimeFormatter.ofPattern("hh:mm");
+        DateTimeFormatter time = DateTimeFormatter.ofPattern("hh:mm:ss");
         return time.format(localDateTime);
     }
 }
