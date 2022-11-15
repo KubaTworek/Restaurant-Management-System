@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 
 @Service
 public class Kitchen implements Observer {
@@ -13,16 +12,14 @@ public class Kitchen implements Observer {
     private final OrdersQueue ordersQueue;
     private final OrdersMadeOnsiteQueue ordersMadeOnsiteQueue;
     private final OrdersMadeDeliveryQueue ordersMadeDeliveryQueue;
-    private final OrderService orderService;
 
-    public Kitchen(OrdersQueue ordersQueue, CooksQueue cooksQueue, OrdersMadeOnsiteQueue ordersMadeOnsiteQueue, OrdersMadeDeliveryQueue ordersMadeDeliveryQueue, OrderService orderService) {
+    public Kitchen(OrdersQueue ordersQueue, CooksQueue cooksQueue, OrdersMadeOnsiteQueue ordersMadeOnsiteQueue, OrdersMadeDeliveryQueue ordersMadeDeliveryQueue) {
         this.ordersQueue = ordersQueue;
         this.cooksQueue = cooksQueue;
-        this.orderService = orderService;
-        ordersQueue.registerObserver(this);
-        cooksQueue.registerObserver(this);
         this.ordersMadeOnsiteQueue = ordersMadeOnsiteQueue;
         this.ordersMadeDeliveryQueue = ordersMadeDeliveryQueue;
+        ordersQueue.registerObserver(this);
+        cooksQueue.registerObserver(this);
     }
 
     @Override

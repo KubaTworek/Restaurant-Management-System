@@ -1,37 +1,29 @@
 package pl.jakubtworek.RestaurantManagementSystem.model.business;
 
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.Observer;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersMadeOnsiteQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.WaiterQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
 
 @Service
 public class WaiterPlace implements Observer {
 
     private final WaiterQueue waiterQueue;
     private final OrdersMadeOnsiteQueue ordersMadeOnsiteQueue;
-    private final JdbcTemplate jdbc;
     private final OrderService orderService;
 
-    public WaiterPlace(WaiterQueue waiterQueue, OrdersMadeOnsiteQueue ordersMadeOnsiteQueue, OrderService orderService, JdbcTemplate jdbc) {
+    public WaiterPlace(WaiterQueue waiterQueue, OrdersMadeOnsiteQueue ordersMadeOnsiteQueue, OrderService orderService) {
         this.waiterQueue = waiterQueue;
         this.ordersMadeOnsiteQueue = ordersMadeOnsiteQueue;
+        this.orderService = orderService;
         waiterQueue.registerObserver(this);
         ordersMadeOnsiteQueue.registerObserver(this);
-        this.orderService = orderService;
-        this.jdbc = jdbc;
     }
 
     @Override
@@ -44,18 +36,16 @@ public class WaiterPlace implements Observer {
             Employee employee = waiterQueue.get();
             OrderDTO order = ordersMadeOnsiteQueue.get();
             order.add(employee);
-            startDeliveringOrder(employee,order);
+            startDeliveringOrder(employee);
             order.setHourAway(setHourAwayToOrder());
             orderService.update(order);
         }
     }
 
-    private void startDeliveringOrder(Employee waiter, OrderDTO order) {
+    private void startDeliveringOrder(Employee waiter) {
         Runnable r = () -> {
             preparing();
             waiterQueue.add(waiter);
-
-            //addMenuItemsToOrder(order);
         };
         new Thread(r).start();
     }
@@ -68,17 +58,6 @@ public class WaiterPlace implements Observer {
         LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter time = DateTimeFormatter.ofPattern("hh:mm:ss");
         return time.format(localDateTime);
-    }
-
-    private void addMenuItemsToOrder(OrderDTO order){
-        List<MenuItem> menuItems = order.getMenuItems();
-        order.setMenuItems(null);
-
-        orderService.update(order);
-
-        for(MenuItem menuItem : menuItems){
-            jdbc.execute("INSERT INTO order_menu_item(id,order_id,menu_item_id) VALUES (0,"+order.getId()+","+menuItem.getId()+")");
-        }
     }
 
     private void preparing(){
