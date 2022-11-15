@@ -6,6 +6,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
@@ -59,11 +60,17 @@ public class MenuServiceIT {
         assertEquals(1.99, menu.get().getMenuItems().get(0).getPrice());
     }
 
-/*    @Test
-    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnHigherSizeOfList_whenCreateOne(){
+    @Test
+    public void shouldReturnCreatedMenu(){
+        // given
+        MenuRequest menu = new MenuRequest(0L, "Alcohol");
 
-    }*/
+        // when
+        Menu menuReturned = menuService.save(menu);
+
+        // then
+        assertEquals("Alcohol", menuReturned.getName());
+    }
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})

@@ -3,6 +3,10 @@ package pl.jakubtworek.RestaurantManagementSystem.service.menu;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuRequest;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuRepository;
@@ -23,6 +27,7 @@ public class MenuServiceTest {
     private MenuRepository menuRepository;
     @Mock
     private MenuFactory menuFactory;
+
     private MenuService menuService;
 
     @BeforeEach
@@ -61,19 +66,21 @@ public class MenuServiceTest {
         assertNotNull(menuReturned);
     }
 
-/*    @Test
+    @Test
     public void shouldReturnCreatedMenu(){
         // given
-        Menu menu = spy(new Menu());
-        MenuDTO menuDTO = spy(new MenuDTO());
-        when(menuRepository.save(menu)).thenReturn(menu);
+        MenuRequest menu = new MenuRequest(0L, "Alcohol");
+        Menu expectedMenu = new Menu(0L, "Alcohol", List.of());
+
+        when(menuFactory.createMenu(menu)).thenReturn(expectedMenu);
+        when(menuRepository.save(expectedMenu)).thenReturn(expectedMenu);
 
         // when
-        Menu menuReturned = menuService.save(menuDTO);
+        Menu menuReturned = menuService.save(menu);
 
         // then
-        assertNotNull(menuReturned);
-    }*/
+        assertEquals("Alcohol", menuReturned.getName());
+    }
 
 
     @Test

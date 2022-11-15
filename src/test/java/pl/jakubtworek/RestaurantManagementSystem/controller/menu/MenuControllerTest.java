@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
@@ -114,17 +115,22 @@ public class MenuControllerTest {
 
 /*    @Test
     void shouldReturnCreatedMenu() throws Exception {
-        GetMenuDTO menu = new GetMenuDTO(0L, "Alcohol");
+        // given
+        MenuRequest menu = new MenuRequest(0L, "Alcohol");
+        Menu expectedMenu = new Menu(0L, "Alcohol", List.of());
+
+        // when
+        when(menuService.save(menu)).thenReturn(expectedMenu);
 
         MvcResult mvcResult = mockMvc.perform(post("/menu")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(menu)))
                 .andExpect(status().isCreated())
                 .andReturn();
-        MenuDTO menuReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), MenuDTO.class);
+        MenuResponse menuReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), MenuResponse.class);
 
-        assertThat(menuReturned).isNotNull();
-        assertThat(menuReturned.getName()).isEqualTo("Alcohol");
+        // then
+        assertEquals("Alcohol", menuReturned.getName());
     }*/
 
     @Test
