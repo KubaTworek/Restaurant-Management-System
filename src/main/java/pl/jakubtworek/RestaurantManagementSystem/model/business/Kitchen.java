@@ -7,7 +7,6 @@ import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 
 @Service
 public class Kitchen implements Observer {
-
     private final CooksQueue cooksQueue;
     private final OrdersQueue ordersQueue;
     private final OrdersMadeOnsiteQueue ordersMadeOnsiteQueue;
@@ -32,15 +31,15 @@ public class Kitchen implements Observer {
             EmployeeDTO employee = cooksQueue.get();
             OrderDTO order = ordersQueue.get();
             order.add(employee.convertDTOToEntity());
-            startDoingOrder(employee,order,order.getMenuItems().size());
+            startPreparingOrder(order.getMenuItems().size());
+            cooksQueue.add(employee);
+            serveOrder(order);
         }
     }
 
-    private void startDoingOrder(EmployeeDTO cook, OrderDTO order, int time) {
+    private void startPreparingOrder(int time) {
         Runnable r = () -> {
             preparing(time);
-            cooksQueue.add(cook);
-            serveOrder(order);
         };
         new Thread(r).start();
     }
@@ -55,12 +54,11 @@ public class Kitchen implements Observer {
     }
 
     private void preparing(int time){
-        for(int i = 0; i<time; i++){
-            try {
-                Thread.sleep(1000); // time
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        int timeToCook = time * 1000;
+        try {
+            Thread.sleep(timeToCook); // time
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }

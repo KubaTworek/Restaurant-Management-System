@@ -8,61 +8,47 @@ import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 @Service
-public class DeliveryCar implements Observer {
-
+public class DeliveryCar extends Delivery implements Observer {
     private final DeliveryQueue deliveryQueue;
     private final OrdersMadeDeliveryQueue ordersMadeDeliveryQueue;
-    private final OrderService orderService;
 
-    public DeliveryCar(DeliveryQueue deliveryQueue, OrdersMadeDeliveryQueue ordersMadeDeliveryQueue, OrderService orderService) {
+    public DeliveryCar(OrderService orderService, DeliveryQueue deliveryQueue, OrdersMadeDeliveryQueue ordersMadeDeliveryQueue) {
+        super(orderService);
         this.deliveryQueue = deliveryQueue;
         this.ordersMadeDeliveryQueue = ordersMadeDeliveryQueue;
-        this.orderService = orderService;
         deliveryQueue.registerObserver(this);
         ordersMadeDeliveryQueue.registerObserver(this);
     }
 
     @Override
     public void update(){
-        startDelivering();
-    }
-
-    private void startDelivering() {
-        if(isExistsDeliveryAndOrder()){
-            EmployeeDTO employee = deliveryQueue.get();
-            OrderDTO order = ordersMadeDeliveryQueue.get();
-            order.add(employee.convertDTOToEntity());
-            startDeliveringOrder(employee,2);
-            order.setHourAway(setHourAwayToOrder());
-            orderService.update(order);
+        if(isExistsEmployeeAndOrder()){
+            startDelivering();
         }
     }
 
-    private void startDeliveringOrder(EmployeeDTO delivery, int time) {
-        Runnable r = () -> {
-            preparing();
-            deliveryQueue.add(delivery);
-        };
-        new Thread(r).start();
+    @Override
+    protected void startDelivering() {
+        EmployeeDTO employee = deliveryQueue.get();
+        OrderDTO order = ordersMadeDeliveryQueue.get();
+        order.add(employee.convertDTOToEntity());
+        startDeliveringOrder(2);
+        order.setHourAway(setHourAwayToOrder());
+        orderService.update(order);
+        deliveryQueue.add(employee);
     }
 
-    private boolean isExistsDeliveryAndOrder(){
+    @Override
+    protected boolean isExistsEmployeeAndOrder(){
         return ordersMadeDeliveryQueue.size()>0 && deliveryQueue.size()>0;
     }
 
-    private String setHourAwayToOrder(){
-        LocalDateTime localDateTime = LocalDateTime.now();
-        DateTimeFormatter time = DateTimeFormatter.ofPattern("hh:mm:ss");
-        return time.format(localDateTime);
-    }
-
-    private void preparing(){
+    @Override
+    protected void delivering(int time){
+        int timeToDelivery = time * 10000;
         try {
-            Thread.sleep(2000); // time
+            Thread.sleep(timeToDelivery);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
