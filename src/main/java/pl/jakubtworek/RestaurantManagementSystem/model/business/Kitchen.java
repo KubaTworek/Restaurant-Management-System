@@ -23,18 +23,18 @@ public class Kitchen implements Observer {
 
     @Override
     public void update(){
-        startCooking();
+        if(isExistsCookAndOrder()){
+            startCooking();
+        }
     }
 
     private void startCooking() {
-        if(isExistsCookAndOrder()){
-            EmployeeDTO employee = cooksQueue.get();
-            OrderDTO order = ordersQueue.get();
-            order.add(employee.convertDTOToEntity());
-            startPreparingOrder(order.getMenuItems().size());
-            cooksQueue.add(employee);
-            serveOrder(order);
-        }
+        EmployeeDTO employee = cooksQueue.get();
+        OrderDTO order = ordersQueue.get();
+        order.add(employee.convertDTOToEntity());
+        startPreparingOrder(order.getMenuItems().size());
+        cooksQueue.add(employee);
+        serveOrder(order);
     }
 
     private void startPreparingOrder(int time) {
@@ -56,7 +56,7 @@ public class Kitchen implements Observer {
     private void preparing(int time){
         int timeToCook = time * 1000;
         try {
-            Thread.sleep(timeToCook); // time
+            Thread.sleep(timeToCook);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
