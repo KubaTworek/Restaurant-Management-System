@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 
 @Service
 public class Kitchen implements Observer {
