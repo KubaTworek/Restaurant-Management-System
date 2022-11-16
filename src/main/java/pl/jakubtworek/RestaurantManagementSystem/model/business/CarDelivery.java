@@ -9,11 +9,11 @@ import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 
 @Service
-public class DeliveryCar extends Delivery implements Observer {
+public class CarDelivery extends Delivery implements Observer {
     private final DeliveryQueue deliveryQueue;
     private final OrdersMadeDeliveryQueue ordersMadeDeliveryQueue;
 
-    public DeliveryCar(OrderService orderService, DeliveryQueue deliveryQueue, OrdersMadeDeliveryQueue ordersMadeDeliveryQueue) {
+    public CarDelivery(OrderService orderService, DeliveryQueue deliveryQueue, OrdersMadeDeliveryQueue ordersMadeDeliveryQueue) {
         super(orderService);
         this.deliveryQueue = deliveryQueue;
         this.ordersMadeDeliveryQueue = ordersMadeDeliveryQueue;
