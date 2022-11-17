@@ -16,6 +16,9 @@ import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeCon
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeResponse;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
+import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.CooksQueue;
+import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.DeliveryQueue;
+import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.WaiterQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.EmployeeFactory;
@@ -47,6 +50,13 @@ public class EmployeeControllerIT {
     private JobRepository jobRepository;
     @Mock
     private EmployeeFactory employeeFactory;
+    @Mock
+    private CooksQueue cooksQueue;
+    @Mock
+    private WaiterQueue waiterQueue;
+    @Mock
+    private DeliveryQueue deliveryQueue;
+
 
     @Autowired
     private EmployeeService employeeService;
@@ -57,11 +67,17 @@ public class EmployeeControllerIT {
     public void setup() {
         mock(EmployeeRepository.class);
         mock(JobRepository.class);
+        mock(WaiterQueue.class);
+        mock(DeliveryQueue.class);
+        mock(CooksQueue.class);
 
         employeeService = new EmployeeServiceImpl(
                 employeeRepository,
                 jobRepository,
-                employeeFactory
+                employeeFactory,
+                cooksQueue,
+                waiterQueue,
+                deliveryQueue
         );
         employeeController = new EmployeeController(
                 employeeService

@@ -3,6 +3,10 @@ package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
+import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.CooksQueue;
+import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.DeliveryQueue;
+import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.WaiterQueue;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.EmployeeFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
 import pl.jakubtworek.RestaurantManagementSystem.repository.JobRepository;
@@ -12,6 +16,7 @@ import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -20,6 +25,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final JobRepository jobRepository;
     private final EmployeeFactory employeeFactory;
+    private final CooksQueue cooksQueue;
+    private final WaiterQueue waiterQueue;
+    private final DeliveryQueue deliveryQueue;
 
     @Override
     public List<Employee> findAll() {
@@ -33,8 +41,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee save(EmployeeRequest employeeDTO) {
-        Employee employee = employeeFactory.createEmployeeFormula(employeeDTO).createEmployee();
-        return employeeRepository.save(employee);
+        EmployeeDTO dto = employeeFactory.createEmployeeFormula(employeeDTO).createEmployee();
+        Employee employee = Employee.builder().id(dto.getId()).firstName(dto.getFirstName()).lastName(dto.getLastName()).job(dto.getJob()).build();
+        Employee employeeCreated = employeeRepository.save(employee);
+        EmployeeDTO employeeDTOx = EmployeeDTO.builder().id(employeeCreated.getId()).firstName(employeeCreated.getFirstName()).lastName(employeeCreated.getLastName()).job(employeeCreated.getJob()).build();
+        if(Objects.equals(employeeDTOx.getJob().getName(), "Cook")) cooksQueue.add(employeeDTOx);
+        if(Objects.equals(employeeDTOx.getJob().getName(), "Waiter")) waiterQueue.add(employeeDTOx);
+        if(Objects.equals(employeeDTOx.getJob().getName(), "DeliveryMan")) deliveryQueue.add(employeeDTOx);
+        return employee;
     }
 
     @Override

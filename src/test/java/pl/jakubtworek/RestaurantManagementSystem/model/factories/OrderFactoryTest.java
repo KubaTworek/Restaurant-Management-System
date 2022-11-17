@@ -7,6 +7,7 @@ import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemResponse;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueue;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.order.OrderFactory;
@@ -58,7 +59,7 @@ public class OrderFactoryTest {
         OrderRequest orderDTO = new OrderRequest(1L, "On-site", List.of(menuItem1, menuItem2));
 
         // when
-        Order order = orderFactory.createOrder(orderDTO).createOrder();
+        OrderDTO order = orderFactory.createOrder(orderDTO).createOrder();
 
         // then
         assertEquals("On-site", order.getTypeOfOrder().getType());
@@ -76,7 +77,7 @@ public class OrderFactoryTest {
         OrderRequest orderDTO = new OrderRequest(1L, "Delivery", List.of(menuItem));
 
         // when
-        Order order = orderFactory.createOrder(orderDTO).createOrder();
+        OrderDTO order = orderFactory.createOrder(orderDTO).createOrder();
 
         // then
         assertEquals("Delivery", order.getTypeOfOrder().getType());

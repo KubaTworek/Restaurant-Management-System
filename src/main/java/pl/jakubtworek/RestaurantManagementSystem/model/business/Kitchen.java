@@ -32,15 +32,11 @@ public class Kitchen implements Observer {
         EmployeeDTO employee = cooksQueue.get();
         OrderDTO order = ordersQueue.get();
         order.add(employee.convertDTOToEntity());
-        startPreparingOrder(order.getMenuItems().size());
-        cooksQueue.add(employee);
-        serveOrder(order);
+        startPreparingOrder(employee, order, order.getMenuItems().size());
     }
 
-    private void startPreparingOrder(int time) {
-        Runnable r = () -> {
-            preparing(time);
-        };
+    private void startPreparingOrder(EmployeeDTO employee, OrderDTO order, int time) {
+        Runnable r = () -> preparing(employee, order, time);
         new Thread(r).start();
     }
 
@@ -53,10 +49,12 @@ public class Kitchen implements Observer {
         if(order.getTypeOfOrder().getId()==2) ordersMadeDeliveryQueue.add(order);
     }
 
-    private void preparing(int time){
+    private void preparing(EmployeeDTO employee, OrderDTO order, int time){
         int timeToCook = time * 1000;
         try {
             Thread.sleep(timeToCook);
+            cooksQueue.add(employee);
+            serveOrder(order);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

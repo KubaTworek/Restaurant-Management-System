@@ -3,6 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.service.order;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
@@ -27,14 +28,17 @@ public class OrderServiceTest {
     private OrderRepository orderRepository;
     @Mock
     private OrderFactory orderFactory;
+    @Mock
+    private OrdersQueue ordersQueue;
     private OrderService orderService;
 
     @BeforeEach
     public void setUp() {
         orderRepository = mock(OrderRepository.class);
         orderFactory = mock(OrderFactory.class);
+        ordersQueue = mock(OrdersQueue.class);
 
-        orderService = new OrderServiceImpl(orderRepository, orderFactory);
+        orderService = new OrderServiceImpl(orderRepository, orderFactory, ordersQueue);
     }
 
     @Test

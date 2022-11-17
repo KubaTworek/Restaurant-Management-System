@@ -5,6 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
+import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.CooksQueue;
+import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.DeliveryQueue;
+import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.WaiterQueue;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.EmployeeFactory;
@@ -31,6 +35,12 @@ public class EmployeeServiceTest {
     private EmployeeFactory employeeFactory;
     @Mock
     private EmployeeFormula employeeFormula;
+    @Mock
+    private CooksQueue cooksQueue;
+    @Mock
+    private WaiterQueue waiterQueue;
+    @Mock
+    private DeliveryQueue deliveryQueue;
 
     private EmployeeServiceImpl employeeService;
 
@@ -40,11 +50,17 @@ public class EmployeeServiceTest {
         jobRepository = mock(JobRepository.class);
         employeeFactory = mock(EmployeeFactory.class);
         employeeFormula = mock(EmployeeFormula.class);
+        mock(WaiterQueue.class);
+        mock(DeliveryQueue.class);
+        mock(CooksQueue.class);
 
         employeeService = new EmployeeServiceImpl(
                 employeeRepository,
                 jobRepository,
-                employeeFactory);
+                employeeFactory,
+                cooksQueue,
+                waiterQueue,
+                deliveryQueue);
     }
 
     @Test
@@ -76,10 +92,11 @@ public class EmployeeServiceTest {
     public void shouldReturnCreatedEmployee(){
         // given
         EmployeeRequest employee = new EmployeeRequest(0L, "James", "Smith", "Cook");
+        EmployeeDTO expectedEmployeeDTO = new EmployeeDTO(0L, "James", "Smith", new Job(1L,"Cook",List.of()), List.of());
         Employee expectedEmployee = new Employee(0L, "James", "Smith", new Job(1L,"Cook",List.of()), List.of());
 
         when(employeeFactory.createEmployeeFormula(any(EmployeeRequest.class))).thenReturn(employeeFormula);
-        when(employeeFormula.createEmployee()).thenReturn(expectedEmployee);
+        when(employeeFormula.createEmployee()).thenReturn(expectedEmployeeDTO);
         when(employeeRepository.save(any(Employee.class))).thenReturn(expectedEmployee);
 
         // when

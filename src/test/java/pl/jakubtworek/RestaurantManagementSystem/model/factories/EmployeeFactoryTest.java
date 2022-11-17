@@ -7,6 +7,7 @@ import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeReq
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.CooksQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.DeliveryQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.WaiterQueue;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.EmployeeFactory;
@@ -59,7 +60,7 @@ public class EmployeeFactoryTest {
         EmployeeRequest employeeDTO = new EmployeeRequest(1L, "John", "Smith", "Cook");
 
         // when
-        Employee employee = employeeFactory.createEmployeeFormula(employeeDTO).createEmployee();
+        EmployeeDTO employee = employeeFactory.createEmployeeFormula(employeeDTO).createEmployee();
 
         // then
         assertEquals("John", employee.getFirstName());
@@ -73,7 +74,7 @@ public class EmployeeFactoryTest {
         EmployeeRequest employeeDTO = new EmployeeRequest(1L, "John", "Smith", "Waiter");
 
         // when
-        Employee employee = employeeFactory.createEmployeeFormula(employeeDTO).createEmployee();
+        EmployeeDTO employee = employeeFactory.createEmployeeFormula(employeeDTO).createEmployee();
 
         // then
         assertEquals("John", employee.getFirstName());
@@ -87,7 +88,7 @@ public class EmployeeFactoryTest {
         EmployeeRequest employeeDTO = new EmployeeRequest(1L, "John", "Smith", "DeliveryMan");
 
         // when
-        Employee employee = employeeFactory.createEmployeeFormula(employeeDTO).createEmployee();
+        EmployeeDTO employee = employeeFactory.createEmployeeFormula(employeeDTO).createEmployee();
 
         // then
         assertEquals("John", employee.getFirstName());

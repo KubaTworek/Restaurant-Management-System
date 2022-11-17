@@ -18,6 +18,10 @@ import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderControlle
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderResponse;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
+import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.CooksQueue;
+import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.DeliveryQueue;
+import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueue;
+import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.WaiterQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
@@ -69,6 +73,15 @@ public class OrderControllerIT {
     private OrderFactory orderFactory;
     @Mock
     private EmployeeFactory employeeFactory;
+    @Mock
+    private OrdersQueue ordersQueue;
+    @Mock
+    private CooksQueue cooksQueue;
+    @Mock
+    private WaiterQueue waiterQueue;
+    @Mock
+    private DeliveryQueue deliveryQueue;
+
 
     @Autowired
     private OrderService orderService;
@@ -85,6 +98,10 @@ public class OrderControllerIT {
         mock(EmployeeRepository.class);
         mock(JobRepository.class);
         mock(TypeOfOrderRepository.class);
+        mock(OrdersQueue.class);
+        mock(WaiterQueue.class);
+        mock(DeliveryQueue.class);
+        mock(CooksQueue.class);
 
         typeOfOrderService = new TypeOfOrderServiceImpl(
                 typeOfOrderRepository
@@ -92,11 +109,15 @@ public class OrderControllerIT {
         employeeService = new EmployeeServiceImpl(
                 employeeRepository,
                 jobRepository,
-                employeeFactory
+                employeeFactory,
+                cooksQueue,
+                waiterQueue,
+                deliveryQueue
         );
         orderService = new OrderServiceImpl(
                 orderRepository,
-                orderFactory
+                orderFactory,
+                ordersQueue
         );
         orderController = new OrderController(
                 orderService,

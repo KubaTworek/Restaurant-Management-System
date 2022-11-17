@@ -44,7 +44,7 @@ public class OrderServiceImpl implements OrderService {
     public void update(OrderDTO theOrder){
         Order order = orderRepository.findById(theOrder.getId()).get();
         order.setHourAway(theOrder.getHourAway());
-        order.setEmployees(theOrder.getEmployees());
+        //order.setEmployees(theOrder.getEmployees());
         orderRepository.save(order);
     }
 

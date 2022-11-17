@@ -34,10 +34,7 @@ public class WaiterDelivery extends Delivery implements Observer {
         EmployeeDTO employee = waiterQueue.get();
         OrderDTO order = ordersMadeOnsiteQueue.get();
         order.add(employee.convertDTOToEntity());
-        startDeliveringOrder(2);
-        order.setHourAway(setHourAwayToOrder());
-        orderService.update(order);
-        waiterQueue.add(employee);
+        startDeliveringOrder(employee, order, 2);
     }
 
     @Override
@@ -46,10 +43,13 @@ public class WaiterDelivery extends Delivery implements Observer {
     }
 
     @Override
-    protected void delivering(int time) {
+    protected void delivering(EmployeeDTO employee, OrderDTO order, int time) {
         int timeToDelivery = time * 1000;
         try {
             Thread.sleep(timeToDelivery);
+            order.setHourAway(setHourAwayToOrder());
+            orderService.update(order);
+            waiterQueue.add(employee);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

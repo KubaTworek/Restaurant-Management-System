@@ -1,5 +1,7 @@
 package pl.jakubtworek.RestaurantManagementSystem.model.business;
 
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 
 import java.time.LocalDateTime;
@@ -14,10 +16,10 @@ public abstract class Delivery {
 
     abstract void startDelivering();
     abstract boolean isExistsEmployeeAndOrder();
-    abstract void delivering(int time);
+    abstract void delivering(EmployeeDTO employee, OrderDTO order, int time);
 
-    void startDeliveringOrder(int time){
-        Runnable r = () -> delivering(time);
+    void startDeliveringOrder(EmployeeDTO employee, OrderDTO order, int time){
+        Runnable r = () -> delivering(employee, order, time);
         new Thread(r).start();
     }
     String setHourAwayToOrder() {
