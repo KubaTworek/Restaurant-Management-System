@@ -9,13 +9,11 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 
 @RequiredArgsConstructor
 public class CookFormula implements EmployeeFormula{
-    private final CooksQueue cooksQueue;
     private final EmployeeRequest employeeDTO;
     private final Job job;
 
     @Override
     public EmployeeDTO createEmployee() {
-
         return EmployeeDTO.builder()
                 .id(0L)
                 .firstName(employeeDTO.getFirstName())

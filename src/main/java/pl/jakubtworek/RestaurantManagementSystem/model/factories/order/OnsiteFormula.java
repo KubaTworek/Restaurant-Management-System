@@ -11,7 +11,6 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 public class OnsiteFormula implements OrderFormula{
     private final OrderRequest orderRequest;
     private final TypeOfOrder typeOfOrder;
-    private final OrdersQueue ordersQueue;
 
     @Override
     public OrderDTO createOrder() {

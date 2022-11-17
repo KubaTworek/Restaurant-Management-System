@@ -11,10 +11,10 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 public class DeliveryFormula implements OrderFormula{
     private final OrderRequest orderRequest;
     private final TypeOfOrder typeOfOrder;
-    private final OrdersQueue ordersQueue;
+
     @Override
     public OrderDTO createOrder() {
-        OrderDTO order = OrderDTO.builder()
+        return OrderDTO.builder()
                 .id(0L)
                 .typeOfOrder(typeOfOrder)
                 .hourOrder(getTodayTime())
@@ -24,7 +24,5 @@ public class DeliveryFormula implements OrderFormula{
                 .menuItems(orderRequest.convertRequestToEntity().getMenuItems())
                 .employees(null)
                 .build();
-        ordersQueue.add(order);
-        return order;
     }
 }

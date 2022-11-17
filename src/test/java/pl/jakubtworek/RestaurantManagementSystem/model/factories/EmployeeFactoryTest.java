@@ -39,11 +39,7 @@ public class EmployeeFactoryTest {
         waiterQueue = mock(WaiterQueue.class);
         deliveryQueue = mock(DeliveryQueue.class);
 
-        employeeFactory = new EmployeeFactory(
-                jobRepository,
-                cooksQueue,
-                waiterQueue,
-                deliveryQueue);
+        employeeFactory = new EmployeeFactory(jobRepository);
 
         Optional<Job> cook = Optional.of(new Job(1L, "Cook", null));
         Optional<Job> waiter = Optional.of(new Job(2L, "Waiter", null));

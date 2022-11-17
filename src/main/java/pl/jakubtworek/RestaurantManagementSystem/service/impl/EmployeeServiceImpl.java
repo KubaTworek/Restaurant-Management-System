@@ -42,12 +42,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee save(EmployeeRequest employeeDTO) {
         EmployeeDTO dto = employeeFactory.createEmployeeFormula(employeeDTO).createEmployee();
-        Employee employee = Employee.builder().id(dto.getId()).firstName(dto.getFirstName()).lastName(dto.getLastName()).job(dto.getJob()).build();
+        Employee employee = dto.convertDTOToEntity();
         Employee employeeCreated = employeeRepository.save(employee);
-        EmployeeDTO employeeDTOx = EmployeeDTO.builder().id(employeeCreated.getId()).firstName(employeeCreated.getFirstName()).lastName(employeeCreated.getLastName()).job(employeeCreated.getJob()).build();
-        if(Objects.equals(employeeDTOx.getJob().getName(), "Cook")) cooksQueue.add(employeeDTOx);
-        if(Objects.equals(employeeDTOx.getJob().getName(), "Waiter")) waiterQueue.add(employeeDTOx);
-        if(Objects.equals(employeeDTOx.getJob().getName(), "DeliveryMan")) deliveryQueue.add(employeeDTOx);
+        pushEmployeeToProperQueue(employeeCreated);
         return employee;
     }
 
@@ -77,5 +74,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public boolean checkIfJobIsNull(String name){
         return findJobByName(name).isEmpty();
+    }
+
+    private void pushEmployeeToProperQueue(Employee employee){
+        EmployeeDTO employeeDTOx = employee.convertEntityToDTO();
+        if(Objects.equals(employeeDTOx.getJob().getName(), "Cook")) cooksQueue.add(employeeDTOx);
+        if(Objects.equals(employeeDTOx.getJob().getName(), "Waiter")) waiterQueue.add(employeeDTOx);
+        if(Objects.equals(employeeDTOx.getJob().getName(), "DeliveryMan")) deliveryQueue.add(employeeDTOx);
     }
 }

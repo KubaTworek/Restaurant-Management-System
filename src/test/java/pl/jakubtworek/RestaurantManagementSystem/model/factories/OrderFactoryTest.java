@@ -37,8 +37,7 @@ public class OrderFactoryTest {
         ordersQueue = mock(OrdersQueue.class);
 
         orderFactory = new OrderFactory(
-                typeOfOrderRepository,
-                ordersQueue
+                typeOfOrderRepository
         );
 
         Optional<TypeOfOrder> onsite = Optional.of(new TypeOfOrder(1L, "On-site", null));

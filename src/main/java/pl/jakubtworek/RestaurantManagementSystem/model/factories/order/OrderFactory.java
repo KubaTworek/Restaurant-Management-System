@@ -11,16 +11,15 @@ import pl.jakubtworek.RestaurantManagementSystem.repository.TypeOfOrderRepositor
 @RequiredArgsConstructor
 public class OrderFactory {
     private final TypeOfOrderRepository typeOfOrderRepository;
-    private final OrdersQueue ordersQueue;
 
     public OrderFormula createOrder(OrderRequest orderDTO){
         String typeOfOrderName = orderDTO.getTypeOfOrder();
         TypeOfOrder typeOfOrder = typeOfOrderRepository.findByType(typeOfOrderName).get();
         switch(typeOfOrderName){
             case "On-site":
-                return new OnsiteFormula(orderDTO, typeOfOrder, ordersQueue);
+                return new OnsiteFormula(orderDTO, typeOfOrder);
             case "Delivery":
-                return new DeliveryFormula(orderDTO, typeOfOrder, ordersQueue);
+                return new DeliveryFormula(orderDTO, typeOfOrder);
             default:
                 return null;
         }
