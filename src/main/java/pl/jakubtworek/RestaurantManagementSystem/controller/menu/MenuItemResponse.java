@@ -11,10 +11,8 @@ import javax.validation.constraints.NotNull;
 public class MenuItemResponse {
 
     private Long id;
-
     @NotNull(message = "Name cannot be null.")
     private String name;
-
     @NotNull(message = "Price cannot be null.")
     private double price;
 }

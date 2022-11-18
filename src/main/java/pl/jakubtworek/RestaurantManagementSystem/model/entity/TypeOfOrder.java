@@ -13,6 +13,8 @@ import java.util.List;
 import static javax.persistence.CascadeType.ALL;
 
 @Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="type_of_order")
@@ -40,10 +42,10 @@ public class TypeOfOrder {
         tempOrder.setTypeOfOrder(this);
     }
 
-    public TypeOfOrderResponse convertEntityToResponse() {
-        return new ModelMapper().map(this, TypeOfOrderResponse.class);
-    }
     public TypeOfOrderDTO convertEntityToDTO() {
         return new ModelMapper().map(this, TypeOfOrderDTO.class);
+    }
+    public TypeOfOrderResponse convertEntityToResponse() {
+        return new ModelMapper().map(this, TypeOfOrderResponse.class);
     }
 }

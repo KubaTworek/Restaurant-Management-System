@@ -12,8 +12,6 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class MenuRequest {
 
-    private Long id;
-
     @NotNull(message = "Menu name cannot be null.")
     private String name;
 }

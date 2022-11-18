@@ -4,6 +4,7 @@ import com.sun.istack.NotNull;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemResponse;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -55,10 +56,9 @@ public class MenuItem {
         }
     }
 
-    public void setMenu(Menu menu) {
-        this.menu = menu;
+    public MenuItemDTO convertEntityToDTO() {
+        return new ModelMapper().map(this, MenuItemDTO.class);
     }
-
     public MenuItemResponse convertEntityToResponse() {
         return new ModelMapper().map(this, MenuItemResponse.class);
     }

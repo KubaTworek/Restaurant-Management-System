@@ -2,9 +2,9 @@ package pl.jakubtworek.RestaurantManagementSystem.model.dto;
 
 import lombok.*;
 import org.modelmapper.ModelMapper;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeResponse;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 
 import java.util.List;
 
@@ -18,9 +18,12 @@ public class EmployeeDTO {
     private String firstName;
     private String lastName;
     private Job job;
-    private List<Order> orders;
+    private List<OrderDTO> orders;
 
     public Employee convertDTOToEntity() {
         return new ModelMapper().map(this, Employee.class);
+    }
+    public EmployeeResponse convertDTOToResponse() {
+        return new ModelMapper().map(this, EmployeeResponse.class);
     }
 }

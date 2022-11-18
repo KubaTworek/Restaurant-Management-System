@@ -15,7 +15,6 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 @Table(name="orders")
 @Entity
 public class Order {
@@ -82,10 +81,10 @@ public class Order {
         }
     }
 
-    public OrderResponse convertEntityToResponse() {
-        return new ModelMapper().map(this, OrderResponse.class);
-    }
     public OrderDTO convertEntityToDTO() {
         return new ModelMapper().map(this, OrderDTO.class);
+    }
+    public OrderResponse convertEntityToResponse() {
+        return new ModelMapper().map(this, OrderResponse.class);
     }
 }

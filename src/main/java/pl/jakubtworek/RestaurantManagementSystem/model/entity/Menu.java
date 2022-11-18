@@ -4,6 +4,7 @@ import com.sun.istack.NotNull;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuResponse;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import static javax.persistence.CascadeType.REMOVE;
 
 
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -42,6 +44,9 @@ public class Menu {
         tempMenuItem.setMenu(this);
     }
 
+    public MenuDTO convertEntityToDTO() {
+        return new ModelMapper().map(this, MenuDTO.class);
+    }
     public MenuResponse convertEntityToResponse() {
         return new ModelMapper().map(this, MenuResponse.class);
     }

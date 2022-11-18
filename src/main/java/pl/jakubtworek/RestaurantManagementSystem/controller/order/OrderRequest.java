@@ -13,11 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderRequest {
 
-    private Long id;
-
     @NotNull(message = "Type of order cannot be null.")
     private String typeOfOrder;
-
     @NotNull(message = "Menu items cannot be null.")
     private List<MenuItemRequest> menuItems;
 

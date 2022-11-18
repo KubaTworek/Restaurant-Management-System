@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 @Table(name="employee")
 @Entity
 public class Employee {
@@ -55,10 +55,6 @@ public class Employee {
             orders.add(tempOrder);
             tempOrder.add(this);
         }
-    }
-
-    public void setJob(Job job) {
-        this.job = job;
     }
 
     public EmployeeResponse convertEntityToResponse() {

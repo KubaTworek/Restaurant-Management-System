@@ -10,6 +10,8 @@ import java.util.List;
 import static javax.persistence.CascadeType.ALL;
 
 @Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="job")
