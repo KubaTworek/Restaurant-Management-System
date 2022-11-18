@@ -41,7 +41,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee save(EmployeeRequest employeeDTO) {
-        EmployeeDTO dto = employeeFactory.createEmployeeFormula(employeeDTO).createEmployee();
+        Job job = findJobByName(employeeDTO.getJob()).orElseThrow();
+        EmployeeDTO dto = createEmployee(employeeDTO, job);
         Employee employee = dto.convertDTOToEntity();
         Employee employeeCreated = employeeRepository.save(employee);
         pushEmployeeToProperQueue(employeeCreated);
@@ -81,5 +82,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         if(Objects.equals(employeeDTOx.getJob().getName(), "Cook")) cooksQueue.add(employeeDTOx);
         if(Objects.equals(employeeDTOx.getJob().getName(), "Waiter")) waiterQueue.add(employeeDTOx);
         if(Objects.equals(employeeDTOx.getJob().getName(), "DeliveryMan")) deliveryQueue.add(employeeDTOx);
+    }
+
+    private EmployeeDTO createEmployee(EmployeeRequest employeeDTO, Job job){
+        return employeeFactory.createEmployeeFormula(employeeDTO, job).createEmployee();
     }
 }

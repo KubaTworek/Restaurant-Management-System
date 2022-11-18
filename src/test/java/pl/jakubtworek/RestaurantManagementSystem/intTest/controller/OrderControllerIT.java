@@ -50,7 +50,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.createEmployee;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.createJob;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
 
 @SpringBootTest
@@ -116,6 +115,7 @@ public class OrderControllerIT {
         );
         orderService = new OrderServiceImpl(
                 orderRepository,
+                typeOfOrderRepository,
                 orderFactory,
                 ordersQueue
         );

@@ -12,6 +12,7 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.EmployeeFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.JobRepository;
+import pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils;
 
 import java.util.Optional;
 
@@ -19,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.*;
 
 public class EmployeeFactoryTest {
     @Mock
@@ -39,7 +41,7 @@ public class EmployeeFactoryTest {
         waiterQueue = mock(WaiterQueue.class);
         deliveryQueue = mock(DeliveryQueue.class);
 
-        employeeFactory = new EmployeeFactory(jobRepository);
+        employeeFactory = new EmployeeFactory();
 
         Optional<Job> cook = Optional.of(new Job(1L, "Cook", null));
         Optional<Job> waiter = Optional.of(new Job(2L, "Waiter", null));
@@ -56,7 +58,7 @@ public class EmployeeFactoryTest {
         EmployeeRequest employeeDTO = new EmployeeRequest(1L, "John", "Smith", "Cook");
 
         // when
-        EmployeeDTO employee = employeeFactory.createEmployeeFormula(employeeDTO).createEmployee();
+        EmployeeDTO employee = employeeFactory.createEmployeeFormula(employeeDTO, createCook()).createEmployee();
 
         // then
         assertEquals("John", employee.getFirstName());
@@ -70,7 +72,7 @@ public class EmployeeFactoryTest {
         EmployeeRequest employeeDTO = new EmployeeRequest(1L, "John", "Smith", "Waiter");
 
         // when
-        EmployeeDTO employee = employeeFactory.createEmployeeFormula(employeeDTO).createEmployee();
+        EmployeeDTO employee = employeeFactory.createEmployeeFormula(employeeDTO, createWaiter()).createEmployee();
 
         // then
         assertEquals("John", employee.getFirstName());
@@ -84,7 +86,7 @@ public class EmployeeFactoryTest {
         EmployeeRequest employeeDTO = new EmployeeRequest(1L, "John", "Smith", "DeliveryMan");
 
         // when
-        EmployeeDTO employee = employeeFactory.createEmployeeFormula(employeeDTO).createEmployee();
+        EmployeeDTO employee = employeeFactory.createEmployeeFormula(employeeDTO, createDeliveryMan()).createEmployee();
 
         // then
         assertEquals("John", employee.getFirstName());

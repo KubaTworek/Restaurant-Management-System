@@ -9,6 +9,7 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.order.OrderFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
+import pl.jakubtworek.RestaurantManagementSystem.repository.TypeOfOrderRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 import pl.jakubtworek.RestaurantManagementSystem.service.impl.OrderServiceImpl;
 
@@ -27,6 +28,8 @@ public class OrderServiceTest {
     @Mock
     private OrderRepository orderRepository;
     @Mock
+    private TypeOfOrderRepository typeOfOrderRepository;
+    @Mock
     private OrderFactory orderFactory;
     @Mock
     private OrdersQueue ordersQueue;
@@ -37,8 +40,9 @@ public class OrderServiceTest {
         orderRepository = mock(OrderRepository.class);
         orderFactory = mock(OrderFactory.class);
         ordersQueue = mock(OrdersQueue.class);
+        typeOfOrderRepository = mock(TypeOfOrderRepository.class);
 
-        orderService = new OrderServiceImpl(orderRepository, orderFactory, ordersQueue);
+        orderService = new OrderServiceImpl(orderRepository, typeOfOrderRepository, orderFactory, ordersQueue);
     }
 
     @Test

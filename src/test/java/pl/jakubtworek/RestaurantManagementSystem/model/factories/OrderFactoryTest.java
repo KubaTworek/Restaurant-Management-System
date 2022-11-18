@@ -12,6 +12,7 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.order.OrderFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.TypeOfOrderRepository;
+import pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,23 +23,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.createDeliveryType;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.createOnsiteType;
 
 public class OrderFactoryTest {
     @Mock
     private TypeOfOrderRepository typeOfOrderRepository;
-    @Mock
-    private OrdersQueue ordersQueue;
 
     private OrderFactory orderFactory;
 
     @BeforeEach
     public void setUp() {
         typeOfOrderRepository = mock(TypeOfOrderRepository.class);
-        ordersQueue = mock(OrdersQueue.class);
 
-        orderFactory = new OrderFactory(
-                typeOfOrderRepository
-        );
+        orderFactory = new OrderFactory();
 
         Optional<TypeOfOrder> onsite = Optional.of(new TypeOfOrder(1L, "On-site", null));
         Optional<TypeOfOrder> delivery = Optional.of(new TypeOfOrder(2L, "Delivery", null));
@@ -58,7 +56,7 @@ public class OrderFactoryTest {
         OrderRequest orderDTO = new OrderRequest(1L, "On-site", List.of(menuItem1, menuItem2));
 
         // when
-        OrderDTO order = orderFactory.createOrder(orderDTO).createOrder();
+        OrderDTO order = orderFactory.createOrder(orderDTO, createOnsiteType()).createOrder();
 
         // then
         assertEquals("On-site", order.getTypeOfOrder().getType());
@@ -76,7 +74,7 @@ public class OrderFactoryTest {
         OrderRequest orderDTO = new OrderRequest(1L, "Delivery", List.of(menuItem));
 
         // when
-        OrderDTO order = orderFactory.createOrder(orderDTO).createOrder();
+        OrderDTO order = orderFactory.createOrder(orderDTO, createDeliveryType()).createOrder();
 
         // then
         assertEquals("Delivery", order.getTypeOfOrder().getType());

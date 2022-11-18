@@ -95,7 +95,7 @@ public class EmployeeServiceTest {
         EmployeeDTO expectedEmployeeDTO = new EmployeeDTO(0L, "James", "Smith", new Job(1L,"Cook",List.of()), List.of());
         Employee expectedEmployee = new Employee(0L, "James", "Smith", new Job(1L,"Cook",List.of()), List.of());
 
-        when(employeeFactory.createEmployeeFormula(any(EmployeeRequest.class))).thenReturn(employeeFormula);
+        when(employeeFactory.createEmployeeFormula(any(EmployeeRequest.class), any(Job.class))).thenReturn(employeeFormula);
         when(employeeFormula.createEmployee()).thenReturn(expectedEmployeeDTO);
         when(employeeRepository.save(any(Employee.class))).thenReturn(expectedEmployee);
 

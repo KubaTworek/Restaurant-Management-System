@@ -25,7 +25,13 @@ public class EmployeeUtils {
         return Optional.of(new Employee(1L, "John", "Smith", new Job(1L,"Cook",List.of()), List.of()));
     }
 
-    public static Optional<Job> createJob(){
-        return Optional.of(spy(new Job(1L,"Cook",List.of())));
+    public static Job createCook(){
+        return new Job(1L,"Cook",List.of());
+    }
+    public static Job createWaiter(){
+        return new Job(2L,"Waiter",List.of());
+    }
+    public static Job createDeliveryMan(){
+        return spy(new Job(3L,"DeliveryMan",List.of()));
     }
 }

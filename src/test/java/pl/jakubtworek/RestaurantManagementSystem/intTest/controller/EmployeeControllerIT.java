@@ -155,7 +155,7 @@ public class EmployeeControllerIT {
         EmployeeRequest employee = new EmployeeRequest(0L, "James", "Smith", "Cook");
 
         // when
-        when(jobRepository.findByName(eq("Cook"))).thenReturn(createJob());
+        when(jobRepository.findByName(eq("Cook"))).thenReturn(Optional.of(createCook()));
         when(employeeRepository.save(any())).thenReturn(any(Employee.class));
 
         MvcResult mvcResult = mockMvc.perform(post("/employees")
@@ -192,11 +192,11 @@ public class EmployeeControllerIT {
     @Test
     void shouldReturnEmployees_whenJobNameIsPassed() throws Exception {
         // given
-        Optional<Job> expectedJob = createJob();
+        Job expectedJob = createCook();
         List<Employee> expectedCooks = createCooks();
 
         // when
-        when(jobRepository.findByName(eq("Cook"))).thenReturn(expectedJob);
+        when(jobRepository.findByName(eq("Cook"))).thenReturn(Optional.of(expectedJob));
         when(employeeRepository.findByJob(any(Job.class))).thenReturn(expectedCooks);
 
         MvcResult mvcResult = mockMvc.perform(get("/employees/job")
