@@ -126,7 +126,7 @@ public class OrderServiceTest {
         // given
         List<Order> orders = createOrders();
         Employee employee = spy(new Employee());
-        when(orderRepository.findByEmployees(employee)).thenReturn(orders);
+        when(orderRepository.findByEmploye(employee)).thenReturn(orders);
 
         // when
         List<Order> ordersReturned = orderService.findByEmployee(employee);

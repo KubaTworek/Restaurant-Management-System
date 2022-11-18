@@ -3,6 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.model.factories.order;
 import lombok.RequiredArgsConstructor;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.TypeOfOrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 
@@ -11,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderFormulaImpl implements OrderFormula{
     private final OrderRequest orderRequest;
-    private final TypeOfOrder typeOfOrder;
+    private final TypeOfOrderDTO typeOfOrder;
 
     @Override
     public OrderDTO createOrder(

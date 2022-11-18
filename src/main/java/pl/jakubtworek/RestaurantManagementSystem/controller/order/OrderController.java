@@ -10,6 +10,7 @@ import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRes
 import pl.jakubtworek.RestaurantManagementSystem.exception.EmployeeNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.exception.OrderNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.exception.TypeOfOrderNotFoundException;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
@@ -18,7 +19,11 @@ import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 import pl.jakubtworek.RestaurantManagementSystem.service.TypeOfOrderService;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.Collections.addAll;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,42 +35,36 @@ public class OrderController {
 
     @GetMapping
     public ResponseEntity<List<OrderResponse>> getOrders() {
-        List<Order> ordersFound = orderService.findAll();
-        List<OrderResponse> ordersDTO = createDTOList(ordersFound);
+        List<OrderResponse> ordersFound = orderService.findAll()
+                .stream()
+                .map(OrderDTO::convertDTOToResponse)
+                .collect(Collectors.toList());
 
-        return new ResponseEntity<>(ordersDTO, HttpStatus.OK);
+        return new ResponseEntity<>(ordersFound, HttpStatus.OK);
     }
 
     @GetMapping("/id")
     public ResponseEntity<OrderResponse> getOrderById(@RequestParam Long id) throws OrderNotFoundException {
-        if(orderService.checkIfOrderIsNull(id)){
-            throw new OrderNotFoundException("There are no order in restaurant with that id: " + id);
-        }
-        Order orderFound = orderService.findById(id).get();
-        OrderResponse orderResponse = orderFound.convertEntityToResponse();
-        addLinkToDTO(orderResponse);
+
+        OrderResponse orderResponse = orderService.findById(id)
+                .map(OrderDTO::convertDTOToResponse)
+                .orElseThrow(OrderNotFoundException::new);
 
         return new ResponseEntity<>(orderResponse, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<OrderResponse> saveOrder(@RequestBody OrderRequest dto) throws TypeOfOrderNotFoundException {
-        if(typeOfOrderService.checkIfTypeOfOrderIsNull(dto.getTypeOfOrder())){
-            throw new TypeOfOrderNotFoundException("There are no that type of order in restaurant with name: " + dto.getTypeOfOrder());
-        }
-        Order orderSaved = orderService.save(dto);
-        OrderResponse orderResponse = orderSaved.convertEntityToResponse();
-        addLinkToDTO(orderResponse);
+
+        OrderResponse orderResponse = orderService.save(dto).convertDTOToResponse();
 
         return new ResponseEntity<>(orderResponse, HttpStatus.CREATED);
     }
 
 
     @DeleteMapping("/id")
-    public ResponseEntity<String> deleteOrder(@RequestParam Long id) throws OrderNotFoundException {
-        if(orderService.checkIfOrderIsNull(id)){
-            throw new OrderNotFoundException("Order id not found - " + id);
-        }
+    public ResponseEntity<String> deleteOrder(@RequestParam Long id) {
+
         orderService.deleteById(id);
 
         return new ResponseEntity<>("Deleted order has id: " + id, HttpStatus.OK);
@@ -75,82 +74,39 @@ public class OrderController {
     public ResponseEntity<List<OrderResponse>> getOrderByParams(@RequestParam(required = false) String date,
                                                                 @RequestParam(required = false) String typeOfOrder,
                                                                 @RequestParam(required = false) Long employeeId
-                                                         ) throws TypeOfOrderNotFoundException, EmployeeNotFoundException {
-        List<Order> ordersFound1 = new ArrayList<>();
-        List<Order> ordersFound2 = new ArrayList<>();
-        List<Order> ordersFound3 = new ArrayList<>();
+                                                         ) {
 
-        if(date != null){
-            ordersFound1 = orderService.findByDate(date);
-        }
-        if(typeOfOrder != null){
-            if(typeOfOrderService.checkIfTypeOfOrderIsNull(typeOfOrder)) {
-                throw new TypeOfOrderNotFoundException("There are no type of orders like that in restaurant with that name: " + typeOfOrder);
-            }
-            TypeOfOrder typeOfOrderFound = typeOfOrderService.findByType(typeOfOrder).get();
-            ordersFound2 = orderService.findByTypeOfOrder(typeOfOrderFound);
-        }
-        if(employeeId != null){
-            if(employeeService.checkIfEmployeeIsNull(employeeId)) {
-                throw new EmployeeNotFoundException("There are no employees  with that id: " + employeeId);
-            }
-            Employee employeeFound = employeeService.findById(employeeId).get();
-            ordersFound3 = orderService.findByEmployee(employeeFound);
-        }
+        Stream<OrderResponse> ordersFoundByDate = orderService.findByDate(date).stream().map(OrderDTO::convertDTOToResponse);
+        TypeOfOrder typeOfOrderFound = typeOfOrderService.findByType(typeOfOrder).orElse(null);
+        Stream<OrderResponse> ordersFoundByTypeOfOrder = orderService.findByTypeOfOrder(typeOfOrderFound).stream().map(OrderDTO::convertDTOToResponse);
+        Employee employeeFound = employeeService.findById(employeeId).orElse(null);
+        Stream<OrderResponse> ordersFoundByEmployee = orderService.findByEmployee(employeeFound).stream().map(OrderDTO::convertDTOToResponse);
 
-        Set<Order> ordersFound = new HashSet<>();
-        ordersFound.addAll(ordersFound1);
-        ordersFound.addAll(ordersFound2);
-        ordersFound.addAll(ordersFound3);
+        List<OrderResponse> ordersFound = Stream.of(ordersFoundByDate, ordersFoundByTypeOfOrder, ordersFoundByEmployee)
+                .flatMap(Function.identity())
+                .distinct()
+                .collect(Collectors.toList());
 
-        List<OrderResponse> ordersDTO = createDTOList(ordersFound);
-        return new ResponseEntity<>(ordersDTO, HttpStatus.OK);
+        return new ResponseEntity<>(ordersFound, HttpStatus.OK);
     }
 
     @GetMapping("/ready")
     public ResponseEntity<List<OrderResponse>> getOrderMade() {
-        List<Order> ordersFound = orderService.findMadeOrders();
-        List<OrderResponse> ordersDTO = createDTOList(ordersFound);
+        List<OrderResponse> ordersFound = orderService.findMadeOrders()
+                .stream()
+                .map(OrderDTO::convertDTOToResponse)
+                .collect(Collectors.toList());
 
-        return new ResponseEntity<>(ordersDTO, HttpStatus.OK);
+        return new ResponseEntity<>(ordersFound, HttpStatus.OK);
     }
 
     @GetMapping("/unready")
     public ResponseEntity<List<OrderResponse>> getOrderUnmade() {
-        List<Order> ordersFound = orderService.findUnmadeOrders();
-        List<OrderResponse> ordersDTO = createDTOList(ordersFound);
-
-        return new ResponseEntity<>(ordersDTO, HttpStatus.OK);
-    }
-
-    private List<OrderResponse> createDTOList(List<Order> orderEntities){
-        List<OrderResponse> ordersDTO = orderEntities
+        List<OrderResponse> ordersFound = orderService.findUnmadeOrders()
                 .stream()
-                .map(Order::convertEntityToResponse)
+                .map(OrderDTO::convertDTOToResponse)
                 .collect(Collectors.toList());
 
-        ordersDTO.forEach(this::addLinkToDTO);
-
-        return ordersDTO;
-    }
-
-    private List<OrderResponse> createDTOList(Set<Order> orderEntities){
-        List<OrderResponse> ordersDTO = orderEntities
-                .stream()
-                .map(Order::convertEntityToResponse)
-                .collect(Collectors.toList());
-
-        ordersDTO.forEach(this::addLinkToDTO);
-
-        return ordersDTO;
-    }
-
-    private void addLinkToDTO(OrderResponse dto){
-        dto.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash(dto.getId()).withSelfRel());
-        if(!(dto.getEmployees() == null)){
-            for(EmployeeResponse e: dto.getEmployees()){
-                e.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash(e.getId()).withSelfRel());
-            }
-        }
+        return new ResponseEntity<>(ordersFound, HttpStatus.OK);
     }
 }

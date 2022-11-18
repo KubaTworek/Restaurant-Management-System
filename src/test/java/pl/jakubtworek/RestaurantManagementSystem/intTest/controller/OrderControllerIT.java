@@ -315,7 +315,7 @@ public class OrderControllerIT {
 
         // when
         when(employeeRepository.findById(1L)).thenReturn(expectedEmployee);
-        when(orderRepository.findByEmployees(expectedEmployee.get())).thenReturn(expectedOrders);
+        when(orderRepository.findByEmploye(expectedEmployee.get())).thenReturn(expectedOrders);
 
         MvcResult mvcResult = mockMvc.perform(get("/orders/find")
                         .param("employeeId", String.valueOf(1L))

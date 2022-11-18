@@ -4,6 +4,7 @@ import com.sun.istack.NotNull;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.TypeOfOrderResponse;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.TypeOfOrderDTO;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -39,7 +40,10 @@ public class TypeOfOrder {
         tempOrder.setTypeOfOrder(this);
     }
 
-    public TypeOfOrderResponse convertEntityToDTO() {
+    public TypeOfOrderResponse convertEntityToResponse() {
         return new ModelMapper().map(this, TypeOfOrderResponse.class);
+    }
+    public TypeOfOrderDTO convertEntityToDTO() {
+        return new ModelMapper().map(this, TypeOfOrderDTO.class);
     }
 }

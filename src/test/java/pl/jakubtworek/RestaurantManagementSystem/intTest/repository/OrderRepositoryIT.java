@@ -6,14 +6,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
-import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
-import pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -129,7 +126,7 @@ public class OrderRepositoryIT {
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnOrders_whenPassEmployee() {
         // when
-        List<Order> orders = orderRepository.findByEmployees(spy(new Employee(1L, "John", "Smith", new Job(1L,"Cook",List.of()), List.of())));
+        List<Order> orders = orderRepository.findByEmploye(spy(new Employee(1L, "John", "Smith", new Job(1L,"Cook",List.of()), List.of())));
 
         // then
         assertEquals(2, orders.size());
