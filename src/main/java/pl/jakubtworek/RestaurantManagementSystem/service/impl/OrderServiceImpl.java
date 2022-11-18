@@ -3,6 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
+import pl.jakubtworek.RestaurantManagementSystem.exception.JobNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
@@ -10,6 +11,7 @@ import pl.jakubtworek.RestaurantManagementSystem.model.factories.order.OrderFact
 import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
+import pl.jakubtworek.RestaurantManagementSystem.repository.TypeOfOrderRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 
 import java.util.List;
@@ -19,6 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
+    private final TypeOfOrderRepository typeOfOrderRepository;
     private final OrderFactory orderFactory;
     private final OrdersQueue ordersQueue;
 
@@ -34,7 +37,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order save(OrderRequest orderDTO) {
-        OrderDTO dto = orderFactory.createOrder(orderDTO).createOrder();
+        TypeOfOrder typeOfOrder = findTypeOfOrder(orderDTO.getTypeOfOrder());
+        OrderDTO dto = createOrder(orderDTO, typeOfOrder);
         Order order = dto.convertDTOToEntity();
         Order orderCreated = orderRepository.save(order);
         ordersQueue.add(orderCreated.convertEntityToDTO());
@@ -81,5 +85,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean checkIfOrderIsNull(Long id){
         return findById(id).isEmpty();
+    }
+
+    private TypeOfOrder findTypeOfOrder(String type){
+        return typeOfOrderRepository.findByType(type).orElseThrow();
+    }
+
+    private OrderDTO createOrder(OrderRequest orderDTO, TypeOfOrder typeOfOrder){
+        return orderFactory.createOrder(orderDTO, typeOfOrder).createOrder();
     }
 }
