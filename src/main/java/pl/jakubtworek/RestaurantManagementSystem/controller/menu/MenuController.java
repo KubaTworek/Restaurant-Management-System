@@ -4,11 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.jakubtworek.RestaurantManagementSystem.exception.EmployeeNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.exception.MenuNotFoundException;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
 
 import java.util.List;
@@ -22,7 +19,7 @@ public class MenuController {
 
     @GetMapping
     public ResponseEntity<List<MenuResponse>> getMenus() {
-        
+
         List<MenuResponse> menuFound = menuService.findAll()
                 .stream()
                 .map(MenuDTO::convertDTOToResponse)
@@ -50,10 +47,14 @@ public class MenuController {
     }
 
     @DeleteMapping("/id")
-    public ResponseEntity<String> deleteMenu(@RequestParam Long id) {
+    public ResponseEntity<MenuResponse> deleteMenu(@RequestParam Long id) throws MenuNotFoundException {
+
+        MenuResponse menuResponse = menuService.findById(id)
+                .map(MenuDTO::convertDTOToResponse)
+                .orElseThrow(MenuNotFoundException::new);
 
         menuService.deleteById(id);
 
-        return new ResponseEntity<>("Deleted menu has id: " + id, HttpStatus.OK);
+        return new ResponseEntity<>(menuResponse, HttpStatus.OK);
     }
 }

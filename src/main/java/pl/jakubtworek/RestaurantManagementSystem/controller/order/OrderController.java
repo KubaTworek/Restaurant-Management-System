@@ -60,11 +60,15 @@ public class OrderController {
 
 
     @DeleteMapping("/id")
-    public ResponseEntity<String> deleteOrder(@RequestParam Long id) {
+    public ResponseEntity<OrderResponse> deleteOrder(@RequestParam Long id) throws OrderNotFoundException {
+
+        OrderResponse orderResponse = orderService.findById(id)
+                .map(OrderDTO::convertDTOToResponse)
+                .orElseThrow(OrderNotFoundException::new);
 
         orderService.deleteById(id);
 
-        return new ResponseEntity<>("Deleted order has id: " + id, HttpStatus.OK);
+        return new ResponseEntity<>(orderResponse, HttpStatus.OK);
     }
 
     @GetMapping("/find")

@@ -55,11 +55,15 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/id")
-    public ResponseEntity<String> deleteEmployee(@RequestParam Long id) {
+    public ResponseEntity<EmployeeResponse> deleteEmployee(@RequestParam Long id) throws EmployeeNotFoundException {
+
+        EmployeeResponse employeeResponse = employeeService.findById(id)
+                .map(EmployeeDTO::convertDTOToResponse)
+                .orElseThrow(EmployeeNotFoundException::new);
 
         employeeService.deleteById(id);
 
-        return new ResponseEntity<>("Deleted employee has id: " + id, HttpStatus.OK);
+        return new ResponseEntity<>(employeeResponse, HttpStatus.OK);
     }
 
     @GetMapping("/job")
