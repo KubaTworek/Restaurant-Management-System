@@ -33,7 +33,7 @@ public class WaiterDelivery extends Delivery implements Observer {
     protected void startDelivering() {
         EmployeeDTO employee = waiterQueue.get();
         OrderDTO order = ordersMadeOnsiteQueue.get();
-        order.add(employee.convertDTOToEntity());
+        order.add(employee);
         startDeliveringOrder(employee, order, 2);
     }
 

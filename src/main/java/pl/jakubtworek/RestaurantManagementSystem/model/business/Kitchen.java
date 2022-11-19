@@ -7,16 +7,14 @@ import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 
 @Service
 public class Kitchen implements Observer {
+    private final OrdersQueueFacade ordersQueueFacade;
     private final CooksQueue cooksQueue;
     private final OrdersQueue ordersQueue;
-    private final OrdersMadeOnsiteQueue ordersMadeOnsiteQueue;
-    private final OrdersMadeDeliveryQueue ordersMadeDeliveryQueue;
 
-    public Kitchen(OrdersQueue ordersQueue, CooksQueue cooksQueue, OrdersMadeOnsiteQueue ordersMadeOnsiteQueue, OrdersMadeDeliveryQueue ordersMadeDeliveryQueue) {
+    public Kitchen(OrdersQueueFacade ordersQueueFacade, OrdersQueue ordersQueue, CooksQueue cooksQueue) {
+        this.ordersQueueFacade = ordersQueueFacade;
         this.ordersQueue = ordersQueue;
         this.cooksQueue = cooksQueue;
-        this.ordersMadeOnsiteQueue = ordersMadeOnsiteQueue;
-        this.ordersMadeDeliveryQueue = ordersMadeDeliveryQueue;
         ordersQueue.registerObserver(this);
         cooksQueue.registerObserver(this);
     }
@@ -31,7 +29,7 @@ public class Kitchen implements Observer {
     private void startCooking() {
         EmployeeDTO employee = cooksQueue.get();
         OrderDTO order = ordersQueue.get();
-        order.add(employee.convertDTOToEntity());
+        order.add(employee);
         startPreparingOrder(employee, order, order.getMenuItems().size());
     }
 
@@ -44,17 +42,12 @@ public class Kitchen implements Observer {
         return ordersQueue.size()>0 && cooksQueue.size()>0;
     }
 
-    private void serveOrder(OrderDTO order){
-        if(order.getTypeOfOrder().getId()==1) ordersMadeOnsiteQueue.add(order);
-        if(order.getTypeOfOrder().getId()==2) ordersMadeDeliveryQueue.add(order);
-    }
-
     private void preparing(EmployeeDTO employee, OrderDTO order, int time){
         int timeToCook = time * 1000;
         try {
             Thread.sleep(timeToCook);
             cooksQueue.add(employee);
-            serveOrder(order);
+            ordersQueueFacade.addMadeOrderToQueue(order);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

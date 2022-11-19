@@ -31,7 +31,7 @@ public class CarDelivery extends Delivery implements Observer {
     protected void startDelivering() {
         EmployeeDTO employee = deliveryQueue.get();
         OrderDTO order = ordersMadeDeliveryQueue.get();
-        order.add(employee.convertDTOToEntity());
+        order.add(employee);
         startDeliveringOrder(employee, order, 5);
     }
 

@@ -53,8 +53,8 @@ public class OrdersQueue implements Subject {
         }
 
         private int isOrderOnsite(OrderDTO o1){
-            if (o1.getTypeOfOrder().getType() == "On-site") return 1;
-            if (o1.getTypeOfOrder().getType() == "Delivery") return -1;
+            if (Objects.equals(o1.getTypeOfOrder().getType(), "On-site")) return 1;
+            if (Objects.equals(o1.getTypeOfOrder().getType(), "Delivery")) return -1;
             return 0;
         }
     }
