@@ -2,7 +2,6 @@ package pl.jakubtworek.RestaurantManagementSystem.model.dto;
 
 import lombok.*;
 import org.modelmapper.ModelMapper;
-import pl.jakubtworek.RestaurantManagementSystem.controller.order.TypeOfOrderResponse;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 
 import java.util.List;
@@ -19,8 +18,5 @@ public class TypeOfOrderDTO {
 
     public TypeOfOrder convertDTOToEntity() {
         return new ModelMapper().map(this, TypeOfOrder.class);
-    }
-    public TypeOfOrderResponse convertDTOToResponse() {
-        return new ModelMapper().map(this, TypeOfOrderResponse.class);
     }
 }

@@ -3,7 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.controller.order;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -18,7 +18,7 @@ public class OrderRequest {
     @NotNull(message = "Menu items cannot be null.")
     private List<MenuItemRequest> menuItems;
 
-    public Order convertRequestToEntity() {
-        return new ModelMapper().map(this, Order.class);
+    public OrderDTO convertRequestToDTO() {
+        return new ModelMapper().map(this, OrderDTO.class);
     }
 }

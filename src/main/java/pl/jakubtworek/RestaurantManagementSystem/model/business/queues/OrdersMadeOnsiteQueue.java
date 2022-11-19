@@ -3,7 +3,6 @@ package pl.jakubtworek.RestaurantManagementSystem.model.business.queues;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

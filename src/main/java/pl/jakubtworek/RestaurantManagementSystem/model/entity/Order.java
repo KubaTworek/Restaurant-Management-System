@@ -2,7 +2,6 @@ package pl.jakubtworek.RestaurantManagementSystem.model.entity;
 
 import lombok.*;
 import org.modelmapper.ModelMapper;
-import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderResponse;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 
 import javax.persistence.*;
@@ -83,8 +82,5 @@ public class Order {
 
     public OrderDTO convertEntityToDTO() {
         return new ModelMapper().map(this, OrderDTO.class);
-    }
-    public OrderResponse convertEntityToResponse() {
-        return new ModelMapper().map(this, OrderResponse.class);
     }
 }

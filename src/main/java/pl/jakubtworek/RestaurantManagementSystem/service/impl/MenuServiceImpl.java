@@ -50,5 +50,4 @@ public class MenuServiceImpl implements MenuService {
     public Optional<MenuDTO> findByName(String menuName) {
         return menuRepository.findByName(menuName).map(Menu::convertEntityToDTO);
     }
-
 }

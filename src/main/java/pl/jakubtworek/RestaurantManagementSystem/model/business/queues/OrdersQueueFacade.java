@@ -7,7 +7,6 @@ import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 @RequiredArgsConstructor
 @Component
 public class OrdersQueueFacade {
-
     private final OrdersQueue ordersQueue;
     private final OrdersMadeOnsiteQueue ordersMadeOnsiteQueue;
     private final OrdersMadeDeliveryQueue ordersMadeDeliveryQueue;

@@ -3,7 +3,6 @@ package pl.jakubtworek.RestaurantManagementSystem.model.entity;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.modelmapper.ModelMapper;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuResponse;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
 
 import javax.persistence.*;
@@ -46,8 +45,5 @@ public class Menu {
 
     public MenuDTO convertEntityToDTO() {
         return new ModelMapper().map(this, MenuDTO.class);
-    }
-    public MenuResponse convertEntityToResponse() {
-        return new ModelMapper().map(this, MenuResponse.class);
     }
 }

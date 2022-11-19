@@ -1,10 +1,7 @@
 package pl.jakubtworek.RestaurantManagementSystem.model.factories.order;
 
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
-import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

@@ -2,10 +2,9 @@ package pl.jakubtworek.RestaurantManagementSystem.model.factories.order;
 
 import lombok.RequiredArgsConstructor;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.TypeOfOrderDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class OrderFormulaImpl implements OrderFormula{
         String time = getNowTime();
         String date = getTodayDate();
         double price = calculateOrderPrice(orderRequest.getMenuItems());
-        List<MenuItem> menuItems = orderRequest.convertRequestToEntity().getMenuItems();
+        List<MenuItemDTO> menuItems = orderRequest.convertRequestToDTO().getMenuItems();
 
         return OrderDTO.builder()
                 .id(0L)
