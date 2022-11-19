@@ -2,14 +2,16 @@ package pl.jakubtworek.RestaurantManagementSystem.model.factories;
 
 import org.springframework.stereotype.Component;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuRequest;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
 
 @Component
 public class MenuFactory {
-    public Menu createMenu(MenuRequest menuDTO){
-        return Menu.builder()
+    public MenuDTO createMenu(MenuRequest menuRequest){
+        String name = menuRequest.getName();
+
+        return MenuDTO.builder()
                         .id(0L)
-                        .name(menuDTO.getName())
+                        .name(name)
                         .menuItems(null)
                         .build();
     }

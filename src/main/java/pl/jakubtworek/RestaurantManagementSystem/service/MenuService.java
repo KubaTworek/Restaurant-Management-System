@@ -1,17 +1,15 @@
 package pl.jakubtworek.RestaurantManagementSystem.service;
 
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuRequest;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface MenuService {
-    List<Menu> findAll();
-    Optional<Menu> findById(Long theId);
-    Menu save(MenuRequest theMenu);
+    List<MenuDTO> findAll();
+    Optional<MenuDTO> findById(Long theId);
+    MenuDTO save(MenuRequest menuRequest);
     void deleteById(Long theId);
-    Optional<Menu> findByName(String theName);
-    boolean checkIsMenuIsNull(Long id);
-    boolean checkIsMenuIsNull(String name);
+    Optional<MenuDTO> findByName(String theName);
 }

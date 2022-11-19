@@ -1,11 +1,13 @@
 package pl.jakubtworek.RestaurantManagementSystem.controller.menu;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.jakubtworek.RestaurantManagementSystem.exception.EmployeeNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.exception.MenuNotFoundException;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
 
@@ -20,55 +22,38 @@ public class MenuController {
 
     @GetMapping
     public ResponseEntity<List<MenuResponse>> getMenus() {
-        List<Menu> menuFound = menuService.findAll();
-        List<MenuResponse> menuResponse = createDTOList(menuFound);
+        
+        List<MenuResponse> menuFound = menuService.findAll()
+                .stream()
+                .map(MenuDTO::convertDTOToResponse)
+                .collect(Collectors.toList());
 
-        return new ResponseEntity<>(menuResponse, HttpStatus.OK);
+        return new ResponseEntity<>(menuFound, HttpStatus.OK);
     }
 
     @GetMapping("/id")
     public ResponseEntity<MenuResponse> getMenuById(@RequestParam Long id) throws MenuNotFoundException {
-        if(menuService.checkIsMenuIsNull(id)){
-            throw new MenuNotFoundException("There are no menu in restaurant with that id: " + id);
-        }
-        Menu menuFound = menuService.findById(id).get();
-        MenuResponse menuResponse = menuFound.convertEntityToResponse();
-        addLinkToDTO(menuResponse);
+
+        MenuResponse menuResponse = menuService.findById(id)
+                .map(MenuDTO::convertDTOToResponse)
+                .orElseThrow(MenuNotFoundException::new);
 
         return new ResponseEntity<>(menuResponse, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<MenuResponse> saveMenu(@RequestBody MenuRequest dto) {
-        Menu menuSaved = menuService.save(dto);
-        MenuResponse menuResponse = menuSaved.convertEntityToResponse();
-        addLinkToDTO(menuResponse);
+    public ResponseEntity<MenuResponse> saveMenu(@RequestBody MenuRequest menuRequest) {
+
+        MenuResponse menuResponse = menuService.save(menuRequest).convertDTOToResponse();
 
         return new ResponseEntity<>(menuResponse, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/id")
-    public ResponseEntity<String> deleteMenu(@RequestParam Long id) throws MenuNotFoundException {
-        if(menuService.checkIsMenuIsNull(id)) {
-            throw new MenuNotFoundException("There are menu in restaurant with that id: " + id);
-        }
+    public ResponseEntity<String> deleteMenu(@RequestParam Long id) {
+
         menuService.deleteById(id);
 
         return new ResponseEntity<>("Deleted menu has id: " + id, HttpStatus.OK);
-    }
-
-    private List<MenuResponse> createDTOList(List<Menu> menuEntities){
-        List<MenuResponse> menuResponse = menuEntities
-                .stream()
-                .map(Menu::convertEntityToResponse)
-                .collect(Collectors.toList());
-
-        menuResponse.forEach(this::addLinkToDTO);
-
-        return menuResponse;
-    }
-
-    private void addLinkToDTO(MenuResponse dto){
-        dto.add(WebMvcLinkBuilder.linkTo(MenuController.class).slash(dto.getId()).withSelfRel());
     }
 }

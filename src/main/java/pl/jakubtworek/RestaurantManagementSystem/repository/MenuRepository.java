@@ -7,7 +7,6 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import java.util.Optional;
 
 @Repository
-
 public interface MenuRepository extends JpaRepository<Menu, Long> {
     Optional<Menu> findByName(String theName);
 }

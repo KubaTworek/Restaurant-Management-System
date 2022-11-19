@@ -66,10 +66,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .collect(Collectors.toList());
     }
 
-    private Optional<JobDTO> findJob(String jobName){
-        return jobRepository.findByName(jobName).map(Job::convertEntityToDTO);
-    }
-
     private void pushEmployeeToProperQueue(Employee employee){
         EmployeeDTO employeeDTOx = employee.convertEntityToDTO();
         if(Objects.equals(employeeDTOx.getJob().getName(), "Cook")) cooksQueue.add(employeeDTOx);

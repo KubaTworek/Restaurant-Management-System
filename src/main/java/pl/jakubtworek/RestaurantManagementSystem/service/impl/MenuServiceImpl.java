@@ -3,6 +3,8 @@ package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuRequest;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuRepository;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
@@ -10,6 +12,7 @@ import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,20 +22,24 @@ public class MenuServiceImpl implements MenuService {
     private final MenuFactory menuFactory;
 
     @Override
-    public List<Menu> findAll() {
-        return menuRepository.findAll();
+    public List<MenuDTO> findAll() {
+        return menuRepository.findAll()
+                .stream()
+                .map(Menu::convertEntityToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<Menu> findById(Long theId) {
-        return menuRepository.findById(theId);
+    public Optional<MenuDTO> findById(Long theId) {
+        return menuRepository.findById(theId).map(Menu::convertEntityToDTO);
     }
 
     @Override
-    public Menu save(MenuRequest menuDTO) {
-        Menu menu = menuFactory.createMenu(menuDTO);
-        menuRepository.save(menu);
-        return menu;
+    public MenuDTO save(MenuRequest menuRequest) {
+        MenuDTO menuDTO = menuFactory.createMenu(menuRequest);
+        Menu menu = menuDTO.convertDTOToEntity();
+        Menu menuCreated = menuRepository.save(menu);
+        return menuCreated.convertEntityToDTO();
     }
 
     @Override
@@ -41,16 +48,8 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public Optional<Menu> findByName(String menuName) {
-        return menuRepository.findByName(menuName);
+    public Optional<MenuDTO> findByName(String menuName) {
+        return menuRepository.findByName(menuName).map(Menu::convertEntityToDTO);
     }
 
-    @Override
-    public boolean checkIsMenuIsNull(Long id) {
-        return findById(id).isEmpty();
-    }
-    @Override
-    public boolean checkIsMenuIsNull(String name) {
-        return findByName(name).isEmpty();
-    }
 }
