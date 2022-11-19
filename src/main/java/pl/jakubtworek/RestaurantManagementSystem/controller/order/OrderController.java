@@ -1,18 +1,15 @@
 package pl.jakubtworek.RestaurantManagementSystem.controller.order;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeController;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeResponse;
-import pl.jakubtworek.RestaurantManagementSystem.exception.EmployeeNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.exception.OrderNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.exception.TypeOfOrderNotFoundException;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.TypeOfOrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
@@ -22,8 +19,6 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.util.Collections.addAll;
 
 @RestController
 @RequiredArgsConstructor
@@ -54,9 +49,11 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderResponse> saveOrder(@RequestBody OrderRequest dto) throws TypeOfOrderNotFoundException {
+    public ResponseEntity<OrderResponse> saveOrder(@RequestBody OrderRequest orderRequest) throws TypeOfOrderNotFoundException {
 
-        OrderResponse orderResponse = orderService.save(dto).convertDTOToResponse();
+        TypeOfOrderDTO typeOfOrderDTO = typeOfOrderService.findByType(orderRequest.getTypeOfOrder())
+                .orElseThrow(TypeOfOrderNotFoundException::new);
+        OrderResponse orderResponse = orderService.save(orderRequest, typeOfOrderDTO).convertDTOToResponse();
 
         return new ResponseEntity<>(orderResponse, HttpStatus.CREATED);
     }
@@ -77,9 +74,9 @@ public class OrderController {
                                                          ) {
 
         Stream<OrderResponse> ordersFoundByDate = orderService.findByDate(date).stream().map(OrderDTO::convertDTOToResponse);
-        TypeOfOrder typeOfOrderFound = typeOfOrderService.findByType(typeOfOrder).orElse(null);
+        TypeOfOrder typeOfOrderFound = typeOfOrderService.findByType(typeOfOrder).map(TypeOfOrderDTO::convertDTOToEntity).orElse(null);
         Stream<OrderResponse> ordersFoundByTypeOfOrder = orderService.findByTypeOfOrder(typeOfOrderFound).stream().map(OrderDTO::convertDTOToResponse);
-        Employee employeeFound = employeeService.findById(employeeId).orElse(null);
+        Employee employeeFound = employeeService.findById(employeeId).map(EmployeeDTO::convertDTOToEntity).orElse(null);
         Stream<OrderResponse> ordersFoundByEmployee = orderService.findByEmployee(employeeFound).stream().map(OrderDTO::convertDTOToResponse);
 
         List<OrderResponse> ordersFound = Stream.of(ordersFoundByDate, ordersFoundByTypeOfOrder, ordersFoundByEmployee)

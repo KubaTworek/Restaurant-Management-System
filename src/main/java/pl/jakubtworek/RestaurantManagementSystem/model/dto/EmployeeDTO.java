@@ -4,7 +4,6 @@ import lombok.*;
 import org.modelmapper.ModelMapper;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeResponse;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ public class EmployeeDTO {
     private Long id;
     private String firstName;
     private String lastName;
-    private Job job;
+    private JobDTO job;
     private List<OrderDTO> orders;
 
     public Employee convertDTOToEntity() {

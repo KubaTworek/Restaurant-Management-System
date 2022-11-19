@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<Order> findByDate(String date);
     Optional<Order> findByTypeOfOrder(TypeOfOrder typeOfOrder);
-    Optional<Order> findByEmploye(Employee employee);
+    Optional<Order> findByEmployee(Employee employee);
     Optional<Order> findOrdersByHourAwayIsNull();
     Optional<Order> findOrdersByHourAwayIsNotNull();
 }

@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
-    private final TypeOfOrderRepository typeOfOrderRepository;
     private final OrderFactory orderFactory;
     private final OrdersQueue ordersQueue;
 
@@ -42,8 +41,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDTO save(OrderRequest orderRequest) throws TypeOfOrderNotFoundException {
-        TypeOfOrderDTO typeOfOrderDTO = findTypeOfOrder(orderRequest.getTypeOfOrder()).orElseThrow(TypeOfOrderNotFoundException::new);
+    public OrderDTO save(OrderRequest orderRequest, TypeOfOrderDTO typeOfOrderDTO) {
         OrderDTO orderDTO = createOrder(orderRequest, typeOfOrderDTO);
         Order order = orderDTO.convertDTOToEntity();
         Order orderCreated = orderRepository.save(order);
@@ -82,7 +80,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDTO> findByEmployee(Employee theEmployee) {
-        return orderRepository.findByEmploye(theEmployee)
+        return orderRepository.findByEmployee(theEmployee)
                 .stream()
                 .map(Order::convertEntityToDTO)
                 .collect(Collectors.toList());
@@ -102,10 +100,6 @@ public class OrderServiceImpl implements OrderService {
                 .stream()
                 .map(Order::convertEntityToDTO)
                 .collect(Collectors.toList());
-    }
-
-    private Optional<TypeOfOrderDTO> findTypeOfOrder(String theType){
-        return typeOfOrderRepository.findByType(theType).map(TypeOfOrder::convertEntityToDTO);
     }
 
     private OrderDTO createOrder(OrderRequest orderDTO, TypeOfOrderDTO typeOfOrderDTO){

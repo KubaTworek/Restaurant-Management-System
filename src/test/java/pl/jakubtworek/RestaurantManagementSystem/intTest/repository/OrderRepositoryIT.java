@@ -126,7 +126,7 @@ public class OrderRepositoryIT {
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnOrders_whenPassEmployee() {
         // when
-        List<Order> orders = orderRepository.findByEmploye(spy(new Employee(1L, "John", "Smith", new Job(1L,"Cook",List.of()), List.of())));
+        List<Order> orders = orderRepository.findByEmployee(spy(new Employee(1L, "John", "Smith", new Job(1L,"Cook",List.of()), List.of())));
 
         // then
         assertEquals(2, orders.size());

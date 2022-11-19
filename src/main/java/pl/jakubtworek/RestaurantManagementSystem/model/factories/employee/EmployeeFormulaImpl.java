@@ -3,12 +3,13 @@ package pl.jakubtworek.RestaurantManagementSystem.model.factories.employee;
 import lombok.RequiredArgsConstructor;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.JobDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 
 @RequiredArgsConstructor
 public class EmployeeFormulaImpl implements EmployeeFormula{
     private final EmployeeRequest employeeDTO;
-    private final Job job;
+    private final JobDTO job;
 
     @Override
     public EmployeeDTO createEmployee(
