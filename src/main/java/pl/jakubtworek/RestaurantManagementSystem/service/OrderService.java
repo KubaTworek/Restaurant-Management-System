@@ -1,7 +1,6 @@
 package pl.jakubtworek.RestaurantManagementSystem.service;
 
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
-import pl.jakubtworek.RestaurantManagementSystem.exception.TypeOfOrderNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.TypeOfOrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;

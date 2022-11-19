@@ -11,7 +11,6 @@ import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.JobDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.EmployeeFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
-import pl.jakubtworek.RestaurantManagementSystem.repository.JobRepository;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
@@ -25,7 +24,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
-    private final JobRepository jobRepository;
     private final EmployeeFactory employeeFactory;
     private final CooksQueue cooksQueue;
     private final WaiterQueue waiterQueue;
@@ -46,8 +44,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDTO save(EmployeeRequest employeeRequest, JobDTO jobDTO) throws JobNotFoundException {
-        EmployeeDTO dto = createEmployee(employeeRequest, jobDTO);
-        Employee employee = dto.convertDTOToEntity();
+        EmployeeDTO employeeDTO = createEmployee(employeeRequest, jobDTO);
+        Employee employee = employeeDTO.convertDTOToEntity();
         Employee employeeCreated = employeeRepository.save(employee);
         pushEmployeeToProperQueue(employeeCreated);
         return employeeCreated.convertEntityToDTO();
