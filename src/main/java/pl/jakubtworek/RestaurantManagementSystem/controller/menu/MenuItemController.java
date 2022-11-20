@@ -3,6 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.controller.menu;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.jakubtworek.RestaurantManagementSystem.exception.MenuItemNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.exception.MenuNotFoundException;
@@ -11,6 +12,7 @@ import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuItemService;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
 
+@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/menu-items")

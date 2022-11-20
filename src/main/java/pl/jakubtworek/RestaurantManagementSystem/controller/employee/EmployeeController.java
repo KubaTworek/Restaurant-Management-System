@@ -3,6 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.controller.employee;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.jakubtworek.RestaurantManagementSystem.exception.EmployeeNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.exception.JobNotFoundException;
@@ -16,6 +17,7 @@ import pl.jakubtworek.RestaurantManagementSystem.service.JobService;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/employees")
