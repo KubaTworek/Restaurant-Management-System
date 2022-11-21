@@ -88,7 +88,7 @@ public class MenuE2ETest {
     @Test
     void shouldReturnCreatedMenu() throws Exception {
         // given
-        MenuRequest menu = new MenuRequest(0L, "Alcohol");
+        MenuRequest menu = new MenuRequest("Alcohol");
 
         // when
         MvcResult mvcResult = mockMvc.perform(post("/menu")

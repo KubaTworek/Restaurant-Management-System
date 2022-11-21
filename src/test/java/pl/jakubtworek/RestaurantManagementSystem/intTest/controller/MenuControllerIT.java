@@ -40,6 +40,7 @@ public class MenuControllerIT {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
+
     @MockBean
     private MenuRepository menuRepository;
 
@@ -49,20 +50,6 @@ public class MenuControllerIT {
     private MenuService menuService;
     @Autowired
     private MenuController menuController;
-
-    @BeforeEach
-    public void setup() {
-        mock(MenuRepository.class);
-
-        menuFactory = new MenuFactory();
-        menuService = new MenuServiceImpl(
-                menuRepository,
-                menuFactory
-        );
-        menuController = new MenuController(
-                menuService
-        );
-    }
 
     @Test
     void shouldReturnAllMenu() throws Exception {
@@ -128,7 +115,7 @@ public class MenuControllerIT {
     @Test
     void shouldReturnCreatedMenu() throws Exception {
         // given
-        MenuRequest menu = new MenuRequest(0L, "Alcohol");
+        MenuRequest menu = new MenuRequest("Alcohol");
 
         // when
         MvcResult mvcResult = mockMvc.perform(post("/menu")

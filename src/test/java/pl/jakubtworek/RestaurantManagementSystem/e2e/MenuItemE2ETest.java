@@ -61,7 +61,7 @@ public class MenuItemE2ETest {
     @Sql(statements = "INSERT INTO `menu` VALUES (1,'Drinks'), (2,'Food')")
     void shouldReturnCreatedMenuItem() throws Exception {
         // given
-        MenuItemRequest menuItem = new MenuItemRequest(0L, "Beer", 5.99, "Drinks");
+        MenuItemRequest menuItem = new MenuItemRequest("Beer", 5.99, "Drinks");
 
         // when
         MvcResult mvcResult = mockMvc.perform(post("/menu-items")

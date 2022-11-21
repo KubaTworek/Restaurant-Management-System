@@ -42,6 +42,7 @@ public class MenuItemControllerIT {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
+
     @MockBean
     private MenuItemRepository menuItemRepository;
     @MockBean
@@ -57,27 +58,6 @@ public class MenuItemControllerIT {
     private MenuItemService menuItemService;
     @Autowired
     private MenuService menuService;
-
-    @BeforeEach
-    public void setup() {
-        mock(MenuItemRepository.class);
-
-        menuFactory = new MenuFactory();
-        menuItemService = new MenuItemServiceImp(
-                menuItemRepository,
-                menuRepository,
-                menuItemFactory
-        );
-        menuItemController = new MenuItemController(
-                menuItemService,
-                menuService
-        );
-        menuService = new MenuServiceImpl(
-                menuRepository,
-                menuFactory
-        );
-        menuItemFactory = new MenuItemFactory();
-    }
 
     @Test
     void shouldReturnMenuItemById() throws Exception {
@@ -115,7 +95,7 @@ public class MenuItemControllerIT {
     @Test
     void shouldReturnCreatedMenuItem() throws Exception {
         // given
-        MenuItemRequest menuItem = new MenuItemRequest(0L, "Beer", 5.99, "Drinks");
+        MenuItemRequest menuItem = new MenuItemRequest("Beer", 5.99, "Drinks");
         Optional<Menu> expectedMenu = createMenu();
 
         // when

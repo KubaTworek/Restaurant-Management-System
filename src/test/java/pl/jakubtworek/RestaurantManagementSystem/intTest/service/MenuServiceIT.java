@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuRequest;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
@@ -29,7 +30,7 @@ public class MenuServiceIT {
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnAllMenu() {
         // when
-        List<Menu> menuList = menuService.findAll();
+        List<MenuDTO> menuList = menuService.findAll();
 
         // then
         assertEquals(2, menuList.size());
@@ -51,7 +52,7 @@ public class MenuServiceIT {
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnOneMenu_whenPassId() {
         // when
-        Optional<Menu> menu = menuService.findById(1L);
+        Optional<MenuDTO> menu = menuService.findById(1L);
 
         // then
         assertEquals("Drinks", menu.get().getName());
@@ -63,10 +64,10 @@ public class MenuServiceIT {
     @Test
     public void shouldReturnCreatedMenu(){
         // given
-        MenuRequest menu = new MenuRequest(0L, "Alcohol");
+        MenuRequest menu = new MenuRequest("Alcohol");
 
         // when
-        Menu menuReturned = menuService.save(menu);
+        MenuDTO menuReturned = menuService.save(menu);
 
         // then
         assertEquals("Alcohol", menuReturned.getName());
@@ -77,7 +78,7 @@ public class MenuServiceIT {
     public void shouldReturnLowerSizeOfList_whenDeleteOne() {
         // when
         menuService.deleteById(1L);
-        List<Menu> menuList = menuService.findAll();
+        List<MenuDTO> menuList = menuService.findAll();
 
         // then
         assertEquals(1, menuList.size());
@@ -87,7 +88,7 @@ public class MenuServiceIT {
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnOneMenu_whenPassName() {
         // when
-        Optional<Menu> menu = menuService.findByName("Drinks");
+        Optional<MenuDTO> menu = menuService.findByName("Drinks");
 
         // then
         assertEquals("Drinks", menu.get().getName());

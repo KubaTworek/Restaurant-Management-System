@@ -1,17 +1,14 @@
 package pl.jakubtworek.RestaurantManagementSystem.service.menu;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuRequest;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
-import pl.jakubtworek.RestaurantManagementSystem.service.impl.MenuServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,17 +25,9 @@ public class MenuServiceTest {
     @Mock
     private MenuFactory menuFactory;
 
+    @Autowired
     private MenuService menuService;
 
-    @BeforeEach
-    public void setUp() {
-        menuRepository = mock(MenuRepository.class);
-        menuFactory = mock(MenuFactory.class);
-
-        menuService = new MenuServiceImpl(
-                menuRepository,
-                menuFactory);
-    }
 
     @Test
     public void shouldReturnAllMenus() {
@@ -47,7 +36,7 @@ public class MenuServiceTest {
         when(menuRepository.findAll()).thenReturn(menus);
 
         // when
-        List<Menu> menusReturned = menuService.findAll();
+        List<MenuDTO> menusReturned = menuService.findAll();
 
         // then
         assertEquals(3,menusReturned.size());
@@ -60,7 +49,7 @@ public class MenuServiceTest {
         when(menuRepository.findById(1L)).thenReturn(menu);
 
         // when
-        Optional<Menu> menuReturned = menuService.findById(1L);
+        Optional<MenuDTO> menuReturned = menuService.findById(1L);
 
         // then
         assertNotNull(menuReturned);
@@ -69,14 +58,15 @@ public class MenuServiceTest {
     @Test
     public void shouldReturnCreatedMenu(){
         // given
-        MenuRequest menu = new MenuRequest(0L, "Alcohol");
+        MenuRequest menu = new MenuRequest("Alcohol");
         Menu expectedMenu = new Menu(0L, "Alcohol", List.of());
+        MenuDTO expectedMenuDTO = new MenuDTO(0L, "Alcohol", List.of());
 
-        when(menuFactory.createMenu(menu)).thenReturn(expectedMenu);
+        when(menuFactory.createMenu(menu)).thenReturn(expectedMenuDTO);
         when(menuRepository.save(expectedMenu)).thenReturn(expectedMenu);
 
         // when
-        Menu menuReturned = menuService.save(menu);
+        MenuDTO menuReturned = menuService.save(menu);
 
         // then
         assertEquals("Alcohol", menuReturned.getName());
@@ -99,7 +89,7 @@ public class MenuServiceTest {
         when(menuRepository.findByName("Menu")).thenReturn(menu);
 
         // when
-        Optional<Menu> menuReturned = menuService.findByName("Menu");
+        Optional<MenuDTO> menuReturned = menuService.findByName("Menu");
 
         // then
         assertNotNull(menuReturned);

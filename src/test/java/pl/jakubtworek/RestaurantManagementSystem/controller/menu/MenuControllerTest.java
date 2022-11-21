@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
 
@@ -25,8 +26,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.createMenu;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.createMenuList;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -53,7 +53,7 @@ public class MenuControllerTest {
     @Test
     void shouldReturnAllMenu() throws Exception {
         // given
-        List<Menu> expectedMenu = createMenuList();
+        List<MenuDTO> expectedMenu = createMenuListDTO();
 
         // when
         when(menuService.findAll()).thenReturn(expectedMenu);
@@ -80,7 +80,7 @@ public class MenuControllerTest {
     @Test
     void shouldReturnMenuById() throws Exception {
         // given
-        Optional<Menu> expectedMenu = createMenu();
+        Optional<MenuDTO> expectedMenu = createMenuDTO();
 
         // when
         when(menuService.findById(eq(1L))).thenReturn(expectedMenu);
@@ -100,8 +100,6 @@ public class MenuControllerTest {
     @Test
     void shouldReturnErrorResponse_whenAskedForNonExistingMenu() throws Exception {
         // when
-        when(menuService.checkIsMenuIsNull(eq(3L))).thenReturn(true);
-
         MvcResult mvcResult = mockMvc.perform(get("/menu/id")
                         .param("id", String.valueOf(3L)))
                 .andExpect(status().isNotFound())
@@ -136,7 +134,7 @@ public class MenuControllerTest {
     @Test
     void shouldReturnResponseConfirmingDeletedMenu() throws Exception {
         // given
-        Optional<Menu> expectedMenu = createMenu();
+        Optional<MenuDTO> expectedMenu = createMenuDTO();
 
         // when
         when(menuService.findById(eq(1L))).thenReturn(expectedMenu);

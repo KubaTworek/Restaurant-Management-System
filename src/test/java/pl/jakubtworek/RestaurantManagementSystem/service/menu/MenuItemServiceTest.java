@@ -1,16 +1,17 @@
 package pl.jakubtworek.RestaurantManagementSystem.service.menu;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuItemFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuItemRepository;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuItemService;
-import pl.jakubtworek.RestaurantManagementSystem.service.impl.MenuItemServiceImp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,26 +23,15 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
 public class MenuItemServiceTest {
-
     @Mock
     private MenuRepository menuRepository;
     @Mock
     private MenuItemRepository menuItemRepository;
     @Mock
     private MenuItemFactory menuItemFactory;
+
+    @Autowired
     private MenuItemService menuItemService;
-
-    @BeforeEach
-    public void setUp() {
-        menuRepository = mock(MenuRepository.class);
-        menuItemRepository = mock(MenuItemRepository.class);
-        menuItemFactory = mock(MenuItemFactory.class);
-
-        menuItemService = new MenuItemServiceImp(
-                menuItemRepository,
-                menuRepository,
-                menuItemFactory);
-    }
 
     @Test
     public void shouldReturnAllMenuItems() {
@@ -50,7 +40,7 @@ public class MenuItemServiceTest {
         when(menuItemRepository.findAll()).thenReturn(menuItems);
 
         // when
-        List<MenuItem> menuItemsReturned = menuItemService.findAll();
+        List<MenuItemDTO> menuItemsReturned = menuItemService.findAll();
 
         // then
         assertEquals(3,menuItemsReturned.size());
@@ -63,7 +53,7 @@ public class MenuItemServiceTest {
         when(menuItemRepository.findById(1L)).thenReturn(menuItem);
 
         // when
-        Optional<MenuItem> menuItemReturned = menuItemService.findById(1L);
+        Optional<MenuItemDTO> menuItemReturned = menuItemService.findById(1L);
 
         // then
         assertNotNull(menuItemReturned);
@@ -73,15 +63,17 @@ public class MenuItemServiceTest {
     public void shouldReturnCreatedMenuItem(){
         // given
         Optional<Menu> expectedMenu = Optional.of(new Menu(2L, "Food", List.of()));
-        MenuItemRequest menuItem = new MenuItemRequest(0L, "Pizza", 12.99, "Food");
+        Optional<MenuDTO> expectedMenuDTO = Optional.of(new MenuDTO(2L, "Food", List.of()));
+        MenuItemRequest menuItem = new MenuItemRequest("Pizza", 12.99, "Food");
         MenuItem expectedMenuItem = new MenuItem(0L, "Pizza", 12.99, expectedMenu.get(), List.of());
+        MenuItemDTO expectedMenuItemDTO = new MenuItemDTO(0L, "Pizza", 12.99, expectedMenuDTO.get(), List.of());
 
         when(menuRepository.findByName(eq("Food"))).thenReturn(expectedMenu);
-        when(menuItemFactory.createMenuItem(menuItem, expectedMenu.get())).thenReturn(expectedMenuItem);
+        when(menuItemFactory.createMenuItem(menuItem, expectedMenuDTO.get())).thenReturn(expectedMenuItemDTO);
         when(menuItemRepository.save(expectedMenuItem)).thenReturn(expectedMenuItem);
 
         // when
-        MenuItem menuItemReturned = menuItemService.save(menuItem);
+        MenuItemDTO menuItemReturned = menuItemService.save(menuItem, expectedMenuDTO.get());
 
         // then
         assertEquals("Pizza", menuItemReturned.getName());
@@ -108,7 +100,7 @@ public class MenuItemServiceTest {
         when(menuItemRepository.findByMenu(menu.get())).thenReturn(menuItems);
 
         // when
-        List<MenuItem> menuItemsReturned = menuItemService.findByMenu("Menu");
+        List<MenuItemDTO> menuItemsReturned = menuItemService.findByMenu(menu.get());
 
         // then
         assertEquals(3, menuItemsReturned.size());

@@ -8,7 +8,10 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuItemRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuItemService;
@@ -32,7 +35,7 @@ public class MenuItemServiceIT {
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnAllMenuItems() {
         // when
-        List<MenuItem> menuItems = menuItemService.findAll();
+        List<MenuItemDTO> menuItems = menuItemService.findAll();
 
         // then
         assertEquals(3, menuItems.size());
@@ -57,7 +60,7 @@ public class MenuItemServiceIT {
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnOneMenuItem() {
         // when
-        Optional<MenuItem> menuItem = menuItemService.findById(1L);
+        Optional<MenuItemDTO> menuItem = menuItemService.findById(1L);
 
         // then
         assertEquals("Chicken", menuItem.get().getName());
@@ -70,10 +73,11 @@ public class MenuItemServiceIT {
     @Sql(statements = "INSERT INTO `menu`(`id`, `name`) VALUES (1, 'Drinks'), (2, 'Food')")
     public void shouldReturnCreatedMenuItem() {
         // given
-        MenuItemRequest menuItem = new MenuItemRequest(0L, "Pizza", 12.99, "Food");
+        MenuItemRequest menuItem = new MenuItemRequest("Pizza", 12.99, "Food");
+        MenuDTO menuDTO = new MenuDTO(1L, "Food", List.of());
 
         // when
-        MenuItem menuItemReturned = menuItemService.save(menuItem);
+        MenuItemDTO menuItemReturned = menuItemService.save(menuItem, menuDTO);
 
         // then
         assertEquals("Pizza", menuItemReturned.getName());
@@ -86,7 +90,7 @@ public class MenuItemServiceIT {
     public void shouldReturnLowerSizeOfList_whenDeleteOne() {
         // when
         menuItemService.deleteById(2L);
-        List<MenuItem> menuItems = menuItemService.findAll();
+        List<MenuItemDTO> menuItems = menuItemService.findAll();
 
         // then
         assertEquals(2, menuItems.size());
@@ -96,7 +100,8 @@ public class MenuItemServiceIT {
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnMenuItems_whenMenuNamePass() {
         // when
-        List<MenuItem> menuItems = menuItemService.findByMenu("Drinks");
+        Menu menu = new Menu(1L, "Food", List.of());
+        List<MenuItemDTO> menuItems = menuItemService.findByMenu(menu);
 
         // then
         assertEquals(1, menuItems.size());
@@ -105,15 +110,5 @@ public class MenuItemServiceIT {
         assertEquals(1.99, menuItems.get(0).getPrice());
         assertEquals("Drinks", menuItems.get(0).getMenu().getName());
         assertEquals(2, menuItems.get(0).getOrders().size());
-    }
-
-    @Test
-    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnEmptyList_whenWrongMenuNamePass() {
-        // when
-        List<MenuItem> menuItems = menuItemService.findByMenu("Random");
-
-        // then
-        assertEquals(0, menuItems.size());
     }
 }
