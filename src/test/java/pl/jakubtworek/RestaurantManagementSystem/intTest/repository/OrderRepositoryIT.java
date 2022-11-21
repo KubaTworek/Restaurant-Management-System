@@ -7,17 +7,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.spy;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.createEmployee;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.createOnsiteOrder;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.createOnsiteType;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -105,8 +106,13 @@ public class OrderRepositoryIT {
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnOrders_whenPassDate() {
+        // given
+        String date = "2022-08-22";
+
         // when
-        List<Order> orders = orderRepository.findByDate("2022-08-22");
+        List<Order> orders = orderRepository.findByDate(date)
+                .stream()
+                .collect(Collectors.toList());
 
         // then
         assertEquals(2, orders.size());
@@ -115,8 +121,13 @@ public class OrderRepositoryIT {
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnOrders_whenPassTypeOfOrder() {
+        // given
+        TypeOfOrder typeOfOrder = createOnsiteType();
+
         // when
-        List<Order> orders = orderRepository.findByTypeOfOrder(spy(new TypeOfOrder(1L, "On-site", List.of())));
+        List<Order> orders = orderRepository.findByTypeOfOrder(typeOfOrder)
+                .stream()
+                .collect(Collectors.toList());
 
         // then
         assertEquals(1, orders.size());
@@ -125,8 +136,13 @@ public class OrderRepositoryIT {
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnOrders_whenPassEmployee() {
+        // given
+        Employee employee = createEmployee().get();
+
         // when
-        List<Order> orders = orderRepository.findByEmployee(spy(new Employee(1L, "John", "Smith", new Job(1L,"Cook",List.of()), List.of())));
+        List<Order> orders = orderRepository.findByEmployee(employee)
+                .stream()
+                .collect(Collectors.toList());
 
         // then
         assertEquals(2, orders.size());

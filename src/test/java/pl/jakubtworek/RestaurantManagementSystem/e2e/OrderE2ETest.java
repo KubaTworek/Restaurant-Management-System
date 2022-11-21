@@ -12,7 +12,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderResponse;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
@@ -23,10 +22,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.springframework.http.RequestEntity.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.createOnsiteOrderRequest;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -121,7 +120,7 @@ public class OrderE2ETest {
     @Sql(statements = {"INSERT INTO `type_of_order` VALUES (1,'On-site'), (2,'Delivery')", "INSERT INTO `menu` VALUES (1,'Drinks'), (2,'Food')", "INSERT INTO `menu_item`(id,name,price,menu_id) VALUES (1,'Chicken',10.99,2), (2,'Coke',1.99,1), (3,'Tiramisu',5.99,2)"})
     void shouldReturnCreatedOrder() throws Exception {
         // given
-        OrderRequest order = new OrderRequest(0L, "On-site", List.of(new MenuItemRequest(1L, "Chicken", 10.99, "Food"), new MenuItemRequest(2L, "Coke", 1.99, "Drinks")));
+        OrderRequest order = createOnsiteOrderRequest();
 
         // when
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/orders")

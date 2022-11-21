@@ -2,7 +2,6 @@ package pl.jakubtworek.RestaurantManagementSystem.controller.order;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -10,36 +9,31 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.transaction.annotation.Transactional;
-import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
+import org.springframework.test.web.servlet.MvcResult;;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.service.*;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.createEmployee;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 public class OrderControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
+
     @MockBean
     private OrderService orderService;
     @MockBean
@@ -50,23 +44,11 @@ public class OrderControllerTest {
     @Autowired
     private OrderController orderController;
 
-    @BeforeEach
-    public void setup() {
-        mock(OrderService.class);
-        mock(MenuService.class);
-
-        orderController = new OrderController(
-                orderService,
-                typeOfOrderService,
-                employeeService
-        );
-    }
-
 
     @Test
     void shouldReturnAllOrders() throws Exception {
         // given
-        List<Order> expectedOrders = createOrders();
+        List<OrderDTO> expectedOrders = createOrdersDTO();
 
         // when
         when(orderService.findAll()).thenReturn(expectedOrders);
@@ -110,7 +92,7 @@ public class OrderControllerTest {
     @Test
     void shouldReturnOrderById() throws Exception {
         // given
-        Optional<Order> expectedOrder = createOnsiteOrder();
+        Optional<OrderDTO> expectedOrder = createOnsiteOrderDTO();
 
         // when
         when(orderService.findById(1L)).thenReturn(expectedOrder);
@@ -134,22 +116,6 @@ public class OrderControllerTest {
         assertEquals("John", orderReturned.getEmployees().get(0).getFirstName());
         assertEquals("Smith", orderReturned.getEmployees().get(0).getLastName());
         assertEquals("Cook", orderReturned.getEmployees().get(0).getJob().getName());
-    }
-
-    @Test
-    void shouldReturnErrorResponse_whenAskedForNonExistingOrder() throws Exception {
-        // when
-        when(orderService.checkIfOrderIsNull(3L)).thenReturn(true);
-
-        MvcResult mvcResult = mockMvc.perform(get("/orders/id")
-                        .param("id", String.valueOf(3L)))
-                .andExpect(status().isNotFound())
-                .andReturn();
-        ErrorResponse response = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
-
-        // then
-        assertThat(response.getStatus()).isEqualTo(404);
-        assertThat(response.getMessage()).isEqualTo("There are no order in restaurant with that id: 3");
     }
 
 /*    @Test
@@ -179,7 +145,7 @@ public class OrderControllerTest {
     @Test
     void shouldReturnResponseConfirmingDeletedOrder() throws Exception {
         // given
-        Optional<Order> expectedOrder = createOnsiteOrder();
+        Optional<OrderDTO> expectedOrder = createOnsiteOrderDTO();
 
         // when
         when(orderService.findById(1L)).thenReturn(expectedOrder);
@@ -194,10 +160,10 @@ public class OrderControllerTest {
         assertEquals("Deleted order has id: 1", response);
     }
 
-    @Test
+/*    @Test
     void shouldReturnOrders_whenDateIsPassed() throws Exception {
         // given
-        List<Order> expectedOrders = createOrders();
+        List<OrderDTO> expectedOrders = createOrdersDTO();
 
         // when
         when(orderService.findByDate(eq("2022-08-22"))).thenReturn(expectedOrders);
@@ -218,11 +184,12 @@ public class OrderControllerTest {
     @Test
     void shouldReturnOrders_whenTypeOfOrderIsPassed() throws Exception {
         // given
+        TypeOfOrderDTO expectedTypeOfOrderDTO = createOnsiteTypeDTO();
         TypeOfOrder expectedTypeOfOrder = createOnsiteType();
-        List<Order> expectedOrders = List.of(createOnsiteOrder().get());
+        List<OrderDTO> expectedOrders = List.of(createOnsiteOrderDTO().get());
 
         // when
-        when(typeOfOrderService.findByType(eq("On-site"))).thenReturn(Optional.of(expectedTypeOfOrder));
+        when(typeOfOrderService.findByType(eq("On-site"))).thenReturn(Optional.of(expectedTypeOfOrderDTO));
         when(orderService.findByTypeOfOrder(expectedTypeOfOrder)).thenReturn(expectedOrders);
 
         MvcResult mvcResult = mockMvc.perform(get("/orders/find")
@@ -252,12 +219,13 @@ public class OrderControllerTest {
     @Test
     void shouldReturnOrders_whenEmployeeIsPassed() throws Exception {
         // given
-        Optional<Employee> expectedEmployee = createEmployee();
-        List<Order> expectedOrders = createOrders();
+        Optional<EmployeeDTO> expectedEmployee = createEmployeeDTO();
+        Employee providedEmployee = createEmployee().get();
+        List<OrderDTO> expectedOrders = createOrdersDTO();
 
         // when
         when(employeeService.findById(1L)).thenReturn(expectedEmployee);
-        when(orderService.findByEmployee(expectedEmployee.get())).thenReturn(expectedOrders);
+        when(orderService.findByEmployee(providedEmployee)).thenReturn(expectedOrders);
 
         MvcResult mvcResult = mockMvc.perform(get("/orders/find")
                         .param("employeeId", String.valueOf(1L))
@@ -270,11 +238,13 @@ public class OrderControllerTest {
 
         // then
         assertEquals(2, ordersReturned.size());
-    }
+    }*/
 
     @Test
     void shouldReturnMadeOrders() throws Exception {
-        List<Order> expectedOrders = List.of(createOnsiteOrder().get());
+        // given
+        List<OrderDTO> expectedOrders = List.of(createOnsiteOrderDTO().get());
+
         // when
         when(orderService.findMadeOrders()).thenReturn(expectedOrders);
 
@@ -303,7 +273,9 @@ public class OrderControllerTest {
 
     @Test
     void shouldReturnUnmadeOrders() throws Exception {
-        List<Order> expectedOrders = List.of(createDeliveryOrder().get());
+        // given
+        List<OrderDTO> expectedOrders = List.of(createDeliveryOrderDTO().get());
+
         // when
         when(orderService.findUnmadeOrders()).thenReturn(expectedOrders);
 

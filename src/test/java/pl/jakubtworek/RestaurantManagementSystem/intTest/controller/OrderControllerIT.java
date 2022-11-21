@@ -2,9 +2,7 @@ package pl.jakubtworek.RestaurantManagementSystem.intTest.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,30 +11,15 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
-import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderController;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderResponse;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
-import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.CooksQueue;
-import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.DeliveryQueue;
-import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueue;
-import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.WaiterQueue;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
-import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.EmployeeFactory;
-import pl.jakubtworek.RestaurantManagementSystem.model.factories.order.OrderFactory;
-import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
-import pl.jakubtworek.RestaurantManagementSystem.repository.JobRepository;
 import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
 import pl.jakubtworek.RestaurantManagementSystem.repository.TypeOfOrderRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 import pl.jakubtworek.RestaurantManagementSystem.service.TypeOfOrderService;
-import pl.jakubtworek.RestaurantManagementSystem.service.impl.EmployeeServiceImpl;
-import pl.jakubtworek.RestaurantManagementSystem.service.impl.OrderServiceImpl;
-import pl.jakubtworek.RestaurantManagementSystem.service.impl.TypeOfOrderServiceImpl;
 
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +32,6 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.createEmployee;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
 
 @SpringBootTest
@@ -63,23 +45,7 @@ public class OrderControllerIT {
     @MockBean
     private OrderRepository orderRepository;
     @MockBean
-    private EmployeeRepository employeeRepository;
-    @MockBean
-    private JobRepository jobRepository;
-    @MockBean
     private TypeOfOrderRepository typeOfOrderRepository;
-    @Mock
-    private OrderFactory orderFactory;
-    @Mock
-    private EmployeeFactory employeeFactory;
-    @Mock
-    private OrdersQueue ordersQueue;
-    @Mock
-    private CooksQueue cooksQueue;
-    @Mock
-    private WaiterQueue waiterQueue;
-    @Mock
-    private DeliveryQueue deliveryQueue;
 
 
     @Autowired
@@ -88,43 +54,7 @@ public class OrderControllerIT {
     private TypeOfOrderService typeOfOrderService;
     @Autowired
     private EmployeeService employeeService;
-    @Autowired
-    private OrderController orderController;
 
-    @BeforeEach
-    public void setup() {
-        mock(OrderRepository.class);
-        mock(EmployeeRepository.class);
-        mock(JobRepository.class);
-        mock(TypeOfOrderRepository.class);
-        mock(OrdersQueue.class);
-        mock(WaiterQueue.class);
-        mock(DeliveryQueue.class);
-        mock(CooksQueue.class);
-
-        typeOfOrderService = new TypeOfOrderServiceImpl(
-                typeOfOrderRepository
-        );
-        employeeService = new EmployeeServiceImpl(
-                employeeRepository,
-                jobRepository,
-                employeeFactory,
-                cooksQueue,
-                waiterQueue,
-                deliveryQueue
-        );
-        orderService = new OrderServiceImpl(
-                orderRepository,
-                typeOfOrderRepository,
-                orderFactory,
-                ordersQueue
-        );
-        orderController = new OrderController(
-                orderService,
-                typeOfOrderService,
-                employeeService
-        );
-    }
 
     @Test
     void shouldReturnAllOrders() throws Exception {
@@ -216,7 +146,7 @@ public class OrderControllerIT {
     @Test
     void shouldReturnCreatedOrder() throws Exception {
         // given
-        OrderRequest order = new OrderRequest(0L, "On-site", List.of(new MenuItemRequest(1L, "Chicken", 10.99, "Food"), new MenuItemRequest(2L, "Coke", 1.99, "Drinks")));
+        OrderRequest order = createOnsiteOrderRequest();
 
         // when
         when(typeOfOrderRepository.findByType(eq("On-site"))).thenReturn(Optional.of(createOnsiteType()));
@@ -252,7 +182,8 @@ public class OrderControllerIT {
         assertEquals("Deleted order has id: 1", response);
     }
 
-    @Test
+    // TODO : prepared tests for params
+/*    @Test
     void shouldReturnOrders_whenDateIsPassed() throws Exception {
         // given
         List<Order> expectedOrders = createOrders();
@@ -328,11 +259,11 @@ public class OrderControllerIT {
 
         // then
         assertEquals(2, ordersReturned.size());
-    }
+    }*/
 
     @Test
     void shouldReturnMadeOrders() throws Exception {
-        List<Order> expectedOrders = List.of(createOnsiteOrder().get());
+        Optional<Order> expectedOrders = createOnsiteOrder();
         // when
         when(orderRepository.findOrdersByHourAwayIsNotNull()).thenReturn(expectedOrders);
 
@@ -362,7 +293,7 @@ public class OrderControllerIT {
     @Test
     void shouldReturnUnmadeOrders() throws Exception {
         // given
-        List<Order> expectedOrders = List.of(createDeliveryOrder().get());
+        Optional<Order> expectedOrders = createDeliveryOrder();
 
         // when
         when(orderRepository.findOrdersByHourAwayIsNull()).thenReturn(expectedOrders);

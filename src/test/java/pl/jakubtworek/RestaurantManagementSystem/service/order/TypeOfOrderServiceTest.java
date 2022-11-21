@@ -1,39 +1,36 @@
 package pl.jakubtworek.RestaurantManagementSystem.service.order;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.TypeOfOrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 import pl.jakubtworek.RestaurantManagementSystem.repository.TypeOfOrderRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.TypeOfOrderService;
-import pl.jakubtworek.RestaurantManagementSystem.service.impl.TypeOfOrderServiceImpl;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.createOnsiteType;
 
 public class TypeOfOrderServiceTest {
     @Mock
     private TypeOfOrderRepository typeOfOrderRepository;
+
+    @Autowired
     private TypeOfOrderService typeOfOrderService;
 
-    @BeforeEach
-    public void setUp() {
-        typeOfOrderRepository = mock(TypeOfOrderRepository.class);
-
-        typeOfOrderService = new TypeOfOrderServiceImpl(typeOfOrderRepository);
-    }
 
     @Test
     public void shouldReturnTypeOfOrder_whenCorrectNameIsPassed() {
         // given
-        Optional<TypeOfOrder> typeOfOrder = Optional.of(new TypeOfOrder());
-        when(typeOfOrderRepository.findByType("Type")).thenReturn(typeOfOrder);
+        TypeOfOrder typeOfOrder = createOnsiteType();
 
         // when
-        Optional<TypeOfOrder> typeOfOrderReturned = typeOfOrderService.findByType("Type");
+        when(typeOfOrderRepository.findByType("Type")).thenReturn(Optional.of(typeOfOrder));
+
+        Optional<TypeOfOrderDTO> typeOfOrderReturned = typeOfOrderService.findByType("Type");
 
         // then
         assertNotNull(typeOfOrderReturned);

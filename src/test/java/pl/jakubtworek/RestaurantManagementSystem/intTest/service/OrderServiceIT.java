@@ -6,11 +6,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.TypeOfOrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
@@ -20,7 +19,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.spy;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.createEmployee;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -35,7 +35,7 @@ public class OrderServiceIT {
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnAllOrders() {
         // when
-        List<Order> orders = orderService.findAll();
+        List<OrderDTO> orders = orderService.findAll();
 
         // then
         assertEquals(2, orders.size());
@@ -61,7 +61,7 @@ public class OrderServiceIT {
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnOneOrder() {
         // when
-        Optional<Order> order = orderService.findById(1L);
+        Optional<OrderDTO> order = orderService.findById(1L);
 
         // then
         assertEquals(12.99, order.get().getPrice());
@@ -77,10 +77,11 @@ public class OrderServiceIT {
     @Sql(statements = {"INSERT INTO `type_of_order` VALUES (1,'On-site'), (2,'Delivery')", "INSERT INTO `menu` VALUES (1,'Drinks'), (2,'Food')", "INSERT INTO `menu_item`(id,name,price,menu_id) VALUES (1,'Chicken',10.99,2), (2,'Coke',1.99,1), (3,'Tiramisu',5.99,2)"})
     public void shouldReturnCreatedOrder() {
         // given
-        OrderRequest order = new OrderRequest(0L, "On-site", List.of(new MenuItemRequest(1L, "Chicken", 10.99, "Food"), new MenuItemRequest(2L, "Coke", 1.99, "Drinks")));
+        OrderRequest order = createOnsiteOrderRequest();
+        TypeOfOrderDTO typeOfOrder = createOnsiteTypeDTO();
 
         // when
-        Order orderReturned = orderService.save(order);
+        OrderDTO orderReturned = orderService.save(order, typeOfOrder);
 
         // then
         assertEquals(12.98, orderReturned.getPrice());
@@ -102,8 +103,11 @@ public class OrderServiceIT {
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnOrders_whenPassDate() {
+        // given
+        String date = "2022-08-22";
+
         // when
-        List<Order> orders = orderService.findByDate("2022-08-22");
+        List<OrderDTO> orders = orderService.findByDate(date);
 
         // then
         assertEquals(2, orders.size());
@@ -112,8 +116,11 @@ public class OrderServiceIT {
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnOrders_whenPassTypeOfOrder() {
+        // given
+        TypeOfOrder typeOfOrder = createOnsiteType();
+
         // when
-        List<Order> orders = orderService.findByTypeOfOrder(spy(new TypeOfOrder(1L, "On-site", List.of())));
+        List<OrderDTO> orders = orderService.findByTypeOfOrder(typeOfOrder);
 
         // then
         assertEquals(1, orders.size());
@@ -122,8 +129,11 @@ public class OrderServiceIT {
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnOrders_whenPassEmployee() {
+        // given
+        Employee employee = createEmployee().get();
+
         // when
-        List<Order> orders = orderService.findByEmployee(spy(new Employee(1L, "John", "Smith", new Job(1L,"Cook",List.of()), List.of())));
+        List<OrderDTO> orders = orderService.findByEmployee(employee);
 
         // then
         assertEquals(2, orders.size());
