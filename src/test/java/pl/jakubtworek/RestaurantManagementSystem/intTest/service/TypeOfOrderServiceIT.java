@@ -6,6 +6,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.TypeOfOrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 import pl.jakubtworek.RestaurantManagementSystem.repository.TypeOfOrderRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.TypeOfOrderService;
@@ -27,7 +28,7 @@ public class TypeOfOrderServiceIT {
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnOnSiteTypeOfOrder_whenPassOnSiteString(){
         // when
-        Optional<TypeOfOrder> typeOfOrder = typeOfOrderService.findByType("On-site");
+        Optional<TypeOfOrderDTO> typeOfOrder = typeOfOrderService.findByType("On-site");
 
         // then
         assertEquals("On-site", typeOfOrder.get().getType());
@@ -42,7 +43,7 @@ public class TypeOfOrderServiceIT {
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnDeliveryTypeOfOrder_whenPassDeliveryString(){
         // when
-        Optional<TypeOfOrder> typeOfOrder = typeOfOrderService.findByType("Delivery");
+        Optional<TypeOfOrderDTO> typeOfOrder = typeOfOrderService.findByType("Delivery");
 
         // then
         assertEquals("Delivery", typeOfOrder.get().getType());

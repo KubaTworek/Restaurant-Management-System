@@ -1,6 +1,5 @@
 package pl.jakubtworek.RestaurantManagementSystem.e2e;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,17 +12,12 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeResponse;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderResponse;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,9 +36,9 @@ public class CreateOrderTest {
 
     @BeforeEach
     void setup() throws Exception {
-        EmployeeRequest cook = new EmployeeRequest(0L, "James", "Morgan", "Cook");
-        EmployeeRequest waiter = new EmployeeRequest(0L, "James", "Morgan", "Waiter");
-        EmployeeRequest delivery = new EmployeeRequest(0L, "James", "Morgan", "DeliveryMan");
+        EmployeeRequest cook = new EmployeeRequest("James", "Morgan", "Cook");
+        EmployeeRequest waiter = new EmployeeRequest("James", "Morgan", "Waiter");
+        EmployeeRequest delivery = new EmployeeRequest("James", "Morgan", "DeliveryMan");
 
 
         mockMvc.perform(post("/employees")
@@ -64,7 +58,7 @@ public class CreateOrderTest {
     @Sql(statements = {"INSERT INTO `type_of_order` VALUES (1,'On-site'), (2,'Delivery')", "INSERT INTO `menu` VALUES (1,'Drinks'), (2,'Food')", "INSERT INTO `menu_item`(id,name,price,menu_id) VALUES (1,'Chicken',10.99,2), (2,'Coke',1.99,1), (3,'Tiramisu',5.99,2)", "INSERT INTO `job` VALUES (1, 'Cook'), (2, 'Waiter'), (3, 'DeliveryMan')"})
     void shouldCheckIsOrderIsDeliveringByWaiter() throws Exception {
         // given
-        OrderRequest order = new OrderRequest(0L, "On-site", List.of(new MenuItemRequest(1L, "Chicken", 10.99, "Food"), new MenuItemRequest(2L, "Coke", 1.99, "Drinks")));
+        OrderRequest order = new OrderRequest("On-site", List.of(new MenuItemRequest("Chicken", 10.99, "Food"), new MenuItemRequest("Coke", 1.99, "Drinks")));
 
         // when
         mockMvc.perform(MockMvcRequestBuilders.post("/orders")
@@ -102,7 +96,7 @@ public class CreateOrderTest {
     @Sql(statements = {"INSERT INTO `type_of_order` VALUES (1,'On-site'), (2,'Delivery')", "INSERT INTO `menu` VALUES (1,'Drinks'), (2,'Food')", "INSERT INTO `menu_item`(id,name,price,menu_id) VALUES (1,'Chicken',10.99,2), (2,'Coke',1.99,1), (3,'Tiramisu',5.99,2)", "INSERT INTO `job` VALUES (1, 'Cook'), (2, 'Waiter'), (3, 'DeliveryMan')"})
     void shouldCheckIsOrderIsDeliveringByDeliveryMan() throws Exception {
         // given
-        OrderRequest order = new OrderRequest(0L, "Delivery", List.of(new MenuItemRequest(1L, "Chicken", 10.99, "Food"), new MenuItemRequest(2L, "Coke", 1.99, "Drinks")));
+        OrderRequest order = new OrderRequest("Delivery", List.of(new MenuItemRequest("Chicken", 10.99, "Food"), new MenuItemRequest("Coke", 1.99, "Drinks")));
 
         // when
         mockMvc.perform(MockMvcRequestBuilders.post("/orders")
@@ -140,9 +134,9 @@ public class CreateOrderTest {
     @Sql(statements = {"INSERT INTO `type_of_order` VALUES (1,'On-site'), (2,'Delivery')", "INSERT INTO `menu` VALUES (1,'Drinks'), (2,'Food')", "INSERT INTO `menu_item`(id,name,price,menu_id) VALUES (1,'Chicken',10.99,2), (2,'Coke',1.99,1), (3,'Tiramisu',5.99,2)", "INSERT INTO `job` VALUES (1, 'Cook'), (2, 'Waiter'), (3, 'DeliveryMan')"})
     void shouldCheckIsPriorityQueuePrioritiseOnsite() throws Exception {
         // given
-        OrderRequest orderDelivery = new OrderRequest(0L, "Delivery", List.of(new MenuItemRequest(1L, "Chicken", 10.99, "Food"), new MenuItemRequest(2L, "Coke", 1.99, "Drinks")));
-        OrderRequest orderOnsite1 = new OrderRequest(0L, "On-site", List.of(new MenuItemRequest(1L, "Chicken", 10.99, "Food"), new MenuItemRequest(2L, "Coke", 1.99, "Drinks")));
-        OrderRequest orderOnsite2 = new OrderRequest(0L, "On-site", List.of(new MenuItemRequest(1L, "Chicken", 10.99, "Food"), new MenuItemRequest(2L, "Coke", 1.99, "Drinks")));
+        OrderRequest orderDelivery = new OrderRequest("Delivery", List.of(new MenuItemRequest("Chicken", 10.99, "Food"), new MenuItemRequest("Coke", 1.99, "Drinks")));
+        OrderRequest orderOnsite1 = new OrderRequest("On-site", List.of(new MenuItemRequest("Chicken", 10.99, "Food"), new MenuItemRequest("Coke", 1.99, "Drinks")));
+        OrderRequest orderOnsite2 = new OrderRequest("On-site", List.of(new MenuItemRequest("Chicken", 10.99, "Food"), new MenuItemRequest("Coke", 1.99, "Drinks")));
 
 
         // when
