@@ -2,22 +2,21 @@ package pl.jakubtworek.RestaurantManagementSystem.controller.employee;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,25 +33,16 @@ public class EmployeeControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
-    @MockBean
+    @Mock
     private EmployeeService employeeService;
 
     @Autowired
     private EmployeeController employeeController;
 
-    @BeforeEach
-    public void setup() {
-        mock(EmployeeService.class);
-
-        employeeController = new EmployeeController(
-                employeeService
-        );
-    }
-
     @Test
     void shouldReturnAllEmployees() throws Exception {
         // given
-        List<Employee> expectedEmployees = createEmployees();
+        List<EmployeeDTO> expectedEmployees = createEmployeesDTO();
 
         // when
         when(employeeService.findAll()).thenReturn(expectedEmployees);
@@ -82,7 +72,7 @@ public class EmployeeControllerTest {
     @Test
     void shouldReturnEmployeeById() throws Exception {
         // given
-        Optional<Employee> expectedEmployee = createEmployee();
+        Optional<EmployeeDTO> expectedEmployee = createEmployeeDTO();
 
         // when
         when(employeeService.findById(eq(1L))).thenReturn(expectedEmployee);
@@ -102,8 +92,6 @@ public class EmployeeControllerTest {
     @Test
     void shouldReturnErrorResponse_whenAskedForNonExistingEmployee() throws Exception {
         // when
-        when(employeeService.checkIfEmployeeIsNull(eq(4L))).thenReturn(true);
-
         MvcResult mvcResult = mockMvc.perform(get("/employees/id")
                         .param("id", String.valueOf(4L)))
                 .andExpect(status().isNotFound())
@@ -140,24 +128,33 @@ public class EmployeeControllerTest {
 
     @Test
     void shouldReturnResponseConfirmingDeletedEmployee() throws Exception {
+        // given
+        Optional<EmployeeDTO> expectedEmployee = createEmployeeDTO();
+
         // when
+        when(employeeService.findById(eq(1L))).thenReturn(expectedEmployee);
+
         MvcResult mvcResult = mockMvc.perform(delete("/employees/id")
                         .param("id", String.valueOf(1L)))
                 .andExpect(status().isOk())
                 .andReturn();
-        String response = mvcResult.getResponse().getContentAsString();
+        EmployeeResponse employeeReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EmployeeResponse.class);
 
         // then
-        assertEquals("Deleted employee has id: 1", response);
+        assertEquals("John", employeeReturned.getFirstName());
+        assertEquals("Smith", employeeReturned.getLastName());
+        assertEquals("Cook", employeeReturned.getJob().getName());
     }
 
     @Test
     void shouldReturnEmployees_whenJobNameIsPassed() throws Exception {
         // given
-        List<Employee> expectedCooks = createCooks();
+        List<EmployeeDTO> expectedCooks = createCooksDTO()
+                .stream()
+                .collect(Collectors.toList());
 
         // when
-        when(employeeService.findByJob(eq("Cook"))).thenReturn(expectedCooks);
+        when(employeeService.findByJob(any())).thenReturn(expectedCooks);
 
         MvcResult mvcResult = mockMvc.perform(get("/employees/job")
                         .param("job", "Cook")
@@ -177,8 +174,6 @@ public class EmployeeControllerTest {
     @Test
     void shouldReturnResponse_whenWrongJobNameIsPassed() throws Exception {
         // when
-        when(employeeService.checkIfJobIsNull(eq("something"))).thenReturn(true);
-
         MvcResult mvcResult = mockMvc.perform(get("/employees/job")
                         .param("job", "something")
                         .contentType(MediaType.APPLICATION_JSON))

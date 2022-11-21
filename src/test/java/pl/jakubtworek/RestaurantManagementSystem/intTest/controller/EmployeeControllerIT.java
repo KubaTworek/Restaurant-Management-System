@@ -2,9 +2,7 @@ package pl.jakubtworek.RestaurantManagementSystem.intTest.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,20 +10,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeController;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeResponse;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
-import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.CooksQueue;
-import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.DeliveryQueue;
-import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.WaiterQueue;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
-import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.EmployeeFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
 import pl.jakubtworek.RestaurantManagementSystem.repository.JobRepository;
-import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
-import pl.jakubtworek.RestaurantManagementSystem.service.impl.EmployeeServiceImpl;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,46 +35,11 @@ public class EmployeeControllerIT {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
+
     @MockBean
     private EmployeeRepository employeeRepository;
     @MockBean
     private JobRepository jobRepository;
-    @Mock
-    private EmployeeFactory employeeFactory;
-    @Mock
-    private CooksQueue cooksQueue;
-    @Mock
-    private WaiterQueue waiterQueue;
-    @Mock
-    private DeliveryQueue deliveryQueue;
-
-
-    @Autowired
-    private EmployeeService employeeService;
-    @Autowired
-    private EmployeeController employeeController;
-
-    @BeforeEach
-    public void setup() {
-        mock(EmployeeRepository.class);
-        mock(JobRepository.class);
-        mock(WaiterQueue.class);
-        mock(DeliveryQueue.class);
-        mock(CooksQueue.class);
-
-        employeeService = new EmployeeServiceImpl(
-                employeeRepository,
-                jobRepository,
-                employeeFactory,
-                cooksQueue,
-                waiterQueue,
-                deliveryQueue
-        );
-        employeeController = new EmployeeController(
-                employeeService
-        );
-    }
-
 
     @Test
     void shouldReturnAllEmployees() throws Exception {
@@ -152,11 +108,13 @@ public class EmployeeControllerIT {
     @Test
     void shouldReturnCreatedEmployee() throws Exception {
         // given
-        EmployeeRequest employee = new EmployeeRequest(0L, "James", "Smith", "Cook");
+        EmployeeRequest employee = createCookRequest();
+        Optional<Employee> expectedEmployee = createEmployee();
+        Optional<Job> expectedJob = createCook();
 
         // when
-        when(jobRepository.findByName(eq("Cook"))).thenReturn(Optional.of(createCook()));
-        when(employeeRepository.save(any())).thenReturn(any(Employee.class));
+        when(jobRepository.findByName(eq("Cook"))).thenReturn(expectedJob);
+        when(employeeRepository.save(any())).thenReturn(expectedEmployee);
 
         MvcResult mvcResult = mockMvc.perform(post("/employees")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -192,11 +150,11 @@ public class EmployeeControllerIT {
     @Test
     void shouldReturnEmployees_whenJobNameIsPassed() throws Exception {
         // given
-        Job expectedJob = createCook();
-        List<Employee> expectedCooks = createCooks();
+        Optional<Job> expectedJob = createCook();
+        Optional<Employee> expectedCooks = createCooks();
 
         // when
-        when(jobRepository.findByName(eq("Cook"))).thenReturn(Optional.of(expectedJob));
+        when(jobRepository.findByName(eq("Cook"))).thenReturn(expectedJob);
         when(employeeRepository.findByJob(any(Job.class))).thenReturn(expectedCooks);
 
         MvcResult mvcResult = mockMvc.perform(get("/employees/job")

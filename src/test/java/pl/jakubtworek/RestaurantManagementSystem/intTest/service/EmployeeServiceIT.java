@@ -7,16 +7,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.EmployeeFactory;
-import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
+import pl.jakubtworek.RestaurantManagementSystem.exception.JobNotFoundException;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.JobDTO;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -25,14 +26,12 @@ public class EmployeeServiceIT {
 
     @Autowired
     private EmployeeService employeeService;
-    @Autowired
-    private EmployeeRepository employeeRepository;
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnAllEmployees(){
         // when
-        List<Employee> employees = employeeService.findAll();
+        List<EmployeeDTO> employees = employeeService.findAll();
 
         // then
         assertEquals(3, employees.size());
@@ -57,7 +56,7 @@ public class EmployeeServiceIT {
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnOneEmployee(){
         // when
-        Optional<Employee> employee = employeeService.findById(1L);
+        Optional<EmployeeDTO> employee = employeeService.findById(1L);
 
         // then
         assertEquals("John", employee.get().getFirstName());
@@ -68,12 +67,13 @@ public class EmployeeServiceIT {
 
     @Test
     @Sql(statements = "INSERT INTO `job` VALUES (1, 'Cook'), (2, 'Waiter'), (3, 'DeliveryMan')")
-    public void shouldReturnCreatedEmployee(){
+    public void shouldReturnCreatedEmployee() throws JobNotFoundException {
         // given
-        EmployeeRequest employee = new EmployeeRequest(0L, "James", "Smith", "Cook");
+        EmployeeRequest employee = createCookRequest();
+        JobDTO job = createCookDTO();
 
         // when
-        Employee employeeReturned = employeeService.save(employee);
+        EmployeeDTO employeeReturned = employeeService.save(employee, job);
 
         // then
         assertEquals("James", employeeReturned.getFirstName());
@@ -86,7 +86,7 @@ public class EmployeeServiceIT {
     public void shouldReturnLowerSizeOfList_whenDeleteOne(){
         // when
         employeeService.deleteById(2L);
-        List<Employee> employees = employeeService.findAll();
+        List<EmployeeDTO> employees = employeeService.findAll();
 
         // then
         assertEquals(2, employees.size());
@@ -95,23 +95,16 @@ public class EmployeeServiceIT {
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnEmployees_whenJobNamePass(){
+        // given
+        Job job = createCook().get();
+
         // when
-        List<Employee> employees = employeeService.findByJob("Cook");
+        List<EmployeeDTO> employees = employeeService.findByJob(job);
 
         // then
         assertEquals(1, employees.size());
         assertEquals("John", employees.get(0).getFirstName());
         assertEquals("Smith", employees.get(0).getLastName());
         assertEquals("Cook", employees.get(0).getJob().getName());
-    }
-
-    @Test
-    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnEmptyList_whenWrongJobNamePass(){
-        // when
-        List<Employee> employees = employeeService.findByJob("Random");
-
-        // then
-        assertEquals(0, employees.size());
     }
 }

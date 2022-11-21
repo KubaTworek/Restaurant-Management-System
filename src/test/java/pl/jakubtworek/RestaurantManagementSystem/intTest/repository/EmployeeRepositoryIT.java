@@ -9,15 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
-import pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.spy;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.createEmployee;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.createCook;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -99,8 +98,13 @@ public class EmployeeRepositoryIT {
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnEmployees_whenJobNamePass(){
+        // given
+        Job job = createCook().get();
+
         // when
-        List<Employee> employees = employeeRepository.findByJob(spy(new Job(1L,"Cook",List.of())));
+        List<Employee> employees = employeeRepository.findByJob(job)
+                .stream()
+                .collect(Collectors.toList());
 
         // then
         assertEquals(1, employees.size());
@@ -109,15 +113,5 @@ public class EmployeeRepositoryIT {
         assertEquals("Smith", employees.get(0).getLastName());
         assertEquals(1, employees.get(0).getJob().getId());
         assertEquals("Cook", employees.get(0).getJob().getName());
-    }
-
-    @Test
-    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnEmptyList_whenWrongJobNamePass(){
-        // when
-        List<Employee> employees = employeeRepository.findByJob(spy(new Job(4L,"Random",List.of())));
-
-        // then
-        assertEquals(0, employees.size());
     }
 }

@@ -21,6 +21,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.createCookRequest;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -92,7 +93,7 @@ public class EmployeeE2ETest {
     @Sql(statements = "INSERT INTO `job` VALUES (1, 'Cook'), (2, 'Waiter'), (3, 'DeliveryMan')")
     void shouldReturnCreatedEmployee() throws Exception {
         // given
-        EmployeeRequest employee = new EmployeeRequest(0L, "James", "Morgan", "Cook");
+        EmployeeRequest employee = createCookRequest();
 
         // when
         MvcResult mvcResult = mockMvc.perform(post("/employees")
