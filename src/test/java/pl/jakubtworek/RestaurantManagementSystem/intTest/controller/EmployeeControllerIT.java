@@ -8,18 +8,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeResponse;
+import org.springframework.test.web.servlet.*;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.*;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
-import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
-import pl.jakubtworek.RestaurantManagementSystem.repository.JobRepository;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
+import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -40,6 +35,9 @@ public class EmployeeControllerIT {
     private EmployeeRepository employeeRepository;
     @MockBean
     private JobRepository jobRepository;
+    @MockBean
+    private OrderRepository orderRepository;
+
 
     @Test
     void shouldReturnAllEmployees() throws Exception {

@@ -9,8 +9,8 @@ import pl.jakubtworek.RestaurantManagementSystem.service.JobService;
 
 import java.util.Optional;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class JobServiceImpl implements JobService {
 
     private final JobRepository jobRepository;

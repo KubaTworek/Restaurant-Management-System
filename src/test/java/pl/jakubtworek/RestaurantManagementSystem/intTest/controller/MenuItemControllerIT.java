@@ -1,35 +1,23 @@
 package pl.jakubtworek.RestaurantManagementSystem.intTest.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemController;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemResponse;
+import org.springframework.test.web.servlet.*;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.*;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
-import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuFactory;
-import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuItemFactory;
-import pl.jakubtworek.RestaurantManagementSystem.repository.MenuItemRepository;
-import pl.jakubtworek.RestaurantManagementSystem.repository.MenuRepository;
-import pl.jakubtworek.RestaurantManagementSystem.service.MenuItemService;
-import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
-import pl.jakubtworek.RestaurantManagementSystem.service.impl.MenuItemServiceImp;
-import pl.jakubtworek.RestaurantManagementSystem.service.impl.MenuServiceImpl;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
+import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuItemUtils.createChickenMenuItem;
@@ -47,17 +35,8 @@ public class MenuItemControllerIT {
     private MenuItemRepository menuItemRepository;
     @MockBean
     private MenuRepository menuRepository;
-
-    @Autowired
-    private MenuItemFactory menuItemFactory;
-    @Autowired
-    private MenuFactory menuFactory;
-    @Autowired
-    private MenuItemController menuItemController;
-    @Autowired
-    private MenuItemService menuItemService;
-    @Autowired
-    private MenuService menuService;
+    @MockBean
+    private OrderRepository orderRepository;
 
     @Test
     void shouldReturnMenuItemById() throws Exception {

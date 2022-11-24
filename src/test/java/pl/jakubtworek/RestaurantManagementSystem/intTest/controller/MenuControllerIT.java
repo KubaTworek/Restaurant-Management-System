@@ -2,36 +2,27 @@ package pl.jakubtworek.RestaurantManagementSystem.intTest.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuRequest;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuController;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuResponse;
+import org.springframework.test.web.servlet.*;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.*;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
-import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuFactory;
-import pl.jakubtworek.RestaurantManagementSystem.repository.MenuRepository;
-import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
-import pl.jakubtworek.RestaurantManagementSystem.service.impl.MenuServiceImpl;
+import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.createMenu;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.createMenuList;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -43,13 +34,9 @@ public class MenuControllerIT {
 
     @MockBean
     private MenuRepository menuRepository;
+    @MockBean
+    private OrderRepository orderRepository;
 
-    @Autowired
-    private MenuFactory menuFactory;
-    @Autowired
-    private MenuService menuService;
-    @Autowired
-    private MenuController menuController;
 
     @Test
     void shouldReturnAllMenu() throws Exception {

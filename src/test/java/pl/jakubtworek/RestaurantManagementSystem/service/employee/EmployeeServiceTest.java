@@ -1,42 +1,45 @@
 package pl.jakubtworek.RestaurantManagementSystem.service.employee;
 
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.*;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
 import pl.jakubtworek.RestaurantManagementSystem.exception.JobNotFoundException;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.JobDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
-import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.EmployeeFactory;
-import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.EmployeeFormula;
-import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
-import pl.jakubtworek.RestaurantManagementSystem.repository.JobRepository;
+import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.EmployeeQueueFacade;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
+import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.*;
+import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 import pl.jakubtworek.RestaurantManagementSystem.service.impl.EmployeeServiceImpl;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.*;
 
 public class EmployeeServiceTest {
-
-    @Mock
     private EmployeeRepository employeeRepository;
-    @Mock
-    private JobRepository jobRepository;
-    @Mock
     private EmployeeFactory employeeFactory;
-    @Mock
+    private EmployeeQueueFacade employeeQueueFacade;
     private EmployeeFormula employeeFormula;
+    private JobRepository jobRepository;
 
-
-    @Autowired
     private EmployeeServiceImpl employeeService;
+
+    @BeforeEach
+    public void setup(){
+        employeeFormula = mock(EmployeeFormula.class);
+        jobRepository = mock(JobRepository.class);
+
+        employeeRepository = mock(EmployeeRepository.class);
+        employeeFactory = mock(EmployeeFactory.class);
+        employeeQueueFacade = mock(EmployeeQueueFacade.class);
+
+        employeeService = new EmployeeServiceImpl(
+                employeeRepository,
+                employeeFactory,
+                employeeQueueFacade
+        );
+    }
 
     @Test
     public void shouldReturnAllEmployees(){
@@ -106,6 +109,6 @@ public class EmployeeServiceTest {
         List<EmployeeDTO> employeesReturned = employeeService.findByJob(job);
 
         // then
-        assertEquals(3,employeesReturned.size());
+        assertEquals(1,employeesReturned.size());
     }
 }

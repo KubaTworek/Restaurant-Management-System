@@ -1,17 +1,12 @@
 package pl.jakubtworek.RestaurantManagementSystem.model.factories;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.*;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MenuItemFactoryTest {
-    @Autowired
     private MenuItemFactory menuItemFactory;
 
     @BeforeEach

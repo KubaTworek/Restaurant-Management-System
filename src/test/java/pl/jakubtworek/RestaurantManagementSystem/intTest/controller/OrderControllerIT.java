@@ -8,29 +8,20 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.*;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
-import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderResponse;
+import pl.jakubtworek.RestaurantManagementSystem.controller.order.*;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
-import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
-import pl.jakubtworek.RestaurantManagementSystem.repository.TypeOfOrderRepository;
-import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
-import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
-import pl.jakubtworek.RestaurantManagementSystem.service.TypeOfOrderService;
+import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
 
@@ -46,14 +37,6 @@ public class OrderControllerIT {
     private OrderRepository orderRepository;
     @MockBean
     private TypeOfOrderRepository typeOfOrderRepository;
-
-
-    @Autowired
-    private OrderService orderService;
-    @Autowired
-    private TypeOfOrderService typeOfOrderService;
-    @Autowired
-    private EmployeeService employeeService;
 
 
     @Test

@@ -1,9 +1,6 @@
 package pl.jakubtworek.RestaurantManagementSystem.model.factories;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.*;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
@@ -13,28 +10,21 @@ import pl.jakubtworek.RestaurantManagementSystem.repository.TypeOfOrderRepositor
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
 
 public class OrderFactoryTest {
-    @Mock
     private TypeOfOrderRepository typeOfOrderRepository;
 
-    @Autowired
     private OrderFactory orderFactory;
 
     @BeforeEach
     public void setUp() {
-        Optional<TypeOfOrder> onsite = Optional.of(new TypeOfOrder(1L, "On-site", null));
-        Optional<TypeOfOrder> delivery = Optional.of(new TypeOfOrder(2L, "Delivery", null));
-
-        when(typeOfOrderRepository.findByType("On-site")).thenReturn(onsite);
-        when(typeOfOrderRepository.findByType("Delivery")).thenReturn(delivery);
+        typeOfOrderRepository = mock(TypeOfOrderRepository.class);
+        orderFactory = new OrderFactory();
     }
 
     @Test
@@ -43,8 +33,12 @@ public class OrderFactoryTest {
         MenuItemRequest menuItem1 = new MenuItemRequest("Apple", 2.99, "Food");
         MenuItemRequest menuItem2 = new MenuItemRequest("Coke", 1.99, "Drinks");
         OrderRequest orderDTO = new OrderRequest("On-site", List.of(menuItem1, menuItem2));
+        Optional<TypeOfOrder> onsite = Optional.of(new TypeOfOrder(1L, "On-site", null));
+
 
         // when
+        when(typeOfOrderRepository.findByType("On-site")).thenReturn(onsite);
+
         OrderDTO order = orderFactory.createOrder(orderDTO, createOnsiteTypeDTO()).createOrder();
 
         // then
@@ -61,8 +55,11 @@ public class OrderFactoryTest {
         // given
         MenuItemRequest menuItem = new MenuItemRequest("Meat", 10.99, "Food");
         OrderRequest orderDTO = new OrderRequest("Delivery", List.of(menuItem));
+        Optional<TypeOfOrder> delivery = Optional.of(new TypeOfOrder(2L, "Delivery", null));
 
         // when
+        when(typeOfOrderRepository.findByType("Delivery")).thenReturn(delivery);
+
         OrderDTO order = orderFactory.createOrder(orderDTO, createDeliveryTypeDTO()).createOrder();
 
         // then

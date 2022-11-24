@@ -1,33 +1,35 @@
 package pl.jakubtworek.RestaurantManagementSystem.service.menu;
 
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.*;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
+import pl.jakubtworek.RestaurantManagementSystem.service.impl.MenuServiceImpl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class MenuServiceTest {
-
-    @Mock
     private MenuRepository menuRepository;
-    @Mock
     private MenuFactory menuFactory;
 
-    @Autowired
     private MenuService menuService;
 
+    @BeforeEach
+    public void setup(){
+        menuRepository = mock(MenuRepository.class);
+        menuFactory = mock(MenuFactory.class);
+
+        menuService = new MenuServiceImpl(
+                menuRepository,
+                menuFactory
+        );
+    }
 
     @Test
     public void shouldReturnAllMenus() {

@@ -1,32 +1,39 @@
 package pl.jakubtworek.RestaurantManagementSystem.service.order;
 
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.*;
+import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueueFacade;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
+import pl.jakubtworek.RestaurantManagementSystem.model.factories.order.OrderFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
+import pl.jakubtworek.RestaurantManagementSystem.service.impl.OrderServiceImpl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verify;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
 
 public class OrderServiceTest {
-    @Mock
     private OrderRepository orderRepository;
+    private OrderFactory orderFactory;
+    private OrdersQueueFacade ordersQueueFacade;
 
-    @Autowired
     private OrderService orderService;
 
+    @BeforeEach
+    public void setup(){
+        orderRepository = mock(OrderRepository.class);
+        orderFactory = mock(OrderFactory.class);
+        ordersQueueFacade = mock(OrdersQueueFacade.class);
+
+        orderService = new OrderServiceImpl(
+                orderRepository,
+                orderFactory,
+                ordersQueueFacade
+        );
+    }
 
     @Test
     public void shouldReturnAllOrders() {
