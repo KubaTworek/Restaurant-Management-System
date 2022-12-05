@@ -3,12 +3,10 @@ package pl.jakubtworek.RestaurantManagementSystem.model.entity;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.modelmapper.ModelMapper;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeResponse;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Getter
 @Setter
@@ -33,13 +31,11 @@ public class Employee {
     private String lastName;
 
     @NotNull
-    @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name="job_id")
     private Job job;
 
-    @ManyToMany(fetch=FetchType.EAGER,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-                    CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
             name="Order_Employee",
             joinColumns = @JoinColumn(name="employee_id"),

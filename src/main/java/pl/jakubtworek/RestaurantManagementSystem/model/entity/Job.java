@@ -6,10 +6,7 @@ import org.modelmapper.ModelMapper;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.JobDTO;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-
-import static javax.persistence.CascadeType.ALL;
+import java.util.*;
 
 @Getter
 @Setter
@@ -29,7 +26,7 @@ public class Job {
     @NotNull
     private String name;
 
-    @OneToMany(mappedBy = "job", cascade = { ALL })
+    @OneToMany(mappedBy = "job")
     private List<Employee> employees;
 
     public void add(Employee tempEmployee) {

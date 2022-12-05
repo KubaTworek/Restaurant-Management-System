@@ -69,9 +69,10 @@ public class EmployeeController {
     }
 
     @GetMapping("/job")
-    public ResponseEntity<List<EmployeeResponse>> getEmployeeByJobName(@RequestParam String jobName) {
+    public ResponseEntity<List<EmployeeResponse>> getEmployeeByJobName(@RequestParam String jobName) throws JobNotFoundException {
 
-        Job jobFound = jobService.findByName(jobName).map(JobDTO::convertDTOToEntity).orElse(null);
+        Job jobFound = jobService.findByName(jobName).map(JobDTO::convertDTOToEntity)
+                .orElseThrow(() -> new JobNotFoundException("There are no job in restaurant with that name: " + jobName));
 
         List<EmployeeResponse> employeesResponse = employeeService.findByJob(jobFound)
                 .stream()

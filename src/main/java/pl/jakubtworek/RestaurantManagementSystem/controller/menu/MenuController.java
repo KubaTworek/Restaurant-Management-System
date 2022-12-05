@@ -54,7 +54,7 @@ public class MenuController {
 
         MenuResponse menuResponse = menuService.findById(id)
                 .map(MenuDTO::convertDTOToResponse)
-                .orElseThrow(MenuNotFoundException::new);
+                .orElseThrow(() -> new MenuNotFoundException("There are no menu in restaurant with that id: " + id));
 
         menuService.deleteById(id);
 

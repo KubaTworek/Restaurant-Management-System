@@ -6,8 +6,7 @@ import org.modelmapper.ModelMapper;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Getter
 @Setter
@@ -31,13 +30,11 @@ public class MenuItem {
     @NotNull
     private double price;
 
-    @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.REFRESH)
+    @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name="menu_id")
     private Menu menu;
 
-    @ManyToMany(fetch=FetchType.LAZY,
-                cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-                        CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToMany(fetch=FetchType.LAZY)
     @JoinTable(
             name="Order_Menu_Item",
             joinColumns = @JoinColumn(name="menu_item_id"),

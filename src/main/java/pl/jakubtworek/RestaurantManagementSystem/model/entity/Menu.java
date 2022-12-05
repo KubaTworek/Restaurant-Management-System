@@ -6,11 +6,7 @@ import org.modelmapper.ModelMapper;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-
-import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.CascadeType.REMOVE;
+import java.util.*;
 
 
 @Getter
@@ -31,7 +27,7 @@ public class Menu {
     @NotNull
     private String name;
 
-    @OneToMany(mappedBy = "menu", cascade = { REMOVE, ALL })
+    @OneToMany(mappedBy = "menu")
     private List<MenuItem> menuItems;
 
     public void add(MenuItem tempMenuItem) {

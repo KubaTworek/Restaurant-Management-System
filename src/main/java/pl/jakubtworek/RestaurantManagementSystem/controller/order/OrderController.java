@@ -66,7 +66,7 @@ public class OrderController {
 
         OrderResponse orderResponse = orderService.findById(id)
                 .map(OrderDTO::convertDTOToResponse)
-                .orElseThrow(OrderNotFoundException::new);
+                .orElseThrow(() -> new OrderNotFoundException("There are no order in restaurant with that id: " + id));
 
         orderService.deleteById(id);
 
@@ -80,10 +80,17 @@ public class OrderController {
                                                          ) {
 
         Stream<OrderResponse> ordersFoundByDate = orderService.findByDate(date).stream().map(OrderDTO::convertDTOToResponse);
-        TypeOfOrder typeOfOrderFound = typeOfOrderService.findByType(typeOfOrder).map(TypeOfOrderDTO::convertDTOToEntity).orElse(null);
-        Stream<OrderResponse> ordersFoundByTypeOfOrder = orderService.findByTypeOfOrder(typeOfOrderFound).stream().map(OrderDTO::convertDTOToResponse);
-        Employee employeeFound = employeeService.findById(employeeId).map(EmployeeDTO::convertDTOToEntity).orElse(null);
-        Stream<OrderResponse> ordersFoundByEmployee = orderService.findByEmployee(employeeFound).stream().map(OrderDTO::convertDTOToResponse);
+        Stream<OrderResponse> ordersFoundByEmployee = null;
+        Stream<OrderResponse> ordersFoundByTypeOfOrder = null;
+
+        if (typeOfOrder != null) {
+            TypeOfOrder typeOfOrderFound = typeOfOrderService.findByType(typeOfOrder).map(TypeOfOrderDTO::convertDTOToEntity).orElse(null);
+            ordersFoundByTypeOfOrder = orderService.findByTypeOfOrder(typeOfOrderFound).stream().map(OrderDTO::convertDTOToResponse);
+        }
+        if (employeeId != null) {
+            Employee employeeFound = employeeService.findById(employeeId).map(EmployeeDTO::convertDTOToEntity).orElse(null);
+            ordersFoundByEmployee = orderService.findByEmployee(employeeFound).stream().map(OrderDTO::convertDTOToResponse);
+        }
 
         List<OrderResponse> ordersFound = Stream.of(ordersFoundByDate, ordersFoundByTypeOfOrder, ordersFoundByEmployee)
                 .flatMap(Function.identity())

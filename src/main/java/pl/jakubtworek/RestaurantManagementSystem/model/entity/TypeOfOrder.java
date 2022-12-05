@@ -6,10 +6,7 @@ import org.modelmapper.ModelMapper;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.TypeOfOrderDTO;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-
-import static javax.persistence.CascadeType.ALL;
+import java.util.*;
 
 @Getter
 @Setter
@@ -29,7 +26,7 @@ public class TypeOfOrder {
     @NotNull
     private String type;
 
-    @OneToMany(mappedBy = "typeOfOrder", cascade = { ALL })
+    @OneToMany(mappedBy = "typeOfOrder")
     private List<Order> orders;
 
     public void add(Order tempOrder) {

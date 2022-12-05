@@ -35,14 +35,12 @@ public class Order {
     @Column(name="hour_away")
     private String hourAway;
 
-    @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name="type_of_order_id")
     @NotNull
     private TypeOfOrder typeOfOrder;
 
-    @ManyToMany(fetch=FetchType.LAZY,
-                cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-                CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinTable(
             name="Order_Menu_Item",
             joinColumns = @JoinColumn(name="order_id"),
@@ -50,9 +48,7 @@ public class Order {
     )
     private List<MenuItem> menuItems;
 
-    @ManyToMany(fetch=FetchType.EAGER,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-                    CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
             name="Order_Employee",
             joinColumns = @JoinColumn(name="order_id"),
