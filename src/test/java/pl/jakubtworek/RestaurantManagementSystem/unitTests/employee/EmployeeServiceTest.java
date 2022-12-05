@@ -18,6 +18,7 @@ import static org.mockito.Mockito.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.*;
 
 public class EmployeeServiceTest {
+    @Mock
     private EmployeeRepository employeeRepository;
     @Mock
     private EmployeeFactory employeeFactory;

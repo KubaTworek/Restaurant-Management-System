@@ -26,7 +26,7 @@ public class TypeOfOrder {
     @NotNull
     private String type;
 
-    @OneToMany(mappedBy = "typeOfOrder")
+    @OneToMany(mappedBy = "typeOfOrder", cascade = {CascadeType.REMOVE, CascadeType.DETACH})
     private List<Order> orders;
 
     public void add(Order tempOrder) {

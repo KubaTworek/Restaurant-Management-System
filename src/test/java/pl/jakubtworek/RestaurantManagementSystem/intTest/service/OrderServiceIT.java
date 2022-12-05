@@ -7,13 +7,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.createEmployee;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.createOnsiteType;
 
 @SpringBootTest
@@ -94,7 +95,7 @@ public class OrderServiceIT {
         assertEquals(1, orders.size());
     }*/
 
-/*    @Test
+    @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnOrders_whenPassDate() {
         // given
@@ -105,7 +106,7 @@ public class OrderServiceIT {
 
         // then
         assertEquals(2, orders.size());
-    }*/
+    }
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
@@ -120,7 +121,7 @@ public class OrderServiceIT {
         assertEquals(1, orders.size());
     }
 
-/*    @Test
+    @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnOrders_whenPassEmployee() {
         // given
@@ -131,5 +132,5 @@ public class OrderServiceIT {
 
         // then
         assertEquals(2, orders.size());
-    }*/
+    }
 }

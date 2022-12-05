@@ -6,18 +6,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuItemRepository;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.spy;
 
 
@@ -73,7 +67,7 @@ public class MenuItemRepositoryIT {
         assertEquals(1, menuItem.get().getOrders().size());
     }
 
-/*    @Test
+    @Test
     public void shouldReturnCreatedMenuItem() {
         // given
         MenuItem menuItem = new MenuItem(0L, "Pizza", 12.99, new Menu(2L, "Food", List.of()), List.of());
@@ -85,7 +79,7 @@ public class MenuItemRepositoryIT {
         assertEquals("Pizza", menuItemReturned.getName());
         assertEquals(12.99, menuItemReturned.getPrice());
         assertEquals("Food", menuItemReturned.getMenu().getName());
-    }*/
+    }
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})

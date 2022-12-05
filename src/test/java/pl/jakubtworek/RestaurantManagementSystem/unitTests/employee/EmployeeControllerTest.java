@@ -9,10 +9,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.*;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeResponse;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.*;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
-import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
+import pl.jakubtworek.RestaurantManagementSystem.service.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -35,6 +35,8 @@ public class EmployeeControllerTest {
 
     @MockBean
     private EmployeeService employeeService;
+    @MockBean
+    private JobService jobService;
 
     @Test
     void shouldReturnAllEmployees() throws Exception {
@@ -103,12 +105,13 @@ public class EmployeeControllerTest {
 /*    @Test
     void shouldReturnCreatedEmployee() throws Exception {
         // given
-        Employee returnedEmployee = new Employee(0L, "James", "Smith", new Job(1L, "Cook", List.of()), List.of());
-        EmployeeRequest employee = new EmployeeRequest(0L, "James", "Smith", "Cook");
-        EmployeeResponse expectedEmployee = new EmployeeResponse(0L, "James", "Smith", new JobDTO(1L, "Cook"));
+        EmployeeDTO returnedEmployee = new EmployeeDTO(1L, "James", "Smith", new JobDTO(1L, "Cook", List.of()), List.of());
+        EmployeeRequest employee = new EmployeeRequest("James", "Smith", "Cook");
+        JobDTO job = new JobDTO(1L, "Cook", List.of());
 
         // when
-        when(employeeService.save(employee)).thenReturn(returnedEmployee);
+        when(employeeService.save(employee, job)).thenReturn(returnedEmployee);
+        when(jobService.findByName("Cook")).thenReturn(Optional.of(job));
 
         MvcResult mvcResult = mockMvc.perform(post("/employees")
                         .contentType(MediaType.APPLICATION_JSON)

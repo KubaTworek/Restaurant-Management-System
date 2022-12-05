@@ -1,13 +1,16 @@
 package pl.jakubtworek.RestaurantManagementSystem.model.entity;
 
 import lombok.*;
+import org.hibernate.annotations.*;
 import org.modelmapper.ModelMapper;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Getter
 @Setter
@@ -35,12 +38,13 @@ public class Order {
     @Column(name="hour_away")
     private String hourAway;
 
-    @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="type_of_order_id")
     @NotNull
     private TypeOfOrder typeOfOrder;
 
-    @ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany(fetch=FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
             name="Order_Menu_Item",
             joinColumns = @JoinColumn(name="order_id"),
@@ -48,7 +52,8 @@ public class Order {
     )
     private List<MenuItem> menuItems;
 
-    @ManyToMany(fetch=FetchType.EAGER)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany(fetch=FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
             name="Order_Employee",
             joinColumns = @JoinColumn(name="order_id"),

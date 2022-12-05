@@ -35,7 +35,7 @@ public class Employee {
     @JoinColumn(name="job_id")
     private Job job;
 
-    @ManyToMany(fetch=FetchType.EAGER)
+    @ManyToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE)
     @JoinTable(
             name="Order_Employee",
             joinColumns = @JoinColumn(name="employee_id"),

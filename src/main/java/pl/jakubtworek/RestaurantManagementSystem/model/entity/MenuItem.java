@@ -34,7 +34,7 @@ public class MenuItem {
     @JoinColumn(name="menu_id")
     private Menu menu;
 
-    @ManyToMany(fetch=FetchType.LAZY)
+    @ManyToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE)
     @JoinTable(
             name="Order_Menu_Item",
             joinColumns = @JoinColumn(name="menu_item_id"),

@@ -98,8 +98,8 @@ public class MenuControllerTest {
 /*    @Test
     void shouldReturnCreatedMenu() throws Exception {
         // given
-        MenuRequest menu = new MenuRequest(0L, "Alcohol");
-        Menu expectedMenu = new Menu(0L, "Alcohol", List.of());
+        MenuRequest menu = new MenuRequest("Alcohol");
+        MenuDTO expectedMenu = new MenuDTO(0L, "Alcohol", List.of());
 
         // when
         when(menuService.save(menu)).thenReturn(expectedMenu);
