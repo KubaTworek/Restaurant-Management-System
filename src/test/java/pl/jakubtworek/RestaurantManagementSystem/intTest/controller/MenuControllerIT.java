@@ -7,9 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.*;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.*;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuResponse;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
@@ -34,9 +33,6 @@ public class MenuControllerIT {
 
     @MockBean
     private MenuRepository menuRepository;
-    @MockBean
-    private OrderRepository orderRepository;
-
 
     @Test
     void shouldReturnAllMenu() throws Exception {
@@ -99,7 +95,7 @@ public class MenuControllerIT {
         assertEquals("There are no menu in restaurant with that id: 3", response.getMessage());
     }
 
-    @Test
+/*    @Test
     void shouldReturnCreatedMenu() throws Exception {
         // given
         MenuRequest menu = new MenuRequest("Alcohol");
@@ -114,7 +110,7 @@ public class MenuControllerIT {
 
         // then
         assertEquals("Alcohol", menuReturned.getName());
-    }
+    }*/
 
     @Test
     void shouldReturnResponseConfirmingDeletedMenu() throws Exception {
@@ -128,9 +124,11 @@ public class MenuControllerIT {
                         .param("id", String.valueOf(1L)))
                 .andExpect(status().isOk())
                 .andReturn();
-        String response = mvcResult.getResponse().getContentAsString();
+        MenuResponse menuDeleted = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), MenuResponse.class);
 
         // then
-        assertEquals("Deleted menu has id: 1", response);
+        assertEquals("Drinks", menuDeleted.getName());
+        assertEquals("Coke", menuDeleted.getMenuItems().get(0).getName());
+        assertEquals(1.99, menuDeleted.getMenuItems().get(0).getPrice());
     }
 }

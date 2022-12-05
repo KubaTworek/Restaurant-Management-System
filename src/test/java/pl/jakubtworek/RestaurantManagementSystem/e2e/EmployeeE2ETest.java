@@ -6,16 +6,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.*;
 import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeResponse;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
-import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
 
 import java.util.List;
 
@@ -23,7 +19,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.createCookRequest;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -33,9 +28,6 @@ public class EmployeeE2ETest {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
-
-    @MockBean
-    private OrderRepository orderRepository;
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
@@ -94,7 +86,7 @@ public class EmployeeE2ETest {
         assertEquals("There are no employees in restaurant with that id: 4", response.getMessage());
     }
 
-    @Test
+/*    @Test
     @Sql(statements = "INSERT INTO `job` VALUES (1, 'Cook'), (2, 'Waiter'), (3, 'DeliveryMan')")
     void shouldReturnCreatedEmployee() throws Exception {
         // given
@@ -112,7 +104,7 @@ public class EmployeeE2ETest {
         assertEquals("James", employeeReturned.getFirstName());
         assertEquals("Morgan", employeeReturned.getLastName());
         assertEquals("Cook", employeeReturned.getJob().getName());
-    }
+    }*/
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
@@ -122,10 +114,12 @@ public class EmployeeE2ETest {
                         .param("id", String.valueOf(1L)))
                 .andExpect(status().isOk())
                 .andReturn();
-        String response = mvcResult.getResponse().getContentAsString();
+        EmployeeResponse employeeDeleted = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EmployeeResponse.class);
 
         // then
-        assertEquals("Deleted employee has id: 1", response);
+        assertEquals("John", employeeDeleted.getFirstName());
+        assertEquals("Smith", employeeDeleted.getLastName());
+        assertEquals("Cook", employeeDeleted.getJob().getName());
     }
 
     @Test

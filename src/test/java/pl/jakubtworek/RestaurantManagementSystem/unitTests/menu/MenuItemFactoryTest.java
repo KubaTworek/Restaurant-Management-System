@@ -1,8 +1,9 @@
-package pl.jakubtworek.RestaurantManagementSystem.model.factories;
+package pl.jakubtworek.RestaurantManagementSystem.unitTests.menu;
 
 import org.junit.jupiter.api.*;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
+import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuItemFactory;
 
 import static org.junit.jupiter.api.Assertions.*;
 

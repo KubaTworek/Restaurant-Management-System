@@ -1,6 +1,7 @@
-package pl.jakubtworek.RestaurantManagementSystem.service.order;
+package pl.jakubtworek.RestaurantManagementSystem.unitTests.order;
 
 import org.junit.jupiter.api.*;
+import org.mockito.Mock;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueueFacade;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
@@ -16,8 +17,11 @@ import static org.mockito.Mockito.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
 
 public class OrderServiceTest {
+    @Mock
     private OrderRepository orderRepository;
+    @Mock
     private OrderFactory orderFactory;
+    @Mock
     private OrdersQueueFacade ordersQueueFacade;
 
     private OrderService orderService;
@@ -45,7 +49,7 @@ public class OrderServiceTest {
         List<OrderDTO> ordersReturned = orderService.findAll();
 
         // then
-        assertEquals(3,ordersReturned.size());
+        assertEquals(2,ordersReturned.size());
     }
 
     @Test

@@ -14,8 +14,7 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -78,10 +77,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDTO> findByEmployee(Employee theEmployee) {
-        return orderRepository.findByEmployee(theEmployee)
+        /*return orderRepository.findByEmployee(theEmployee)
                 .stream()
                 .map(Order::convertEntityToDTO)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
+        return Collections.emptyList();
     }
 
     @Override

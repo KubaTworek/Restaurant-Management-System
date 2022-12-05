@@ -1,6 +1,7 @@
-package pl.jakubtworek.RestaurantManagementSystem.model.factories;
+package pl.jakubtworek.RestaurantManagementSystem.unitTests.order;
 
 import org.junit.jupiter.api.*;
+import org.mockito.Mock;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
@@ -17,6 +18,7 @@ import static org.mockito.Mockito.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
 
 public class OrderFactoryTest {
+    @Mock
     private TypeOfOrderRepository typeOfOrderRepository;
 
     private OrderFactory orderFactory;

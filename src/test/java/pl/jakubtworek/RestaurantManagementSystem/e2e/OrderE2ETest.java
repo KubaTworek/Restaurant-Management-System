@@ -9,8 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.*;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import pl.jakubtworek.RestaurantManagementSystem.controller.order.*;
+import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderResponse;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
 
 import java.util.List;
@@ -20,7 +19,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.createOnsiteOrderRequest;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -110,7 +108,7 @@ public class OrderE2ETest {
         assertThat(response.getMessage()).isEqualTo("There are no order in restaurant with that id: 3");
     }
 
-    @Test
+/*    @Test
     @Sql(statements = {"INSERT INTO `type_of_order` VALUES (1,'On-site'), (2,'Delivery')", "INSERT INTO `menu` VALUES (1,'Drinks'), (2,'Food')", "INSERT INTO `menu_item`(id,name,price,menu_id) VALUES (1,'Chicken',10.99,2), (2,'Coke',1.99,1), (3,'Tiramisu',5.99,2)"})
     void shouldReturnCreatedOrder() throws Exception {
         // given
@@ -128,7 +126,7 @@ public class OrderE2ETest {
         assertEquals(12.98, orderReturned.getPrice());
         assertEquals("On-site", orderReturned.getTypeOfOrder().getType());
         assertEquals(2, orderReturned.getMenuItems().size());
-    }
+    }*/
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
@@ -138,10 +136,21 @@ public class OrderE2ETest {
                         .param("id", String.valueOf(1L)))
                 .andExpect(status().isOk())
                 .andReturn();
-        String response = mvcResult.getResponse().getContentAsString();
+        OrderResponse orderReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), OrderResponse.class);
 
         // then
-        assertEquals("Deleted order has id: 1", response);
+        assertEquals(12.99, orderReturned.getPrice());
+        assertEquals("2022-08-22", orderReturned.getDate());
+        assertEquals("12:00", orderReturned.getHourOrder());
+        assertEquals("12:15", orderReturned.getHourAway());
+        assertEquals("On-site", orderReturned.getTypeOfOrder().getType());
+        assertEquals("Chicken", orderReturned.getMenuItems().get(0).getName());
+        assertEquals(10.99, orderReturned.getMenuItems().get(0).getPrice());
+        assertEquals("Coke", orderReturned.getMenuItems().get(1).getName());
+        assertEquals(1.99, orderReturned.getMenuItems().get(1).getPrice());
+        assertEquals("John", orderReturned.getEmployees().get(0).getFirstName());
+        assertEquals("Smith", orderReturned.getEmployees().get(0).getLastName());
+        assertEquals("Cook", orderReturned.getEmployees().get(0).getJob().getName());
     }
 
     @Test

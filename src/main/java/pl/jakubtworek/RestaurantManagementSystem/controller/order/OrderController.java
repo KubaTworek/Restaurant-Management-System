@@ -45,7 +45,7 @@ public class OrderController {
 
         OrderResponse orderResponse = orderService.findById(id)
                 .map(OrderDTO::convertDTOToResponse)
-                .orElseThrow(OrderNotFoundException::new);
+                .orElseThrow(() -> new OrderNotFoundException("There are no order in restaurant with that id: " + id));
 
         return new ResponseEntity<>(orderResponse, HttpStatus.OK);
     }

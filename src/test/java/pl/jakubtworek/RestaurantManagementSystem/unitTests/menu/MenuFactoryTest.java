@@ -1,9 +1,10 @@
-package pl.jakubtworek.RestaurantManagementSystem.model.factories;
+package pl.jakubtworek.RestaurantManagementSystem.unitTests.menu;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
+import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;

@@ -6,18 +6,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuItemRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuItemService;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -70,7 +65,7 @@ public class MenuItemServiceIT {
     }
 
     @Test
-    @Sql(statements = "INSERT INTO `menu`(`id`, `name`) VALUES (1, 'Drinks'), (2, 'Food')")
+    @Sql(statements = "INSERT INTO `menu`(`id`, `name`) VALUES (1, 'Food'), (2, 'Drinks')")
     public void shouldReturnCreatedMenuItem() {
         // given
         MenuItemRequest menuItem = new MenuItemRequest("Pizza", 12.99, "Food");

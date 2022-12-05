@@ -6,21 +6,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
-import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.TypeOfOrderDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.createEmployee;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.createOnsiteType;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -73,7 +67,7 @@ public class OrderServiceIT {
         assertEquals(2, order.get().getMenuItems().size());
     }
 
-    @Test
+/*    @Test
     @Sql(statements = {"INSERT INTO `type_of_order` VALUES (1,'On-site'), (2,'Delivery')", "INSERT INTO `menu` VALUES (1,'Drinks'), (2,'Food')", "INSERT INTO `menu_item`(id,name,price,menu_id) VALUES (1,'Chicken',10.99,2), (2,'Coke',1.99,1), (3,'Tiramisu',5.99,2)"})
     public void shouldReturnCreatedOrder() {
         // given
@@ -87,7 +81,7 @@ public class OrderServiceIT {
         assertEquals(12.98, orderReturned.getPrice());
         assertEquals("On-site", orderReturned.getTypeOfOrder().getType());
         assertEquals(2, orderReturned.getMenuItems().size());
-    }
+    }*/
 
 /*    @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
@@ -100,7 +94,7 @@ public class OrderServiceIT {
         assertEquals(1, orders.size());
     }*/
 
-    @Test
+/*    @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnOrders_whenPassDate() {
         // given
@@ -111,7 +105,7 @@ public class OrderServiceIT {
 
         // then
         assertEquals(2, orders.size());
-    }
+    }*/
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
@@ -126,7 +120,7 @@ public class OrderServiceIT {
         assertEquals(1, orders.size());
     }
 
-    @Test
+/*    @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnOrders_whenPassEmployee() {
         // given
@@ -137,5 +131,5 @@ public class OrderServiceIT {
 
         // then
         assertEquals(2, orders.size());
-    }
+    }*/
 }

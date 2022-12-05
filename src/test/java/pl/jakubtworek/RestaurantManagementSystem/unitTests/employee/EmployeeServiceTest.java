@@ -1,6 +1,7 @@
-package pl.jakubtworek.RestaurantManagementSystem.service.employee;
+package pl.jakubtworek.RestaurantManagementSystem.unitTests.employee;
 
 import org.junit.jupiter.api.*;
+import org.mockito.Mock;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
 import pl.jakubtworek.RestaurantManagementSystem.exception.JobNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.EmployeeQueueFacade;
@@ -18,9 +19,13 @@ import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.*;
 
 public class EmployeeServiceTest {
     private EmployeeRepository employeeRepository;
+    @Mock
     private EmployeeFactory employeeFactory;
+    @Mock
     private EmployeeQueueFacade employeeQueueFacade;
+    @Mock
     private EmployeeFormula employeeFormula;
+    @Mock
     private JobRepository jobRepository;
 
     private EmployeeServiceImpl employeeService;

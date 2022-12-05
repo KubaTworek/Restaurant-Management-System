@@ -1,4 +1,4 @@
-package pl.jakubtworek.RestaurantManagementSystem.controller.menu;
+package pl.jakubtworek.RestaurantManagementSystem.unitTests.menu;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -6,18 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.*;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemResponse;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
-import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuItemService;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuItemUtils.createChickenMenuItemDTO;
@@ -32,8 +31,6 @@ public class MenuItemControllerTest {
 
     @MockBean
     private MenuItemService menuItemService;
-    @MockBean
-    private OrderRepository orderRepository;
 
     @Test
     void shouldReturnMenuItemById() throws Exception {
@@ -101,9 +98,10 @@ public class MenuItemControllerTest {
                         .param("id", String.valueOf(1L)))
                 .andExpect(status().isOk())
                 .andReturn();
-        String response = mvcResult.getResponse().getContentAsString();
+        MenuItemResponse menuItemDeleted = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), MenuItemResponse.class);
 
         // then
-        assertEquals("Deleted menu item has id: 1", response);
+        assertEquals("Chicken", menuItemDeleted.getName());
+        assertEquals(10.99, menuItemDeleted.getPrice());
     }
 }

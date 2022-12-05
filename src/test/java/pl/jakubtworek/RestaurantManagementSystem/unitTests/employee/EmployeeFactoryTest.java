@@ -1,4 +1,4 @@
-package pl.jakubtworek.RestaurantManagementSystem.model.factories;
+package pl.jakubtworek.RestaurantManagementSystem.unitTests.employee;
 
 import org.junit.jupiter.api.*;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;

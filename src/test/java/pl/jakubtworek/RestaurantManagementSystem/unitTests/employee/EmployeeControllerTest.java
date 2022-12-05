@@ -1,4 +1,4 @@
-package pl.jakubtworek.RestaurantManagementSystem.controller.employee;
+package pl.jakubtworek.RestaurantManagementSystem.unitTests.employee;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,9 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.*;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeResponse;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
-import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 
 import java.util.*;
@@ -35,8 +35,6 @@ public class EmployeeControllerTest {
 
     @MockBean
     private EmployeeService employeeService;
-    @MockBean
-    private OrderRepository orderRepository;
 
     @Test
     void shouldReturnAllEmployees() throws Exception {

@@ -35,9 +35,6 @@ public class EmployeeControllerIT {
     private EmployeeRepository employeeRepository;
     @MockBean
     private JobRepository jobRepository;
-    @MockBean
-    private OrderRepository orderRepository;
-
 
     @Test
     void shouldReturnAllEmployees() throws Exception {
@@ -103,7 +100,7 @@ public class EmployeeControllerIT {
         assertEquals("There are no employees in restaurant with that id: 4", response.getMessage());
     }
 
-    @Test
+/*    @Test
     void shouldReturnCreatedEmployee() throws Exception {
         // given
         EmployeeRequest employee = createCookRequest();
@@ -125,7 +122,7 @@ public class EmployeeControllerIT {
         assertEquals("James", employeeReturned.getFirstName());
         assertEquals("Smith", employeeReturned.getLastName());
         assertEquals("Cook", employeeReturned.getJob().getName());
-    }
+    }*/
 
     @Test
     void shouldReturnResponseConfirmingDeletedEmployee() throws Exception {
@@ -139,10 +136,12 @@ public class EmployeeControllerIT {
                         .param("id", String.valueOf(1L)))
                 .andExpect(status().isOk())
                 .andReturn();
-        String response = mvcResult.getResponse().getContentAsString();
+        EmployeeResponse employeeDeleted = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EmployeeResponse.class);
 
         // then
-        assertEquals("Deleted employee has id: 1", response);
+        assertEquals("John", employeeDeleted.getFirstName());
+        assertEquals("Smith", employeeDeleted.getLastName());
+        assertEquals("Cook", employeeDeleted.getJob().getName());
     }
 
     @Test

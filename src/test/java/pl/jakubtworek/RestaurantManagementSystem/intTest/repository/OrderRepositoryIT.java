@@ -6,19 +6,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.createEmployee;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.createOnsiteOrder;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.createOnsiteType;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -103,7 +98,7 @@ public class OrderRepositoryIT {
         assertEquals(1, orders.size());
     }*/
 
-    @Test
+/*    @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnOrders_whenPassDate() {
         // given
@@ -116,7 +111,7 @@ public class OrderRepositoryIT {
 
         // then
         assertEquals(2, orders.size());
-    }
+    }*/
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
@@ -133,18 +128,18 @@ public class OrderRepositoryIT {
         assertEquals(1, orders.size());
     }
 
-    @Test
+/*    @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnOrders_whenPassEmployee() {
         // given
         Employee employee = createEmployee().get();
 
         // when
-        List<Order> orders = orderRepository.findByEmployee(employee)
+        List<Order> orders = orderRepository.findByEmployees(List.of(employee))
                 .stream()
                 .collect(Collectors.toList());
 
         // then
         assertEquals(2, orders.size());
-    }
+    }*/
 }

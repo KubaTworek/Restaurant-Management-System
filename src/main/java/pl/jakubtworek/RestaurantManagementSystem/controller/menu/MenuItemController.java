@@ -25,7 +25,7 @@ public class MenuItemController {
 
         MenuItemResponse menuItemResponse = menuItemService.findById(id)
                 .map(MenuItemDTO::convertDTOToResponse)
-                .orElseThrow(MenuItemNotFoundException::new);
+                .orElseThrow(() -> new MenuItemNotFoundException("There are no menu item in restaurant with that id: " + id));
 
         return new ResponseEntity<>(menuItemResponse, HttpStatus.OK);
     }
@@ -44,7 +44,7 @@ public class MenuItemController {
 
         MenuItemResponse menuItemResponse = menuItemService.findById(id)
                 .map(MenuItemDTO::convertDTOToResponse)
-                .orElseThrow(MenuItemNotFoundException::new);
+                .orElseThrow(() -> new MenuItemNotFoundException("There are no menu item in restaurant with that id: " + id));
 
         menuItemService.deleteById(id);
 

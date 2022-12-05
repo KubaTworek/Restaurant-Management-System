@@ -94,7 +94,7 @@ public class CreateOrderTest {
         OrderRequest order = new OrderRequest("Delivery", List.of(new MenuItemRequest("Chicken", 10.99, "Food"), new MenuItemRequest("Coke", 1.99, "Drinks")));
 
         // when
-        mockMvc.perform(MockMvcRequestBuilders.post("/orders")
+        mockMvc.perform(post("/orders")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(order)));
 

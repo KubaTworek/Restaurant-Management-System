@@ -1,4 +1,4 @@
-package pl.jakubtworek.RestaurantManagementSystem.controller.menu;
+package pl.jakubtworek.RestaurantManagementSystem.unitTests.menu;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,10 +8,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.*;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuResponse;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
-import pl.jakubtworek.RestaurantManagementSystem.repository.*;
-import pl.jakubtworek.RestaurantManagementSystem.service.*;
+import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
 
 import java.util.*;
 
@@ -33,8 +33,6 @@ public class MenuControllerTest {
 
     @MockBean
     private MenuService menuService;
-    @MockBean
-    private OrderRepository orderRepository;
 
     @Test
     void shouldReturnAllMenu() throws Exception {
@@ -129,9 +127,11 @@ public class MenuControllerTest {
                         .param("id", String.valueOf(1L)))
                 .andExpect(status().isOk())
                 .andReturn();
-        String response = mvcResult.getResponse().getContentAsString();
+        MenuResponse menuDeleted = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), MenuResponse.class);
 
         // then
-        assertEquals("Deleted menu has id: 1", response);
+        assertEquals("Drinks", menuDeleted.getName());
+        assertEquals("Coke", menuDeleted.getMenuItems().get(0).getName());
+        assertEquals(1.99, menuDeleted.getMenuItems().get(0).getPrice());
     }
 }

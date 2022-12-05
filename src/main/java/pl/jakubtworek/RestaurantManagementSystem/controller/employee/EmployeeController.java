@@ -42,7 +42,7 @@ public class EmployeeController {
 
         EmployeeResponse employeeResponse = employeeService.findById(id)
                 .map(EmployeeDTO::convertDTOToResponse)
-                .orElseThrow(EmployeeNotFoundException::new);
+                .orElseThrow(() -> new EmployeeNotFoundException("There are no employees in restaurant with that id: " + id));
 
         return new ResponseEntity<>(employeeResponse, HttpStatus.OK);
     }
@@ -61,7 +61,7 @@ public class EmployeeController {
 
         EmployeeResponse employeeResponse = employeeService.findById(id)
                 .map(EmployeeDTO::convertDTOToResponse)
-                .orElseThrow(EmployeeNotFoundException::new);
+                .orElseThrow(() -> new EmployeeNotFoundException("There are no employees in restaurant with that id: " + id));
 
         employeeService.deleteById(id);
 

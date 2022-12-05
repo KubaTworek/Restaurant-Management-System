@@ -5,16 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.*;
 import org.springframework.transaction.annotation.Transactional;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemResponse;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.*;
 import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
-import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -28,9 +24,6 @@ public class MenuItemE2ETest {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
-
-    @MockBean
-    private OrderRepository orderRepository;
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
@@ -89,9 +82,10 @@ public class MenuItemE2ETest {
                         .param("id", String.valueOf(1L)))
                 .andExpect(status().isOk())
                 .andReturn();
-        String response = mvcResult.getResponse().getContentAsString();
+        MenuItemResponse menuItemDeleted = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), MenuItemResponse.class);
 
         // then
-        assertEquals("Deleted menu item has id: 1", response);
+        assertEquals("Chicken", menuItemDeleted.getName());
+        assertEquals(10.99, menuItemDeleted.getPrice());
     }
 }

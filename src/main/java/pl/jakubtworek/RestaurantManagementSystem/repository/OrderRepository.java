@@ -2,17 +2,15 @@ package pl.jakubtworek.RestaurantManagementSystem.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<Order> findByDate(String date);
     Optional<Order> findByTypeOfOrder(TypeOfOrder typeOfOrder);
-    Optional<Order> findByEmployee(Employee employee);
+    //Optional<Order> findByEmployees(List<Employee> employees);
     Optional<Order> findOrdersByHourAwayIsNull();
     Optional<Order> findOrdersByHourAwayIsNotNull();
 }
