@@ -37,8 +37,8 @@ public class EmployeeController {
         return new ResponseEntity<>(employeesFound, HttpStatus.OK);
     }
 
-    @GetMapping("/id")
-    public ResponseEntity<EmployeeResponse> getEmployeeById(@RequestParam Long id) throws EmployeeNotFoundException {
+    @GetMapping("/{id}")
+    public ResponseEntity<EmployeeResponse> getEmployeeById(@PathVariable Long id) throws EmployeeNotFoundException {
 
         EmployeeResponse employeeResponse = employeeService.findById(id)
                 .map(EmployeeDTO::convertDTOToResponse)
@@ -56,8 +56,8 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeResponse, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/id")
-    public ResponseEntity<EmployeeResponse> deleteEmployee(@RequestParam Long id) throws EmployeeNotFoundException {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<EmployeeResponse> deleteEmployee(@PathVariable Long id) throws EmployeeNotFoundException {
 
         EmployeeResponse employeeResponse = employeeService.findById(id)
                 .map(EmployeeDTO::convertDTOToResponse)

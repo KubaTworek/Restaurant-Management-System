@@ -31,8 +31,8 @@ public class MenuController {
         return new ResponseEntity<>(menuFound, HttpStatus.OK);
     }
 
-    @GetMapping("/id")
-    public ResponseEntity<MenuResponse> getMenuById(@RequestParam Long id) throws MenuNotFoundException {
+    @GetMapping("/{id}")
+    public ResponseEntity<MenuResponse> getMenuById(@PathVariable Long id) throws MenuNotFoundException {
 
         MenuResponse menuResponse = menuService.findById(id)
                 .map(MenuDTO::convertDTOToResponse)
@@ -49,8 +49,8 @@ public class MenuController {
         return new ResponseEntity<>(menuResponse, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/id")
-    public ResponseEntity<MenuResponse> deleteMenu(@RequestParam Long id) throws MenuNotFoundException {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MenuResponse> deleteMenu(@PathVariable Long id) throws MenuNotFoundException {
 
         MenuResponse menuResponse = menuService.findById(id)
                 .map(MenuDTO::convertDTOToResponse)

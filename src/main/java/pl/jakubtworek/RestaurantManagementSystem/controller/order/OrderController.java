@@ -34,8 +34,8 @@ public class OrderController {
         return new ResponseEntity<>(ordersFound, HttpStatus.OK);
     }
 
-    @GetMapping("/id")
-    public ResponseEntity<OrderResponse> getOrderById(@RequestParam Long id) throws OrderNotFoundException {
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderResponse> getOrderById(@PathVariable Long id) throws OrderNotFoundException {
 
         OrderResponse orderResponse = orderService.findById(id)
                 .map(OrderDTO::convertDTOToResponse)
@@ -60,8 +60,8 @@ public class OrderController {
     }
 
 
-    @DeleteMapping("/id")
-    public ResponseEntity<OrderResponse> deleteOrder(@RequestParam Long id) throws OrderNotFoundException {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<OrderResponse> deleteOrder(@PathVariable Long id) throws OrderNotFoundException {
 
         OrderResponse orderResponse = orderService.findById(id)
                 .map(OrderDTO::convertDTOToResponse)

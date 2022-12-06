@@ -20,8 +20,8 @@ public class MenuItemController {
     private final MenuItemService menuItemService;
     private final MenuService menuService;
 
-    @GetMapping("/id")
-    public ResponseEntity<MenuItemResponse> getMenuItemById(@RequestParam Long id) throws MenuItemNotFoundException {
+    @GetMapping("/{id}")
+    public ResponseEntity<MenuItemResponse> getMenuItemById(@PathVariable Long id) throws MenuItemNotFoundException {
 
         MenuItemResponse menuItemResponse = menuItemService.findById(id)
                 .map(MenuItemDTO::convertDTOToResponse)
@@ -39,8 +39,8 @@ public class MenuItemController {
         return new ResponseEntity<>(menuItemResponse, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/id")
-    public ResponseEntity<MenuItemResponse> deleteMenuItem(@RequestParam Long id) throws MenuItemNotFoundException {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MenuItemResponse> deleteMenuItem(@PathVariable Long id) throws MenuItemNotFoundException {
 
         MenuItemResponse menuItemResponse = menuItemService.findById(id)
                 .map(MenuItemDTO::convertDTOToResponse)
