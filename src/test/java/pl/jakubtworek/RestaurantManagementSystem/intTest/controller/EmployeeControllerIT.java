@@ -66,7 +66,7 @@ public class EmployeeControllerIT {
         assertEquals("DeliveryMan", employeesReturned.get(2).getJob().getName());
     }
 
-    @Test
+/*    @Test
     void shouldReturnEmployeeById() throws Exception {
         // given
         Optional<Employee> expectedEmployee = createEmployee();
@@ -84,7 +84,7 @@ public class EmployeeControllerIT {
         assertEquals("John", employeeReturned.getFirstName());
         assertEquals("Smith", employeeReturned.getLastName());
         assertEquals("Cook", employeeReturned.getJob().getName());
-    }
+    }*/
 
     @Test
     void shouldReturnErrorResponse_whenAskedForNonExistingEmployee() throws Exception {
@@ -124,7 +124,7 @@ public class EmployeeControllerIT {
         assertEquals("Cook", employeeReturned.getJob().getName());
     }*/
 
-    @Test
+/*    @Test
     void shouldReturnResponseConfirmingDeletedEmployee() throws Exception {
         // given
         Optional<Employee> expectedEmployee = createEmployee();
@@ -142,9 +142,9 @@ public class EmployeeControllerIT {
         assertEquals("John", employeeDeleted.getFirstName());
         assertEquals("Smith", employeeDeleted.getLastName());
         assertEquals("Cook", employeeDeleted.getJob().getName());
-    }
+    }*/
 
-    @Test
+/*    @Test
     void shouldReturnEmployees_whenJobNameIsPassed() throws Exception {
         // given
         Optional<Job> expectedJob = createCook();
@@ -166,7 +166,7 @@ public class EmployeeControllerIT {
         assertEquals("John", employeesReturned.get(0).getFirstName());
         assertEquals("Smith", employeesReturned.get(0).getLastName());
         assertEquals("Cook", employeesReturned.get(0).getJob().getName());
-    }
+    }*/
 
     @Test
     void shouldReturnResponse_whenWrongJobNameIsPassed() throws Exception {

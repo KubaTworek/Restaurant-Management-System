@@ -45,7 +45,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderResponse> saveOrder(@RequestBody OrderRequest orderRequest) throws TypeOfOrderNotFoundException, MenuNotFoundException {
+    public ResponseEntity<OrderResponse> saveOrder(@RequestBody OrderRequest orderRequest) throws TypeOfOrderNotFoundException {
 
         TypeOfOrderDTO typeOfOrderDTO = typeOfOrderService.findByType(orderRequest.getTypeOfOrder())
                 .orElseThrow(TypeOfOrderNotFoundException::new);

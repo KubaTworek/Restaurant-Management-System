@@ -1,58 +1,52 @@
 package pl.jakubtworek.RestaurantManagementSystem.unitTests.employee;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.*;
+import org.junit.jupiter.api.*;
+import org.mockito.Mock;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.*;
-import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
+import pl.jakubtworek.RestaurantManagementSystem.exception.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.service.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-public class EmployeeControllerTest {
-    @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @MockBean
+class EmployeeControllerTest {
+    @Mock
     private EmployeeService employeeService;
-    @MockBean
+    @Mock
     private JobService jobService;
 
+    private EmployeeController employeeController;
+
+    @BeforeEach
+    void setup(){
+        employeeService = mock(EmployeeService.class);
+        jobService = mock(JobService.class);
+
+        employeeController = new EmployeeController(
+                employeeService,
+                jobService
+        );
+    }
+
     @Test
-    void shouldReturnAllEmployees() throws Exception {
+    void shouldReturnAllEmployees() {
         // given
-        List<EmployeeDTO> expectedEmployees = createEmployeesDTO();
+        List<EmployeeDTO> expectedEmployees = createEmployees()
+                .stream()
+                .map(Employee::convertEntityToDTO)
+                .collect(Collectors.toList());
 
         // when
         when(employeeService.findAll()).thenReturn(expectedEmployees);
 
-        MvcResult mvcResult = mockMvc.perform(get("/employees")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(3)))
-                .andReturn();
-        List<EmployeeResponse> employeesReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
-        });
+        List<EmployeeResponse> employeesReturned = employeeController.getEmployees().getBody();
 
         // then
         assertEquals("John", employeesReturned.get(0).getFirstName());
@@ -71,16 +65,12 @@ public class EmployeeControllerTest {
     @Test
     void shouldReturnEmployeeById() throws Exception {
         // given
-        Optional<EmployeeDTO> expectedEmployee = createEmployeeDTO();
+        Optional<EmployeeDTO> expectedEmployee = Optional.of(createCook().convertEntityToDTO());
 
         // when
         when(employeeService.findById(eq(1L))).thenReturn(expectedEmployee);
 
-        MvcResult mvcResult = mockMvc.perform(get("/employees/id")
-                        .param("id", String.valueOf(1L)))
-                .andExpect(status().is(200))
-                .andReturn();
-        EmployeeResponse employeeReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EmployeeResponse.class);
+        EmployeeResponse employeeReturned = employeeController.getEmployeeById(1L).getBody();
 
         // then
         assertEquals("John", employeeReturned.getFirstName());
@@ -89,56 +79,42 @@ public class EmployeeControllerTest {
     }
 
     @Test
-    void shouldReturnErrorResponse_whenAskedForNonExistingEmployee() throws Exception {
+    void shouldReturnErrorResponse_whenAskedForNonExistingEmployee() {
         // when
-        MvcResult mvcResult = mockMvc.perform(get("/employees/id")
-                        .param("id", String.valueOf(4L)))
-                .andExpect(status().isNotFound())
-                .andReturn();
-        ErrorResponse response = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+        Exception exception = assertThrows(EmployeeNotFoundException.class, () -> employeeController.getEmployeeById(4L));
 
         // then
-        assertEquals(404, response.getStatus());
-        assertEquals("There are no employees in restaurant with that id: 4", response.getMessage());
+        assertEquals("There are no employees in restaurant with that id: 4", exception.getMessage());
     }
 
-/*    @Test
+    @Test
     void shouldReturnCreatedEmployee() throws Exception {
         // given
-        EmployeeDTO returnedEmployee = new EmployeeDTO(1L, "James", "Smith", new JobDTO(1L, "Cook", List.of()), List.of());
-        EmployeeRequest employee = new EmployeeRequest("James", "Smith", "Cook");
-        JobDTO job = new JobDTO(1L, "Cook", List.of());
+        EmployeeDTO returnedEmployee = createCook().convertEntityToDTO();
+        EmployeeRequest employee = createCookRequest();
+        JobDTO job = createJobCook().convertEntityToDTO();
 
         // when
         when(employeeService.save(employee, job)).thenReturn(returnedEmployee);
         when(jobService.findByName("Cook")).thenReturn(Optional.of(job));
 
-        MvcResult mvcResult = mockMvc.perform(post("/employees")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(employee)))
-                .andExpect(status().isCreated())
-                .andReturn();
-        EmployeeResponse employeeReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EmployeeResponse.class);
+        EmployeeResponse employeeReturned = employeeController.saveEmployee(employee).getBody();
 
         // then
         assertEquals("John", employeeReturned.getFirstName());
         assertEquals("Smith", employeeReturned.getLastName());
         assertEquals("Cook", employeeReturned.getJob().getName());
-    }*/
+    }
 
     @Test
     void shouldReturnResponseConfirmingDeletedEmployee() throws Exception {
         // given
-        Optional<EmployeeDTO> expectedEmployee = createEmployeeDTO();
+        Optional<EmployeeDTO> expectedEmployee = Optional.of(createCook().convertEntityToDTO());
 
         // when
         when(employeeService.findById(eq(1L))).thenReturn(expectedEmployee);
 
-        MvcResult mvcResult = mockMvc.perform(delete("/employees/id")
-                        .param("id", String.valueOf(1L)))
-                .andExpect(status().isOk())
-                .andReturn();
-        EmployeeResponse employeeReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EmployeeResponse.class);
+        EmployeeResponse employeeReturned = employeeController.deleteEmployee(1L).getBody();
 
         // then
         assertEquals("John", employeeReturned.getFirstName());
@@ -149,21 +125,17 @@ public class EmployeeControllerTest {
     @Test
     void shouldReturnEmployees_whenJobNameIsPassed() throws Exception {
         // given
-        List<EmployeeDTO> expectedCooks = createCooksDTO()
+        List<EmployeeDTO> expectedCooks = createCooks()
                 .stream()
+                .map(Employee::convertEntityToDTO)
                 .collect(Collectors.toList());
+        Optional<JobDTO> expectedJob = Optional.ofNullable(createJobCook().convertEntityToDTO());
 
         // when
         when(employeeService.findByJob(any())).thenReturn(expectedCooks);
+        when(jobService.findByName(any())).thenReturn(expectedJob);
 
-        MvcResult mvcResult = mockMvc.perform(get("/employees/job")
-                        .param("job", "Cook")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andReturn();
-        List<EmployeeResponse> employeesReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
-        });
+        List<EmployeeResponse> employeesReturned = employeeController.getEmployeeByJobName("Cook").getBody();
 
         // then
         assertEquals("John", employeesReturned.get(0).getFirstName());
@@ -172,17 +144,11 @@ public class EmployeeControllerTest {
     }
 
     @Test
-    void shouldReturnResponse_whenWrongJobNameIsPassed() throws Exception {
+    void shouldReturnResponse_whenWrongJobNameIsPassed() {
         // when
-        MvcResult mvcResult = mockMvc.perform(get("/employees/job")
-                        .param("job", "something")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
-                .andReturn();
-        ErrorResponse response = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+        Exception exception = assertThrows(JobNotFoundException.class, () -> employeeController.getEmployeeByJobName("Random"));
 
         // then
-        assertEquals(404, response.getStatus());
-        assertEquals("There are no job like that in restaurant with that name: something", response.getMessage());
+        assertEquals("There are no job in restaurant with that name: Random", exception.getMessage());
     }
 }

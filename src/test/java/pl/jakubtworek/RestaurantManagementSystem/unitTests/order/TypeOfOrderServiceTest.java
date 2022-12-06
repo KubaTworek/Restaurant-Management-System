@@ -1,3 +1,4 @@
+/*
 package pl.jakubtworek.RestaurantManagementSystem.unitTests.order;
 
 import org.junit.jupiter.api.*;
@@ -43,3 +44,4 @@ public class TypeOfOrderServiceTest {
         assertNotNull(typeOfOrderReturned);
     }
 }
+*/

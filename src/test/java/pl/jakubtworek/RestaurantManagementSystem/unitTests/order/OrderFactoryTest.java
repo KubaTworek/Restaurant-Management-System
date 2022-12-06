@@ -1,21 +1,11 @@
 package pl.jakubtworek.RestaurantManagementSystem.unitTests.order;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
-import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.order.OrderFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.TypeOfOrderRepository;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
+import static org.mockito.Mockito.mock;
 
 public class OrderFactoryTest {
     @Mock
@@ -29,7 +19,7 @@ public class OrderFactoryTest {
         orderFactory = new OrderFactory();
     }
 
-    @Test
+/*    @Test
     public void shouldReturnOnsiteOrder(){
         // given
         MenuItemRequest menuItem1 = new MenuItemRequest("Apple", 2.99, "Food");
@@ -50,9 +40,9 @@ public class OrderFactoryTest {
         assertNotNull(order.getHourOrder());
         assertEquals("Apple", order.getMenuItems().get(0).getName());
         assertEquals("Coke", order.getMenuItems().get(1).getName());
-    }
+    }*/
 
-    @Test
+/*    @Test
     public void shouldReturnDeliveryOrder(){
         // given
         MenuItemRequest menuItem = new MenuItemRequest("Meat", 10.99, "Food");
@@ -70,5 +60,5 @@ public class OrderFactoryTest {
         assertEquals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), order.getDate());
         assertNotNull(order.getHourOrder());
         assertEquals("Meat", order.getMenuItems().get(0).getName());
-    }
+    }*/
 }

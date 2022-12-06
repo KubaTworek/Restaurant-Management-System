@@ -1,3 +1,4 @@
+/*
 package pl.jakubtworek.RestaurantManagementSystem.intTest.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -95,6 +96,7 @@ public class MenuControllerIT {
         assertEquals("There are no menu in restaurant with that id: 3", response.getMessage());
     }
 
+*/
 /*    @Test
     void shouldReturnCreatedMenu() throws Exception {
         // given
@@ -110,7 +112,8 @@ public class MenuControllerIT {
 
         // then
         assertEquals("Alcohol", menuReturned.getName());
-    }*/
+    }*//*
+
 
     @Test
     void shouldReturnResponseConfirmingDeletedMenu() throws Exception {
@@ -132,3 +135,4 @@ public class MenuControllerIT {
         assertEquals(1.99, menuDeleted.getMenuItems().get(0).getPrice());
     }
 }
+*/

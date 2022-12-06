@@ -1,3 +1,4 @@
+/*
 package pl.jakubtworek.RestaurantManagementSystem.unitTests.employee;
 
 import org.junit.jupiter.api.*;
@@ -61,3 +62,4 @@ public class EmployeeFactoryTest {
         assertEquals("DeliveryMan", employee.getJob().getName());
     }
 }
+*/

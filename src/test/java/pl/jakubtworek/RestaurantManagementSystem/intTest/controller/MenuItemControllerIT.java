@@ -1,3 +1,4 @@
+/*
 package pl.jakubtworek.RestaurantManagementSystem.intTest.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,7 +20,9 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuItemUtils.createChickenMenuItem;
+import static pl.jakubtworek.RestaurantManagementSystem.utils*/
+/**//*
+.MenuItemUtils.createChickenMenuItem;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -67,6 +70,7 @@ public class MenuItemControllerIT {
         assertEquals("There are no menu item in restaurant with that id: 4", response.getMessage());
     }
 
+*/
 /*    @Test
     void shouldReturnCreatedMenuItem() throws Exception {
         // given
@@ -86,7 +90,8 @@ public class MenuItemControllerIT {
         // then
         assertEquals("Beer", menuItemResponse.getName());
         assertEquals(5.99, menuItemResponse.getPrice());
-    }*/
+    }*//*
+
 
     @Test
     void shouldReturnResponseConfirmingDeletedMenu() throws Exception {
@@ -107,3 +112,4 @@ public class MenuItemControllerIT {
         assertEquals(10.99, menuItemDeleted.getPrice());
     }
 }
+*/

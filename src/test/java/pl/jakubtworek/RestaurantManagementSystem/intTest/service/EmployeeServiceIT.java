@@ -1,3 +1,4 @@
+/*
 package pl.jakubtworek.RestaurantManagementSystem.intTest.service;
 
 import org.junit.jupiter.api.Test;
@@ -8,13 +9,10 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
 import pl.jakubtworek.RestaurantManagementSystem.exception.JobNotFoundException;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.JobDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.*;
@@ -92,7 +90,8 @@ public class EmployeeServiceIT {
         assertEquals(2, employees.size());
     }
 
-    @Test
+*/
+/*    @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnEmployees_whenJobNamePass(){
         // given
@@ -106,5 +105,7 @@ public class EmployeeServiceIT {
         assertEquals("John", employees.get(0).getFirstName());
         assertEquals("Smith", employees.get(0).getLastName());
         assertEquals("Cook", employees.get(0).getJob().getName());
-    }
+    }*//*
+
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package pl.jakubtworek.RestaurantManagementSystem.unitTests.order;
 
 import org.junit.jupiter.api.*;
@@ -65,6 +66,7 @@ public class OrderServiceTest {
         assertNotNull(orderReturned);
     }
 
+*/
 /*    @Test
     public void shouldReturnCreatedOrder(){
         // given
@@ -77,7 +79,8 @@ public class OrderServiceTest {
 
         // then
         assertNotNull(orderReturned);
-    }*/
+    }*//*
+
 
     @Test
     public void verifyIsOrderIsDeleted(){
@@ -88,6 +91,7 @@ public class OrderServiceTest {
         verify(orderRepository).deleteById(1L);
     }
 
+*/
 /*    @Test
     public void shouldReturnOrders_whenDateIsPass() {
         // given
@@ -127,9 +131,11 @@ public class OrderServiceTest {
 
         // then
         assertEquals(3,ordersReturned.size());
-    }*/
+    }*//*
 
-    @Test
+
+*/
+/*    @Test
     public void shouldReturnAllMadeOrders() {
         // given
         Optional<Order> orders = Optional.of(createOnsiteOrder().get());
@@ -153,6 +159,8 @@ public class OrderServiceTest {
 
         // then
         assertEquals(1,ordersReturned.size());
-    }
+    }*//*
+
 }
 
+*/

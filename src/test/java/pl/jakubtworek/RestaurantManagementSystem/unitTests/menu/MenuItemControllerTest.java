@@ -1,50 +1,47 @@
 package pl.jakubtworek.RestaurantManagementSystem.unitTests.menu;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.*;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemResponse;
-import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
-import pl.jakubtworek.RestaurantManagementSystem.service.MenuItemService;
+import org.junit.jupiter.api.*;
+import org.mockito.Mock;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.*;
+import pl.jakubtworek.RestaurantManagementSystem.exception.MenuItemNotFoundException;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
+import pl.jakubtworek.RestaurantManagementSystem.service.*;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuItemUtils.createChickenMenuItemDTO;
+import static org.mockito.Mockito.*;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-public class MenuItemControllerTest {
-    @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @MockBean
+class MenuItemControllerTest {
+    @Mock
     private MenuItemService menuItemService;
+    @Mock
+    private MenuService menuService;
+
+    private MenuItemController menuItemController;
+
+    @BeforeEach
+    void setup() {
+        menuItemService = mock(MenuItemService.class);
+        menuService = mock(MenuService.class);
+
+        menuItemController = new MenuItemController(
+                menuItemService,
+                menuService
+        );
+    }
 
     @Test
     void shouldReturnMenuItemById() throws Exception {
         // given
-        Optional<MenuItemDTO> expectedMenuItem = createChickenMenuItemDTO();
+        Optional<MenuItemDTO> expectedMenuItem = Optional.of(createChickenMenuItem().convertEntityToDTO());
 
         // when
         when(menuItemService.findById(eq(1L))).thenReturn(expectedMenuItem);
 
-        MvcResult mvcResult = mockMvc.perform(get("/menu-items/id")
-                        .param("id", String.valueOf(1L)))
-                .andExpect(status().isOk())
-                .andReturn();
-        MenuItemResponse menuItem = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), MenuItemResponse.class);
+        MenuItemResponse menuItem = menuItemController.getMenuItemById(1L).getBody();
 
         // then
         assertEquals("Chicken", menuItem.getName());
@@ -52,53 +49,42 @@ public class MenuItemControllerTest {
     }
 
     @Test
-    void shouldReturnErrorResponse_whenAskedForNonExistingMenuItem() throws Exception {
+    void shouldReturnErrorResponse_whenAskedForNonExistingMenuItem() {
         // when
-        MvcResult mvcResult = mockMvc.perform(get("/menu-items/id")
-                        .param("id", String.valueOf(4L)))
-                .andExpect(status().isNotFound())
-                .andReturn();
-        ErrorResponse response = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+        Exception exception = assertThrows(MenuItemNotFoundException.class, () -> menuItemController.getMenuItemById(4L));
 
         // then
-        assertEquals(404, response.getStatus());
-        assertEquals("There are no menu item in restaurant with that id: 4", response.getMessage());
+        assertEquals("There are no menu item in restaurant with that id: 4", exception.getMessage());
     }
 
-/*    @Test
+    @Test
     void shouldReturnCreatedMenuItem() throws Exception {
         // given
-        MenuItemRequest menuItem = new MenuItemRequest(0L, "Pizza", 12.99, "Food");
-        MenuItem expectedMenuItem = new MenuItem(0L, "Pizza", 12.99, new Menu(2L, "Food", List.of()), List.of());
+        MenuItemRequest menuItemRequest = createChickenMenuItemRequest();
+        MenuDTO menu = createMenu().convertEntityToDTO();
+        MenuItemDTO expectedMenuItem = createChickenMenuItem().convertEntityToDTO();
 
         // when
-        when(menuItemService.save(menuItem)).thenReturn(expectedMenuItem);
+        when(menuItemService.save(menuItemRequest, menu)).thenReturn(expectedMenuItem);
+        when(menuService.findByName(menuItemRequest.getMenu())).thenReturn(Optional.of(menu));
 
-        MvcResult mvcResult = mockMvc.perform(post("/menu-items")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(menuItem)))
-                .andExpect(status().isCreated())
-                .andReturn();
-        MenuItemResponse menuItemResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), MenuItemResponse.class);
+        MenuItemResponse menuItemResponse = menuItemController.saveMenuItem(menuItemRequest).getBody();
 
         // then
-        assertEquals("Pizza", menuItemResponse.getName());
-        assertEquals(12.99, menuItemResponse.getPrice());
-    }*/
+        assertEquals("Chicken", menuItemResponse.getName());
+        assertEquals(10.99, menuItemResponse.getPrice());
+    }
+
 
     @Test
     void shouldReturnResponseConfirmingDeletedMenu() throws Exception {
         // given
-        Optional<MenuItemDTO> expectedMenuItem = createChickenMenuItemDTO();
+        Optional<MenuItemDTO> expectedMenuItem = Optional.of(createChickenMenuItem().convertEntityToDTO());
 
         // when
         when(menuItemService.findById(eq(1L))).thenReturn(expectedMenuItem);
 
-        MvcResult mvcResult = mockMvc.perform(delete("/menu-items/id")
-                        .param("id", String.valueOf(1L)))
-                .andExpect(status().isOk())
-                .andReturn();
-        MenuItemResponse menuItemDeleted = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), MenuItemResponse.class);
+        MenuItemResponse menuItemDeleted = menuItemController.deleteMenuItem(1L).getBody();
 
         // then
         assertEquals("Chicken", menuItemDeleted.getName());
