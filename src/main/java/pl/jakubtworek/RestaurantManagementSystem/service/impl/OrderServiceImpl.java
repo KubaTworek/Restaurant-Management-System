@@ -4,14 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueueFacade;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.TypeOfOrderDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.order.OrderFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 
 import java.util.*;
@@ -78,12 +74,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDTO> findByEmployee(Employee theEmployee) {
-        /*return orderRepository.findByEmployee(theEmployee)
+    public List<OrderDTO> findByEmployeeId(Long employeeId) {
+        return orderRepository.findByEmployeesId(employeeId)
+                .orElse(Collections.emptyList())
                 .stream()
                 .map(Order::convertEntityToDTO)
-                .collect(Collectors.toList());*/
-        return Collections.emptyList();
+                .collect(Collectors.toList());
     }
 
     @Override

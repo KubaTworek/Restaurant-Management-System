@@ -1,25 +1,17 @@
 package pl.jakubtworek.RestaurantManagementSystem.controller.order;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import pl.jakubtworek.RestaurantManagementSystem.exception.OrderNotFoundException;
-import pl.jakubtworek.RestaurantManagementSystem.exception.TypeOfOrderNotFoundException;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.TypeOfOrderDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
+import pl.jakubtworek.RestaurantManagementSystem.exception.*;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
-import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
-import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
-import pl.jakubtworek.RestaurantManagementSystem.service.TypeOfOrderService;
+import pl.jakubtworek.RestaurantManagementSystem.service.*;
 
-import java.util.*;
+import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.stream.*;
 
 @Validated
 @RestController
@@ -88,8 +80,7 @@ public class OrderController {
             ordersFoundByTypeOfOrder = orderService.findByTypeOfOrder(typeOfOrderFound).stream().map(OrderDTO::convertDTOToResponse);
         }
         if (employeeId != null) {
-            Employee employeeFound = employeeService.findById(employeeId).map(EmployeeDTO::convertDTOToEntity).orElse(null);
-            ordersFoundByEmployee = orderService.findByEmployee(employeeFound).stream().map(OrderDTO::convertDTOToResponse);
+            ordersFoundByEmployee = orderService.findByEmployeeId(employeeId).stream().map(OrderDTO::convertDTOToResponse);
         }
 
         List<OrderResponse> ordersFound = Stream.of(ordersFoundByDate, ordersFoundByTypeOfOrder, ordersFoundByEmployee)
