@@ -12,7 +12,7 @@ import java.util.Queue;
 @Scope("singleton")
 public class WaiterQueue implements Subject {
     private final Queue<EmployeeDTO> waiters = new LinkedList<>();
-    private ArrayList<Observer> observerList;
+    private final ArrayList<Observer> observerList;
 
     public WaiterQueue() {
         this.observerList = new ArrayList<>();
