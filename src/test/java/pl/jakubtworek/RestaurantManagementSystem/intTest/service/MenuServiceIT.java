@@ -2,33 +2,26 @@ package pl.jakubtworek.RestaurantManagementSystem.intTest.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
-import pl.jakubtworek.RestaurantManagementSystem.repository.MenuRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @Transactional
-public class MenuServiceIT {
+class MenuServiceIT {
     @Autowired
     private MenuService menuService;
-    @Autowired
-    private MenuRepository menuRepository;
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnAllMenu() {
+    void shouldReturnAllMenu() {
         // when
         List<MenuDTO> menuList = menuService.findAll();
 
@@ -50,7 +43,7 @@ public class MenuServiceIT {
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnOneMenu_whenPassId() {
+    void shouldReturnOneMenu_whenPassId() {
         // when
         Optional<MenuDTO> menu = menuService.findById(1L);
 
@@ -62,7 +55,7 @@ public class MenuServiceIT {
     }
 
     @Test
-    public void shouldReturnCreatedMenu(){
+    void shouldReturnCreatedMenu(){
         // given
         MenuRequest menu = new MenuRequest("Alcohol");
 
@@ -75,7 +68,7 @@ public class MenuServiceIT {
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnLowerSizeOfList_whenDeleteOne() {
+    void shouldReturnLowerSizeOfList_whenDeleteOne() {
         // when
         menuService.deleteById(1L);
         List<MenuDTO> menuList = menuService.findAll();
@@ -86,7 +79,7 @@ public class MenuServiceIT {
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnOneMenu_whenPassName() {
+    void shouldReturnOneMenu_whenPassName() {
         // when
         Optional<MenuDTO> menu = menuService.findByName("Drinks");
 

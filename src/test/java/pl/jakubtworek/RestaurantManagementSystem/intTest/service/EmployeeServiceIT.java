@@ -1,15 +1,14 @@
-/*
 package pl.jakubtworek.RestaurantManagementSystem.intTest.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
 import pl.jakubtworek.RestaurantManagementSystem.exception.JobNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 
 import java.util.*;
@@ -18,16 +17,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.*;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @Transactional
-public class EmployeeServiceIT {
+class EmployeeServiceIT {
 
     @Autowired
     private EmployeeService employeeService;
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnAllEmployees(){
+    void shouldReturnAllEmployees(){
         // when
         List<EmployeeDTO> employees = employeeService.findAll();
 
@@ -52,7 +50,7 @@ public class EmployeeServiceIT {
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnOneEmployee(){
+    void shouldReturnOneEmployee(){
         // when
         Optional<EmployeeDTO> employee = employeeService.findById(1L);
 
@@ -65,10 +63,10 @@ public class EmployeeServiceIT {
 
     @Test
     @Sql(statements = "INSERT INTO `job` VALUES (1, 'Cook'), (2, 'Waiter'), (3, 'DeliveryMan')")
-    public void shouldReturnCreatedEmployee() throws JobNotFoundException {
+    void shouldReturnCreatedEmployee() throws JobNotFoundException {
         // given
         EmployeeRequest employee = createCookRequest();
-        JobDTO job = createCookDTO();
+        JobDTO job = createJobCook().convertEntityToDTO();
 
         // when
         EmployeeDTO employeeReturned = employeeService.save(employee, job);
@@ -81,7 +79,7 @@ public class EmployeeServiceIT {
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnLowerSizeOfList_whenDeleteOne(){
+    void shouldReturnLowerSizeOfList_whenDeleteOne(){
         // when
         employeeService.deleteById(2L);
         List<EmployeeDTO> employees = employeeService.findAll();
@@ -90,12 +88,11 @@ public class EmployeeServiceIT {
         assertEquals(2, employees.size());
     }
 
-*/
-/*    @Test
+    @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnEmployees_whenJobNamePass(){
+    void shouldReturnEmployees_whenJobNamePass(){
         // given
-        Job job = createCook().get();
+        Job job = createJobCook();
 
         // when
         List<EmployeeDTO> employees = employeeService.findByJob(job);
@@ -105,7 +102,5 @@ public class EmployeeServiceIT {
         assertEquals("John", employees.get(0).getFirstName());
         assertEquals("Smith", employees.get(0).getLastName());
         assertEquals("Cook", employees.get(0).getJob().getName());
-    }*//*
-
+    }
 }
-*/

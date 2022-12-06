@@ -2,13 +2,10 @@ package pl.jakubtworek.RestaurantManagementSystem.intTest.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.TypeOfOrderDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
-import pl.jakubtworek.RestaurantManagementSystem.repository.TypeOfOrderRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.TypeOfOrderService;
 
 import java.util.Optional;
@@ -16,17 +13,14 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @Transactional
-public class TypeOfOrderServiceIT {
+class TypeOfOrderServiceIT {
     @Autowired
     private TypeOfOrderService typeOfOrderService;
-    @Autowired
-    private TypeOfOrderRepository typeOfOrderRepository;
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnOnSiteTypeOfOrder_whenPassOnSiteString(){
+    void shouldReturnOnSiteTypeOfOrder_whenPassOnSiteString(){
         // when
         Optional<TypeOfOrderDTO> typeOfOrder = typeOfOrderService.findByType("On-site");
 
@@ -41,7 +35,7 @@ public class TypeOfOrderServiceIT {
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnDeliveryTypeOfOrder_whenPassDeliveryString(){
+    void shouldReturnDeliveryTypeOfOrder_whenPassDeliveryString(){
         // when
         Optional<TypeOfOrderDTO> typeOfOrder = typeOfOrderService.findByType("Delivery");
 
