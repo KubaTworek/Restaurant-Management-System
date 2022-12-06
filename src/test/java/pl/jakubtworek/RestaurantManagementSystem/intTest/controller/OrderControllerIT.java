@@ -1,59 +1,44 @@
-/*
 package pl.jakubtworek.RestaurantManagementSystem.intTest.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.*;
-import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderResponse;
-import pl.jakubtworek.RestaurantManagementSystem.exception.ErrorResponse;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
+import pl.jakubtworek.RestaurantManagementSystem.controller.order.*;
+import pl.jakubtworek.RestaurantManagementSystem.exception.OrderNotFoundException;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 
 import java.util.*;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.createCook;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
 
 @SpringBootTest
-@AutoConfigureMockMvc
-public class OrderControllerIT {
+class OrderControllerIT {
+
     @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private ObjectMapper objectMapper;
+    private OrderController orderController;
 
     @MockBean
     private OrderRepository orderRepository;
     @MockBean
     private TypeOfOrderRepository typeOfOrderRepository;
-
+    @MockBean
+    private EmployeeRepository employeeRepository;
 
     @Test
-    void shouldReturnAllOrders() throws Exception {
+    void shouldReturnAllOrders() {
         // given
         List<Order> expectedOrders = createOrders();
 
         // when
         when(orderRepository.findAll()).thenReturn(expectedOrders);
 
-        MvcResult mvcResult = mockMvc.perform(get("/orders")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andReturn();
-        List<OrderResponse> ordersReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
-        });
+        List<OrderResponse> ordersReturned = orderController.getOrders().getBody();
 
         // then
         assertEquals(12.99, ordersReturned.get(0).getPrice());
@@ -86,16 +71,12 @@ public class OrderControllerIT {
     @Test
     void shouldReturnOrderById() throws Exception {
         // given
-        Optional<Order> expectedOrder = createOnsiteOrder();
+        Optional<Order> expectedOrder = Optional.of(createOnsiteOrder());
 
         // when
         when(orderRepository.findById(1L)).thenReturn(expectedOrder);
 
-        MvcResult mvcResult = mockMvc.perform(get("/orders/id")
-                        .param("id", String.valueOf(1L)))
-                .andExpect(status().isOk())
-                .andReturn();
-        OrderResponse orderReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), OrderResponse.class);
+        OrderResponse orderReturned = orderController.getOrderById(1L).getBody();
 
         // then
         assertEquals(12.99, orderReturned.getPrice());
@@ -113,55 +94,29 @@ public class OrderControllerIT {
     }
 
     @Test
-    void shouldReturnErrorResponse_whenAskedForNonExistingOrder() throws Exception {
+    void shouldReturnErrorResponse_whenAskedForNonExistingOrder() {
         // when
-        MvcResult mvcResult = mockMvc.perform(get("/orders/id")
-                        .param("id", String.valueOf(3L)))
-                .andExpect(status().isNotFound())
-                .andReturn();
-        ErrorResponse response = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+        Exception exception = assertThrows(OrderNotFoundException.class, () -> orderController.getOrderById(3L));
 
         // then
-        assertThat(response.getStatus()).isEqualTo(404);
-        assertThat(response.getMessage()).isEqualTo("There are no order in restaurant with that id: 3");
+        assertEquals("There are no order in restaurant with that id: 3", exception.getMessage());
     }
 
-*/
 /*    @Test
     void shouldReturnCreatedOrder() throws Exception {
-        // given
-        OrderRequest order = createOnsiteOrderRequest();
 
-        // when
-        when(typeOfOrderRepository.findByType(eq("On-site"))).thenReturn(Optional.of(createOnsiteType()));
-
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/orders")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(order)))
-                .andExpect(status().isCreated())
-                .andReturn();
-        OrderResponse orderReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), OrderResponse.class);
-
-        // then
-        assertEquals(12.98, orderReturned.getPrice());
-        assertEquals("On-site", orderReturned.getTypeOfOrder().getType());
-        assertEquals(2, orderReturned.getMenuItems().size());
-    }*//*
+    }*/
 
 
     @Test
     void shouldReturnResponseConfirmingDeletedOrder() throws Exception {
         // given
-        Optional<Order> expectedOrder = createOnsiteOrder();
+        Optional<Order> expectedOrder = Optional.of(createOnsiteOrder());
 
         // when
         when(orderRepository.findById(1L)).thenReturn(expectedOrder);
 
-        MvcResult mvcResult = mockMvc.perform(delete("/orders/id")
-                        .param("id", String.valueOf(1L)))
-                .andExpect(status().isOk())
-                .andReturn();
-        OrderResponse orderDeleted = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), OrderResponse.class);
+        OrderResponse orderDeleted = orderController.deleteOrder(1L).getBody();
 
         // then
         assertEquals(12.99, orderDeleted.getPrice());
@@ -178,47 +133,31 @@ public class OrderControllerIT {
         assertEquals("Cook", orderDeleted.getEmployees().get(0).getJob().getName());
     }
 
-    // TODO : prepared tests for params
-*/
-/*    @Test
-    void shouldReturnOrders_whenDateIsPassed() throws Exception {
+    @Test
+    void shouldReturnOrders_whenDateIsPassed() {
         // given
-        List<Order> expectedOrders = createOrders();
+        Optional<List<Order>> expectedOrders = Optional.of(createOrders());
 
         // when
-        when(orderRepository.findByDate(eq("2022-08-22"))).thenReturn(expectedOrders);
+        when(orderRepository.findByDate("2022-08-22")).thenReturn(expectedOrders);
 
-        MvcResult mvcResult = mockMvc.perform(get("/orders/find")
-                        .param("date", "2022-08-22")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andReturn();
-        List<OrderResponse> ordersReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
-        });
+        List<OrderResponse> ordersReturned = orderController.getOrderByParams("2022-08-22", null, null).getBody();
 
         // then
         assertEquals(2, ordersReturned.size());
     }
 
     @Test
-    void shouldReturnOrders_whenTypeOfOrderIsPassed() throws Exception {
+    void shouldReturnOrders_whenTypeOfOrderIsPassed() {
         // given
         TypeOfOrder expectedTypeOfOrder = createOnsiteType();
-        List<Order> expectedOrders = List.of(createOnsiteOrder().get());
+        Optional<List<Order>> expectedOrders = Optional.of(List.of(createOnsiteOrder()));
 
         // when
-        when(typeOfOrderRepository.findByType(eq("On-site"))).thenReturn(Optional.of(expectedTypeOfOrder));
-        when(orderRepository.findByTypeOfOrder(expectedTypeOfOrder)).thenReturn(expectedOrders);
+        when(typeOfOrderRepository.findByType(any())).thenReturn(Optional.of(expectedTypeOfOrder));
+        when(orderRepository.findByTypeOfOrder(any())).thenReturn(expectedOrders);
 
-        MvcResult mvcResult = mockMvc.perform(get("/orders/find")
-                        .param("typeOfOrder", "On-site")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andReturn();
-        List<OrderResponse> ordersReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
-        });
+        List<OrderResponse> ordersReturned = orderController.getOrderByParams(null, "On-site", null).getBody();
 
         // then
         assertEquals(12.99, ordersReturned.get(0).getPrice());
@@ -236,43 +175,31 @@ public class OrderControllerIT {
     }
 
     @Test
-    void shouldReturnOrders_whenEmployeeIsPassed() throws Exception {
+    void shouldReturnOrders_whenEmployeeIsPassed() {
         // given
-        Optional<Employee> expectedEmployee = createEmployee();
-        List<Order> expectedOrders = createOrders();
+        Optional<List<Order>> expectedOrders = Optional.of(createOrders());
+        Optional<Employee> employee = Optional.of(createCook());
 
         // when
-        when(employeeRepository.findById(1L)).thenReturn(expectedEmployee);
-        when(orderRepository.findByEmployee(expectedEmployee.get())).thenReturn(expectedOrders);
+        when(employeeRepository.findById(1L)).thenReturn(employee);
+        when(orderRepository.findByEmployeesId(1L)).thenReturn(expectedOrders);
 
-        MvcResult mvcResult = mockMvc.perform(get("/orders/find")
-                        .param("employeeId", String.valueOf(1L))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andReturn();
-        List<OrderResponse> ordersReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
-        });
+        List<OrderResponse> ordersReturned = orderController.getOrderByParams(null, null, 1L).getBody();
 
         // then
         assertEquals(2, ordersReturned.size());
-    }*//*
+    }
 
 
-*/
-/*    @Test
-    void shouldReturnMadeOrders() throws Exception {
-        Optional<List<Order>> expectedOrders = createOnsiteOrder();
+    @Test
+    void shouldReturnMadeOrders() {
+        // given
+        Optional<List<Order>> expectedOrders = Optional.of(List.of(createOnsiteOrder()));
+
         // when
         when(orderRepository.findOrdersByHourAwayIsNotNull()).thenReturn(expectedOrders);
 
-        MvcResult mvcResult = mockMvc.perform(get("/orders/ready")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andReturn();
-        List<OrderResponse> ordersReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
-        });
+        List<OrderResponse> ordersReturned = orderController.getOrderMade().getBody();
 
         // then
         assertEquals(12.99, ordersReturned.get(0).getPrice());
@@ -287,25 +214,18 @@ public class OrderControllerIT {
         assertEquals("John", ordersReturned.get(0).getEmployees().get(0).getFirstName());
         assertEquals("Smith", ordersReturned.get(0).getEmployees().get(0).getLastName());
         assertEquals("Cook", ordersReturned.get(0).getEmployees().get(0).getJob().getName());
-    }*//*
+    }
 
 
-*/
-/*    @Test
-    void shouldReturnUnmadeOrders() throws Exception {
+    @Test
+    void shouldReturnUnmadeOrders() {
         // given
-        Optional<Order> expectedOrders = createDeliveryOrder();
+        Optional<List<Order>> expectedOrders = Optional.of(List.of(createDeliveryOrder()));
 
         // when
         when(orderRepository.findOrdersByHourAwayIsNull()).thenReturn(expectedOrders);
 
-        MvcResult mvcResult = mockMvc.perform(get("/orders/unready")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andReturn();
-        List<OrderResponse> ordersReturned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
-        });
+        List<OrderResponse> ordersReturned = orderController.getOrderUnmade().getBody();
 
         // then
         assertEquals(30.99, ordersReturned.get(0).getPrice());
@@ -320,7 +240,5 @@ public class OrderControllerIT {
         assertEquals("John", ordersReturned.get(0).getEmployees().get(0).getFirstName());
         assertEquals("Smith", ordersReturned.get(0).getEmployees().get(0).getLastName());
         assertEquals("Cook", ordersReturned.get(0).getEmployees().get(0).getJob().getName());
-    }*//*
-
+    }
 }
-*/
