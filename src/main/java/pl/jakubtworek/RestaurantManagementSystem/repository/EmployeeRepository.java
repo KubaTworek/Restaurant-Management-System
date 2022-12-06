@@ -2,12 +2,11 @@ package pl.jakubtworek.RestaurantManagementSystem.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
-    Optional<Employee> findByJob(Job theJob);
+    Optional<List<Employee>> findByJob(Job theJob);
 }

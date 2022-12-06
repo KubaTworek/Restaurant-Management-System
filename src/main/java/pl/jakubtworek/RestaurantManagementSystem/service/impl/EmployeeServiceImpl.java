@@ -13,8 +13,7 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -54,6 +53,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<EmployeeDTO> findByJob(Job theJob) {
         return employeeRepository.findByJob(theJob)
+                .orElse(Collections.emptyList())
                 .stream()
                 .map(Employee::convertEntityToDTO)
                 .collect(Collectors.toList());

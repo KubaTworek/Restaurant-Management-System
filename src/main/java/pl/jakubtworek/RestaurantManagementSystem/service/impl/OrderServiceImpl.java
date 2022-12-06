@@ -62,6 +62,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDTO> findByDate(String theDate) {
         return orderRepository.findByDate(theDate)
+                .orElse(Collections.emptyList())
                 .stream()
                 .map(Order::convertEntityToDTO)
                 .collect(Collectors.toList());
@@ -70,6 +71,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDTO> findByTypeOfOrder(TypeOfOrder theTypeOfOrder) {
         return orderRepository.findByTypeOfOrder(theTypeOfOrder)
+                .orElse(Collections.emptyList())
                 .stream()
                 .map(Order::convertEntityToDTO)
                 .collect(Collectors.toList());
@@ -87,6 +89,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDTO> findMadeOrders() {
         return orderRepository.findOrdersByHourAwayIsNotNull()
+                .orElse(Collections.emptyList())
                 .stream()
                 .map(Order::convertEntityToDTO)
                 .collect(Collectors.toList());
@@ -95,6 +98,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDTO> findUnmadeOrders() {
         return orderRepository.findOrdersByHourAwayIsNull()
+                .orElse(Collections.emptyList())
                 .stream()
                 .map(Order::convertEntityToDTO)
                 .collect(Collectors.toList());
