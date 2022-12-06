@@ -24,8 +24,20 @@ public class EmployeeUtils {
     public static Job createJobCook(){
         return new Job(1L, "Cook", List.of());
     }
+    public static Job createJobWaiter(){
+        return new Job(2L, "Waiter", List.of());
+    }
+    public static Job createJobDeliveryman(){
+        return new Job(3L, "DeliveryMan", List.of());
+    }
 
     public static EmployeeRequest createCookRequest(){
         return new EmployeeRequest("James", "Smith", "Cook");
+    }
+    public static EmployeeRequest createWaiterRequest(){
+        return new EmployeeRequest("James", "Smith", "Waiter");
+    }
+    public static EmployeeRequest createDeliveryRequest(){
+        return new EmployeeRequest("James", "Smith", "DeliveryMan");
     }
 }

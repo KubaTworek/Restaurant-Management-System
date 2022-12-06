@@ -1,4 +1,3 @@
-/*
 package pl.jakubtworek.RestaurantManagementSystem.unitTests.employee;
 
 import org.junit.jupiter.api.*;
@@ -9,19 +8,19 @@ import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.Employ
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.*;
 
-public class EmployeeFactoryTest {
+class EmployeeFactoryTest {
     private EmployeeFactory employeeFactory;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         employeeFactory = new EmployeeFactory();
     }
 
     @Test
-    public void shouldReturnCook_whenProvideCook(){
+    void shouldReturnCook_whenProvideCook(){
         // given
         EmployeeRequest employeeRequest = createCookRequest();
-        JobDTO job = createCookDTO();
+        JobDTO job = createJobCook().convertEntityToDTO();
 
         // when
         EmployeeDTO employee = employeeFactory.createEmployeeFormula(employeeRequest, job).createEmployee();
@@ -33,10 +32,10 @@ public class EmployeeFactoryTest {
     }
 
     @Test
-    public void shouldReturnWaiter_whenProvideWaiter(){
+    void shouldReturnWaiter_whenProvideWaiter(){
         // given
         EmployeeRequest employeeRequest = createWaiterRequest();
-        JobDTO job = createWaiterDTO();
+        JobDTO job = createJobWaiter().convertEntityToDTO();
 
         // when
         EmployeeDTO employee = employeeFactory.createEmployeeFormula(employeeRequest, job).createEmployee();
@@ -48,10 +47,10 @@ public class EmployeeFactoryTest {
     }
 
     @Test
-    public void shouldReturnDeliveryman_whenProvideDeliveryman(){
+    void shouldReturnDeliveryman_whenProvideDeliveryman(){
         // given
-        EmployeeRequest employeeRequest = createDeliveryManRequest();
-        JobDTO job = createDeliveryManDTO();
+        EmployeeRequest employeeRequest = createDeliveryRequest();
+        JobDTO job = createJobDeliveryman().convertEntityToDTO();
 
         // when
         EmployeeDTO employee = employeeFactory.createEmployeeFormula(employeeRequest, job).createEmployee();
@@ -62,4 +61,3 @@ public class EmployeeFactoryTest {
         assertEquals("DeliveryMan", employee.getJob().getName());
     }
 }
-*/

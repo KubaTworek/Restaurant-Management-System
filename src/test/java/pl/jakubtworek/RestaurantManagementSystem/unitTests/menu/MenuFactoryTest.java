@@ -10,16 +10,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.createMenuRequest;
 
-public class MenuFactoryTest {
+class MenuFactoryTest {
     private MenuFactory menuFactory;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         menuFactory = new MenuFactory();
     }
 
     @Test
-    public void shouldReturnCook_whenProvideCook(){
+    void shouldReturnCook_whenProvideCook(){
         // given
         MenuRequest menuDTO = createMenuRequest();
 

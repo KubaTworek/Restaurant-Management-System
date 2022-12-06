@@ -8,16 +8,16 @@ import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuItemFactory
 import static org.junit.jupiter.api.Assertions.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 
-public class MenuItemFactoryTest {
+class MenuItemFactoryTest {
     private MenuItemFactory menuItemFactory;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         menuItemFactory = new MenuItemFactory();
     }
 
     @Test
-    public void shouldReturnMenuItem() {
+    void shouldReturnMenuItem() {
         // given
         MenuDTO foodMenu = createMenu().convertEntityToDTO();
         MenuItemRequest menuItemDTO = createChickenMenuItemRequest();

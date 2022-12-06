@@ -15,16 +15,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.createMenuItemListForFood;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
 
-public class OrderFactoryTest {
+class OrderFactoryTest {
     private OrderFactory orderFactory;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         orderFactory = new OrderFactory();
     }
 
     @Test
-    public void shouldReturnCreatedOrder(){
+    void shouldReturnCreatedOrder(){
         // given
         OrderRequest orderRequest = createOnsiteOrderRequest();
         TypeOfOrderDTO typeOfOrderDTO = createOnsiteType().convertEntityToDTO();
