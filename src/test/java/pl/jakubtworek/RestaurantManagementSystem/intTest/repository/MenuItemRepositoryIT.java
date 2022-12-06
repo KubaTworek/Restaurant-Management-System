@@ -2,7 +2,6 @@ package pl.jakubtworek.RestaurantManagementSystem.intTest.repository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,18 +13,16 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.spy;
 
-
 @SpringBootTest
-@AutoConfigureMockMvc
 @Transactional
-public class MenuItemRepositoryIT {
+class MenuItemRepositoryIT {
 
     @Autowired
     private MenuItemRepository menuItemRepository;
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnAllMenuItems() {
+    void shouldReturnAllMenuItems() {
         // when
         List<MenuItem> menuItems = menuItemRepository.findAll();
 
@@ -53,7 +50,7 @@ public class MenuItemRepositoryIT {
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnOneMenuItem() {
+    void shouldReturnOneMenuItem() {
         // when
         Optional<MenuItem> menuItem = menuItemRepository.findById(1L);
 
@@ -67,23 +64,15 @@ public class MenuItemRepositoryIT {
         assertEquals(1, menuItem.get().getOrders().size());
     }
 
-    @Test
-    public void shouldReturnCreatedMenuItem() {
-        // given
-        MenuItem menuItem = new MenuItem(0L, "Pizza", 12.99, new Menu(2L, "Food", List.of()), List.of());
+/*    @Test
+    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
+    void shouldReturnCreatedMenuItem() {
 
-        // when
-        MenuItem menuItemReturned = menuItemRepository.save(menuItem);
-
-        // then
-        assertEquals("Pizza", menuItemReturned.getName());
-        assertEquals(12.99, menuItemReturned.getPrice());
-        assertEquals("Food", menuItemReturned.getMenu().getName());
-    }
+    }*/
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnLowerSizeOfList_whenDeleteOne() {
+    void shouldReturnLowerSizeOfList_whenDeleteOne() {
         // when
         menuItemRepository.deleteById(2L);
         List<MenuItem> menuItems = menuItemRepository.findAll();

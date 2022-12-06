@@ -2,19 +2,18 @@ package pl.jakubtworek.RestaurantManagementSystem.intTest.repository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
-import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
+import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.createJobCook;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @Transactional
 public class EmployeeRepositoryIT {
 
@@ -65,23 +64,15 @@ public class EmployeeRepositoryIT {
         assertEquals(2, employee.get().getOrders().size());
     }
 
-    @Test
+/*    @Test
+    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     public void shouldReturnCreatedEmployee(){
-        // given
-        Employee employee = new Employee(0L, "James", "Smith", new Job(1L,"Cook",List.of()), List.of());
 
-        // when
-        Employee employeeReturned = employeeRepository.save(employee);
-
-        // then
-        assertEquals("James", employeeReturned.getFirstName());
-        assertEquals("Smith", employeeReturned.getLastName());
-        assertEquals("Cook", employeeReturned.getJob().getName());
-    }
+    }*/
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnLowerSizeOfList_whenDeleteOne(){
+    void shouldReturnLowerSizeOfList_whenDeleteOne(){
         // when
         employeeRepository.deleteById(2L);
         List<Employee> employees = employeeRepository.findAll();
@@ -90,17 +81,14 @@ public class EmployeeRepositoryIT {
         assertEquals(2, employees.size());
     }
 
-/*    @Test
+    @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnEmployees_whenJobNamePass(){
+    void shouldReturnEmployees_whenJobNamePass(){
         // given
-        Job job = createCook().get();
+        Job job = createJobCook();
 
         // when
-        List<Employee> employees = employeeRepository.findByJob(job)
-                .get()
-                .stream()
-                .collect(Collectors.toList());
+        List<Employee> employees = employeeRepository.findByJob(job).get();
 
         // then
         assertEquals(1, employees.size());
@@ -109,5 +97,5 @@ public class EmployeeRepositoryIT {
         assertEquals("Smith", employees.get(0).getLastName());
         assertEquals(1, employees.get(0).getJob().getId());
         assertEquals("Cook", employees.get(0).getJob().getName());
-    }*/
+    }
 }

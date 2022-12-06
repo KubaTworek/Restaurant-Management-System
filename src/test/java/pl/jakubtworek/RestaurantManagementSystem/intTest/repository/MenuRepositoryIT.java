@@ -2,32 +2,26 @@ package pl.jakubtworek.RestaurantManagementSystem.intTest.repository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuRepository;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @Transactional
-public class MenuRepositoryIT {
+class MenuRepositoryIT {
 
     @Autowired
     private MenuRepository menuRepository;
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnAllMenu() {
+    void shouldReturnAllMenu() {
         // when
         List<Menu> menuList = menuRepository.findAll();
 
@@ -52,7 +46,7 @@ public class MenuRepositoryIT {
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnOneMenu_whenPassId() {
+    void shouldReturnOneMenu_whenPassId() {
         // when
         Optional<Menu> menu = menuRepository.findById(1L);
 
@@ -67,7 +61,7 @@ public class MenuRepositoryIT {
     }
 
     @Test
-    public void shouldReturnHigherSizeOfList_whenCreateOne(){
+    void shouldReturnHigherSizeOfList_whenCreateOne(){
         // given
         Menu menu = new Menu(0L, "Alcohol", List.of());
 
@@ -80,7 +74,7 @@ public class MenuRepositoryIT {
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnLowerSizeOfList_whenDeleteOne() {
+    void shouldReturnLowerSizeOfList_whenDeleteOne() {
         // when
         menuRepository.deleteById(1L);
         List<Menu> menuList = menuRepository.findAll();
@@ -91,7 +85,7 @@ public class MenuRepositoryIT {
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnOneMenu_whenPassName() {
+    void shouldReturnOneMenu_whenPassName() {
         // when
         Optional<Menu> menu = menuRepository.findByName("Drinks");
 

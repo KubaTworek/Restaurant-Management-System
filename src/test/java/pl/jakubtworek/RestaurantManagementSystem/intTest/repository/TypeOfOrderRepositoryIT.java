@@ -2,7 +2,6 @@ package pl.jakubtworek.RestaurantManagementSystem.intTest.repository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,16 +13,15 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @Transactional
-public class TypeOfOrderRepositoryIT {
+class TypeOfOrderRepositoryIT {
 
     @Autowired
     private TypeOfOrderRepository typeOfOrderRepository;
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnOnSiteTypeOfOrder_whenPassOnSiteString(){
+    void shouldReturnOnSiteTypeOfOrder_whenPassOnSiteString(){
         // when
         Optional<TypeOfOrder> typeOfOrder = typeOfOrderRepository.findByType("On-site");
 
@@ -41,7 +39,7 @@ public class TypeOfOrderRepositoryIT {
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnDeliveryTypeOfOrder_whenPassDeliveryString(){
+    void shouldReturnDeliveryTypeOfOrder_whenPassDeliveryString(){
         // when
         Optional<TypeOfOrder> typeOfOrder = typeOfOrderRepository.findByType("Delivery");
 

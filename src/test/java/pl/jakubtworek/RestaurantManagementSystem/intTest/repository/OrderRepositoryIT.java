@@ -1,9 +1,7 @@
-/*
 package pl.jakubtworek.RestaurantManagementSystem.intTest.repository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,22 +9,20 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @Transactional
-public class OrderRepositoryIT {
+class OrderRepositoryIT {
 
     @Autowired
     private OrderRepository orderRepository;
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnAllOrders() {
+    void shouldReturnAllOrders() {
         // when
         List<Order> orders = orderRepository.findAll();
 
@@ -56,7 +52,7 @@ public class OrderRepositoryIT {
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnOneOrder() {
+    void shouldReturnOneOrder() {
         // when
         Optional<Order> order = orderRepository.findById(1L);
 
@@ -75,9 +71,9 @@ public class OrderRepositoryIT {
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnCreatedOrder() {
+    void shouldReturnCreatedOrder() {
         // given
-        Order order = createOnsiteOrder().get();
+        Order order = createOnsiteOrder();
 
         // when
         Order orderReturned = orderRepository.save(order);
@@ -88,67 +84,53 @@ public class OrderRepositoryIT {
         assertEquals(2, orderReturned.getMenuItems().size());
     }
 
-*/
-/*    @Test
+    @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnLowerSizeOfList_whenDeleteOne() {
+    void shouldReturnLowerSizeOfList_whenDeleteOne() {
         // when
         orderRepository.deleteById(1L);
         List<Order> orders = orderRepository.findAll();
 
         // then
         assertEquals(1, orders.size());
-    }*//*
-
-
-*/
-/*    @Test
-    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnOrders_whenPassDate() {
-        // given
-        String date = "2022-08-22";
-
-        // when
-        List<Order> orders = orderRepository.findByDate(date)
-                .stream()
-                .collect(Collectors.toList());
-
-        // then
-        assertEquals(2, orders.size());
-    }*//*
+    }
 
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnOrders_whenPassTypeOfOrder() {
+    void shouldReturnOrders_whenPassDate() {
+        // given
+        String date = "2022-08-22";
+
+        // when
+        List<Order> orders = orderRepository.findByDate(date).get();
+
+        // then
+        assertEquals(2, orders.size());
+    }
+
+
+    @Test
+    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
+    void shouldReturnOrders_whenPassTypeOfOrder() {
         // given
         TypeOfOrder typeOfOrder = createOnsiteType();
 
         // when
-        List<Order> orders = orderRepository.findByTypeOfOrder(typeOfOrder)
-                .get()
-                .stream()
-                .collect(Collectors.toList());
+        List<Order> orders = orderRepository.findByTypeOfOrder(typeOfOrder).get();
 
         // then
         assertEquals(1, orders.size());
     }
 
-*/
-/*    @Test
+    @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnOrders_whenPassEmployee() {
-        // given
-        Employee employee = createEmployee().get();
-
+    void shouldReturnOrders_whenPassEmployee() {
         // when
-        List<Order> orders = orderRepository.findByEmployees(List.of(employee))
-                .stream()
-                .collect(Collectors.toList());
+        List<Order> orders = orderRepository.findByEmployeesId(1L).get();
 
         // then
         assertEquals(2, orders.size());
-    }*//*
+    }
 
 }
-*/

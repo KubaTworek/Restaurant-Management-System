@@ -2,7 +2,6 @@ package pl.jakubtworek.RestaurantManagementSystem.intTest.repository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,20 +10,18 @@ import pl.jakubtworek.RestaurantManagementSystem.repository.JobRepository;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @Transactional
-public class JobRepositoryIT {
+class JobRepositoryIT {
 
     @Autowired
     private JobRepository jobRepository;
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnCookJob_whenPassName() {
+    void shouldReturnCookJob_whenPassName() {
         // when
         Optional<Job> job = jobRepository.findByName("Cook");
 
@@ -41,7 +38,7 @@ public class JobRepositoryIT {
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnWaiterJob_whenPassName() {
+    void shouldReturnWaiterJob_whenPassName() {
         // when
         Optional<Job> job = jobRepository.findByName("Waiter");
 
@@ -58,7 +55,7 @@ public class JobRepositoryIT {
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnDeliveryManJob_whenPassName() {
+    void shouldReturnDeliveryManJob_whenPassName() {
         // when
         Optional<Job> job = jobRepository.findByName("DeliveryMan");
 
