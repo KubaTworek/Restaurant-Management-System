@@ -8,7 +8,7 @@ import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-
+import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.createMenuRequest;
 
 public class MenuFactoryTest {
     private MenuFactory menuFactory;
@@ -21,13 +21,13 @@ public class MenuFactoryTest {
     @Test
     public void shouldReturnCook_whenProvideCook(){
         // given
-        MenuRequest menuDTO = new MenuRequest("Food");
+        MenuRequest menuDTO = createMenuRequest();
 
         // when
         MenuDTO menu = menuFactory.createMenu(menuDTO);
 
         // then
-        assertEquals("Food", menu.getName());
+        assertEquals("Drinks", menu.getName());
         assertNull(menu.getMenuItems());
     }
 }

@@ -6,6 +6,7 @@ import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuItemFactory;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 
 public class MenuItemFactoryTest {
     private MenuItemFactory menuItemFactory;
@@ -18,16 +19,16 @@ public class MenuItemFactoryTest {
     @Test
     public void shouldReturnMenuItem() {
         // given
-        MenuDTO foodMenu = new MenuDTO(1L, "Food", null);
-        MenuItemRequest menuItemDTO = new MenuItemRequest("Apple", 1.99, "Food");
+        MenuDTO foodMenu = createMenu().convertEntityToDTO();
+        MenuItemRequest menuItemDTO = createChickenMenuItemRequest();
 
         // when
         MenuItemDTO menuItem = menuItemFactory.createMenuItem(menuItemDTO, foodMenu);
 
         // then
-        assertEquals("Apple", menuItem.getName());
-        assertEquals(1.99, menuItem.getPrice());
-        assertEquals("Food", menuItem.getMenu().getName());
+        assertEquals("Chicken", menuItem.getName());
+        assertEquals(10.99, menuItem.getPrice());
+        assertEquals("Drinks", menuItem.getMenu().getName());
         assertNull(menuItem.getOrders());
     }
 }
