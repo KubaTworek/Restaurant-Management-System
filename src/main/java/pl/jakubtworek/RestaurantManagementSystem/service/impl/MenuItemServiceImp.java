@@ -45,6 +45,7 @@ public class MenuItemServiceImp implements MenuItemService {
 
     @Override
     public void deleteById(Long theId) {
+        menuItemRepository.findById(theId).orElseThrow().remove();
         menuItemRepository.deleteById(theId);
     }
 

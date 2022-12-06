@@ -52,6 +52,13 @@ public class MenuItem {
         }
     }
 
+    public void remove(){
+        for(Order o : orders){
+            o.getMenuItems().remove(this);
+        }
+        menu.getMenuItems().remove(this);
+    }
+
     public MenuItemDTO convertEntityToDTO() {
         return new ModelMapper().map(this, MenuItemDTO.class);
     }
