@@ -27,7 +27,7 @@ public class Menu {
     @NotNull
     private String name;
 
-    @OneToMany(mappedBy = "menu")
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
     private List<MenuItem> menuItems;
 
     public void add(MenuItem tempMenuItem) {

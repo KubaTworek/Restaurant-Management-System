@@ -2,13 +2,14 @@ package pl.jakubtworek.RestaurantManagementSystem.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 
-import java.util.List;
+import java.util.*;
 
 @Repository
 
 public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
     List<MenuItem> findByMenu(Menu menu);
+
+    Optional<MenuItem> findByName(String name);
 }

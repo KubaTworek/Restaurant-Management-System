@@ -55,4 +55,9 @@ public class MenuItemServiceImp implements MenuItemService {
                 .map(MenuItem::convertEntityToDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Optional<MenuItemDTO> findByName(String name) {
+        return menuItemRepository.findByName(name).map(MenuItem::convertEntityToDTO);
+    }
 }

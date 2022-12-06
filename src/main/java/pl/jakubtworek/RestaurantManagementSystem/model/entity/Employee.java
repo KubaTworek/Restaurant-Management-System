@@ -31,11 +31,11 @@ public class Employee {
     private String lastName;
 
     @NotNull
-    @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="job_id")
     private Job job;
 
-    @ManyToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE)
+    @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
             name="Order_Employee",
             joinColumns = @JoinColumn(name="employee_id"),
@@ -50,6 +50,12 @@ public class Employee {
         if(!orders.contains(tempOrder)){
             orders.add(tempOrder);
             tempOrder.add(this);
+        }
+    }
+
+    public void remove(){
+        for(Order o : orders){
+            o.getEmployees().remove(this);
         }
     }
 

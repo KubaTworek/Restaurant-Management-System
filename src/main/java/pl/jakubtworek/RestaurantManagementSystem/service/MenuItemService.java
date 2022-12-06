@@ -14,4 +14,5 @@ public interface MenuItemService {
     MenuItemDTO save(MenuItemRequest theMenuItem, MenuDTO menuDTO);
     void deleteById(Long theId);
     List<MenuItemDTO> findByMenu(Menu theMenu);
+    Optional<MenuItemDTO> findByName(String name);
 }

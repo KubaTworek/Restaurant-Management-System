@@ -12,6 +12,7 @@ import java.util.List;
 public class OrderFormulaImpl implements OrderFormula{
     private final OrderRequest orderRequest;
     private final TypeOfOrderDTO typeOfOrder;
+    private final List<MenuItemDTO> menuItems;
 
     @Override
     public OrderDTO createOrder(
@@ -19,7 +20,6 @@ public class OrderFormulaImpl implements OrderFormula{
         String time = getNowTime();
         String date = getTodayDate();
         double price = calculateOrderPrice(orderRequest.getMenuItems());
-        List<MenuItemDTO> menuItems = orderRequest.convertRequestToDTO().getMenuItems();
 
         return OrderDTO.builder()
                 .id(0L)

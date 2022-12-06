@@ -44,7 +44,7 @@ public class Order {
     private TypeOfOrder typeOfOrder;
 
     @LazyCollection(LazyCollectionOption.FALSE)
-    @ManyToMany(fetch=FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(fetch=FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.DETACH})
     @JoinTable(
             name="Order_Menu_Item",
             joinColumns = @JoinColumn(name="order_id"),
@@ -53,7 +53,7 @@ public class Order {
     private List<MenuItem> menuItems;
 
     @LazyCollection(LazyCollectionOption.FALSE)
-    @ManyToMany(fetch=FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(fetch=FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.DETACH})
     @JoinTable(
             name="Order_Employee",
             joinColumns = @JoinColumn(name="order_id"),

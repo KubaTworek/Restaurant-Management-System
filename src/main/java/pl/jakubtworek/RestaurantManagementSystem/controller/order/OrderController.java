@@ -4,12 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.*;
 import pl.jakubtworek.RestaurantManagementSystem.exception.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 import pl.jakubtworek.RestaurantManagementSystem.service.*;
 
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.*;
 
@@ -20,7 +21,8 @@ import java.util.stream.*;
 public class OrderController {
     private final OrderService orderService;
     private final TypeOfOrderService typeOfOrderService;
-    private final EmployeeService employeeService;
+    private final MenuItemService menuItemService;
+    private final MenuService menuService;
 
     @GetMapping
     public ResponseEntity<List<OrderResponse>> getOrders() {
@@ -43,11 +45,16 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderResponse> saveOrder(@RequestBody OrderRequest orderRequest) throws TypeOfOrderNotFoundException {
+    public ResponseEntity<OrderResponse> saveOrder(@RequestBody OrderRequest orderRequest) throws TypeOfOrderNotFoundException, MenuNotFoundException {
 
         TypeOfOrderDTO typeOfOrderDTO = typeOfOrderService.findByType(orderRequest.getTypeOfOrder())
                 .orElseThrow(TypeOfOrderNotFoundException::new);
-        OrderResponse orderResponse = orderService.save(orderRequest, typeOfOrderDTO).convertDTOToResponse();
+        List<MenuItemDTO> menuItems = new ArrayList<>();
+        for(MenuItemRequest miRequests : orderRequest.getMenuItems()){
+            menuItems.add(menuItemService.findByName(miRequests.getName()).orElseThrow());
+        }
+
+        OrderResponse orderResponse = orderService.save(orderRequest, typeOfOrderDTO, menuItems).convertDTOToResponse();
 
         return new ResponseEntity<>(orderResponse, HttpStatus.CREATED);
     }

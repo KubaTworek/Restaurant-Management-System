@@ -30,11 +30,11 @@ public class MenuItem {
     @NotNull
     private double price;
 
-    @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @ManyToOne(fetch=FetchType.LAZY, cascade = {CascadeType.DETACH})
     @JoinColumn(name="menu_id")
     private Menu menu;
 
-    @ManyToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE)
+    @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
             name="Order_Menu_Item",
             joinColumns = @JoinColumn(name="menu_item_id"),
