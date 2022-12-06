@@ -18,12 +18,12 @@ public class MenuUtils {
         return new Menu(1L, "Drinks", createMenuItemListForDrinks());
     }
 
-    private static List<MenuItem> createMenuItemListForDrinks() {
+    public static List<MenuItem> createMenuItemListForDrinks() {
         MenuItem menuItem = createCokeMenuItem();
         return List.of(menuItem);
     }
 
-    private static List<MenuItem> createMenuItemListForFood() {
+    public static List<MenuItem> createMenuItemListForFood() {
         MenuItem menuItem1 = createChickenMenuItem();
         MenuItem menuItem2 = createTiramisuMenuItem();
         return List.of(menuItem1, menuItem2);

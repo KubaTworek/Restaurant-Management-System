@@ -39,8 +39,7 @@ public class MenuItemServiceImp implements MenuItemService {
     public MenuItemDTO save(MenuItemRequest menuItemRequest, MenuDTO menuDTO) {
         MenuItemDTO menuItemDTO = menuItemFactory.createMenuItem(menuItemRequest, menuDTO);
         MenuItem menuItem = menuItemDTO.convertDTOToEntity();
-        MenuItem menuItemCreated = menuItemRepository.save(menuItem);
-        return menuItemCreated.convertEntityToDTO();
+        return menuItemRepository.save(menuItem).convertEntityToDTO();
     }
 
     @Override

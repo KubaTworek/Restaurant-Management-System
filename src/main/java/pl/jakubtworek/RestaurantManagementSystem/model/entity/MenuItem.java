@@ -56,7 +56,8 @@ public class MenuItem {
         for(Order o : orders){
             o.getMenuItems().remove(this);
         }
-        menu.getMenuItems().remove(this);
+
+        if(menu != null) menu.getMenuItems().remove(this);
     }
 
     public MenuItemDTO convertEntityToDTO() {

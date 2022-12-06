@@ -1,37 +1,43 @@
-/*
 package pl.jakubtworek.RestaurantManagementSystem.unitTests.order;
 
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
+import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueueFacade;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
-import pl.jakubtworek.RestaurantManagementSystem.model.factories.order.OrderFactory;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
+import pl.jakubtworek.RestaurantManagementSystem.model.factories.order.*;
 import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 import pl.jakubtworek.RestaurantManagementSystem.service.impl.OrderServiceImpl;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.createMenuItemListForFood;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
 
-public class OrderServiceTest {
+class OrderServiceTest {
     @Mock
     private OrderRepository orderRepository;
     @Mock
     private OrderFactory orderFactory;
     @Mock
     private OrdersQueueFacade ordersQueueFacade;
+    @Mock
+    private OrderFormula orderFormula;
 
     private OrderService orderService;
 
     @BeforeEach
-    public void setup(){
+    void setup(){
         orderRepository = mock(OrderRepository.class);
         orderFactory = mock(OrderFactory.class);
         ordersQueueFacade = mock(OrdersQueueFacade.class);
+        orderFormula = mock(OrderFormula.class);
 
         orderService = new OrderServiceImpl(
                 orderRepository,
@@ -41,12 +47,13 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void shouldReturnAllOrders() {
+    void shouldReturnAllOrders() {
         // given
         List<Order> orders = createOrders();
-        when(orderRepository.findAll()).thenReturn(orders);
 
         // when
+        when(orderRepository.findAll()).thenReturn(orders);
+
         List<OrderDTO> ordersReturned = orderService.findAll();
 
         // then
@@ -54,36 +61,45 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void shouldReturnOneOrder() {
+    void shouldReturnOneOrder() {
         // given
-        Optional<Order> order = Optional.of(new Order());
-        when(orderRepository.findById(1L)).thenReturn(order);
+        Optional<Order> order = Optional.of(createOnsiteOrder());
 
         // when
+        when(orderRepository.findById(1L)).thenReturn(order);
+
         Optional<OrderDTO> orderReturned = orderService.findById(1L);
 
         // then
         assertNotNull(orderReturned);
     }
 
-*/
-/*    @Test
-    public void shouldReturnCreatedOrder(){
+    @Test
+    void shouldReturnCreatedOrder(){
         // given
-        Order order = spy(new Order());
-        OrderDTO orderDTO = spy(new OrderDTO());
-        when(orderRepository.save(order)).thenReturn(order);
+        Order order = createOnsiteOrder();
+        OrderRequest orderRequest = createOnsiteOrderRequest();
+        TypeOfOrderDTO typeOfOrderDTO = createOnsiteType().convertEntityToDTO();
+        List<MenuItemDTO> menuItemDTOList = createMenuItemListForFood()
+                .stream()
+                .map(MenuItem::convertEntityToDTO)
+                .collect(Collectors.toList());
 
         // when
-        Order orderReturned = orderService.save(orderDTO);
+        when(orderFactory.createOrder(any(), any(), anyList())).thenReturn(orderFormula);
+        when(orderFormula.createOrder()).thenReturn(order.convertEntityToDTO());
+        when(orderRepository.save(order)).thenReturn(order);
+        doNothing().when(ordersQueueFacade).addToQueue(order.convertEntityToDTO());
+
+        OrderDTO orderReturned = orderService.save(orderRequest, typeOfOrderDTO, menuItemDTOList);
 
         // then
         assertNotNull(orderReturned);
-    }*//*
+    }
 
 
     @Test
-    public void verifyIsOrderIsDeleted(){
+    void verifyIsOrderIsDeleted(){
         // when
         orderService.deleteById(1L);
 
@@ -91,76 +107,75 @@ public class OrderServiceTest {
         verify(orderRepository).deleteById(1L);
     }
 
-*/
-/*    @Test
-    public void shouldReturnOrders_whenDateIsPass() {
+    @Test
+    void shouldReturnOrders_whenDateIsPass() {
         // given
-        List<Order> orders = createOrders();
-        when(orderRepository.findByDate("Date")).thenReturn(orders);
+        Optional<List<Order>> orders = Optional.of(createOrders());
 
         // when
+        when(orderRepository.findByDate("Date")).thenReturn(orders);
+
         List<OrderDTO> ordersReturned = orderService.findByDate("Date");
 
         // then
-        assertEquals(3,ordersReturned.size());
+        assertEquals(2,ordersReturned.size());
     }
 
     @Test
-    public void shouldReturnOrders_whenTypeOfOrderIsPass() {
+    void shouldReturnOrders_whenTypeOfOrderIsPass() {
         // given
-        List<Order> orders = createOrders();
-        TypeOfOrder typeOfOrder = spy(new TypeOfOrder());
+        Optional<List<Order>> orders = Optional.of(createOrders());
+        TypeOfOrder typeOfOrder = createOnsiteType();
+
+        // when
         when(orderRepository.findByTypeOfOrder(typeOfOrder)).thenReturn(orders);
 
-        // when
-        List<Order> ordersReturned = orderService.findByTypeOfOrder(typeOfOrder);
+        List<OrderDTO> ordersReturned = orderService.findByTypeOfOrder(typeOfOrder);
 
         // then
-        assertEquals(3,ordersReturned.size());
+        assertEquals(2,ordersReturned.size());
     }
 
     @Test
-    public void shouldReturnOrders_whenEmployeeIsPass() {
+    void shouldReturnOrders_whenEmployeeIsPass() {
         // given
-        List<Order> orders = createOrders();
-        Employee employee = spy(new Employee());
-        when(orderRepository.findByEmployee(employee)).thenReturn(orders);
+        Optional<List<Order>> orders = Optional.of(createOrders());
 
         // when
-        List<Order> ordersReturned = orderService.findByEmployee(employee);
+        when(orderRepository.findByEmployeesId(1L)).thenReturn(orders);
+
+        List<OrderDTO> ordersReturned = orderService.findByEmployeeId(1L);
 
         // then
-        assertEquals(3,ordersReturned.size());
-    }*//*
+        assertEquals(2,ordersReturned.size());
+    }
 
 
-*/
-/*    @Test
-    public void shouldReturnAllMadeOrders() {
+    @Test
+    void shouldReturnAllMadeOrders() {
         // given
-        Optional<Order> orders = Optional.of(createOnsiteOrder().get());
-        when(orderRepository.findOrdersByHourAwayIsNotNull()).thenReturn(orders);
+        Optional<List<Order>> orders = Optional.of(createOrders());
 
         // when
+        when(orderRepository.findOrdersByHourAwayIsNotNull()).thenReturn(orders);
+
         List<OrderDTO> ordersReturned = orderService.findMadeOrders();
 
         // then
-        assertEquals(1,ordersReturned.size());
+        assertEquals(2,ordersReturned.size());
     }
 
     @Test
-    public void shouldReturnAllUnmadeOrders() {
+    void shouldReturnAllUnmadeOrders() {
         // given
-        Optional<Order> orders = Optional.of(createDeliveryOrder().get());
-        when(orderRepository.findOrdersByHourAwayIsNull()).thenReturn(orders);
+        Optional<List<Order>> orders = Optional.of(createOrders());
 
         // when
+        when(orderRepository.findOrdersByHourAwayIsNull()).thenReturn(orders);
+
         List<OrderDTO> ordersReturned = orderService.findUnmadeOrders();
 
         // then
-        assertEquals(1,ordersReturned.size());
-    }*//*
-
+        assertEquals(2,ordersReturned.size());
+    }
 }
-
-*/

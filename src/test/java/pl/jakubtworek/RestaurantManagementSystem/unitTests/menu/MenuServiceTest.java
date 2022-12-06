@@ -2,6 +2,7 @@ package pl.jakubtworek.RestaurantManagementSystem.unitTests.menu;
 
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuFactory;
@@ -13,8 +14,9 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 
-public class MenuServiceTest {
+class MenuServiceTest {
     @Mock
     private MenuRepository menuRepository;
     @Mock
@@ -23,7 +25,7 @@ public class MenuServiceTest {
     private MenuService menuService;
 
     @BeforeEach
-    public void setup(){
+    void setup(){
         menuRepository = mock(MenuRepository.class);
         menuFactory = mock(MenuFactory.class);
 
@@ -34,51 +36,53 @@ public class MenuServiceTest {
     }
 
     @Test
-    public void shouldReturnAllMenus() {
+    void shouldReturnAllMenus() {
         // given
-        List<Menu> menus = createMenus();
-        when(menuRepository.findAll()).thenReturn(menus);
+        List<Menu> menus = createMenuList();
 
         // when
+        when(menuRepository.findAll()).thenReturn(menus);
+
         List<MenuDTO> menusReturned = menuService.findAll();
 
         // then
-        assertEquals(3,menusReturned.size());
+        assertEquals(2,menusReturned.size());
     }
 
     @Test
-    public void shouldReturnOneMenu() {
+    void shouldReturnOneMenu() {
         // given
-        Optional<Menu> menu = Optional.of(new Menu());
-        when(menuRepository.findById(1L)).thenReturn(menu);
+        Optional<Menu> menu = Optional.of(createMenu());
 
         // when
+        when(menuRepository.findById(1L)).thenReturn(menu);
+
         Optional<MenuDTO> menuReturned = menuService.findById(1L);
 
         // then
         assertNotNull(menuReturned);
     }
 
-/*    @Test
-    public void shouldReturnCreatedMenu(){
+    @Test
+    void shouldReturnCreatedMenu(){
         // given
-        MenuRequest menu = new MenuRequest("Alcohol");
-        Menu expectedMenu = new Menu(0L, "Alcohol", List.of());
-        MenuDTO expectedMenuDTO = new MenuDTO(0L, "Alcohol", List.of());
-
-        when(menuFactory.createMenu(menu)).thenReturn(expectedMenuDTO);
-        when(menuRepository.save(expectedMenu)).thenReturn(expectedMenu);
+        MenuRequest menu = createMenuRequest();
+        Menu expectedMenu = createMenu();
+        MenuDTO expectedMenuDTO = createMenu().convertEntityToDTO();
 
         // when
+        when(menuFactory.createMenu(any())).thenReturn(expectedMenuDTO);
+        when(menuRepository.save(any())).thenReturn(expectedMenu);
+
         MenuDTO menuReturned = menuService.save(menu);
 
         // then
-        assertEquals("Alcohol", menuReturned.getName());
-    }*/
+        assertEquals("Drinks", menuReturned.getName());
+    }
 
 
     @Test
-    public void verifyIsMenuIsDeleted(){
+    void verifyIsMenuIsDeleted(){
         // when
         menuService.deleteById(1L);
 
@@ -87,26 +91,16 @@ public class MenuServiceTest {
     }
 
     @Test
-    public void shouldReturnOneMenu_whenNameIsPass() {
+    void shouldReturnOneMenu_whenNameIsPass() {
         // given
-        Optional<Menu> menu = Optional.of(new Menu());
-        when(menuRepository.findByName("Menu")).thenReturn(menu);
+        Optional<Menu> menu = Optional.of(createMenu());
 
         // when
+        when(menuRepository.findByName("Menu")).thenReturn(menu);
+
         Optional<MenuDTO> menuReturned = menuService.findByName("Menu");
 
         // then
         assertNotNull(menuReturned);
-    }
-
-    private List<Menu> createMenus() {
-        List<Menu> menus = new ArrayList<>();
-        Menu menu1 = new Menu();
-        Menu menu2 = new Menu();
-        Menu menu3 = new Menu();
-        menus.add(menu1);
-        menus.add(menu2);
-        menus.add(menu3);
-        return menus;
     }
 }

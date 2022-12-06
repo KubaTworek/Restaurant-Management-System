@@ -38,8 +38,11 @@ public class OrderServiceImpl implements OrderService {
         OrderDTO orderDTO = createOrder(orderRequest, typeOfOrderDTO, menuItemDTOList);
         Order order = orderDTO.convertDTOToEntity();
         Order orderCreated = orderRepository.save(order);
-        ordersQueueFacade.addToQueue(orderCreated.convertEntityToDTO());
-        return orderCreated.convertEntityToDTO();
+        if(orderCreated != null) {
+            ordersQueueFacade.addToQueue(orderCreated.convertEntityToDTO());
+            return orderCreated.convertEntityToDTO();
+        }
+        return order.convertEntityToDTO();
     }
 
     @Override

@@ -2,9 +2,11 @@ package pl.jakubtworek.RestaurantManagementSystem.unitTests.employee;
 
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
+import pl.jakubtworek.RestaurantManagementSystem.exception.JobNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.EmployeeQueueFacade;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.*;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 import pl.jakubtworek.RestaurantManagementSystem.service.impl.EmployeeServiceImpl;
@@ -13,9 +15,9 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.createEmployees;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.*;
 
-public class EmployeeServiceTest {
+class EmployeeServiceTest {
     @Mock
     private EmployeeRepository employeeRepository;
     @Mock
@@ -30,7 +32,7 @@ public class EmployeeServiceTest {
     private EmployeeServiceImpl employeeService;
 
     @BeforeEach
-    public void setup(){
+    void setup(){
         employeeFormula = mock(EmployeeFormula.class);
         jobRepository = mock(JobRepository.class);
 
@@ -46,7 +48,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    public void shouldReturnAllEmployees(){
+    void shouldReturnAllEmployees(){
         // given
         List<Employee> employees = createEmployees();
         when(employeeRepository.findAll()).thenReturn(employees);
@@ -59,8 +61,8 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    public void shouldReturnOneEmployee(){
-        Optional<Employee> employee = Optional.of(new Employee());
+    void shouldReturnOneEmployee(){
+        Optional<Employee> employee = Optional.of(createCook());
         when(employeeRepository.findById(1L)).thenReturn(employee);
 
         // when
@@ -70,13 +72,13 @@ public class EmployeeServiceTest {
         assertNotNull(employeeReturned);
     }
 
-/*    @Test
-    public void shouldReturnCreatedEmployee() throws JobNotFoundException {
+    @Test
+    void shouldReturnCreatedEmployee() throws JobNotFoundException {
         // given
         EmployeeRequest employeeRequest = createCookRequest();
-        JobDTO job = createCookDTO();
-        EmployeeDTO expectedEmployeeDTO = createEmployeeDTO().get();
-        Employee expectedEmployee = createEmployee().get();
+        JobDTO job = createJobCook().convertEntityToDTO();
+        EmployeeDTO expectedEmployeeDTO = createCook().convertEntityToDTO();
+        Employee expectedEmployee = createCook();
 
         when(employeeFactory.createEmployeeFormula(any(EmployeeRequest.class), any(JobDTO.class))).thenReturn(employeeFormula);
         when(employeeFormula.createEmployee()).thenReturn(expectedEmployeeDTO);
@@ -87,24 +89,28 @@ public class EmployeeServiceTest {
 
         // then
         assertNotNull(employeeReturned);
-    }*/
+    }
 
 
     @Test
-    public void verifyIsEmployeeIsDeleted(){
+    void verifyIsEmployeeIsDeleted(){
+        // given
+        Employee expectedEmployee = createCook();
+
         // when
+        when(employeeRepository.findById(1L)).thenReturn(Optional.of(expectedEmployee));
+
         employeeService.deleteById(1L);
 
         // then
         verify(employeeRepository).deleteById(1L);
     }
 
-/*    @Test
-    public void shouldReturnProperJob(){
+    @Test
+    void shouldReturnProperJob(){
         // given
-        Optional<Employee> employees = createCooks();
-        Job job = createCook().get();
-
+        Optional<List<Employee>> employees = Optional.of(createEmployees());
+        Job job = createJobCook();
 
         // when
         when(jobRepository.findByName("Job")).thenReturn(Optional.of(job));
@@ -113,6 +119,6 @@ public class EmployeeServiceTest {
         List<EmployeeDTO> employeesReturned = employeeService.findByJob(job);
 
         // then
-        assertEquals(1,employeesReturned.size());
-    }*/
+        assertEquals(3, employeesReturned.size());
+    }
 }

@@ -13,8 +13,9 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 
-public class MenuItemServiceTest {
+class MenuItemServiceTest {
     @Mock
     private MenuRepository menuRepository;
     @Mock
@@ -25,7 +26,7 @@ public class MenuItemServiceTest {
     private MenuItemService menuItemService;
 
     @BeforeEach
-    public void setup(){
+    void setup(){
         menuRepository = mock(MenuRepository.class);
 
         menuItemRepository = mock(MenuItemRepository.class);
@@ -38,25 +39,27 @@ public class MenuItemServiceTest {
     }
 
     @Test
-    public void shouldReturnAllMenuItems() {
+    void shouldReturnAllMenuItems() {
         // given
-        List<MenuItem> menuItems = createMenuItems();
-        when(menuItemRepository.findAll()).thenReturn(menuItems);
+        List<MenuItem> menuItems = createMenuItemListForFood();
 
         // when
+        when(menuItemRepository.findAll()).thenReturn(menuItems);
+
         List<MenuItemDTO> menuItemsReturned = menuItemService.findAll();
 
         // then
-        assertEquals(3,menuItemsReturned.size());
+        assertEquals(2,menuItemsReturned.size());
     }
 
     @Test
-    public void shouldReturnOneMenuItem() {
+    void shouldReturnOneMenuItem() {
         // given
-        Optional<MenuItem> menuItem = Optional.of(new MenuItem());
-        when(menuItemRepository.findById(1L)).thenReturn(menuItem);
+        Optional<MenuItem> menuItem = Optional.of(createChickenMenuItem());
 
         // when
+        when(menuItemRepository.findById(1L)).thenReturn(menuItem);
+
         Optional<MenuItemDTO> menuItemReturned = menuItemService.findById(1L);
 
         // then
@@ -64,7 +67,7 @@ public class MenuItemServiceTest {
     }
 
 /*    @Test
-    public void shouldReturnCreatedMenuItem(){
+    void shouldReturnCreatedMenuItem(){
         // given
         Optional<Menu> expectedMenu = Optional.of(new Menu(2L, "Food", List.of()));
         Optional<MenuDTO> expectedMenuDTO = Optional.of(new MenuDTO(2L, "Food", List.of()));
@@ -87,8 +90,13 @@ public class MenuItemServiceTest {
 
 
     @Test
-    public void verifyIsMenuItemIsDeleted(){
+    void verifyIsMenuItemIsDeleted(){
+        // given
+        Optional<MenuItem> menuItem = Optional.of(createChickenMenuItem());
+
         // when
+        when(menuItemRepository.findById(1L)).thenReturn(menuItem);
+
         menuItemService.deleteById(1L);
 
         // then
@@ -96,10 +104,10 @@ public class MenuItemServiceTest {
     }
 
     @Test
-    public void shouldReturnOneMenuItem_whenMenuNameIsPass() {
+    void shouldReturnOneMenuItem_whenMenuNameIsPass() {
         // given
-        List<MenuItem> menuItems = createMenuItems();
-        Optional<Menu> menu = Optional.of(new Menu());
+        List<MenuItem> menuItems = createMenuItemListForFood();
+        Optional<Menu> menu = Optional.of(createMenu());
         when(menuRepository.findByName("Menu")).thenReturn(menu);
         when(menuItemRepository.findByMenu(menu.get())).thenReturn(menuItems);
 
@@ -107,17 +115,6 @@ public class MenuItemServiceTest {
         List<MenuItemDTO> menuItemsReturned = menuItemService.findByMenu(menu.get());
 
         // then
-        assertEquals(3, menuItemsReturned.size());
-    }
-
-    private List<MenuItem> createMenuItems() {
-        List<MenuItem> menuItems = new ArrayList<>();
-        MenuItem menuItem1 = new MenuItem();
-        MenuItem menuItem2 = new MenuItem();
-        MenuItem menuItem3 = new MenuItem();
-        menuItems.add(menuItem1);
-        menuItems.add(menuItem2);
-        menuItems.add(menuItem3);
-        return menuItems;
+        assertEquals(2, menuItemsReturned.size());
     }
 }
