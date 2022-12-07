@@ -23,10 +23,9 @@
 ## Technologies Used
 - Java
 - SpringBoot
-- Hibernate
-- MySQL, JSON
-- REST API, Postman
-- 
+- Hibernate, JPA
+- MySQL
+- RPostman
 
 ## Run and Test
 
@@ -40,6 +39,12 @@ To execute unit and acceptance tests
 
 ```
 mvn test
+```
+
+To execute End-toEnd tests in Postman (need NodeJs and Newman)
+
+```
+newman run Restaurant-Management-System.postman_collection.json
 ```
 
 ## Endpoints
