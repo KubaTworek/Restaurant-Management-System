@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6804a3ab-3eba-4f33-a440-5fed16101a6e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Restaurant-Management-System.postman_collection.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_9_1.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,7 +144,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.RestaurantManagementSystemApplication">
+  <component name="RunManager" selected="JUnit.All in Restaurant-Management-System">
     <configuration name="All in Restaurant-Management-System" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Restaurant-Management-System" />
       <option name="PACKAGE_NAME" value="" />
@@ -254,7 +255,7 @@
       <workItem from="1668904368804" duration="1891000" />
       <workItem from="1669001077768" duration="9324000" />
       <workItem from="1669315538967" duration="5417000" />
-      <workItem from="1670199021626" duration="52082000" />
+      <workItem from="1670199021626" duration="53225000" />
     </task>
     <servers />
   </component>
