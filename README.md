@@ -25,7 +25,7 @@
 - SpringBoot
 - Hibernate, JPA
 - MySQL
-- RPostman
+- Postman
 
 ## Run and Test
 
@@ -35,10 +35,22 @@ To run the application type
 mvn spring-boot:run
 ```
 
-To execute unit and acceptance tests
+To execute unit and integration tests
 
 ```
 mvn test
+```
+
+To execute unit tests
+
+```
+mvn '-Dtest=*Test' test
+```
+
+To execute integration tests
+
+```
+mvn '-Dtest=*IT' test
 ```
 
 To execute End-toEnd tests in Postman (need NodeJs and Newman)
