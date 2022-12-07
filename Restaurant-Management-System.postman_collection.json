@@ -1,0 +1,2918 @@
+{
+	"info": {
+		"_postman_id": "1e805d0c-e32e-496f-88b5-f8fae34cf912",
+		"name": "Restaurant-Management-System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22821726"
+	},
+	"item": [
+		{
+			"name": "Employees",
+			"item": [
+				{
+					"name": "getOrdersAmount",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"amountOfOrders\", pm.response.json().length);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAmountOfAllEmployeeBeforeCreate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"amountOfEmployeesBeforeCreate\", pm.response.json().length);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/employees",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAmountOfCooksBeforeCreate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"amountOfCooksBeforeCreate\", pm.response.json().length);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/employees/job?jobName=Cook",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees",
+								"job"
+							],
+							"query": [
+								{
+									"key": "jobName",
+									"value": "Cook"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAmountOfWaiters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"amountOfWaiters\", pm.response.json().length);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/employees/job?jobName=Waiter",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees",
+								"job"
+							],
+							"query": [
+								{
+									"key": "jobName",
+									"value": "Waiter"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create an Employee",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"employeeId\", pm.response.json().id);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Smith\",\n    \"job\": \"Cook\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/employees",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAmountOfAllEmployeeAfterCreate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let amountOfEmployees = pm.response.json().length;",
+									"let expectedAmountOfEmployees = pm.collectionVariables.get(\"amountOfEmployeesBeforeCreate\") + 1;",
+									"",
+									"pm.test(\"Amount of employees are increment\", function() {",
+									"    pm.expect(amountOfEmployees).to.equal(expectedAmountOfEmployees);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"amountOfEmployeesAfterCreate\", pm.response.json().length);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/employees",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAmountOfCooksfterCreate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let amountOfCooks= pm.response.json().length;",
+									"let expectedAmountOfCooks = pm.collectionVariables.get(\"amountOfCooksBeforeCreate\") + 1;",
+									"",
+									"pm.test(\"Amount of cooks are increment\", function() {",
+									"    pm.expect(amountOfCooks).to.equal(expectedAmountOfCooks);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"amountOfCooksAfterCreate\", pm.response.json().length);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/employees/job?jobName=Cook",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees",
+								"job"
+							],
+							"query": [
+								{
+									"key": "jobName",
+									"value": "Cook"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAmountOfWaiters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let amountOfWaiters = pm.response.json().length;",
+									"let expectedAmountOfWaiters = pm.collectionVariables.get(\"amountOfWaiters\");",
+									"",
+									"pm.test(\"Amount of waiters are same\", function() {",
+									"    pm.expect(amountOfWaiters).to.equal(expectedAmountOfWaiters);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/employees/job?jobName=Waiter",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees",
+								"job"
+							],
+							"query": [
+								{
+									"key": "jobName",
+									"value": "Waiter"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getCreatedEmployeeById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body of Response is OK\", function() {",
+									"    pm.expect(pm.collectionVariables.get(\"employeeId\")).to.equal(pm.response.json().id);",
+									"    pm.expect(\"John\").to.equal(pm.response.json().firstName);",
+									"    pm.expect(\"Smith\").to.equal(pm.response.json().lastName);",
+									"    pm.expect(\"Cook\").to.equal(pm.response.json().job.name);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/employees/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{employeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete an Employee",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const employeeId = pm.collectionVariables.get(\"employeeId\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/employees/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{employeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAmountOfAllEmployeeAfterDelete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let amountOfEmployees = pm.response.json().length;",
+									"let expectedAmountOfEmployees = pm.collectionVariables.get(\"amountOfEmployeesAfterCreate\") - 1;",
+									"",
+									"pm.test(\"Amount of employees are decreameant\", function() {",
+									"    pm.expect(amountOfEmployees).to.equal(expectedAmountOfEmployees);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/employees",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAmountOfCooksAfterDelete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let amountOfCooks = pm.response.json().length;",
+									"let expectedAmountOfCooks = pm.collectionVariables.get(\"amountOfCooksAfterCreate\") - 1;",
+									"",
+									"pm.test(\"Amount of cooks are decreameant\", function() {",
+									"    pm.expect(expectedAmountOfCooks).to.equal(amountOfCooks);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/employees/job?jobName=Cook",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees",
+								"job"
+							],
+							"query": [
+								{
+									"key": "jobName",
+									"value": "Cook"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAmountOfWaiters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let amountOfWaiters = pm.response.json().length;",
+									"let expectedAmountOfWaiters = pm.collectionVariables.get(\"amountOfWaiters\");",
+									"",
+									"pm.test(\"Amount of waiters are same\", function() {",
+									"    pm.expect(amountOfWaiters).to.equal(expectedAmountOfWaiters);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/employees/job?jobName=Waiter",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees",
+								"job"
+							],
+							"query": [
+								{
+									"key": "jobName",
+									"value": "Waiter"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getErrorById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 404\", function() {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/employees/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{employeeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getErrorByJob",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 404\", function() {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/employees/job?jobName=Random",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees",
+								"job"
+							],
+							"query": [
+								{
+									"key": "jobName",
+									"value": "Random"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verifyOrdersAmount",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let actualAmount = pm.response.json().length;",
+									"let expectedAmount = pm.collectionVariables.get(\"amountOfOrders\");",
+									"",
+									"pm.test(\"Amount of orders is not changed\", function() {",
+									"    pm.expect(expectedAmount).to.equal(actualAmount);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Menu",
+			"item": [
+				{
+					"name": "getOrdersAmount",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"amountOfOrders\", pm.response.json().length);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAmountOfAllMenuBeforeCreate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"amountOfMenuBeforeCreate\", pm.response.json().length);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/menu",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"menu"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Menu",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"menuId\", pm.response.json().id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Desserts\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/menu",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"menu"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAmountOfAllMenuAfterCreate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let amountOfMenu = pm.response.json().length;",
+									"let expectedAmountOfMenu = pm.collectionVariables.get(\"amountOfMenuBeforeCreate\") + 1;",
+									"",
+									"pm.test(\"Amount of Menu are increment\", function() {",
+									"    pm.expect(amountOfMenu).to.equal(expectedAmountOfMenu);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"amountOfMenuAfterCreate\", pm.response.json().length);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/menu",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"menu"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getCreatedMenuById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Body of Response is OK\", function() {",
+									"    pm.expect(pm.collectionVariables.get(\"menuId\")).to.equal(pm.response.json().id);",
+									"    pm.expect(\"Desserts\").to.equal(pm.response.json().name);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/menu/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"menu",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{menuId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Menu",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const menuId = pm.collectionVariables.get(\"menuId\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/menu/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"menu",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{menuId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAmountOfAllMenuAfterDelete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let amountOfMenu = pm.response.json().length;",
+									"let expectedAmountOfMenu = pm.collectionVariables.get(\"amountOfMenuAfterCreate\") - 1;",
+									"",
+									"pm.test(\"Amount of menu are decreameant\", function() {",
+									"    pm.expect(amountOfMenu).to.equal(expectedAmountOfMenu);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/menu",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"menu"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getErrorById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 404\", function() {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/menu/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"menu",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{menuId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verifyOrdersAmount",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let actualAmount = pm.response.json().length;",
+									"let expectedAmount = pm.collectionVariables.get(\"amountOfOrders\");",
+									"",
+									"pm.test(\"Amount of orders is not changed\", function() {",
+									"    pm.expect(expectedAmount).to.equal(actualAmount);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Menu Item",
+			"item": [
+				{
+					"name": "getOrdersAmount",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"amountOfOrders\", pm.response.json().length);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Menu Item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"menuItemId\", pm.response.json().id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n     \"name\": \"Pepsi\",\n     \"price\": 2.99,\n     \"menu\": \"Drinks\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9090/menu-items",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"menu-items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getCreatedMenuItem",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body of Response is OK\", function() {",
+									"    pm.expect(pm.collectionVariables.get(\"menuItemId\")).to.equal(pm.response.json().id);",
+									"    pm.expect(\"Pepsi\").to.equal(pm.response.json().name);",
+									"    pm.expect(2.99).to.equal(pm.response.json().price);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/menu-items/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"menu-items",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{menuItemId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Menu Item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const menuItemId = pm.collectionVariables.get(\"menuItemId\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/menu-items/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"menu-items",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{menuItemId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verifyOrdersAmount",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let actualAmount = pm.response.json().length;",
+									"let expectedAmount = pm.collectionVariables.get(\"amountOfOrders\");",
+									"",
+									"pm.test(\"Amount of orders is not changed\", function() {",
+									"    pm.expect(expectedAmount).to.equal(actualAmount);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "getEmployeeAmounts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"amountOfEmployees\", pm.response.json().length);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/employees",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAmountOfAllOrdersBeforeCreate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"amountOfOrdersBeforeCreate\", pm.response.json().length);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create an Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"orderId\", pm.response.json().id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"typeOfOrder\": \"On-site\",\n    \"menuItems\": [\n        {\n        \"name\": \"Chicken\",\n        \"price\": 10.99,\n        \"menu\": \"Food\"\n        },\n        {\n        \"name\": \"Coke\",\n        \"price\": 2.99,\n        \"menu\": \"Drinks\"\n        }  \n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Cook",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"cookId\", pm.response.json().id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Cook\",\n    \"job\": \"Cook\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/employees",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAmountOfAllOrdersAfterCreate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let amountOfOrders = pm.response.json().length;",
+									"let expectedAmountOfOrders = pm.collectionVariables.get(\"amountOfOrdersBeforeCreate\") + 1;",
+									"",
+									"pm.test(\"Amount of orders are increment\", function() {",
+									"    pm.expect(amountOfOrders).to.equal(expectedAmountOfOrders);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"amountOfOrdersAfterCreate\", pm.response.json().length);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getCreatedOrderById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let expectedDateOfCreated = pm.collectionVariables.get(\"date\");",
+									"let expectedTimeOfCreated = pm.collectionVariables.get(\"time\");",
+									"",
+									"console.log(pm.response.json())",
+									"",
+									"pm.test(\"Body of Response is OK\", function() {",
+									"    pm.expect(pm.collectionVariables.get(\"orderId\")).to.equal(pm.response.json().id);",
+									"    pm.expect(\"On-site\").to.equal(pm.response.json().typeOfOrder.type);",
+									"    pm.expect(expectedDateOfCreated).to.equal(pm.response.json().date);",
+									"    pm.expect(null).to.equal(pm.response.json().hourAway);",
+									"    pm.expect(\"Chicken\").to.equal(pm.response.json().menuItems[0].name);",
+									"    pm.expect(10.99).to.equal(pm.response.json().menuItems[0].price);",
+									"    pm.expect(\"Coke\").to.equal(pm.response.json().menuItems[1].name);",
+									"    pm.expect(1.99).to.equal(pm.response.json().menuItems[1].price);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"date\", formatDate(new Date()));",
+									"pm.collectionVariables.set(\"time\", formatTime(new Date()));",
+									"",
+									"function formatTime(date){",
+									"    var d = new Date(date),",
+									"        hours = '' + d.getHours(),",
+									"        mins = '' + d.getMinutes(),",
+									"        seconds = d.getSeconds();",
+									"    return hours + \":\" + mins + \":\" + seconds;",
+									"}",
+									"",
+									"function formatDate(date) {",
+									"    var d = new Date(date),",
+									"        month = '' + (d.getMonth() + 1),",
+									"        day = '' + d.getDate(),",
+									"        year = d.getFullYear();",
+									"",
+									"    if (month.length < 2) ",
+									"        month = '0' + month;",
+									"    if (day.length < 2) ",
+									"        day = '0' + day;",
+									"",
+									"    return [year, month, day].join('-');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9090/orders/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"orders",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{orderId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOrderByDate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let idOfCreatedOrder = pm.collectionVariables.get(\"orderId\");",
+									"let expectedDateOfCreatedOrder = pm.collectionVariables.get(\"date\");",
+									"",
+									"let isExistCreatedOrderWithTodayDate = (pm.response.json()",
+									"                                    .filter(e => e.date == expectedDateOfCreatedOrder && e.id == idOfCreatedOrder) != null) ",
+									"                                    ? true : false;",
+									"",
+									"pm.test(\"Created element is returned\", function() {",
+									"    pm.expect(true).to.equal(isExistCreatedOrderWithTodayDate);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"date\", formatDate(new Date()));",
+									"",
+									"function formatDate(date) {",
+									"    var d = new Date(date),",
+									"        month = '' + (d.getMonth() + 1),",
+									"        day = '' + d.getDate(),",
+									"        year = d.getFullYear();",
+									"",
+									"    if (month.length < 2) ",
+									"        month = '0' + month;",
+									"    if (day.length < 2) ",
+									"        day = '0' + day;",
+									"",
+									"    return [year, month, day].join('-');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/find?date={{date}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								"find"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "{{date}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOrderByTypeOfOrder",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let idOfCreatedOrder = pm.collectionVariables.get(\"orderId\");",
+									"let expectedTypeOfOrderOfCreatedOrder = \"On-site\";",
+									"",
+									"let isExistCreatedOrderWithProperTypeOfOrder = (pm.response.json()",
+									"                                    .filter(e => e.date == expectedTypeOfOrderOfCreatedOrder && e.id == idOfCreatedOrder) != null) ",
+									"                                    ? true : false;",
+									"",
+									"pm.test(\"Created element is returned\", function() {",
+									"    pm.expect(true).to.equal(isExistCreatedOrderWithProperTypeOfOrder);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/find?typeOfOrder=On-site",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								"find"
+							],
+							"query": [
+								{
+									"key": "typeOfOrder",
+									"value": "On-site"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOrderByEmployeeId",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let idOfCreatedOrder = pm.collectionVariables.get(\"orderId\");",
+									"let expectedEmployeeIdOfCreatedOrder = pm.collectionVariables.get(\"cookId\");",
+									"",
+									"let isExistCreatedOrderWithProperEmployee = (pm.response.json()",
+									"                                    .filter(e => e.employees[0].id == expectedEmployeeIdOfCreatedOrder && e.id == idOfCreatedOrder) != null) ",
+									"                                    ? true : false;",
+									"",
+									"pm.test(\"Created element is returned\", function() {",
+									"    pm.expect(true).to.equal(isExistCreatedOrderWithProperEmployee);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/find?employeeId={{cookId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								"find"
+							],
+							"query": [
+								{
+									"key": "employeeId",
+									"value": "{{cookId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getMadeOrder",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/ready",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								"ready"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUnmadeOrder",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/unready",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								"unready"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete an Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const menuItemId = pm.collectionVariables.get(\"orderId\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{orderId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Cook",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const employeeId = pm.collectionVariables.get(\"employeeId\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/employees/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{cookId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAmountOfAllOrdersAfterDelete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let amountOfOrders = pm.response.json().length;",
+									"let expectedAmountOfOrders = pm.collectionVariables.get(\"amountOfOrdersAfterCreate\") - 1;",
+									"",
+									"pm.test(\"Amount of orders are decreameant\", function() {",
+									"    pm.expect(amountOfOrders).to.equal(expectedAmountOfOrders);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getErrorById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 404\", function() {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{orderId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verifyEmployeesAmount",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let employeesAmount = pm.response.json().length;",
+									"let expectedEmployeesAmount = pm.collectionVariables.get(\"amountOfEmployees\");",
+									"",
+									"pm.test(\"Amount of Employees is not changed\", function() {",
+									"    pm.expect(expectedEmployeesAmount).to.equal(employeesAmount);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/employees",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OrderQueue",
+			"item": [
+				{
+					"name": "Create Cook",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"cookId\", pm.response.json().id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Cook\",\n    \"job\": \"Cook\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/employees",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create DeliveryMan",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"deliveryId\", pm.response.json().id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"DeliveryMan\",\n    \"job\": \"DeliveryMan\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/employees",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Waiter",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"waiterId\", pm.response.json().id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Waiter\",\n    \"job\": \"Waiter\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/employees",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Delivery Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"orderDeliveryId\", pm.response.json().id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"typeOfOrder\": \"Delivery\",\n    \"menuItems\": [\n        {\n        \"name\": \"Chicken\",\n        \"price\": 10.99,\n        \"menu\": \"Food\"\n        },\n        {\n        \"name\": \"Coke\",\n        \"price\": 2.99,\n        \"menu\": \"Drinks\"\n        }  \n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Onsite Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"orderOnsiteId\", pm.response.json().id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"typeOfOrder\": \"On-site\",\n    \"menuItems\": [\n        {\n        \"name\": \"Chicken\",\n        \"price\": 10.99,\n        \"menu\": \"Food\"\n        },\n        {\n        \"name\": \"Coke\",\n        \"price\": 2.99,\n        \"menu\": \"Drinks\"\n        }   \n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "shouldReturnHourAwayNullOnsite",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Return Hour Away as a null\", () => {",
+									"    pm.expect(pm.response.json().hourAway).to.be.null;",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{orderOnsiteId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "shouldReturnHourAwayNullDelivery",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Return Hour Away as a null\", () => {",
+									"    pm.expect(pm.response.json().hourAway).to.be.null;",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{orderDeliveryId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "shouldReturnHourAwayNotNullOnsite",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var millisecondsToWait = 7000;",
+									"setTimeout(function() {",
+									"",
+									"}, millisecondsToWait);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Return Hour Away as a string\", () => {",
+									"    pm.expect(pm.response.json().hourAway).to.be.a(\"string\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{orderOnsiteId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "shouldReturnHourAwayNotNullDelivery",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Return Hour Away as a string\", () => {",
+									"    pm.expect(pm.response.json().hourAway).to.be.a(\"string\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{orderDeliveryId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteOnsiteOrder",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const menuItemId = pm.collectionVariables.get(\"orderId\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{orderOnsiteId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteDeliveryOrder",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const menuItemId = pm.collectionVariables.get(\"orderId\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{orderDeliveryId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Cook",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const employeeId = pm.collectionVariables.get(\"employeeId\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/employees/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{cookId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Waiter",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const employeeId = pm.collectionVariables.get(\"employeeId\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/employees/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{waiterId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete DeliveryMan",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const employeeId = pm.collectionVariables.get(\"employeeId\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/employees/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{deliveryId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cascading Menu/MenuItems",
+			"item": [
+				{
+					"name": "Create Menu",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"menuId\", pm.response.json().id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Desserts\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/menu",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"menu"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Menu Item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"menuItemId\", pm.response.json().id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Tiramisu\",\n    \"price\": 4.99,\n    \"menu\": \"Desserts\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9090/menu-items",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"menu-items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getMenuItemFromMenu",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Body of Response is OK\", function() {",
+									"    pm.expect(pm.collectionVariables.get(\"menuId\")).to.equal(pm.response.json().id);",
+									"    pm.expect(\"Tiramisu\").to.equal(pm.response.json().menuItems[0].name);",
+									"    pm.expect(4.99).to.equal(pm.response.json().menuItems[0].price);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/menu/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"menu",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{menuId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Menu",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const menuId = pm.collectionVariables.get(\"menuId\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/menu/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"menu",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{menuId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getErrorByMenuItemId",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 404\", function() {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/menu-items/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"menu-items",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{menuItemId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "employeeId",
+			"value": ""
+		},
+		{
+			"key": "menuId",
+			"value": ""
+		},
+		{
+			"key": "menuItemId",
+			"value": ""
+		},
+		{
+			"key": "orderId",
+			"value": ""
+		},
+		{
+			"key": "orderDeliveryId",
+			"value": ""
+		},
+		{
+			"key": "orderOnsiteOneId",
+			"value": ""
+		},
+		{
+			"key": "orderOnsiteTwoId",
+			"value": ""
+		},
+		{
+			"key": "orderOnsiteId",
+			"value": ""
+		},
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:9090"
+		},
+		{
+			"key": "amountOfEmployees",
+			"value": ""
+		},
+		{
+			"key": "amountOfEmployeesBeforeCreate",
+			"value": ""
+		},
+		{
+			"key": "amountOfEmployeesAfterCreate",
+			"value": ""
+		},
+		{
+			"key": "amountOfCooksBeforeCreate",
+			"value": ""
+		},
+		{
+			"key": "amountOfCooksAfterCreate",
+			"value": ""
+		},
+		{
+			"key": "amountOfWaiters",
+			"value": ""
+		},
+		{
+			"key": "cookId",
+			"value": ""
+		},
+		{
+			"key": "deliveryId",
+			"value": ""
+		},
+		{
+			"key": "waiterId",
+			"value": ""
+		},
+		{
+			"key": "amountOfMenuBeforeCreate",
+			"value": ""
+		},
+		{
+			"key": "amountOfMenuAfterCreate",
+			"value": ""
+		},
+		{
+			"key": "date",
+			"value": ""
+		},
+		{
+			"key": "amountOfOrdersBeforeCreate",
+			"value": ""
+		},
+		{
+			"key": "amountOfOrdersAfterCreate",
+			"value": ""
+		},
+		{
+			"key": "time",
+			"value": ""
+		},
+		{
+			"key": "amountOfOrders",
+			"value": ""
+		}
+	]
+}
