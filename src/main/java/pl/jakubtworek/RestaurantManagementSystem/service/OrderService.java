@@ -9,7 +9,7 @@ import java.util.*;
 public interface OrderService {
     List<OrderDTO> findAll();
     Optional<OrderDTO> findById(Long theId);
-    OrderDTO save(OrderRequest theOrder, TypeOfOrderDTO typeOfOrderDTO, List<MenuItemDTO> menuItemDTOList);
+    OrderDTO save(OrderRequest theOrder, TypeOfOrderDTO typeOfOrderDTO, List<MenuItemDTO> menuItemDTOList, UserDTO userDTO);
     void deleteById(Long theId);
     void update(OrderDTO theOrder);
     List<OrderDTO> findByDate(String theDate);

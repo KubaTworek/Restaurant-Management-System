@@ -34,8 +34,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDTO save(OrderRequest orderRequest, TypeOfOrderDTO typeOfOrderDTO, List<MenuItemDTO> menuItemDTOList) {
-        OrderDTO orderDTO = createOrder(orderRequest, typeOfOrderDTO, menuItemDTOList);
+    public OrderDTO save(OrderRequest orderRequest, TypeOfOrderDTO typeOfOrderDTO, List<MenuItemDTO> menuItemDTOList, UserDTO userDTO) {
+        OrderDTO orderDTO = createOrder(orderRequest, typeOfOrderDTO, menuItemDTOList, userDTO);
         Order order = orderDTO.convertDTOToEntity();
         Order orderCreated = orderRepository.save(order);
         if(orderCreated != null) {
@@ -103,7 +103,7 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList());
     }
 
-    private OrderDTO createOrder(OrderRequest orderDTO, TypeOfOrderDTO typeOfOrderDTO, List<MenuItemDTO> menuItemDTOList){
-        return orderFactory.createOrder(orderDTO, typeOfOrderDTO, menuItemDTOList).createOrder();
+    private OrderDTO createOrder(OrderRequest orderDTO, TypeOfOrderDTO typeOfOrderDTO, List<MenuItemDTO> menuItemDTOList, UserDTO userDTO){
+        return orderFactory.createOrder(orderDTO, typeOfOrderDTO, menuItemDTOList, userDTO).createOrder();
     }
 }

@@ -22,6 +22,7 @@ public class OrderDTO {
     private TypeOfOrderDTO typeOfOrder;
     private List<MenuItemDTO> menuItems;
     private List<EmployeeDTO> employees;
+    private UserDTO userDTO;
 
     public void add(EmployeeDTO tempEmployee) {
         if(employees == null) {

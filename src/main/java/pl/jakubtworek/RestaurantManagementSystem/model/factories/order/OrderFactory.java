@@ -14,8 +14,9 @@ public class OrderFactory {
     public OrderFormula createOrder(
             OrderRequest orderDTO,
             TypeOfOrderDTO typeOfOrderDTO,
-            List<MenuItemDTO> menuItemDTOList
+            List<MenuItemDTO> menuItemDTOList,
+            UserDTO userDTO
     ){
-        return new OrderFormulaImpl(orderDTO, typeOfOrderDTO, menuItemDTOList);
+        return new OrderFormulaImpl(orderDTO, typeOfOrderDTO, menuItemDTOList, userDTO);
     }
 }

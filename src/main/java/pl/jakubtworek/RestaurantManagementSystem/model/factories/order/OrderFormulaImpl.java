@@ -2,9 +2,7 @@ package pl.jakubtworek.RestaurantManagementSystem.model.factories.order;
 
 import lombok.RequiredArgsConstructor;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.TypeOfOrderDTO;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 
 import java.util.List;
 
@@ -13,6 +11,7 @@ public class OrderFormulaImpl implements OrderFormula{
     private final OrderRequest orderRequest;
     private final TypeOfOrderDTO typeOfOrder;
     private final List<MenuItemDTO> menuItems;
+    private final UserDTO userDTO;
 
     @Override
     public OrderDTO createOrder(
@@ -30,6 +29,7 @@ public class OrderFormulaImpl implements OrderFormula{
                 .price(price)
                 .menuItems(menuItems)
                 .employees(null)
+                .userDTO(userDTO)
                 .build();
     }
 

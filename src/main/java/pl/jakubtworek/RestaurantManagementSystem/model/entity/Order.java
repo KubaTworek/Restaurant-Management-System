@@ -61,6 +61,11 @@ public class Order {
     )
     private List<Employee> employees;
 
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="user_id")
+    @NotNull
+    private User user;
+
     public void add(MenuItem tempMenuItem) {
         if(menuItems == null) {
             menuItems = new ArrayList<>();

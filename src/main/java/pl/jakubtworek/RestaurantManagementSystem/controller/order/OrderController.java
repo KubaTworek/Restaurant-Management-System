@@ -2,9 +2,10 @@ package pl.jakubtworek.RestaurantManagementSystem.controller.order;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.*;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
 import pl.jakubtworek.RestaurantManagementSystem.exception.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
@@ -22,7 +23,7 @@ public class OrderController {
     private final OrderService orderService;
     private final TypeOfOrderService typeOfOrderService;
     private final MenuItemService menuItemService;
-    private final MenuService menuService;
+    private final UserService userService;
 
     @GetMapping
     public ResponseEntity<List<OrderResponse>> getOrders() {
@@ -49,12 +50,14 @@ public class OrderController {
 
         TypeOfOrderDTO typeOfOrderDTO = typeOfOrderService.findByType(orderRequest.getTypeOfOrder())
                 .orElseThrow(TypeOfOrderNotFoundException::new);
+        UserDTO userDTO = userService.findByUsername(orderRequest.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found for the user: " + orderRequest.getUsername()));
         List<MenuItemDTO> menuItems = new ArrayList<>();
         for(MenuItemRequest miRequests : orderRequest.getMenuItems()){
             menuItems.add(menuItemService.findByName(miRequests.getName()).orElseThrow());
         }
 
-        OrderResponse orderResponse = orderService.save(orderRequest, typeOfOrderDTO, menuItems).convertDTOToResponse();
+        OrderResponse orderResponse = orderService.save(orderRequest, typeOfOrderDTO, menuItems, userDTO).convertDTOToResponse();
 
         return new ResponseEntity<>(orderResponse, HttpStatus.CREATED);
     }
