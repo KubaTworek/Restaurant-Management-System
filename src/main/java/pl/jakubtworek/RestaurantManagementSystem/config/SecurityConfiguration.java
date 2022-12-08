@@ -2,6 +2,7 @@ package pl.jakubtworek.RestaurantManagementSystem.config;
 
 import org.springframework.context.annotation.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.*;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -15,10 +16,10 @@ public class SecurityConfiguration {
         http
                 .csrf().disable()
                 .authorizeHttpRequests((authz) -> authz
-                        .anyRequest().authenticated()
-/*                        .antMatchers("/orders").hasAuthority("admin")
+                      //  .anyRequest().authenticated()
+                        .antMatchers("/orders").hasAuthority("admin")
                         .antMatchers("/employees").hasAuthority("user")
-                        .antMatchers("/menu", "menu-items").permitAll()*/
+                        .antMatchers("/menu", "menu-items", "/register").permitAll()
                 )
                 .httpBasic(withDefaults());
         return http.build();
@@ -26,6 +27,6 @@ public class SecurityConfiguration {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
 }

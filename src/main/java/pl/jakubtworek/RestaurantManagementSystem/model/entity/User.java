@@ -1,6 +1,5 @@
 package pl.jakubtworek.RestaurantManagementSystem.model.entity;
 
-import com.sun.istack.NotNull;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.UserDTO;
@@ -28,7 +27,6 @@ public class User {
     @Column(name="password")
     private String password;
 
-    @NotNull
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="role_id")
     private Authorities authorities;
