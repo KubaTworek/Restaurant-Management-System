@@ -1,13 +1,17 @@
 package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
+import pl.jakubtworek.RestaurantManagementSystem.exception.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueueFacade;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.order.OrderFactory;
-import pl.jakubtworek.RestaurantManagementSystem.repository.OrderRepository;
+import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 
 import java.util.*;
@@ -17,6 +21,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
+    private final TypeOfOrderRepository typeOfOrderRepository;
+    private final UserRepository userRepository;
+    private final MenuItemRepository menuItemRepository;
     private final OrderFactory orderFactory;
     private final OrdersQueueFacade ordersQueueFacade;
 
@@ -34,15 +41,31 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDTO save(OrderRequest orderRequest, TypeOfOrderDTO typeOfOrderDTO, List<MenuItemDTO> menuItemDTOList, UserDTO userDTO) {
-        OrderDTO orderDTO = createOrder(orderRequest, typeOfOrderDTO, menuItemDTOList, userDTO);
-        Order order = orderDTO.convertDTOToEntity();
-        Order orderCreated = orderRepository.save(order);
-        if(orderCreated != null) {
-            ordersQueueFacade.addToQueue(orderCreated.convertEntityToDTO());
-            return orderCreated.convertEntityToDTO();
+    public OrderDTO save(OrderRequest orderRequest) throws Exception {
+
+        String typeOfOrderName = orderRequest.getTypeOfOrder();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<MenuItemRequest> menuItemRequestList = orderRequest.getMenuItems();
+
+        TypeOfOrderDTO typeOfOrderDTO = typeOfOrderRepository.findByType(typeOfOrderName)
+                .orElseThrow(() -> new TypeOfOrderNotFoundException("Type of order not found in restaurant with that name: " + typeOfOrderName))
+                .convertEntityToDTO();
+        UserDTO userDTO = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found for in restaurant with that username: " + username))
+                .convertEntityToDTO();
+
+        List<MenuItemDTO> menuItemDTOList = new ArrayList<>();
+        for(MenuItemRequest miRequests : menuItemRequestList){
+            String menuItemName = miRequests.getName();
+            menuItemDTOList.add(menuItemRepository.findByName(menuItemName)
+                    .orElseThrow(() -> new MenuItemNotFoundException("Menu item not found in restaurant with that id: " + menuItemName))
+                    .convertEntityToDTO());
         }
-        return order.convertEntityToDTO();
+
+        Order order = createOrder(orderRequest, typeOfOrderDTO, menuItemDTOList, userDTO).convertDTOToEntity();
+        OrderDTO orderCreated = orderRepository.save(order).convertEntityToDTO();
+        ordersQueueFacade.addToQueue(orderCreated);
+        return orderCreated;
     }
 
     @Override

@@ -3,16 +3,14 @@ package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
+import pl.jakubtworek.RestaurantManagementSystem.exception.MenuNotFoundException;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuItemFactory;
-import pl.jakubtworek.RestaurantManagementSystem.repository.MenuItemRepository;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
+import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuItemService;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,6 +18,7 @@ import java.util.stream.Collectors;
 public class MenuItemServiceImp implements MenuItemService {
 
     private final MenuItemRepository menuItemRepository;
+    private final MenuRepository menuRepository;
     private final MenuItemFactory menuItemFactory;
 
     @Override
@@ -36,9 +35,13 @@ public class MenuItemServiceImp implements MenuItemService {
     }
 
     @Override
-    public MenuItemDTO save(MenuItemRequest menuItemRequest, MenuDTO menuDTO) {
-        MenuItemDTO menuItemDTO = menuItemFactory.createMenuItem(menuItemRequest, menuDTO);
-        MenuItem menuItem = menuItemDTO.convertDTOToEntity();
+    public MenuItemDTO save(MenuItemRequest menuItemRequest) throws MenuNotFoundException {
+        String menuName = menuItemRequest.getMenu();
+        MenuDTO menuDTO = menuRepository.findByName(menuName)
+                .orElseThrow(() -> new MenuNotFoundException("There are no menu in restaurant with that name: " + menuName))
+                .convertEntityToDTO();
+
+        MenuItem menuItem = menuItemFactory.createMenuItem(menuItemRequest, menuDTO).convertDTOToEntity();
         return menuItemRepository.save(menuItem).convertEntityToDTO();
     }
 

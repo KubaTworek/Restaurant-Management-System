@@ -8,7 +8,7 @@ import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.EmployeeQ
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.JobDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.EmployeeFactory;
-import pl.jakubtworek.RestaurantManagementSystem.repository.EmployeeRepository;
+import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
+    private final JobRepository jobRepository;
     private final EmployeeFactory employeeFactory;
     private final EmployeeQueueFacade employeeQueueFacade;
 
@@ -37,12 +38,17 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeDTO save(EmployeeRequest employeeRequest, JobDTO jobDTO) throws JobNotFoundException {
-        EmployeeDTO employeeDTO = createEmployee(employeeRequest, jobDTO);
-        Employee employee = employeeDTO.convertDTOToEntity();
-        Employee employeeCreated = employeeRepository.save(employee);
-        employeeQueueFacade.addEmployeeToProperQueue(employeeCreated.convertEntityToDTO());
-        return employeeCreated.convertEntityToDTO();
+    public EmployeeDTO save(EmployeeRequest employeeRequest) throws JobNotFoundException {
+        String jobName = employeeRequest.getJob();
+        JobDTO jobDTO = jobRepository.findByName(jobName)
+                .orElseThrow(() -> new JobNotFoundException("There are no job in restaurant with that name: " + jobName))
+                .convertEntityToDTO();
+
+        Employee employee = createEmployee(employeeRequest, jobDTO).convertDTOToEntity();
+        EmployeeDTO employeeCreated = employeeRepository.save(employee).convertEntityToDTO();
+        employeeQueueFacade.addEmployeeToProperQueue(employeeCreated);
+
+        return employeeCreated;
     }
 
     @Override
@@ -52,8 +58,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeDTO> findByJob(Job theJob) {
-        return employeeRepository.findByJob(theJob)
+    public List<EmployeeDTO> findByJob(String jobName) throws JobNotFoundException {
+        Job jobFound = jobRepository.findByName(jobName)
+                .orElseThrow(() -> new JobNotFoundException("There are no job in restaurant with that name: " + jobName));
+
+        return employeeRepository.findByJob(jobFound)
                 .orElse(Collections.emptyList())
                 .stream()
                 .map(Employee::convertEntityToDTO)

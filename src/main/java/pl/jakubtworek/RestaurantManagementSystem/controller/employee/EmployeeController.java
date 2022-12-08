@@ -1,18 +1,12 @@
 package pl.jakubtworek.RestaurantManagementSystem.controller.employee;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import pl.jakubtworek.RestaurantManagementSystem.exception.EmployeeNotFoundException;
-import pl.jakubtworek.RestaurantManagementSystem.exception.JobNotFoundException;
-
+import pl.jakubtworek.RestaurantManagementSystem.exception.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.JobDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
-import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
-import pl.jakubtworek.RestaurantManagementSystem.service.JobService;
+import pl.jakubtworek.RestaurantManagementSystem.service.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,9 +16,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RequestMapping("/employees")
 public class EmployeeController {
-
     private final EmployeeService employeeService;
-    private final JobService jobService;
 
     @GetMapping
     public ResponseEntity<List<EmployeeResponse>> getEmployees() {
@@ -50,8 +42,7 @@ public class EmployeeController {
     @PostMapping
     public ResponseEntity<EmployeeResponse> saveEmployee(@RequestBody EmployeeRequest employeeRequest) throws JobNotFoundException {
 
-        JobDTO jobDTO = jobService.findByName(employeeRequest.getJob()).orElseThrow(JobNotFoundException::new);
-        EmployeeResponse employeeResponse = employeeService.save(employeeRequest, jobDTO).convertDTOToResponse();
+        EmployeeResponse employeeResponse = employeeService.save(employeeRequest).convertDTOToResponse();
 
         return new ResponseEntity<>(employeeResponse, HttpStatus.CREATED);
     }
@@ -71,10 +62,7 @@ public class EmployeeController {
     @GetMapping("/job")
     public ResponseEntity<List<EmployeeResponse>> getEmployeeByJobName(@RequestParam String jobName) throws JobNotFoundException {
 
-        Job jobFound = jobService.findByName(jobName).map(JobDTO::convertDTOToEntity)
-                .orElseThrow(() -> new JobNotFoundException("There are no job in restaurant with that name: " + jobName));
-
-        List<EmployeeResponse> employeesResponse = employeeService.findByJob(jobFound)
+        List<EmployeeResponse> employeesResponse = employeeService.findByJob(jobName)
                 .stream()
                 .map(EmployeeDTO::convertDTOToResponse)
                 .collect(Collectors.toList());

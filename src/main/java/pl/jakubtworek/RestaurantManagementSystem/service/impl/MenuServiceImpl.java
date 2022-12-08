@@ -35,8 +35,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public MenuDTO save(MenuRequest menuRequest) {
-        MenuDTO menuDTO = menuFactory.createMenu(menuRequest);
-        Menu menu = menuDTO.convertDTOToEntity();
+        Menu menu = menuFactory.createMenu(menuRequest).convertDTOToEntity();
         return menuRepository.save(menu).convertEntityToDTO();
     }
 

@@ -14,9 +14,12 @@ public class UserFormulaImpl implements UserFormula{
 
     @Override
     public UserDTO createUser() {
+        String username = userRequest.getUsername();
+        String passwordEncrypted = passwordEncoder.encode(userRequest.getPassword());
+
         return UserDTO.builder()
-                .username(userRequest.getUsername())
-                .password(passwordEncoder.encode(userRequest.getPassword()))
+                .username(username)
+                .password(passwordEncrypted)
                 .authorities(authority)
                 .orders(null)
                 .build();
