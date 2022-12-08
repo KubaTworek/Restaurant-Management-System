@@ -2,6 +2,7 @@ package pl.jakubtworek.RestaurantManagementSystem.model.dto;
 
 import lombok.*;
 import org.modelmapper.ModelMapper;
+import pl.jakubtworek.RestaurantManagementSystem.controller.user.UserResponse;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 
 import java.util.*;
@@ -29,5 +30,8 @@ public class UserDTO {
 
     public User convertDTOToEntity() {
         return new ModelMapper().map(this, User.class);
+    }
+    public UserResponse convertDTOToResponse() {
+        return new ModelMapper().map(this, UserResponse.class);
     }
 }
