@@ -46,20 +46,12 @@ public class OrderServiceImpl implements OrderService {
         String typeOfOrderName = orderRequest.getTypeOfOrder();
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         List<MenuItemRequest> menuItemRequestList = orderRequest.getMenuItems();
-
-        TypeOfOrderDTO typeOfOrderDTO = typeOfOrderRepository.findByType(typeOfOrderName)
-                .orElseThrow(() -> new TypeOfOrderNotFoundException("Type of order not found in restaurant with that name: " + typeOfOrderName))
-                .convertEntityToDTO();
-        UserDTO userDTO = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found for in restaurant with that username: " + username))
-                .convertEntityToDTO();
-
         List<MenuItemDTO> menuItemDTOList = new ArrayList<>();
+
+        TypeOfOrderDTO typeOfOrderDTO = getTypeOfOrderDTO(typeOfOrderName);
+        UserDTO userDTO = getUserDTO(username);
         for(MenuItemRequest miRequests : menuItemRequestList){
-            String menuItemName = miRequests.getName();
-            menuItemDTOList.add(menuItemRepository.findByName(menuItemName)
-                    .orElseThrow(() -> new MenuItemNotFoundException("Menu item not found in restaurant with that id: " + menuItemName))
-                    .convertEntityToDTO());
+            menuItemDTOList.add(getMenuItemDTO(miRequests.getName()));
         }
 
         Order order = orderFactory.createOrder(orderRequest, typeOfOrderDTO, menuItemDTOList, userDTO).convertDTOToEntity();
@@ -124,5 +116,23 @@ public class OrderServiceImpl implements OrderService {
                 .stream()
                 .map(Order::convertEntityToDTO)
                 .collect(Collectors.toList());
+    }
+
+    private TypeOfOrderDTO getTypeOfOrderDTO(String typeOfOrderName) throws TypeOfOrderNotFoundException {
+        return typeOfOrderRepository.findByType(typeOfOrderName)
+                .orElseThrow(() -> new TypeOfOrderNotFoundException("Type of order not found in restaurant with that name: " + typeOfOrderName))
+                .convertEntityToDTO();
+    }
+
+    private UserDTO getUserDTO(String username){
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found for in restaurant with that username: " + username))
+                .convertEntityToDTO();
+    }
+
+    private MenuItemDTO getMenuItemDTO(String menuItemName) throws MenuItemNotFoundException {
+        return menuItemRepository.findByName(menuItemName)
+                .orElseThrow(() -> new MenuItemNotFoundException("Menu item not found in restaurant with that id: " + menuItemName))
+                .convertEntityToDTO();
     }
 }

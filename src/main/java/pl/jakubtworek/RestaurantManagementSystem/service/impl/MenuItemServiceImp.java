@@ -36,10 +36,7 @@ public class MenuItemServiceImp implements MenuItemService {
 
     @Override
     public MenuItemDTO save(MenuItemRequest menuItemRequest) throws MenuNotFoundException {
-        String menuName = menuItemRequest.getMenu();
-        MenuDTO menuDTO = menuRepository.findByName(menuName)
-                .orElseThrow(() -> new MenuNotFoundException("There are no menu in restaurant with that name: " + menuName))
-                .convertEntityToDTO();
+        MenuDTO menuDTO = getMenuDTO(menuItemRequest.getMenu());
 
         MenuItem menuItem = menuItemFactory.createMenuItem(menuItemRequest, menuDTO).convertDTOToEntity();
         return menuItemRepository.save(menuItem).convertEntityToDTO();
@@ -62,5 +59,11 @@ public class MenuItemServiceImp implements MenuItemService {
     @Override
     public Optional<MenuItemDTO> findByName(String name) {
         return menuItemRepository.findByName(name).map(MenuItem::convertEntityToDTO);
+    }
+
+    private MenuDTO getMenuDTO(String menuName) throws MenuNotFoundException {
+        return menuRepository.findByName(menuName)
+                .orElseThrow(() -> new MenuNotFoundException("There are no menu in restaurant with that name: " + menuName))
+                .convertEntityToDTO();
     }
 }

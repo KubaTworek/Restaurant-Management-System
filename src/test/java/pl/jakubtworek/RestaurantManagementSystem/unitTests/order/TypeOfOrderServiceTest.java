@@ -5,8 +5,6 @@ import org.mockito.Mock;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.TypeOfOrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 import pl.jakubtworek.RestaurantManagementSystem.repository.TypeOfOrderRepository;
-import pl.jakubtworek.RestaurantManagementSystem.service.TypeOfOrderService;
-import pl.jakubtworek.RestaurantManagementSystem.service.impl.TypeOfOrderServiceImpl;
 
 import java.util.Optional;
 

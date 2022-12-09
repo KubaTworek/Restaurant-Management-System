@@ -26,11 +26,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO save(UserRequest userRequest) {
-        Authorities userAuthority = authoritiesRepository.findAuthoritiesByAuthority(userRequest.getRole())
+        Authorities authority = getAuthority(userRequest.getRole());
+
+        User userCreated = userFactory.createUser(userRequest, authority).convertDTOToEntity();
+        return userRepository.save(userCreated).convertEntityToDTO();
+    }
+
+    private Authorities getAuthority(String authority){
+        return authoritiesRepository.findAuthoritiesByAuthority(authority)
                 .orElse(authoritiesRepository.findAuthoritiesByAuthority("user")
                 .orElse(null));
-
-        User userCreated = userFactory.createUser(userRequest, userAuthority).convertDTOToEntity();
-        return userRepository.save(userCreated).convertEntityToDTO();
     }
 }

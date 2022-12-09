@@ -39,10 +39,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDTO save(EmployeeRequest employeeRequest) throws JobNotFoundException {
-        String jobName = employeeRequest.getJob();
-        JobDTO jobDTO = jobRepository.findByName(jobName)
-                .orElseThrow(() -> new JobNotFoundException("There are no job in restaurant with that name: " + jobName))
-                .convertEntityToDTO();
+        JobDTO jobDTO = getJobDTO(employeeRequest.getJob());
 
         Employee employee = employeeFactory.createEmployee(employeeRequest, jobDTO).convertDTOToEntity();
         EmployeeDTO employeeCreated = employeeRepository.save(employee).convertEntityToDTO();
@@ -67,5 +64,11 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .stream()
                 .map(Employee::convertEntityToDTO)
                 .collect(Collectors.toList());
+    }
+
+    private JobDTO getJobDTO(String jobName) throws JobNotFoundException {
+        return jobRepository.findByName(jobName)
+                .orElseThrow(() -> new JobNotFoundException("There are no job in restaurant with that name: " + jobName))
+                .convertEntityToDTO();
     }
 }
