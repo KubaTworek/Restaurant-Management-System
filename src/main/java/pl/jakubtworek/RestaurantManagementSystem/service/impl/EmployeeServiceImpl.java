@@ -16,8 +16,8 @@ import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final JobRepository jobRepository;
@@ -50,10 +50,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void deleteById(Long theId) throws EmployeeNotFoundException {
-        employeeRepository.findById(theId)
-                .orElseThrow(() -> new EmployeeNotFoundException("There are no employees in restaurant with that id: " + theId))
-                .remove();
-        employeeRepository.deleteById(theId);
+        Employee employee = employeeRepository.findById(theId)
+                .orElseThrow(() -> new EmployeeNotFoundException("There are no employees in restaurant with that id: " + theId));
+        employee.remove();
+        employeeRepository.delete(employee);
     }
 
     @Override

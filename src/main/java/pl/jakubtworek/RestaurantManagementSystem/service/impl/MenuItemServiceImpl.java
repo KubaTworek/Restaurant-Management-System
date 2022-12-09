@@ -43,10 +43,10 @@ public class MenuItemServiceImpl implements MenuItemService {
 
     @Override
     public void deleteById(Long theId) throws MenuItemNotFoundException {
-        menuItemRepository.findById(theId)
-                .orElseThrow(() -> new MenuItemNotFoundException("There are no menu item in restaurant with that id: " + theId))
-                .remove();
-        menuItemRepository.deleteById(theId);
+        MenuItem menuItem = menuItemRepository.findById(theId)
+                .orElseThrow(() -> new MenuItemNotFoundException("There are no menu item in restaurant with that id: " + theId));
+        menuItem.remove();
+        menuItemRepository.delete(menuItem);
     }
 
     @Override

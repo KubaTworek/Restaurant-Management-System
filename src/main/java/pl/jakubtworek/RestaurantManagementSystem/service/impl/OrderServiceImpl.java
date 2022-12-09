@@ -69,9 +69,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void deleteById(Long theId) throws OrderNotFoundException {
-        orderRepository.findById(theId)
+        Order order = orderRepository.findById(theId)
                 .orElseThrow(() -> new OrderNotFoundException("There are no order in restaurant with that id: " + theId));
-        orderRepository.deleteById(theId);
+        orderRepository.delete(order);
     }
 
     @Override
