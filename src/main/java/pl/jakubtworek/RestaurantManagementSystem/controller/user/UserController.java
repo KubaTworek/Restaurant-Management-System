@@ -13,7 +13,6 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<UserResponse> registerUser(@RequestBody UserRequest userRequest){
-
         UserResponse userCreated = userService.save(userRequest).convertDTOToResponse();
 
         return new ResponseEntity<>(userCreated, HttpStatus.CREATED);

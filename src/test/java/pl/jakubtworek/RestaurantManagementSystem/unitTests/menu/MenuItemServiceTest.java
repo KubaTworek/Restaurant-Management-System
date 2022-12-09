@@ -7,7 +7,7 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuItemFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuItemService;
-import pl.jakubtworek.RestaurantManagementSystem.service.impl.MenuItemServiceImp;
+import pl.jakubtworek.RestaurantManagementSystem.service.impl.MenuItemServiceImpl;
 
 import java.util.*;
 
@@ -32,7 +32,7 @@ class MenuItemServiceTest {
         menuItemRepository = mock(MenuItemRepository.class);
         menuItemFactory= mock(MenuItemFactory.class);
 
-        menuItemService = new MenuItemServiceImp(
+        menuItemService = new MenuItemServiceImpl(
                 menuItemRepository,
                 menuItemFactory
         );

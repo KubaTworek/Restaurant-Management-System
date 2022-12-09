@@ -5,7 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
-import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
+import pl.jakubtworek.RestaurantManagementSystem.controller.order.*;
 import pl.jakubtworek.RestaurantManagementSystem.exception.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueueFacade;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
@@ -42,7 +42,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDTO save(OrderRequest orderRequest) throws Exception {
-
         String typeOfOrderName = orderRequest.getTypeOfOrder();
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         List<MenuItemRequest> menuItemRequestList = orderRequest.getMenuItems();
@@ -69,32 +68,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void deleteById(Long theId) {
+    public void deleteById(Long theId) throws OrderNotFoundException {
+        orderRepository.findById(theId)
+                .orElseThrow(() -> new OrderNotFoundException("There are no order in restaurant with that id: " + theId));
         orderRepository.deleteById(theId);
     }
 
     @Override
-    public List<OrderDTO> findByDate(String theDate) {
-        return orderRepository.findByDate(theDate)
-                .orElse(Collections.emptyList())
-                .stream()
-                .map(Order::convertEntityToDTO)
-                .collect(Collectors.toList());
-    }
+    public List<OrderDTO> findByParams(String date, String typeOfOrder, Long employeeId) {
+        TypeOfOrder typeOfOrderFound = typeOfOrderRepository.findByType(typeOfOrder).orElse(null);
 
-    @Override
-    public List<OrderDTO> findByTypeOfOrder(TypeOfOrder theTypeOfOrder) {
-        return orderRepository.findByTypeOfOrder(theTypeOfOrder)
-                .orElse(Collections.emptyList())
-                .stream()
-                .map(Order::convertEntityToDTO)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<OrderDTO> findByEmployeeId(Long employeeId) {
-        return orderRepository.findByEmployeesId(employeeId)
-                .orElse(Collections.emptyList())
+        return getOrdersByParams(date, typeOfOrderFound, employeeId)
                 .stream()
                 .map(Order::convertEntityToDTO)
                 .collect(Collectors.toList());
@@ -103,7 +87,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDTO> findMadeOrders() {
         return orderRepository.findOrdersByHourAwayIsNotNull()
-                .orElse(Collections.emptyList())
                 .stream()
                 .map(Order::convertEntityToDTO)
                 .collect(Collectors.toList());
@@ -112,7 +95,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDTO> findUnmadeOrders() {
         return orderRepository.findOrdersByHourAwayIsNull()
-                .orElse(Collections.emptyList())
                 .stream()
                 .map(Order::convertEntityToDTO)
                 .collect(Collectors.toList());
@@ -134,5 +116,25 @@ public class OrderServiceImpl implements OrderService {
         return menuItemRepository.findByName(menuItemName)
                 .orElseThrow(() -> new MenuItemNotFoundException("Menu item not found in restaurant with that id: " + menuItemName))
                 .convertEntityToDTO();
+    }
+
+    private List<Order> getOrdersByParams(String date, TypeOfOrder typeOfOrderFound, Long employeeId) {
+        if(date == null && typeOfOrderFound == null && employeeId == null){
+            return orderRepository.findAll();
+        } else if (typeOfOrderFound == null && employeeId == null){
+            return orderRepository.findByDate(date);
+        } else if (date == null && employeeId == null){
+            return orderRepository.findByTypeOfOrder(typeOfOrderFound);
+        } else if (date == null && typeOfOrderFound == null){
+            return orderRepository.findByEmployeesId(employeeId);
+        } else if (employeeId == null){
+            return orderRepository.findByDateAndTypeOfOrder(date, typeOfOrderFound);
+        } else if (date == null){
+            return orderRepository.findByTypeOfOrderAndEmployeesId(typeOfOrderFound, employeeId);
+        } else if (typeOfOrderFound == null){
+            return orderRepository.findByDateAndEmployeesId(date, employeeId);
+        } else {
+            return orderRepository.findByDateAndEmployeesIdAndTypeOfOrder(date, employeeId, typeOfOrderFound);
+        }
     }
 }

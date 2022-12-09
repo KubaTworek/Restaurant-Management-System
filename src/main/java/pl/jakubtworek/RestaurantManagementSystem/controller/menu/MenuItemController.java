@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import pl.jakubtworek.RestaurantManagementSystem.exception.MenuItemNotFoundException;
+import pl.jakubtworek.RestaurantManagementSystem.exception.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuItemService;
 
@@ -17,7 +17,6 @@ public class MenuItemController {
 
     @GetMapping("/{id}")
     public ResponseEntity<MenuItemResponse> getMenuItemById(@PathVariable Long id) throws MenuItemNotFoundException {
-
         MenuItemResponse menuItemResponse = menuItemService.findById(id)
                 .map(MenuItemDTO::convertDTOToResponse)
                 .orElseThrow(() -> new MenuItemNotFoundException("There are no menu item in restaurant with that id: " + id));
@@ -26,22 +25,16 @@ public class MenuItemController {
     }
 
     @PostMapping
-    public ResponseEntity<MenuItemResponse> saveMenuItem(@RequestBody MenuItemRequest menuItemRequest) {
-
+    public ResponseEntity<MenuItemResponse> saveMenuItem(@RequestBody MenuItemRequest menuItemRequest) throws MenuNotFoundException {
         MenuItemResponse menuItemResponse = menuItemService.save(menuItemRequest).convertDTOToResponse();
 
         return new ResponseEntity<>(menuItemResponse, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<MenuItemResponse> deleteMenuItem(@PathVariable Long id) throws MenuItemNotFoundException {
-
-        MenuItemResponse menuItemResponse = menuItemService.findById(id)
-                .map(MenuItemDTO::convertDTOToResponse)
-                .orElseThrow(() -> new MenuItemNotFoundException("There are no menu item in restaurant with that id: " + id));
-
+    public ResponseEntity<String> deleteMenuItem(@PathVariable Long id) throws MenuItemNotFoundException {
         menuItemService.deleteById(id);
 
-        return new ResponseEntity<>(menuItemResponse, HttpStatus.OK);
+        return new ResponseEntity<>("Menu item with id: " + id + " was deleted", HttpStatus.OK);
     }
 }

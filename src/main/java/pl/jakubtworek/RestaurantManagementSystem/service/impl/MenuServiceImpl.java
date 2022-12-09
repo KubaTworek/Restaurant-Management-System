@@ -2,7 +2,8 @@ package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuRequest;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.*;
+import pl.jakubtworek.RestaurantManagementSystem.exception.MenuNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuRepository;
@@ -16,7 +17,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class MenuServiceImpl implements MenuService {
-
     private final MenuRepository menuRepository;
     private final MenuFactory menuFactory;
 
@@ -40,7 +40,9 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public void deleteById(Long theId) {
+    public void deleteById(Long theId) throws MenuNotFoundException {
+        menuRepository.findById(theId)
+                .orElseThrow(() -> new MenuNotFoundException("There are no menu in restaurant with that id: " + theId));
         menuRepository.deleteById(theId);
     }
 

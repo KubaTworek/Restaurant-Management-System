@@ -3,7 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
-import pl.jakubtworek.RestaurantManagementSystem.exception.JobNotFoundException;
+import pl.jakubtworek.RestaurantManagementSystem.exception.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.EmployeeQueueFacade;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.JobDTO;
@@ -49,8 +49,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void deleteById(Long theId) {
-        employeeRepository.findById(theId).orElseThrow().remove();
+    public void deleteById(Long theId) throws EmployeeNotFoundException {
+        employeeRepository.findById(theId)
+                .orElseThrow(() -> new EmployeeNotFoundException("There are no employees in restaurant with that id: " + theId))
+                .remove();
         employeeRepository.deleteById(theId);
     }
 
@@ -60,7 +62,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .orElseThrow(() -> new JobNotFoundException("There are no job in restaurant with that name: " + jobName));
 
         return employeeRepository.findByJob(jobFound)
-                .orElse(Collections.emptyList())
                 .stream()
                 .map(Employee::convertEntityToDTO)
                 .collect(Collectors.toList());

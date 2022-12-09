@@ -20,7 +20,6 @@ public class EmployeeController {
 
     @GetMapping
     public ResponseEntity<List<EmployeeResponse>> getEmployees() {
-
         List<EmployeeResponse> employeesFound = employeeService.findAll()
                 .stream()
                 .map(EmployeeDTO::convertDTOToResponse)
@@ -31,7 +30,6 @@ public class EmployeeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeResponse> getEmployeeById(@PathVariable Long id) throws EmployeeNotFoundException {
-
         EmployeeResponse employeeResponse = employeeService.findById(id)
                 .map(EmployeeDTO::convertDTOToResponse)
                 .orElseThrow(() -> new EmployeeNotFoundException("There are no employees in restaurant with that id: " + id));
@@ -41,27 +39,20 @@ public class EmployeeController {
 
     @PostMapping
     public ResponseEntity<EmployeeResponse> saveEmployee(@RequestBody EmployeeRequest employeeRequest) throws JobNotFoundException {
-
         EmployeeResponse employeeResponse = employeeService.save(employeeRequest).convertDTOToResponse();
 
         return new ResponseEntity<>(employeeResponse, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<EmployeeResponse> deleteEmployee(@PathVariable Long id) throws EmployeeNotFoundException {
-
-        EmployeeResponse employeeResponse = employeeService.findById(id)
-                .map(EmployeeDTO::convertDTOToResponse)
-                .orElseThrow(() -> new EmployeeNotFoundException("There are no employees in restaurant with that id: " + id));
-
+    public ResponseEntity<String> deleteEmployee(@PathVariable Long id) throws EmployeeNotFoundException {
         employeeService.deleteById(id);
 
-        return new ResponseEntity<>(employeeResponse, HttpStatus.OK);
+        return new ResponseEntity<>("Employee with id: " + id + " was deleted", HttpStatus.OK);
     }
 
     @GetMapping("/job")
     public ResponseEntity<List<EmployeeResponse>> getEmployeeByJobName(@RequestParam String jobName) throws JobNotFoundException {
-
         List<EmployeeResponse> employeesResponse = employeeService.findByJob(jobName)
                 .stream()
                 .map(EmployeeDTO::convertDTOToResponse)

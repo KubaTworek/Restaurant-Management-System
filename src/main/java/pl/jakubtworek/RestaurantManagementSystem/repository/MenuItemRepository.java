@@ -10,6 +10,5 @@ import java.util.*;
 
 public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
     List<MenuItem> findByMenu(Menu menu);
-
     Optional<MenuItem> findByName(String name);
 }

@@ -3,7 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
-import pl.jakubtworek.RestaurantManagementSystem.exception.MenuNotFoundException;
+import pl.jakubtworek.RestaurantManagementSystem.exception.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuItemFactory;
@@ -15,8 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class MenuItemServiceImp implements MenuItemService {
-
+public class MenuItemServiceImpl implements MenuItemService {
     private final MenuItemRepository menuItemRepository;
     private final MenuRepository menuRepository;
     private final MenuItemFactory menuItemFactory;
@@ -43,8 +42,10 @@ public class MenuItemServiceImp implements MenuItemService {
     }
 
     @Override
-    public void deleteById(Long theId) {
-        menuItemRepository.findById(theId).orElseThrow().remove();
+    public void deleteById(Long theId) throws MenuItemNotFoundException {
+        menuItemRepository.findById(theId)
+                .orElseThrow(() -> new MenuItemNotFoundException("There are no menu item in restaurant with that id: " + theId))
+                .remove();
         menuItemRepository.deleteById(theId);
     }
 

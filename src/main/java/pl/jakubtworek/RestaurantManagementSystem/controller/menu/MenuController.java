@@ -22,7 +22,6 @@ public class MenuController {
 
     @GetMapping
     public ResponseEntity<List<MenuResponse>> getMenus() {
-
         List<MenuResponse> menuFound = menuService.findAll()
                 .stream()
                 .map(MenuDTO::convertDTOToResponse)
@@ -33,7 +32,6 @@ public class MenuController {
 
     @GetMapping("/{id}")
     public ResponseEntity<MenuResponse> getMenuById(@PathVariable Long id) throws MenuNotFoundException {
-
         MenuResponse menuResponse = menuService.findById(id)
                 .map(MenuDTO::convertDTOToResponse)
                 .orElseThrow(() -> new MenuNotFoundException("There are no menu in restaurant with that id: " + id));
@@ -43,21 +41,15 @@ public class MenuController {
 
     @PostMapping
     public ResponseEntity<MenuResponse> saveMenu(@RequestBody MenuRequest menuRequest) {
-
         MenuResponse menuResponse = menuService.save(menuRequest).convertDTOToResponse();
 
         return new ResponseEntity<>(menuResponse, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<MenuResponse> deleteMenu(@PathVariable Long id) throws MenuNotFoundException {
-
-        MenuResponse menuResponse = menuService.findById(id)
-                .map(MenuDTO::convertDTOToResponse)
-                .orElseThrow(() -> new MenuNotFoundException("There are no menu in restaurant with that id: " + id));
-
+    public ResponseEntity<String> deleteMenu(@PathVariable Long id) throws MenuNotFoundException {
         menuService.deleteById(id);
 
-        return new ResponseEntity<>(menuResponse, HttpStatus.OK);
+        return new ResponseEntity<>("Menu with id: " + id + " was deleted", HttpStatus.OK);
     }
 }
