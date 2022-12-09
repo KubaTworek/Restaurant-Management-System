@@ -3,7 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.unitTests.employee;
 import org.junit.jupiter.api.*;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
-import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.EmployeeFactory;
+import pl.jakubtworek.RestaurantManagementSystem.model.factories.EmployeeFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.*;

@@ -1,19 +1,21 @@
-package pl.jakubtworek.RestaurantManagementSystem.model.factories.user;
+package pl.jakubtworek.RestaurantManagementSystem.model.factories;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 import pl.jakubtworek.RestaurantManagementSystem.controller.user.UserRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.UserDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Authorities;
 
+@Component
 @RequiredArgsConstructor
-public class UserFormulaImpl implements UserFormula{
-    private final UserRequest userRequest;
-    private final Authorities authority;
+public class UserFactory {
     private final PasswordEncoder passwordEncoder;
 
-    @Override
-    public UserDTO createUser() {
+    public UserDTO createUser(
+            UserRequest userRequest,
+            Authorities authority
+    ) {
         String username = userRequest.getUsername();
         String passwordEncrypted = passwordEncoder.encode(userRequest.getPassword());
 

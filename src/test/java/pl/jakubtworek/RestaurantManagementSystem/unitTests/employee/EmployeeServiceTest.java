@@ -7,6 +7,7 @@ import pl.jakubtworek.RestaurantManagementSystem.exception.JobNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.EmployeeQueueFacade;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
+import pl.jakubtworek.RestaurantManagementSystem.model.factories.EmployeeFactory;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.*;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 import pl.jakubtworek.RestaurantManagementSystem.service.impl.EmployeeServiceImpl;

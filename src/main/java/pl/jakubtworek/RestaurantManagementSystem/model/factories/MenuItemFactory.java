@@ -9,7 +9,8 @@ import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
 public class MenuItemFactory {
     public MenuItemDTO createMenuItem(
             MenuItemRequest menuItemRequest,
-            MenuDTO menuDTO){
+            MenuDTO menuDTO
+    ){
         String name = menuItemRequest.getName();
         double price = menuItemRequest.getPrice();
 

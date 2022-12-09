@@ -10,7 +10,7 @@ import pl.jakubtworek.RestaurantManagementSystem.exception.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueueFacade;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
-import pl.jakubtworek.RestaurantManagementSystem.model.factories.order.OrderFactory;
+import pl.jakubtworek.RestaurantManagementSystem.model.factories.OrderFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 
@@ -62,7 +62,7 @@ public class OrderServiceImpl implements OrderService {
                     .convertEntityToDTO());
         }
 
-        Order order = createOrder(orderRequest, typeOfOrderDTO, menuItemDTOList, userDTO).convertDTOToEntity();
+        Order order = orderFactory.createOrder(orderRequest, typeOfOrderDTO, menuItemDTOList, userDTO).convertDTOToEntity();
         OrderDTO orderCreated = orderRepository.save(order).convertEntityToDTO();
         ordersQueueFacade.addToQueue(orderCreated);
         return orderCreated;
@@ -124,9 +124,5 @@ public class OrderServiceImpl implements OrderService {
                 .stream()
                 .map(Order::convertEntityToDTO)
                 .collect(Collectors.toList());
-    }
-
-    private OrderDTO createOrder(OrderRequest orderDTO, TypeOfOrderDTO typeOfOrderDTO, List<MenuItemDTO> menuItemDTOList, UserDTO userDTO){
-        return orderFactory.createOrder(orderDTO, typeOfOrderDTO, menuItemDTOList, userDTO).createOrder();
     }
 }

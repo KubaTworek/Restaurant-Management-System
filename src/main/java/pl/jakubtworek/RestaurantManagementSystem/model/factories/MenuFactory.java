@@ -6,7 +6,9 @@ import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
 
 @Component
 public class MenuFactory {
-    public MenuDTO createMenu(MenuRequest menuRequest){
+    public MenuDTO createMenu(
+            MenuRequest menuRequest
+    ){
         String name = menuRequest.getName();
 
         return MenuDTO.builder()
