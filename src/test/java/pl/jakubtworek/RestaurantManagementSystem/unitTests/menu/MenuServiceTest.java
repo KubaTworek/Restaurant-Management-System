@@ -3,6 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.unitTests.menu;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuRequest;
+import pl.jakubtworek.RestaurantManagementSystem.exception.MenuNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuFactory;
@@ -82,7 +83,7 @@ class MenuServiceTest {
 
 
     @Test
-    void verifyIsMenuIsDeleted(){
+    void verifyIsMenuIsDeleted() throws MenuNotFoundException {
         // when
         menuService.deleteById(1L);
 

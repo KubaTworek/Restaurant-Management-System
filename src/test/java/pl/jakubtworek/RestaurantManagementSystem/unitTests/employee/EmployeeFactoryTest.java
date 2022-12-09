@@ -23,7 +23,7 @@ class EmployeeFactoryTest {
         JobDTO job = createJobCook().convertEntityToDTO();
 
         // when
-        EmployeeDTO employee = employeeFactory.createEmployeeFormula(employeeRequest, job).createEmployee();
+        EmployeeDTO employee = employeeFactory.createEmployee(employeeRequest, job);
 
         // then
         assertEquals("James", employee.getFirstName());
@@ -38,7 +38,7 @@ class EmployeeFactoryTest {
         JobDTO job = createJobWaiter().convertEntityToDTO();
 
         // when
-        EmployeeDTO employee = employeeFactory.createEmployeeFormula(employeeRequest, job).createEmployee();
+        EmployeeDTO employee = employeeFactory.createEmployee(employeeRequest, job);
 
         // then
         assertEquals("James", employee.getFirstName());
@@ -53,7 +53,7 @@ class EmployeeFactoryTest {
         JobDTO job = createJobDeliveryman().convertEntityToDTO();
 
         // when
-        EmployeeDTO employee = employeeFactory.createEmployeeFormula(employeeRequest, job).createEmployee();
+        EmployeeDTO employee = employeeFactory.createEmployee(employeeRequest, job);
 
         // then
         assertEquals("James", employee.getFirstName());

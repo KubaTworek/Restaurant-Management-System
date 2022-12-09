@@ -19,19 +19,15 @@ import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.*;
 class EmployeeControllerTest {
     @Mock
     private EmployeeService employeeService;
-    @Mock
-    private JobService jobService;
 
     private EmployeeController employeeController;
 
     @BeforeEach
     void setup(){
         employeeService = mock(EmployeeService.class);
-        jobService = mock(JobService.class);
 
         employeeController = new EmployeeController(
-                employeeService,
-                jobService
+                employeeService
         );
     }
 
@@ -92,11 +88,9 @@ class EmployeeControllerTest {
         // given
         EmployeeDTO returnedEmployee = createCook().convertEntityToDTO();
         EmployeeRequest employee = createCookRequest();
-        JobDTO job = createJobCook().convertEntityToDTO();
 
         // when
-        when(employeeService.save(employee, job)).thenReturn(returnedEmployee);
-        when(jobService.findByName("Cook")).thenReturn(Optional.of(job));
+        when(employeeService.save(employee)).thenReturn(returnedEmployee);
 
         EmployeeResponse employeeReturned = employeeController.saveEmployee(employee).getBody();
 
@@ -114,12 +108,10 @@ class EmployeeControllerTest {
         // when
         when(employeeService.findById(eq(1L))).thenReturn(expectedEmployee);
 
-        EmployeeResponse employeeReturned = employeeController.deleteEmployee(1L).getBody();
+        String response = employeeController.deleteEmployee(1L).getBody();
 
         // then
-        assertEquals("John", employeeReturned.getFirstName());
-        assertEquals("Smith", employeeReturned.getLastName());
-        assertEquals("Cook", employeeReturned.getJob().getName());
+        assertEquals("Employee with id: 1 was deleted", response);
     }
 
     @Test
@@ -129,11 +121,9 @@ class EmployeeControllerTest {
                 .stream()
                 .map(Employee::convertEntityToDTO)
                 .collect(Collectors.toList());
-        Optional<JobDTO> expectedJob = Optional.ofNullable(createJobCook().convertEntityToDTO());
 
         // when
         when(employeeService.findByJob(any())).thenReturn(expectedCooks);
-        when(jobService.findByName(any())).thenReturn(expectedJob);
 
         List<EmployeeResponse> employeesReturned = employeeController.getEmployeeByJobName("Cook").getBody();
 

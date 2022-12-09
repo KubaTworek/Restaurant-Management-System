@@ -2,6 +2,7 @@ package pl.jakubtworek.RestaurantManagementSystem.unitTests.menu;
 
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
+import pl.jakubtworek.RestaurantManagementSystem.exception.MenuItemNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuItemFactory;
@@ -17,9 +18,9 @@ import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 
 class MenuItemServiceTest {
     @Mock
-    private MenuRepository menuRepository;
-    @Mock
     private MenuItemRepository menuItemRepository;
+    @Mock
+    private MenuRepository menuRepository;
     @Mock
     private MenuItemFactory menuItemFactory;
 
@@ -27,13 +28,13 @@ class MenuItemServiceTest {
 
     @BeforeEach
     void setup(){
-        menuRepository = mock(MenuRepository.class);
-
         menuItemRepository = mock(MenuItemRepository.class);
+        menuRepository = mock(MenuRepository.class);
         menuItemFactory= mock(MenuItemFactory.class);
 
         menuItemService = new MenuItemServiceImpl(
                 menuItemRepository,
+                menuRepository,
                 menuItemFactory
         );
     }
@@ -90,7 +91,7 @@ class MenuItemServiceTest {
 
 
     @Test
-    void verifyIsMenuItemIsDeleted(){
+    void verifyIsMenuItemIsDeleted() throws MenuItemNotFoundException {
         // given
         Optional<MenuItem> menuItem = Optional.of(createChickenMenuItem());
 

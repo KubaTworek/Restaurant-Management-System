@@ -4,43 +4,29 @@ import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.*;
 import pl.jakubtworek.RestaurantManagementSystem.exception.OrderNotFoundException;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
-import pl.jakubtworek.RestaurantManagementSystem.service.*;
+import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
 
 class OrderControllerTest {
     @Mock
     private OrderService orderService;
-    @Mock
-    private TypeOfOrderService typeOfOrderService;
-    @Mock
-    private MenuItemService menuItemService;
-    @Mock
-    private MenuService menuService;
 
     private OrderController orderController;
 
     @BeforeEach
     void setup() {
         orderService = mock(OrderService.class);
-        typeOfOrderService = mock(TypeOfOrderService.class);
-        menuItemService = mock(MenuItemService.class);
-        menuService = mock(MenuService.class);
 
         orderController = new OrderController(
-                orderService,
-                typeOfOrderService,
-                menuItemService,
-                menuService
+                orderService
         );
     }
 
@@ -124,16 +110,9 @@ class OrderControllerTest {
         // given
         OrderRequest orderRequest = createOnsiteOrderRequest();
         OrderDTO order = createOnsiteOrder().convertEntityToDTO();
-        Optional<TypeOfOrderDTO> typeOfOrderDTO = Optional.of(createOnsiteType().convertEntityToDTO());
-        Optional<MenuDTO> menu = Optional.of(createMenu().convertEntityToDTO());
-        Optional<MenuItemDTO> menuItem = Optional.of(createChickenMenuItem().convertEntityToDTO());
-
 
         // when
-        when(typeOfOrderService.findByType(anyString())).thenReturn(typeOfOrderDTO);
-        when(menuService.findByName(anyString())).thenReturn(menu);
-        when(menuItemService.findByName(anyString())).thenReturn(menuItem);
-        when(orderService.save(any(), any(), anyList())).thenReturn(order);
+        when(orderService.save(any())).thenReturn(order);
 
         OrderResponse orderReturned = orderController.saveOrder(orderRequest).getBody();
 
@@ -161,24 +140,13 @@ class OrderControllerTest {
         // when
         when(orderService.findById(1L)).thenReturn(expectedOrder);
 
-        OrderResponse orderDeleted = orderController.deleteOrder(1L).getBody();
+        String response = orderController.deleteOrder(1L).getBody();
 
         // then
-        assertEquals(12.99, orderDeleted.getPrice());
-        assertEquals("2022-08-22", orderDeleted.getDate());
-        assertEquals("12:00", orderDeleted.getHourOrder());
-        assertEquals("12:15", orderDeleted.getHourAway());
-        assertEquals("On-site", orderDeleted.getTypeOfOrder().getType());
-        assertEquals("Chicken", orderDeleted.getMenuItems().get(0).getName());
-        assertEquals(10.99, orderDeleted.getMenuItems().get(0).getPrice());
-        assertEquals("Coke", orderDeleted.getMenuItems().get(1).getName());
-        assertEquals(1.99, orderDeleted.getMenuItems().get(1).getPrice());
-        assertEquals("John", orderDeleted.getEmployees().get(0).getFirstName());
-        assertEquals("Smith", orderDeleted.getEmployees().get(0).getLastName());
-        assertEquals("Cook", orderDeleted.getEmployees().get(0).getJob().getName());
+        assertEquals("Order with id: 1 was deleted", response);
     }
 
-    @Test
+/*    @Test
     void shouldReturnOrders_whenDateIsPassed() {
         // given
         List<OrderDTO> expectedOrders = createOrders()
@@ -229,7 +197,7 @@ class OrderControllerTest {
 
         // then
         assertEquals(2, ordersReturned.size());
-    }
+    }*/
 
 
     @Test

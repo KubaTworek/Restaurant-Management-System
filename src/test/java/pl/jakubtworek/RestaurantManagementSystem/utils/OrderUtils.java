@@ -8,6 +8,7 @@ import java.util.List;
 
 import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.createCook;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.UserUtils.createUser;
 
 public class OrderUtils {
     public static List<Order> createOrders(){
@@ -21,11 +22,11 @@ public class OrderUtils {
     }
 
     public static Order createOnsiteOrder(){
-        return new Order(1L, 12.99, "2022-08-22", "12:00", "12:15", createOnsiteType(), List.of(createChickenMenuItem(), createCokeMenuItem()), List.of(createCook()));
+        return new Order(1L, 12.99, "2022-08-22", "12:00", "12:15", createOnsiteType(), List.of(createChickenMenuItem(), createCokeMenuItem()), List.of(createCook()), createUser());
     }
 
     public static Order createDeliveryOrder(){
-        return new Order(2L, 30.99, "2022-08-22", "12:05", null, createDeliveryType(), List.of(createTiramisuMenuItem(), createCokeMenuItem()), List.of(createCook()));
+        return new Order(2L, 30.99, "2022-08-22", "12:05", null, createDeliveryType(), List.of(createTiramisuMenuItem(), createCokeMenuItem()), List.of(createCook()), createUser());
     }
 
     public static TypeOfOrder createOnsiteType(){

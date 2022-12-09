@@ -17,19 +17,15 @@ import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 class MenuItemControllerTest {
     @Mock
     private MenuItemService menuItemService;
-    @Mock
-    private MenuService menuService;
 
     private MenuItemController menuItemController;
 
     @BeforeEach
     void setup() {
         menuItemService = mock(MenuItemService.class);
-        menuService = mock(MenuService.class);
 
         menuItemController = new MenuItemController(
-                menuItemService,
-                menuService
+                menuItemService
         );
     }
 
@@ -61,12 +57,10 @@ class MenuItemControllerTest {
     void shouldReturnCreatedMenuItem() throws Exception {
         // given
         MenuItemRequest menuItemRequest = createChickenMenuItemRequest();
-        MenuDTO menu = createMenu().convertEntityToDTO();
         MenuItemDTO expectedMenuItem = createChickenMenuItem().convertEntityToDTO();
 
         // when
-        when(menuItemService.save(menuItemRequest, menu)).thenReturn(expectedMenuItem);
-        when(menuService.findByName(menuItemRequest.getMenu())).thenReturn(Optional.of(menu));
+        when(menuItemService.save(menuItemRequest)).thenReturn(expectedMenuItem);
 
         MenuItemResponse menuItemResponse = menuItemController.saveMenuItem(menuItemRequest).getBody();
 
@@ -84,10 +78,9 @@ class MenuItemControllerTest {
         // when
         when(menuItemService.findById(eq(1L))).thenReturn(expectedMenuItem);
 
-        MenuItemResponse menuItemDeleted = menuItemController.deleteMenuItem(1L).getBody();
+        String response = menuItemController.deleteMenuItem(1L).getBody();
 
         // then
-        assertEquals("Chicken", menuItemDeleted.getName());
-        assertEquals(10.99, menuItemDeleted.getPrice());
+        assertEquals("Menu item with id: 1 was deleted", response);
     }
 }

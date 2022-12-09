@@ -5,7 +5,6 @@ import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.OrderFactory;
-import pl.jakubtworek.RestaurantManagementSystem.model.factories.order.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,6 +14,7 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.createMenuItemListForFood;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.UserUtils.createUser;
 
 class OrderFactoryTest {
     private OrderFactory orderFactory;
@@ -29,6 +29,7 @@ class OrderFactoryTest {
         // given
         OrderRequest orderRequest = createOnsiteOrderRequest();
         TypeOfOrderDTO typeOfOrderDTO = createOnsiteType().convertEntityToDTO();
+        UserDTO userDTO = createUser().convertEntityToDTO();
         List<MenuItemDTO> menuItemDTOList = createMenuItemListForFood()
                 .stream()
                 .map(MenuItem::convertEntityToDTO)
@@ -36,11 +37,9 @@ class OrderFactoryTest {
 
 
         // when
-        OrderFormula formula = orderFactory.createOrder(orderRequest, typeOfOrderDTO, menuItemDTOList);
-        OrderDTO orderCreated = formula.createOrder();
+        OrderDTO orderCreated = orderFactory.createOrder(orderRequest, typeOfOrderDTO, menuItemDTOList, userDTO);
 
         // then
-        assertEquals(OrderFormulaImpl.class, formula.getClass());
         assertEquals("On-site", orderCreated.getTypeOfOrder().getType());
         assertEquals(12.98, orderCreated.getPrice());
         assertEquals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), orderCreated.getDate());

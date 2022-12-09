@@ -3,12 +3,11 @@ package pl.jakubtworek.RestaurantManagementSystem.unitTests.employee;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
-import pl.jakubtworek.RestaurantManagementSystem.exception.JobNotFoundException;
+import pl.jakubtworek.RestaurantManagementSystem.exception.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.EmployeeQueueFacade;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.EmployeeFactory;
-import pl.jakubtworek.RestaurantManagementSystem.model.factories.employee.*;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 import pl.jakubtworek.RestaurantManagementSystem.service.impl.EmployeeServiceImpl;
 
@@ -22,27 +21,24 @@ class EmployeeServiceTest {
     @Mock
     private EmployeeRepository employeeRepository;
     @Mock
+    private JobRepository jobRepository;
+    @Mock
     private EmployeeFactory employeeFactory;
     @Mock
     private EmployeeQueueFacade employeeQueueFacade;
-    @Mock
-    private EmployeeFormula employeeFormula;
-    @Mock
-    private JobRepository jobRepository;
 
     private EmployeeServiceImpl employeeService;
 
     @BeforeEach
     void setup(){
-        employeeFormula = mock(EmployeeFormula.class);
-        jobRepository = mock(JobRepository.class);
-
         employeeRepository = mock(EmployeeRepository.class);
+        jobRepository = mock(JobRepository.class);
         employeeFactory = mock(EmployeeFactory.class);
         employeeQueueFacade = mock(EmployeeQueueFacade.class);
 
         employeeService = new EmployeeServiceImpl(
                 employeeRepository,
+                jobRepository,
                 employeeFactory,
                 employeeQueueFacade
         );
@@ -77,16 +73,14 @@ class EmployeeServiceTest {
     void shouldReturnCreatedEmployee() throws JobNotFoundException {
         // given
         EmployeeRequest employeeRequest = createCookRequest();
-        JobDTO job = createJobCook().convertEntityToDTO();
         EmployeeDTO expectedEmployeeDTO = createCook().convertEntityToDTO();
         Employee expectedEmployee = createCook();
 
-        when(employeeFactory.createEmployeeFormula(any(EmployeeRequest.class), any(JobDTO.class))).thenReturn(employeeFormula);
-        when(employeeFormula.createEmployee()).thenReturn(expectedEmployeeDTO);
+        when(employeeFactory.createEmployee(any(EmployeeRequest.class), any(JobDTO.class))).thenReturn(expectedEmployeeDTO);
         when(employeeRepository.save(any(Employee.class))).thenReturn(expectedEmployee);
 
         // when
-        EmployeeDTO employeeReturned = employeeService.save(employeeRequest, job);
+        EmployeeDTO employeeReturned = employeeService.save(employeeRequest);
 
         // then
         assertNotNull(employeeReturned);
@@ -94,7 +88,7 @@ class EmployeeServiceTest {
 
 
     @Test
-    void verifyIsEmployeeIsDeleted(){
+    void verifyIsEmployeeIsDeleted() throws EmployeeNotFoundException {
         // given
         Employee expectedEmployee = createCook();
 
@@ -108,16 +102,16 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void shouldReturnProperJob(){
+    void shouldReturnProperJob() throws JobNotFoundException {
         // given
-        Optional<List<Employee>> employees = Optional.of(createEmployees());
+        List<Employee> employees = createEmployees();
         Job job = createJobCook();
 
         // when
         when(jobRepository.findByName("Job")).thenReturn(Optional.of(job));
         when(employeeRepository.findByJob(job)).thenReturn(employees);
 
-        List<EmployeeDTO> employeesReturned = employeeService.findByJob(job);
+        List<EmployeeDTO> employeesReturned = employeeService.findByJob("Job");
 
         // then
         assertEquals(3, employeesReturned.size());
