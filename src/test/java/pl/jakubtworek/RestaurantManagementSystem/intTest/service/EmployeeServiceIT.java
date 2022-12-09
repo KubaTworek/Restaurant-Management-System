@@ -6,9 +6,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
-import pl.jakubtworek.RestaurantManagementSystem.exception.JobNotFoundException;
+import pl.jakubtworek.RestaurantManagementSystem.exception.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 
 import java.util.*;
@@ -66,10 +65,9 @@ class EmployeeServiceIT {
     void shouldReturnCreatedEmployee() throws JobNotFoundException {
         // given
         EmployeeRequest employee = createCookRequest();
-        JobDTO job = createJobCook().convertEntityToDTO();
 
         // when
-        EmployeeDTO employeeReturned = employeeService.save(employee, job);
+        EmployeeDTO employeeReturned = employeeService.save(employee);
 
         // then
         assertEquals("James", employeeReturned.getFirstName());
@@ -79,7 +77,7 @@ class EmployeeServiceIT {
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    void shouldReturnLowerSizeOfList_whenDeleteOne(){
+    void shouldReturnLowerSizeOfList_whenDeleteOne() throws EmployeeNotFoundException {
         // when
         employeeService.deleteById(2L);
         List<EmployeeDTO> employees = employeeService.findAll();
@@ -90,12 +88,9 @@ class EmployeeServiceIT {
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    void shouldReturnEmployees_whenJobNamePass(){
-        // given
-        Job job = createJobCook();
-
+    void shouldReturnEmployees_whenJobNamePass() throws JobNotFoundException {
         // when
-        List<EmployeeDTO> employees = employeeService.findByJob(job);
+        List<EmployeeDTO> employees = employeeService.findByJob("Cook");
 
         // then
         assertEquals(1, employees.size());

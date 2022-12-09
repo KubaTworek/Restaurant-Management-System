@@ -103,7 +103,7 @@ class OrderRepositoryIT {
         String date = "2022-08-22";
 
         // when
-        List<Order> orders = orderRepository.findByDate(date).get();
+        List<Order> orders = orderRepository.findByDate(date);
 
         // then
         assertEquals(2, orders.size());
@@ -117,7 +117,7 @@ class OrderRepositoryIT {
         TypeOfOrder typeOfOrder = createOnsiteType();
 
         // when
-        List<Order> orders = orderRepository.findByTypeOfOrder(typeOfOrder).get();
+        List<Order> orders = orderRepository.findByTypeOfOrder(typeOfOrder);
 
         // then
         assertEquals(1, orders.size());
@@ -127,7 +127,7 @@ class OrderRepositoryIT {
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnOrders_whenPassEmployee() {
         // when
-        List<Order> orders = orderRepository.findByEmployeesId(1L).get();
+        List<Order> orders = orderRepository.findByEmployeesId(1L);
 
         // then
         assertEquals(2, orders.size());

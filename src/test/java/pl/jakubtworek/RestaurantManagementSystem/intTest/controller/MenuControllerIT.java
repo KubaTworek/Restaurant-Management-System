@@ -97,11 +97,9 @@ class MenuControllerIT {
         // when
         when(menuRepository.findById(1L)).thenReturn(expectedMenu);
 
-        MenuResponse menuDeleted = menuController.deleteMenu(1L).getBody();
+        String response = menuController.deleteMenu(1L).getBody();
 
         // then
-        assertEquals("Drinks", menuDeleted.getName());
-        assertEquals("Coke", menuDeleted.getMenuItems().get(0).getName());
-        assertEquals(1.99, menuDeleted.getMenuItems().get(0).getPrice());
+        assertEquals("Menu with id: 1 was deleted", response);
     }
 }

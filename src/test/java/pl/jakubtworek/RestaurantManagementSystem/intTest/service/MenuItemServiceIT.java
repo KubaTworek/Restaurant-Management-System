@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
+import pl.jakubtworek.RestaurantManagementSystem.exception.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuItemRepository;
@@ -65,13 +66,12 @@ class MenuItemServiceIT {
 
     @Test
     @Sql(statements = "INSERT INTO `menu`(`id`, `name`) VALUES (1, 'Food'), (2, 'Drinks')")
-    void shouldReturnCreatedMenuItem() {
+    void shouldReturnCreatedMenuItem() throws MenuNotFoundException {
         // given
         MenuItemRequest menuItem = new MenuItemRequest("Pizza", 12.99, "Food");
-        MenuDTO menuDTO = new MenuDTO(1L, "Food", List.of());
 
         // when
-        MenuItemDTO menuItemReturned = menuItemService.save(menuItem, menuDTO);
+        MenuItemDTO menuItemReturned = menuItemService.save(menuItem);
 
         // then
         assertEquals("Pizza", menuItemReturned.getName());
@@ -81,7 +81,7 @@ class MenuItemServiceIT {
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    void shouldReturnLowerSizeOfList_whenDeleteOne() {
+    void shouldReturnLowerSizeOfList_whenDeleteOne() throws MenuItemNotFoundException {
         // when
         menuItemService.deleteById(2L);
         List<MenuItemDTO> menuItems = menuItemService.findAll();

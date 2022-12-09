@@ -23,8 +23,6 @@ class EmployeeControllerIT {
 
     @MockBean
     private EmployeeRepository employeeRepository;
-    @MockBean
-    private JobRepository jobRepository;
 
     @Test
     void shouldReturnAllEmployees() {
@@ -88,12 +86,10 @@ class EmployeeControllerIT {
         // when
         when(employeeRepository.findById(eq(1L))).thenReturn(expectedEmployee);
 
-        EmployeeResponse employeeDeleted = employeeController.deleteEmployee(1L).getBody();
+        String response = employeeController.deleteEmployee(1L).getBody();
 
         // then
-        assertEquals("John", employeeDeleted.getFirstName());
-        assertEquals("Smith", employeeDeleted.getLastName());
-        assertEquals("Cook", employeeDeleted.getJob().getName());
+        assertEquals("Employee with id: 1 was deleted", response);
     }
 
 /*    @Test

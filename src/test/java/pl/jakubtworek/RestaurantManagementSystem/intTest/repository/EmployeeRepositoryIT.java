@@ -88,7 +88,7 @@ public class EmployeeRepositoryIT {
         Job job = createJobCook();
 
         // when
-        List<Employee> employees = employeeRepository.findByJob(job).get();
+        List<Employee> employees = employeeRepository.findByJob(job);
 
         // then
         assertEquals(1, employees.size());
