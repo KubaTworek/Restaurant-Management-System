@@ -18,6 +18,20 @@ import java.util.stream.Collectors;
 public class OrderController {
     private final OrderService orderService;
 
+    @PostMapping
+    public ResponseEntity<OrderResponse> saveOrder(@RequestBody OrderRequest orderRequest) throws Exception {
+        OrderResponse orderResponse = orderService.save(orderRequest).convertDTOToResponse();
+
+        return new ResponseEntity<>(orderResponse, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteOrder(@PathVariable Long id) throws OrderNotFoundException {
+        orderService.deleteById(id);
+
+        return new ResponseEntity<>("Order with id: " + id + " was deleted", HttpStatus.OK);
+    }
+
     @GetMapping
     public ResponseEntity<List<OrderResponse>> getOrders() {
         List<OrderResponse> ordersFound = orderService.findAll()
@@ -35,21 +49,6 @@ public class OrderController {
                 .orElseThrow(() -> new OrderNotFoundException("There are no order in restaurant with that id: " + id));
 
         return new ResponseEntity<>(orderResponse, HttpStatus.OK);
-    }
-
-    @PostMapping
-    public ResponseEntity<OrderResponse> saveOrder(@RequestBody OrderRequest orderRequest) throws Exception {
-        OrderResponse orderResponse = orderService.save(orderRequest).convertDTOToResponse();
-
-        return new ResponseEntity<>(orderResponse, HttpStatus.CREATED);
-    }
-
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteOrder(@PathVariable Long id) throws OrderNotFoundException {
-        orderService.deleteById(id);
-
-        return new ResponseEntity<>("Order with id: " + id + " was deleted", HttpStatus.OK);
     }
 
     @GetMapping("/find")

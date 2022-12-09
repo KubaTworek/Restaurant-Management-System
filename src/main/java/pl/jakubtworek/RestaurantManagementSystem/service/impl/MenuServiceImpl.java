@@ -21,19 +21,6 @@ public class MenuServiceImpl implements MenuService {
     private final MenuFactory menuFactory;
 
     @Override
-    public List<MenuDTO> findAll() {
-        return menuRepository.findAll()
-                .stream()
-                .map(Menu::convertEntityToDTO)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public Optional<MenuDTO> findById(Long theId) {
-        return menuRepository.findById(theId).map(Menu::convertEntityToDTO);
-    }
-
-    @Override
     public MenuDTO save(MenuRequest menuRequest) {
         Menu menu = menuFactory.createMenu(menuRequest).convertDTOToEntity();
         return menuRepository.save(menu).convertEntityToDTO();
@@ -44,6 +31,19 @@ public class MenuServiceImpl implements MenuService {
         Menu menu = menuRepository.findById(theId)
                 .orElseThrow(() -> new MenuNotFoundException("There are no menu in restaurant with that id: " + theId));
         menuRepository.delete(menu);
+    }
+
+    @Override
+    public List<MenuDTO> findAll() {
+        return menuRepository.findAll()
+                .stream()
+                .map(Menu::convertEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<MenuDTO> findById(Long theId) {
+        return menuRepository.findById(theId).map(Menu::convertEntityToDTO);
     }
 
     @Override

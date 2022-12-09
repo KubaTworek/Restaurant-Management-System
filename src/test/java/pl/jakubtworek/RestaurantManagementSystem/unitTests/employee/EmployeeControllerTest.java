@@ -3,10 +3,10 @@ package pl.jakubtworek.RestaurantManagementSystem.unitTests.employee;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.*;
-import pl.jakubtworek.RestaurantManagementSystem.exception.*;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
+import pl.jakubtworek.RestaurantManagementSystem.exception.EmployeeNotFoundException;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.service.*;
+import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -32,58 +32,6 @@ class EmployeeControllerTest {
     }
 
     @Test
-    void shouldReturnAllEmployees() {
-        // given
-        List<EmployeeDTO> expectedEmployees = createEmployees()
-                .stream()
-                .map(Employee::convertEntityToDTO)
-                .collect(Collectors.toList());
-
-        // when
-        when(employeeService.findAll()).thenReturn(expectedEmployees);
-
-        List<EmployeeResponse> employeesReturned = employeeController.getEmployees().getBody();
-
-        // then
-        assertEquals("John", employeesReturned.get(0).getFirstName());
-        assertEquals("Smith", employeesReturned.get(0).getLastName());
-        assertEquals("Cook", employeesReturned.get(0).getJob().getName());
-
-        assertEquals("James", employeesReturned.get(1).getFirstName());
-        assertEquals("Patel", employeesReturned.get(1).getLastName());
-        assertEquals("Waiter", employeesReturned.get(1).getJob().getName());
-
-        assertEquals("Ann", employeesReturned.get(2).getFirstName());
-        assertEquals("Mary", employeesReturned.get(2).getLastName());
-        assertEquals("DeliveryMan", employeesReturned.get(2).getJob().getName());
-    }
-
-    @Test
-    void shouldReturnEmployeeById() throws Exception {
-        // given
-        Optional<EmployeeDTO> expectedEmployee = Optional.of(createCook().convertEntityToDTO());
-
-        // when
-        when(employeeService.findById(eq(1L))).thenReturn(expectedEmployee);
-
-        EmployeeResponse employeeReturned = employeeController.getEmployeeById(1L).getBody();
-
-        // then
-        assertEquals("John", employeeReturned.getFirstName());
-        assertEquals("Smith", employeeReturned.getLastName());
-        assertEquals("Cook", employeeReturned.getJob().getName());
-    }
-
-    @Test
-    void shouldReturnErrorResponse_whenAskedForNonExistingEmployee() {
-        // when
-        Exception exception = assertThrows(EmployeeNotFoundException.class, () -> employeeController.getEmployeeById(4L));
-
-        // then
-        assertEquals("There are no employees in restaurant with that id: 4", exception.getMessage());
-    }
-
-    @Test
     void shouldReturnCreatedEmployee() throws Exception {
         // given
         EmployeeDTO returnedEmployee = createCook().convertEntityToDTO();
@@ -92,12 +40,10 @@ class EmployeeControllerTest {
         // when
         when(employeeService.save(employee)).thenReturn(returnedEmployee);
 
-        EmployeeResponse employeeReturned = employeeController.saveEmployee(employee).getBody();
+        EmployeeResponse employeeCreated = employeeController.saveEmployee(employee).getBody();
 
         // then
-        assertEquals("John", employeeReturned.getFirstName());
-        assertEquals("Smith", employeeReturned.getLastName());
-        assertEquals("Cook", employeeReturned.getJob().getName());
+        checkAssertionsForEmployee(employeeCreated);
     }
 
     @Test
@@ -115,7 +61,47 @@ class EmployeeControllerTest {
     }
 
     @Test
-    void shouldReturnEmployees_whenJobNameIsPassed() throws Exception {
+    void shouldReturnAllEmployees() {
+        // given
+        List<EmployeeDTO> expectedEmployees = createEmployees()
+                .stream()
+                .map(Employee::convertEntityToDTO)
+                .collect(Collectors.toList());
+
+        // when
+        when(employeeService.findAll()).thenReturn(expectedEmployees);
+
+        List<EmployeeResponse> employeesReturned = employeeController.getEmployees().getBody();
+
+        // then
+        checkAssertionsForEmployees(employeesReturned);
+    }
+
+    @Test
+    void shouldReturnEmployeeById() throws Exception {
+        // given
+        Optional<EmployeeDTO> expectedEmployee = Optional.of(createCook().convertEntityToDTO());
+
+        // when
+        when(employeeService.findById(eq(1L))).thenReturn(expectedEmployee);
+
+        EmployeeResponse employeeReturned = employeeController.getEmployeeById(1L).getBody();
+
+        // then
+        checkAssertionsForEmployee(employeeReturned);
+    }
+
+    @Test
+    void shouldThrowException_whenEmployeeNotExist() {
+        // when
+        Exception exception = assertThrows(EmployeeNotFoundException.class, () -> employeeController.getEmployeeById(4L));
+
+        // then
+        assertEquals("There are no employees in restaurant with that id: 4", exception.getMessage());
+    }
+
+    @Test
+    void shouldReturnEmployeesByJobName() throws Exception {
         // given
         List<EmployeeDTO> expectedCooks = createCooks()
                 .stream()
@@ -128,17 +114,32 @@ class EmployeeControllerTest {
         List<EmployeeResponse> employeesReturned = employeeController.getEmployeeByJobName("Cook").getBody();
 
         // then
-        assertEquals("John", employeesReturned.get(0).getFirstName());
-        assertEquals("Smith", employeesReturned.get(0).getLastName());
-        assertEquals("Cook", employeesReturned.get(0).getJob().getName());
+        checkAssertionsForCooks(employeesReturned);
     }
 
-    @Test
-    void shouldReturnResponse_whenWrongJobNameIsPassed() {
-        // when
-        Exception exception = assertThrows(JobNotFoundException.class, () -> employeeController.getEmployeeByJobName("Random"));
+    private void checkAssertionsForEmployee(EmployeeResponse employee){
+        assertEquals("John", employee.getFirstName());
+        assertEquals("Smith", employee.getLastName());
+        assertEquals("Cook", employee.getJob().getName());
+    }
 
-        // then
-        assertEquals("There are no job in restaurant with that name: Random", exception.getMessage());
+    private void checkAssertionsForCooks(List<EmployeeResponse> cooks){
+        assertEquals("John", cooks.get(0).getFirstName());
+        assertEquals("Smith", cooks.get(0).getLastName());
+        assertEquals("Cook", cooks.get(0).getJob().getName());
+    }
+
+    private void checkAssertionsForEmployees(List<EmployeeResponse> employees){
+        assertEquals("John", employees.get(0).getFirstName());
+        assertEquals("Smith", employees.get(0).getLastName());
+        assertEquals("Cook", employees.get(0).getJob().getName());
+
+        assertEquals("James", employees.get(1).getFirstName());
+        assertEquals("Patel", employees.get(1).getLastName());
+        assertEquals("Waiter", employees.get(1).getJob().getName());
+
+        assertEquals("Ann", employees.get(2).getFirstName());
+        assertEquals("Mary", employees.get(2).getLastName());
+        assertEquals("DeliveryMan", employees.get(2).getJob().getName());
     }
 }

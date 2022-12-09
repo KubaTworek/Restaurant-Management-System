@@ -2,8 +2,9 @@ package pl.jakubtworek.RestaurantManagementSystem.unitTests.menu;
 
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
-import pl.jakubtworek.RestaurantManagementSystem.exception.MenuItemNotFoundException;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
+import pl.jakubtworek.RestaurantManagementSystem.exception.*;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuItemFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
@@ -12,7 +13,7 @@ import pl.jakubtworek.RestaurantManagementSystem.service.impl.MenuItemServiceImp
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 
@@ -40,55 +41,23 @@ class MenuItemServiceTest {
     }
 
     @Test
-    void shouldReturnAllMenuItems() {
+    void shouldReturnCreatedMenuItem() throws MenuNotFoundException {
         // given
-        List<MenuItem> menuItems = createMenuItemListForFood();
+        Optional<Menu> expectedMenu = Optional.of(createMenu());
+        MenuItemRequest menuItem = createChickenMenuItemRequest();
+        MenuItem expectedMenuItem = createChickenMenuItem();
+        MenuItemDTO expectedMenuItemDTO = createChickenMenuItem().convertEntityToDTO();
 
         // when
-        when(menuItemRepository.findAll()).thenReturn(menuItems);
+        when(menuRepository.findByName(any())).thenReturn(expectedMenu);
+        when(menuItemFactory.createMenuItem(any(), any())).thenReturn(expectedMenuItemDTO);
+        when(menuItemRepository.save(any())).thenReturn(expectedMenuItem);
 
-        List<MenuItemDTO> menuItemsReturned = menuItemService.findAll();
+        MenuItemDTO menuItemCreated = menuItemService.save(menuItem);
 
         // then
-        assertEquals(2,menuItemsReturned.size());
+        checkAssertionsForMenuItem(menuItemCreated);
     }
-
-    @Test
-    void shouldReturnOneMenuItem() {
-        // given
-        Optional<MenuItem> menuItem = Optional.of(createChickenMenuItem());
-
-        // when
-        when(menuItemRepository.findById(1L)).thenReturn(menuItem);
-
-        Optional<MenuItemDTO> menuItemReturned = menuItemService.findById(1L);
-
-        // then
-        assertNotNull(menuItemReturned);
-    }
-
-/*    @Test
-    void shouldReturnCreatedMenuItem(){
-        // given
-        Optional<Menu> expectedMenu = Optional.of(new Menu(2L, "Food", List.of()));
-        Optional<MenuDTO> expectedMenuDTO = Optional.of(new MenuDTO(2L, "Food", List.of()));
-        MenuItemRequest menuItem = new MenuItemRequest("Pizza", 12.99, "Food");
-        MenuItem expectedMenuItem = new MenuItem(0L, "Pizza", 12.99, expectedMenu.get(), List.of());
-        MenuItemDTO expectedMenuItemDTO = new MenuItemDTO(0L, "Pizza", 12.99, expectedMenuDTO.get(), List.of());
-
-        when(menuRepository.findByName(eq("Food"))).thenReturn(expectedMenu);
-        when(menuItemFactory.createMenuItem(menuItem, expectedMenuDTO.get())).thenReturn(expectedMenuItemDTO);
-        when(menuItemRepository.save(expectedMenuItem)).thenReturn(expectedMenuItem);
-
-        // when
-        MenuItemDTO menuItemReturned = menuItemService.save(menuItem, expectedMenuDTO.get());
-
-        // then
-        assertEquals("Pizza", menuItemReturned.getName());
-        assertEquals(12.99, menuItemReturned.getPrice());
-        assertEquals("Food", menuItemReturned.getMenu().getName());
-    }*/
-
 
     @Test
     void verifyIsMenuItemIsDeleted() throws MenuItemNotFoundException {
@@ -101,21 +70,49 @@ class MenuItemServiceTest {
         menuItemService.deleteById(1L);
 
         // then
-        verify(menuItemRepository).deleteById(1L);
+        verify(menuItemRepository).delete(any());
     }
 
     @Test
-    void shouldReturnOneMenuItem_whenMenuNameIsPass() {
+    void shouldReturnOneMenuItem() {
+        // given
+        Optional<MenuItem> menuItem = Optional.of(createChickenMenuItem());
+
+        // when
+        when(menuItemRepository.findById(1L)).thenReturn(menuItem);
+
+        MenuItemDTO menuItemReturned = menuItemService.findById(1L).orElse(null);
+
+        // then
+        checkAssertionsForMenuItem(menuItemReturned);
+    }
+
+    @Test
+    void shouldReturnOneMenuItem_whenMenuNameIsPass() throws MenuNotFoundException {
         // given
         List<MenuItem> menuItems = createMenuItemListForFood();
         Optional<Menu> menu = Optional.of(createMenu());
-        when(menuRepository.findByName("Menu")).thenReturn(menu);
-        when(menuItemRepository.findByMenu(menu.get())).thenReturn(menuItems);
 
         // when
-        List<MenuItemDTO> menuItemsReturned = menuItemService.findByMenu(menu.get());
+        when(menuRepository.findByName("Food")).thenReturn(menu);
+        when(menuItemRepository.findByMenu(menu.get())).thenReturn(menuItems);
+
+        List<MenuItemDTO> menuItemsReturned = menuItemService.findByMenu("Food");
 
         // then
-        assertEquals(2, menuItemsReturned.size());
+        checkAssertionsForMenuItems(menuItemsReturned);
+    }
+
+    private void checkAssertionsForMenuItem(MenuItemDTO menuItem) {
+        assertEquals("Chicken", menuItem.getName());
+        assertEquals(10.99, menuItem.getPrice());
+    }
+
+    private void checkAssertionsForMenuItems(List<MenuItemDTO> menuItems) {
+        assertEquals("Chicken", menuItems.get(0).getName());
+        assertEquals(10.99, menuItems.get(0).getPrice());
+
+        assertEquals("Tiramisu", menuItems.get(1).getName());
+        assertEquals(5.99, menuItems.get(1).getPrice());
     }
 }

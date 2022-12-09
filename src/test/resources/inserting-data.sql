@@ -1,3 +1,5 @@
+INSERT INTO `authorities`(`id`, `authority`) VALUES (1, 'admin'), (2, 'user');
+INSERT INTO `users`(`id`, `username`, `password`, `role_id`) VALUES (1, 'admin', 'admin', 1), (2, 'user', 'user', 2);
 INSERT INTO `job`(`id`, `name`) VALUES (1, 'Cook'), (2, 'Waiter'), (3, 'DeliveryMan');
 INSERT INTO `type_of_order`(`id`, `type`) VALUES (1, 'On-site'), (2, 'Delivery');
 INSERT INTO `menu`(`id`, `name`) VALUES (1, 'Drinks'), (2, 'Food');

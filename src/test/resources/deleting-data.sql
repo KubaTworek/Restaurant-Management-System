@@ -6,3 +6,5 @@ DELETE FROM `employee`;
 DELETE FROM `menu`;
 DELETE FROM `type_of_order`;
 DELETE FROM `job`;
+DELETE FROM `users`;
+DELETE FROM `authorities`;

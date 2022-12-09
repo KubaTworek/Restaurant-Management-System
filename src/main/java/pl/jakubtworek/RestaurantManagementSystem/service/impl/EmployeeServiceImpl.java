@@ -25,19 +25,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeQueueFacade employeeQueueFacade;
 
     @Override
-    public List<EmployeeDTO> findAll() {
-        return employeeRepository.findAll()
-                .stream()
-                .map(Employee::convertEntityToDTO)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public Optional<EmployeeDTO> findById(Long theId) {
-        return employeeRepository.findById(theId).map(Employee::convertEntityToDTO);
-    }
-
-    @Override
     public EmployeeDTO save(EmployeeRequest employeeRequest) throws JobNotFoundException {
         JobDTO jobDTO = getJobDTO(employeeRequest.getJob());
 
@@ -54,6 +41,19 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .orElseThrow(() -> new EmployeeNotFoundException("There are no employees in restaurant with that id: " + theId));
         employee.remove();
         employeeRepository.delete(employee);
+    }
+
+    @Override
+    public List<EmployeeDTO> findAll() {
+        return employeeRepository.findAll()
+                .stream()
+                .map(Employee::convertEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<EmployeeDTO> findById(Long theId) {
+        return employeeRepository.findById(theId).map(Employee::convertEntityToDTO);
     }
 
     @Override

@@ -6,16 +6,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
-import pl.jakubtworek.RestaurantManagementSystem.exception.*;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
+import pl.jakubtworek.RestaurantManagementSystem.exception.MenuNotFoundException;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuItemRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuItemService;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.createMenu;
 
 @SpringBootTest
 @Transactional
@@ -25,31 +23,6 @@ class MenuItemServiceIT {
     private MenuItemService menuItemService;
     @Autowired
     private MenuItemRepository menuItemRepository;
-
-    @Test
-    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    void shouldReturnAllMenuItems() {
-        // when
-        List<MenuItemDTO> menuItems = menuItemService.findAll();
-
-        // then
-        assertEquals(3, menuItems.size());
-
-        assertEquals("Chicken", menuItems.get(0).getName());
-        assertEquals(10.99, menuItems.get(0).getPrice());
-        assertEquals("Food", menuItems.get(0).getMenu().getName());
-        assertEquals(1, menuItems.get(0).getOrders().size());
-
-        assertEquals("Coke", menuItems.get(1).getName());
-        assertEquals(1.99, menuItems.get(1).getPrice());
-        assertEquals("Drinks", menuItems.get(1).getMenu().getName());
-        assertEquals(2, menuItems.get(1).getOrders().size());
-
-        assertEquals("Tiramisu", menuItems.get(2).getName());
-        assertEquals(5.99, menuItems.get(2).getPrice());
-        assertEquals("Food", menuItems.get(2).getMenu().getName());
-        assertEquals(1, menuItems.get(2).getOrders().size());
-    }
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
@@ -81,23 +54,9 @@ class MenuItemServiceIT {
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    void shouldReturnLowerSizeOfList_whenDeleteOne() throws MenuItemNotFoundException {
+    void shouldReturnMenuItems_whenMenuNamePass() throws MenuNotFoundException {
         // when
-        menuItemService.deleteById(2L);
-        List<MenuItemDTO> menuItems = menuItemService.findAll();
-
-        // then
-        assertEquals(2, menuItems.size());
-    }
-
-    @Test
-    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    void shouldReturnMenuItems_whenMenuNamePass() {
-        // given
-        Menu menu = createMenu();
-
-        // when
-        List<MenuItemDTO> menuItems = menuItemService.findByMenu(menu);
+        List<MenuItemDTO> menuItems = menuItemService.findByMenu("Food");
 
         // then
         assertEquals(1, menuItems.size());

@@ -8,21 +8,15 @@ import pl.jakubtworek.RestaurantManagementSystem.exception.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuItemService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/menu-items")
 public class MenuItemController {
     private final MenuItemService menuItemService;
-
-    @GetMapping("/{id}")
-    public ResponseEntity<MenuItemResponse> getMenuItemById(@PathVariable Long id) throws MenuItemNotFoundException {
-        MenuItemResponse menuItemResponse = menuItemService.findById(id)
-                .map(MenuItemDTO::convertDTOToResponse)
-                .orElseThrow(() -> new MenuItemNotFoundException("There are no menu item in restaurant with that id: " + id));
-
-        return new ResponseEntity<>(menuItemResponse, HttpStatus.OK);
-    }
 
     @PostMapping
     public ResponseEntity<MenuItemResponse> saveMenuItem(@RequestBody MenuItemRequest menuItemRequest) throws MenuNotFoundException {
@@ -36,5 +30,24 @@ public class MenuItemController {
         menuItemService.deleteById(id);
 
         return new ResponseEntity<>("Menu item with id: " + id + " was deleted", HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<MenuItemResponse> getMenuItemById(@PathVariable Long id) throws MenuItemNotFoundException {
+        MenuItemResponse menuItemResponse = menuItemService.findById(id)
+                .map(MenuItemDTO::convertDTOToResponse)
+                .orElseThrow(() -> new MenuItemNotFoundException("There are no menu item in restaurant with that id: " + id));
+
+        return new ResponseEntity<>(menuItemResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/{menuName}")
+    public ResponseEntity<List<MenuItemResponse>> getMenuItemsByMenu(@PathVariable String menuName) throws MenuNotFoundException {
+        List<MenuItemResponse> menuItemsResponse = menuItemService.findByMenu(menuName)
+                .stream()
+                .map(MenuItemDTO::convertDTOToResponse)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(menuItemsResponse, HttpStatus.OK);
     }
 }

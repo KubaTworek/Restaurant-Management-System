@@ -2,7 +2,7 @@ package pl.jakubtworek.RestaurantManagementSystem.unitTests.menu;
 
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuRequest;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.*;
 import pl.jakubtworek.RestaurantManagementSystem.exception.MenuNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
@@ -37,34 +37,6 @@ class MenuServiceTest {
     }
 
     @Test
-    void shouldReturnAllMenus() {
-        // given
-        List<Menu> menus = createMenuList();
-
-        // when
-        when(menuRepository.findAll()).thenReturn(menus);
-
-        List<MenuDTO> menusReturned = menuService.findAll();
-
-        // then
-        assertEquals(2,menusReturned.size());
-    }
-
-    @Test
-    void shouldReturnOneMenu() {
-        // given
-        Optional<Menu> menu = Optional.of(createMenu());
-
-        // when
-        when(menuRepository.findById(1L)).thenReturn(menu);
-
-        Optional<MenuDTO> menuReturned = menuService.findById(1L);
-
-        // then
-        assertNotNull(menuReturned);
-    }
-
-    @Test
     void shouldReturnCreatedMenu(){
         // given
         MenuRequest menu = createMenuRequest();
@@ -75,33 +47,84 @@ class MenuServiceTest {
         when(menuFactory.createMenu(any())).thenReturn(expectedMenuDTO);
         when(menuRepository.save(any())).thenReturn(expectedMenu);
 
-        MenuDTO menuReturned = menuService.save(menu);
+        MenuDTO menuCreated = menuService.save(menu);
 
         // then
-        assertEquals("Drinks", menuReturned.getName());
+        checkAssertionsForMenu(menuCreated);
     }
 
 
     @Test
     void verifyIsMenuIsDeleted() throws MenuNotFoundException {
+        // given
+        Menu menu = createMenu();
+
         // when
+        when(menuRepository.findById(1L)).thenReturn(Optional.of(menu));
+
         menuService.deleteById(1L);
 
         // then
-        verify(menuRepository).deleteById(1L);
+        verify(menuRepository).delete(menu);
     }
 
     @Test
-    void shouldReturnOneMenu_whenNameIsPass() {
+    void shouldReturnAllMenus() {
+        // given
+        List<Menu> menus = createMenuList();
+
+        // when
+        when(menuRepository.findAll()).thenReturn(menus);
+
+        List<MenuDTO> menuReturned = menuService.findAll();
+
+        // then
+        checkAssertionsForMenus(menuReturned);
+    }
+
+    @Test
+    void shouldReturnMenuById() {
+        // given
+        Optional<Menu> menu = Optional.of(createMenu());
+
+        // when
+        when(menuRepository.findById(1L)).thenReturn(menu);
+
+        MenuDTO menuReturned = menuService.findById(1L).orElse(null);
+
+        // then
+        checkAssertionsForMenu(menuReturned);
+    }
+
+    @Test
+    void shouldReturnMenuByName() {
         // given
         Optional<Menu> menu = Optional.of(createMenu());
 
         // when
         when(menuRepository.findByName("Menu")).thenReturn(menu);
 
-        Optional<MenuDTO> menuReturned = menuService.findByName("Menu");
+        MenuDTO menuReturned = menuService.findByName("Menu").orElse(null);
 
         // then
-        assertNotNull(menuReturned);
+        checkAssertionsForMenu(menuReturned);
+    }
+
+    private void checkAssertionsForMenu(MenuDTO menu){
+        assertEquals("Drinks", menu.getName());
+        assertEquals("Coke", menu.getMenuItems().get(0).getName());
+        assertEquals(1.99, menu.getMenuItems().get(0).getPrice());
+    }
+
+    private void checkAssertionsForMenus(List<MenuDTO> menus){
+        assertEquals("Drinks", menus.get(0).getName());
+        assertEquals("Coke", menus.get(0).getMenuItems().get(0).getName());
+        assertEquals(1.99, menus.get(0).getMenuItems().get(0).getPrice());
+
+        assertEquals("Food", menus.get(1).getName());
+        assertEquals("Chicken", menus.get(1).getMenuItems().get(0).getName());
+        assertEquals(10.99, menus.get(1).getMenuItems().get(0).getPrice());
+        assertEquals("Tiramisu", menus.get(1).getMenuItems().get(1).getName());
+        assertEquals(5.99, menus.get(1).getMenuItems().get(1).getPrice());
     }
 }

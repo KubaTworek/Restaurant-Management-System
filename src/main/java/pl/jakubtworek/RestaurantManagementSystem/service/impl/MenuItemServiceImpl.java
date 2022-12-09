@@ -21,19 +21,6 @@ public class MenuItemServiceImpl implements MenuItemService {
     private final MenuItemFactory menuItemFactory;
 
     @Override
-    public List<MenuItemDTO> findAll() {
-        return menuItemRepository.findAll()
-                .stream()
-                .map(MenuItem::convertEntityToDTO)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public Optional<MenuItemDTO> findById(Long theId) {
-        return menuItemRepository.findById(theId).map(MenuItem::convertEntityToDTO);
-    }
-
-    @Override
     public MenuItemDTO save(MenuItemRequest menuItemRequest) throws MenuNotFoundException {
         MenuDTO menuDTO = getMenuDTO(menuItemRequest.getMenu());
 
@@ -50,16 +37,19 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
     @Override
-    public List<MenuItemDTO> findByMenu(Menu theMenu) {
-        return menuItemRepository.findByMenu(theMenu)
-                .stream()
-                .map(MenuItem::convertEntityToDTO)
-                .collect(Collectors.toList());
+    public Optional<MenuItemDTO> findById(Long theId) {
+        return menuItemRepository.findById(theId).map(MenuItem::convertEntityToDTO);
     }
 
     @Override
-    public Optional<MenuItemDTO> findByName(String name) {
-        return menuItemRepository.findByName(name).map(MenuItem::convertEntityToDTO);
+    public List<MenuItemDTO> findByMenu(String menuName) throws MenuNotFoundException {
+        Menu menu = menuRepository.findByName(menuName)
+                .orElseThrow(() -> new MenuNotFoundException("There are no menu in restaurant with that name: " + menuName));
+
+        return menuItemRepository.findByMenu(menu)
+                .stream()
+                .map(MenuItem::convertEntityToDTO)
+                .collect(Collectors.toList());
     }
 
     private MenuDTO getMenuDTO(String menuName) throws MenuNotFoundException {

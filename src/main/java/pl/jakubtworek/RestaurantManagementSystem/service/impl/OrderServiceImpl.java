@@ -28,19 +28,6 @@ public class OrderServiceImpl implements OrderService {
     private final OrdersQueueFacade ordersQueueFacade;
 
     @Override
-    public List<OrderDTO> findAll() {
-        return orderRepository.findAll()
-                .stream()
-                .map(Order::convertEntityToDTO)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public Optional<OrderDTO> findById(Long theId) {
-        return orderRepository.findById(theId).map(Order::convertEntityToDTO);
-    }
-
-    @Override
     public OrderDTO save(OrderRequest orderRequest) throws Exception {
         String typeOfOrderName = orderRequest.getTypeOfOrder();
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -72,6 +59,19 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(theId)
                 .orElseThrow(() -> new OrderNotFoundException("There are no order in restaurant with that id: " + theId));
         orderRepository.delete(order);
+    }
+
+    @Override
+    public List<OrderDTO> findAll() {
+        return orderRepository.findAll()
+                .stream()
+                .map(Order::convertEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<OrderDTO> findById(Long theId) {
+        return orderRepository.findById(theId).map(Order::convertEntityToDTO);
     }
 
     @Override

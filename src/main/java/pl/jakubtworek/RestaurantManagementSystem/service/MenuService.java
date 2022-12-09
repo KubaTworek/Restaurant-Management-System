@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MenuService {
-    List<MenuDTO> findAll();
-    Optional<MenuDTO> findById(Long theId);
     MenuDTO save(MenuRequest menuRequest);
     void deleteById(Long theId) throws MenuNotFoundException;
+    List<MenuDTO> findAll();
+    Optional<MenuDTO> findById(Long theId);
     Optional<MenuDTO> findByName(String theName);
 }

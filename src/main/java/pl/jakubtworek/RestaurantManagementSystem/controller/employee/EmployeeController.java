@@ -18,6 +18,20 @@ import java.util.stream.Collectors;
 public class EmployeeController {
     private final EmployeeService employeeService;
 
+    @PostMapping
+    public ResponseEntity<EmployeeResponse> saveEmployee(@RequestBody EmployeeRequest employeeRequest) throws JobNotFoundException {
+        EmployeeResponse employeeResponse = employeeService.save(employeeRequest).convertDTOToResponse();
+
+        return new ResponseEntity<>(employeeResponse, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteEmployee(@PathVariable Long id) throws EmployeeNotFoundException {
+        employeeService.deleteById(id);
+
+        return new ResponseEntity<>("Employee with id: " + id + " was deleted", HttpStatus.OK);
+    }
+
     @GetMapping
     public ResponseEntity<List<EmployeeResponse>> getEmployees() {
         List<EmployeeResponse> employeesFound = employeeService.findAll()
@@ -35,20 +49,6 @@ public class EmployeeController {
                 .orElseThrow(() -> new EmployeeNotFoundException("There are no employees in restaurant with that id: " + id));
 
         return new ResponseEntity<>(employeeResponse, HttpStatus.OK);
-    }
-
-    @PostMapping
-    public ResponseEntity<EmployeeResponse> saveEmployee(@RequestBody EmployeeRequest employeeRequest) throws JobNotFoundException {
-        EmployeeResponse employeeResponse = employeeService.save(employeeRequest).convertDTOToResponse();
-
-        return new ResponseEntity<>(employeeResponse, HttpStatus.CREATED);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteEmployee(@PathVariable Long id) throws EmployeeNotFoundException {
-        employeeService.deleteById(id);
-
-        return new ResponseEntity<>("Employee with id: " + id + " was deleted", HttpStatus.OK);
     }
 
     @GetMapping("/job")

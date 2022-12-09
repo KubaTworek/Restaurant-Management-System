@@ -1,3 +1,16 @@
+CREATE TABLE IF NOT EXISTS `authorities` (
+             `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+             `authority` VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS `users` (
+            `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            `username` VARCHAR(50) NOT NULL,
+            `password` VARCHAR(255) NOT NULL,
+            `role_id` INT,
+            FOREIGN KEY(`role_id`) REFERENCES `authorities`(`id`)
+);
+
 CREATE TABLE IF NOT EXISTS `job` (
             `id` INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
             `name` VARCHAR(20) NOT NULL
@@ -28,7 +41,9 @@ CREATE TABLE IF NOT EXISTS `orders` (
             `hour_order` TIME DEFAULT NULL,
             `hour_away` TIME DEFAULT NULL,
             `type_of_order_id` INTEGER,
-            FOREIGN KEY(`type_of_order_id`) REFERENCES `type_of_order`(`id`)
+            `user_id` INTEGER,
+            FOREIGN KEY(`type_of_order_id`) REFERENCES `type_of_order`(`id`),
+            FOREIGN KEY(`user_id`) REFERENCES `users`(`id`)
 );
 
 CREATE TABLE IF NOT EXISTS `menu_item` (

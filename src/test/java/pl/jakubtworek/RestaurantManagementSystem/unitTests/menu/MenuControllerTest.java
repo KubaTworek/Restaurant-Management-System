@@ -12,7 +12,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 
@@ -32,6 +31,35 @@ class MenuControllerTest {
     }
 
     @Test
+    void shouldReturnCreatedMenu() {
+        // given
+        MenuRequest menu = createMenuRequest();
+        MenuDTO expectedMenu = createMenu().convertEntityToDTO();
+
+        // when
+        when(menuService.save(menu)).thenReturn(expectedMenu);
+
+        MenuResponse menuCreated = menuController.saveMenu(menu).getBody();
+
+        // then
+        checkAssertionsForMenu(menuCreated);
+    }
+
+    @Test
+    void shouldReturnResponseConfirmingDeletedMenu() throws Exception {
+        // given
+        Optional<MenuDTO> expectedMenu = Optional.of(createMenu().convertEntityToDTO());
+
+        // when
+        when(menuService.findById(1L)).thenReturn(expectedMenu);
+
+        String response = menuController.deleteMenu(1L).getBody();
+
+        // then
+        assertEquals("Menu with id: 1 was deleted", response);
+    }
+
+    @Test
     void shouldReturnAllMenu() {
         // given
         List<MenuDTO> expectedMenu = createMenuList()
@@ -45,15 +73,7 @@ class MenuControllerTest {
         List<MenuResponse> menuReturned = menuController.getMenus().getBody();
 
         // then
-        assertEquals("Drinks", menuReturned.get(0).getName());
-        assertEquals("Coke", menuReturned.get(0).getMenuItems().get(0).getName());
-        assertEquals(1.99, menuReturned.get(0).getMenuItems().get(0).getPrice());
-
-        assertEquals("Food", menuReturned.get(1).getName());
-        assertEquals("Chicken", menuReturned.get(1).getMenuItems().get(0).getName());
-        assertEquals(10.99, menuReturned.get(1).getMenuItems().get(0).getPrice());
-        assertEquals("Tiramisu", menuReturned.get(1).getMenuItems().get(1).getName());
-        assertEquals(5.99, menuReturned.get(1).getMenuItems().get(1).getPrice());
+        checkAssertionsForMenus(menuReturned);
     }
 
     @Test
@@ -62,18 +82,16 @@ class MenuControllerTest {
         Optional<MenuDTO> expectedMenu = Optional.of(createMenu().convertEntityToDTO());
 
         // when
-        when(menuService.findById(eq(1L))).thenReturn(expectedMenu);
+        when(menuService.findById(1L)).thenReturn(expectedMenu);
 
         MenuResponse menuReturned = menuController.getMenuById(1L).getBody();
 
         // then
-        assertEquals("Drinks", menuReturned.getName());
-        assertEquals("Coke", menuReturned.getMenuItems().get(0).getName());
-        assertEquals(1.99, menuReturned.getMenuItems().get(0).getPrice());
+        checkAssertionsForMenu(menuReturned);
     }
 
     @Test
-    void shouldReturnErrorResponse_whenAskedForNonExistingMenu() {
+    void shouldThrowException_whenMenuNotExist() {
         // when
         Exception exception = assertThrows(MenuNotFoundException.class, () -> menuController.getMenuById(3L));
 
@@ -81,32 +99,21 @@ class MenuControllerTest {
         assertEquals("There are no menu in restaurant with that id: 3", exception.getMessage());
     }
 
-    @Test
-    void shouldReturnCreatedMenu() {
-        // given
-        MenuRequest menu = createMenuRequest();
-        MenuDTO expectedMenu = createMenu().convertEntityToDTO();
-
-        // when
-        when(menuService.save(menu)).thenReturn(expectedMenu);
-
-        MenuResponse menuReturned = menuController.saveMenu(menu).getBody();
-
-        // then
-        assertEquals("Drinks", menuReturned.getName());
+    private void checkAssertionsForMenu(MenuResponse menu){
+        assertEquals("Drinks", menu.getName());
+        assertEquals("Coke", menu.getMenuItems().get(0).getName());
+        assertEquals(1.99, menu.getMenuItems().get(0).getPrice());
     }
 
-    @Test
-    void shouldReturnResponseConfirmingDeletedMenu() throws Exception {
-        // given
-        Optional<MenuDTO> expectedMenu = Optional.of(createMenu().convertEntityToDTO());
+    private void checkAssertionsForMenus(List<MenuResponse> menus){
+        assertEquals("Drinks", menus.get(0).getName());
+        assertEquals("Coke", menus.get(0).getMenuItems().get(0).getName());
+        assertEquals(1.99, menus.get(0).getMenuItems().get(0).getPrice());
 
-        // when
-        when(menuService.findById(eq(1L))).thenReturn(expectedMenu);
-
-        String response = menuController.deleteMenu(1L).getBody();
-
-        // then
-        assertEquals("Menu with id: 1 was deleted", response);
+        assertEquals("Food", menus.get(1).getName());
+        assertEquals("Chicken", menus.get(1).getMenuItems().get(0).getName());
+        assertEquals(10.99, menus.get(1).getMenuItems().get(0).getPrice());
+        assertEquals("Tiramisu", menus.get(1).getMenuItems().get(1).getName());
+        assertEquals(5.99, menus.get(1).getMenuItems().get(1).getPrice());
     }
 }

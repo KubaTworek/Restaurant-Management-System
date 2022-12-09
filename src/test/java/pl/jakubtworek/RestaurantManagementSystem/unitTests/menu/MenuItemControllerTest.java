@@ -4,13 +4,14 @@ import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.*;
 import pl.jakubtworek.RestaurantManagementSystem.exception.MenuItemNotFoundException;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
-import pl.jakubtworek.RestaurantManagementSystem.service.*;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
+import pl.jakubtworek.RestaurantManagementSystem.service.MenuItemService;
 
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 
@@ -30,18 +31,47 @@ class MenuItemControllerTest {
     }
 
     @Test
+    void shouldReturnCreatedMenuItem() throws Exception {
+        // given
+        MenuItemRequest menuItemRequest = createChickenMenuItemRequest();
+        MenuItemDTO expectedMenuItem = createChickenMenuItem().convertEntityToDTO();
+
+        // when
+        when(menuItemService.save(menuItemRequest)).thenReturn(expectedMenuItem);
+
+        MenuItemResponse menuItemCreated = menuItemController.saveMenuItem(menuItemRequest).getBody();
+
+        // then
+        checkAssertionsForMenuItem(menuItemCreated);
+    }
+
+
+    @Test
+    void shouldReturnResponseConfirmingDeletedMenu() throws Exception {
+        // given
+        Optional<MenuItemDTO> expectedMenuItem = Optional.of(createChickenMenuItem().convertEntityToDTO());
+
+        // when
+        when(menuItemService.findById(1L)).thenReturn(expectedMenuItem);
+
+        String response = menuItemController.deleteMenuItem(1L).getBody();
+
+        // then
+        assertEquals("Menu item with id: 1 was deleted", response);
+    }
+
+    @Test
     void shouldReturnMenuItemById() throws Exception {
         // given
         Optional<MenuItemDTO> expectedMenuItem = Optional.of(createChickenMenuItem().convertEntityToDTO());
 
         // when
-        when(menuItemService.findById(eq(1L))).thenReturn(expectedMenuItem);
+        when(menuItemService.findById(1L)).thenReturn(expectedMenuItem);
 
-        MenuItemResponse menuItem = menuItemController.getMenuItemById(1L).getBody();
+        MenuItemResponse menuItemReturned = menuItemController.getMenuItemById(1L).getBody();
 
         // then
-        assertEquals("Chicken", menuItem.getName());
-        assertEquals(10.99, menuItem.getPrice());
+        checkAssertionsForMenuItem(menuItemReturned);
     }
 
     @Test
@@ -54,33 +84,32 @@ class MenuItemControllerTest {
     }
 
     @Test
-    void shouldReturnCreatedMenuItem() throws Exception {
+    void shouldReturnMenuItemByMenu() throws Exception {
         // given
-        MenuItemRequest menuItemRequest = createChickenMenuItemRequest();
-        MenuItemDTO expectedMenuItem = createChickenMenuItem().convertEntityToDTO();
+        List<MenuItemDTO> expectedMenuItems = createMenuItemListForFood()
+                .stream()
+                .map(MenuItem::convertEntityToDTO)
+                .collect(Collectors.toList());
 
         // when
-        when(menuItemService.save(menuItemRequest)).thenReturn(expectedMenuItem);
+        when(menuItemService.findByMenu(anyString())).thenReturn(expectedMenuItems);
 
-        MenuItemResponse menuItemResponse = menuItemController.saveMenuItem(menuItemRequest).getBody();
+        List<MenuItemResponse> menuItemsReturned = menuItemController.getMenuItemsByMenu("Food").getBody();
 
         // then
-        assertEquals("Chicken", menuItemResponse.getName());
-        assertEquals(10.99, menuItemResponse.getPrice());
+        checkAssertionsForMenuItems(menuItemsReturned);
     }
 
+    private void checkAssertionsForMenuItem(MenuItemResponse menuItem) {
+        assertEquals("Chicken", menuItem.getName());
+        assertEquals(10.99, menuItem.getPrice());
+    }
 
-    @Test
-    void shouldReturnResponseConfirmingDeletedMenu() throws Exception {
-        // given
-        Optional<MenuItemDTO> expectedMenuItem = Optional.of(createChickenMenuItem().convertEntityToDTO());
+    private void checkAssertionsForMenuItems(List<MenuItemResponse> menuItems) {
+        assertEquals("Chicken", menuItems.get(0).getName());
+        assertEquals(10.99, menuItems.get(0).getPrice());
 
-        // when
-        when(menuItemService.findById(eq(1L))).thenReturn(expectedMenuItem);
-
-        String response = menuItemController.deleteMenuItem(1L).getBody();
-
-        // then
-        assertEquals("Menu item with id: 1 was deleted", response);
+        assertEquals("Tiramisu", menuItems.get(1).getName());
+        assertEquals(5.99, menuItems.get(1).getPrice());
     }
 }
