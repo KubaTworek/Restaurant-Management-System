@@ -24,11 +24,11 @@ public class OrderUtils {
     }
 
     public static Order createOnsiteOrder(){
-        return new Order(1L, 12.99, "2022-08-22", "12:00", "12:15", createOnsiteType(), List.of(createChickenMenuItem(), createCokeMenuItem()), List.of(createCook()), createUser());
+        return new Order(1L, 12.98, "2022-08-22", "12:00", "12:15", createOnsiteType(), List.of(createChickenMenuItem(), createCokeMenuItem()), List.of(createCook()), createUser());
     }
 
     public static Order createDeliveryOrder(){
-        return new Order(2L, 30.99, "2022-08-22", "12:05", null, createDeliveryType(), List.of(createTiramisuMenuItem(), createCokeMenuItem()), List.of(createCook()), createUser());
+        return new Order(2L, 7.98, "2022-08-22", "12:05", null, createDeliveryType(), List.of(createTiramisuMenuItem(), createCokeMenuItem()), List.of(createCook()), createUser());
     }
 
     public static TypeOfOrder createOnsiteType(){
@@ -39,10 +39,10 @@ public class OrderUtils {
         return new TypeOfOrder(2L, "Delivery", List.of());
     }
 
-    public static class OrderAssertions<T extends Order>{
+    public static class OrderAssertions {
 
         public static void checkAssertionsForOrder(Order order){
-            assertEquals(12.99, order.getPrice());
+            assertEquals(12.98, order.getPrice());
             assertEquals("2022-08-22", order.getDate());
             assertEquals("12:00", order.getHourOrder());
             assertEquals("12:15", order.getHourAway());
@@ -57,7 +57,7 @@ public class OrderUtils {
         }
 
         public static void checkAssertionsForOrders(List<Order> orders){
-            assertEquals(12.99, orders.get(0).getPrice());
+            assertEquals(12.98, orders.get(0).getPrice());
             assertEquals("2022-08-22", orders.get(0).getDate());
             assertEquals("12:00", orders.get(0).getHourOrder());
             assertEquals("12:15", orders.get(0).getHourAway());
@@ -70,7 +70,7 @@ public class OrderUtils {
             assertEquals("Smith", orders.get(0).getEmployees().get(0).getLastName());
             assertEquals("Cook", orders.get(0).getEmployees().get(0).getJob().getName());
 
-            assertEquals(30.99, orders.get(1).getPrice());
+            assertEquals(7.98, orders.get(1).getPrice());
             assertEquals("2022-08-22", orders.get(1).getDate());
             assertEquals("12:05", orders.get(1).getHourOrder());
             assertNull(orders.get(1).getHourAway());
@@ -85,10 +85,10 @@ public class OrderUtils {
         }
     }
 
-    public static class OrderDTOAssertions<T extends OrderDTO>{
+    public static class OrderDTOAssertions {
 
         public static void checkAssertionsForOrder(OrderDTO order){
-            assertEquals(12.99, order.getPrice());
+            assertEquals(12.98, order.getPrice());
             assertEquals("2022-08-22", order.getDate());
             assertEquals("12:00", order.getHourOrder());
             assertEquals("12:15", order.getHourAway());
@@ -103,7 +103,7 @@ public class OrderUtils {
         }
 
         public static void checkAssertionsForOrders(List<OrderDTO> orders){
-            assertEquals(12.99, orders.get(0).getPrice());
+            assertEquals(12.98, orders.get(0).getPrice());
             assertEquals("2022-08-22", orders.get(0).getDate());
             assertEquals("12:00", orders.get(0).getHourOrder());
             assertEquals("12:15", orders.get(0).getHourAway());
@@ -116,7 +116,7 @@ public class OrderUtils {
             assertEquals("Smith", orders.get(0).getEmployees().get(0).getLastName());
             assertEquals("Cook", orders.get(0).getEmployees().get(0).getJob().getName());
 
-            assertEquals(30.99, orders.get(1).getPrice());
+            assertEquals(7.98, orders.get(1).getPrice());
             assertEquals("2022-08-22", orders.get(1).getDate());
             assertEquals("12:05", orders.get(1).getHourOrder());
             assertNull(orders.get(1).getHourAway());
@@ -131,10 +131,10 @@ public class OrderUtils {
         }
     }
 
-    public static class OrderResponseAssertions<T extends OrderResponse>{
+    public static class OrderResponseAssertions {
 
         public static void checkAssertionsForOrder(OrderResponse order){
-            assertEquals(12.99, order.getPrice());
+            assertEquals(12.98, order.getPrice());
             assertEquals("2022-08-22", order.getDate());
             assertEquals("12:00", order.getHourOrder());
             assertEquals("12:15", order.getHourAway());
@@ -149,7 +149,7 @@ public class OrderUtils {
         }
 
         public static void checkAssertionsForOrders(List<OrderResponse> orders){
-            assertEquals(12.99, orders.get(0).getPrice());
+            assertEquals(12.98, orders.get(0).getPrice());
             assertEquals("2022-08-22", orders.get(0).getDate());
             assertEquals("12:00", orders.get(0).getHourOrder());
             assertEquals("12:15", orders.get(0).getHourAway());
@@ -162,7 +162,7 @@ public class OrderUtils {
             assertEquals("Smith", orders.get(0).getEmployees().get(0).getLastName());
             assertEquals("Cook", orders.get(0).getEmployees().get(0).getJob().getName());
 
-            assertEquals(30.99, orders.get(1).getPrice());
+            assertEquals(7.98, orders.get(1).getPrice());
             assertEquals("2022-08-22", orders.get(1).getDate());
             assertEquals("12:05", orders.get(1).getHourOrder());
             assertNull(orders.get(1).getHourAway());

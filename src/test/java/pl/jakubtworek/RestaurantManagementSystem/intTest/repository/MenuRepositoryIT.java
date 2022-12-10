@@ -30,7 +30,7 @@ class MenuRepositoryIT {
         Menu menuCreated = menuRepository.save(menu);
 
         // then
-        MenuAssertions.checkAssertionsForMenu(menuCreated);
+        assertEquals("Food", menuCreated.getName());
     }
 
     @Test
@@ -58,7 +58,7 @@ class MenuRepositoryIT {
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnOneMenu_whenPassId() {
         // when
-        Menu menuReturned = menuRepository.findById(1L).orElse(null);
+        Menu menuReturned = menuRepository.findById(2L).orElse(null);
 
         // then
         MenuAssertions.checkAssertionsForMenu(menuReturned);
@@ -68,7 +68,7 @@ class MenuRepositoryIT {
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnOneMenu_whenPassName() {
         // when
-        Menu menuReturned = menuRepository.findByName("Drinks").orElse(null);
+        Menu menuReturned = menuRepository.findByName("Food").orElse(null);
 
         // then
         MenuAssertions.checkAssertionsForMenu(menuReturned);

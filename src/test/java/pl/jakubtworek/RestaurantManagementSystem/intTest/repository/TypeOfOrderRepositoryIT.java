@@ -31,7 +31,7 @@ class TypeOfOrderRepositoryIT {
         assertEquals("On-site", typeOfOrder.get().getType());
         assertEquals(1, typeOfOrder.get().getOrders().size());
         assertEquals(1, typeOfOrder.get().getOrders().get(0).getId());
-        assertEquals(12.99, typeOfOrder.get().getOrders().get(0).getPrice());
+        assertEquals(12.98, typeOfOrder.get().getOrders().get(0).getPrice());
         assertEquals("2022-08-22", typeOfOrder.get().getOrders().get(0).getDate());
         assertEquals("12:00", typeOfOrder.get().getOrders().get(0).getHourOrder());
         assertEquals("12:15", typeOfOrder.get().getOrders().get(0).getHourAway());
@@ -49,7 +49,7 @@ class TypeOfOrderRepositoryIT {
         assertEquals("Delivery", typeOfOrder.get().getType());
         assertEquals(1, typeOfOrder.get().getOrders().size());
         assertEquals(2, typeOfOrder.get().getOrders().get(0).getId());
-        assertEquals(30.99, typeOfOrder.get().getOrders().get(0).getPrice());
+        assertEquals(7.98, typeOfOrder.get().getOrders().get(0).getPrice());
         assertEquals("2022-08-22", typeOfOrder.get().getOrders().get(0).getDate());
         assertEquals("12:05", typeOfOrder.get().getOrders().get(0).getHourOrder());
         assertNull(typeOfOrder.get().getOrders().get(0).getHourAway());

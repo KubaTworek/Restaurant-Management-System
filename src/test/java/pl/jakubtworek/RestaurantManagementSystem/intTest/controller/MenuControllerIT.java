@@ -38,7 +38,7 @@ class MenuControllerIT {
         MenuResponse menuReturned = menuController.saveMenu(menuRequest).getBody();
 
         // then
-        MenuResponseAssertions.checkAssertionsForMenu(menuReturned);
+        assertEquals("Food", menuReturned.getName());
     }
 
     @Test
@@ -80,7 +80,7 @@ class MenuControllerIT {
         MenuResponse menuReturned = menuController.getMenuById(1L).getBody();
 
         // then
-        MenuResponseAssertions.checkAssertionsForMenu(menuReturned);
+        assertEquals("Food", menuReturned.getName());
     }
 
     @Test

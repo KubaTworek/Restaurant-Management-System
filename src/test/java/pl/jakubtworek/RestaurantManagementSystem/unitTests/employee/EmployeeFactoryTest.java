@@ -26,7 +26,7 @@ class EmployeeFactoryTest {
         EmployeeDTO employee = employeeFactory.createEmployee(employeeRequest, job);
 
         // then
-        assertEquals("James", employee.getFirstName());
+        assertEquals("John", employee.getFirstName());
         assertEquals("Smith", employee.getLastName());
         assertEquals("Cook", employee.getJob().getName());
     }
@@ -42,7 +42,7 @@ class EmployeeFactoryTest {
 
         // then
         assertEquals("James", employee.getFirstName());
-        assertEquals("Smith", employee.getLastName());
+        assertEquals("Patel", employee.getLastName());
         assertEquals("Waiter", employee.getJob().getName());
     }
 
@@ -56,8 +56,8 @@ class EmployeeFactoryTest {
         EmployeeDTO employee = employeeFactory.createEmployee(employeeRequest, job);
 
         // then
-        assertEquals("James", employee.getFirstName());
-        assertEquals("Smith", employee.getLastName());
+        assertEquals("Ann", employee.getFirstName());
+        assertEquals("Mary", employee.getLastName());
         assertEquals("DeliveryMan", employee.getJob().getName());
     }
 }

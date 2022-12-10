@@ -185,7 +185,7 @@ class OrderControllerIT {
         List<OrderResponse> ordersReturned = orderController.getOrderMade().getBody();
 
         // then
-        assertEquals(12.99, ordersReturned.get(0).getPrice());
+        assertEquals(12.98, ordersReturned.get(0).getPrice());
         assertEquals("2022-08-22", ordersReturned.get(0).getDate());
         assertEquals("12:00", ordersReturned.get(0).getHourOrder());
         assertEquals("12:15", ordersReturned.get(0).getHourAway());
@@ -211,7 +211,7 @@ class OrderControllerIT {
         List<OrderResponse> ordersReturned = orderController.getOrderUnmade().getBody();
 
         // then
-        assertEquals(30.99, ordersReturned.get(0).getPrice());
+        assertEquals(7.98, ordersReturned.get(0).getPrice());
         assertEquals("2022-08-22", ordersReturned.get(0).getDate());
         assertEquals("12:05", ordersReturned.get(0).getHourOrder());
         assertNull(ordersReturned.get(0).getHourAway());

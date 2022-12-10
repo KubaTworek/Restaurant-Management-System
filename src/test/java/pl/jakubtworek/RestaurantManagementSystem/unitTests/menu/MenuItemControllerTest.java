@@ -97,6 +97,6 @@ class MenuItemControllerTest {
         List<MenuItemResponse> menuItemsReturned = menuItemController.getMenuItemsByMenu("Food").getBody();
 
         // then
-        MenuItemResponseAssertions.checkAssertionsForMenuItems(menuItemsReturned);
+        MenuItemResponseAssertions.checkAssertionsForMenuItemsInMenu(menuItemsReturned);
     }
 }

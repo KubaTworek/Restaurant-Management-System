@@ -13,6 +13,8 @@ import pl.jakubtworek.RestaurantManagementSystem.exception.OrderNotFoundExceptio
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,10 +44,25 @@ class OrderServiceIT {
         SecurityContextHolder.setContext(securityContext);
         when(authentication.getName()).thenReturn("user");
 
-        OrderDTO orderReturned = orderService.save(order);
+        OrderDTO orderCreated = orderService.save(order);
 
+        LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter time = DateTimeFormatter.ofPattern("hh:mm:ss");
+        
         // then
-        OrderDTOAssertions.checkAssertionsForOrder(orderReturned);
+        assertEquals(12.98, orderCreated.getPrice());
+        assertEquals(date.format(localDateTime), orderCreated.getDate());
+        assertEquals(time.format(localDateTime), orderCreated.getHourOrder());
+        assertEquals("12:15", orderCreated.getHourAway());
+        assertEquals("On-site", orderCreated.getTypeOfOrder().getType());
+        assertEquals("Chicken", orderCreated.getMenuItems().get(0).getName());
+        assertEquals(10.99, orderCreated.getMenuItems().get(0).getPrice());
+        assertEquals("Coke", orderCreated.getMenuItems().get(1).getName());
+        assertEquals(1.99, orderCreated.getMenuItems().get(1).getPrice());
+        assertEquals("John", orderCreated.getEmployees().get(0).getFirstName());
+        assertEquals("Smith", orderCreated.getEmployees().get(0).getLastName());
+        assertEquals("Cook", orderCreated.getEmployees().get(0).getJob().getName());
     }
 
 

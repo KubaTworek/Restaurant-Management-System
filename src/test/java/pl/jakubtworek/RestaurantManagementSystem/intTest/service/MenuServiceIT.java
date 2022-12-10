@@ -31,7 +31,7 @@ class MenuServiceIT {
         MenuDTO menuCreated = menuService.save(menu);
 
         // then
-        MenuDTOAssertions.checkAssertionsForMenu(menuCreated);
+        assertEquals("Food", menuCreated.getName());
     }
 
     @Test
@@ -59,7 +59,7 @@ class MenuServiceIT {
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnOneMenu_whenPassId() {
         // when
-        MenuDTO menuReturned = menuService.findById(1L).orElse(null);
+        MenuDTO menuReturned = menuService.findById(2L).orElse(null);
 
         // then
         MenuDTOAssertions.checkAssertionsForMenu(menuReturned);
@@ -69,7 +69,7 @@ class MenuServiceIT {
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnOneMenu_whenPassName() {
         // when
-        MenuDTO menuReturned = menuService.findByName("Drinks").orElse(null);
+        MenuDTO menuReturned = menuService.findByName("Food").orElse(null);
 
         // then
         MenuDTOAssertions.checkAssertionsForMenu(menuReturned);

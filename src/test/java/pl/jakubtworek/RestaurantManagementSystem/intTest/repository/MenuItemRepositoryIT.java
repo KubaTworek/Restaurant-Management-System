@@ -65,7 +65,7 @@ class MenuItemRepositoryIT {
         List<MenuItem> menuItemsReturned = menuItemRepository.findByMenu(createMenu());
 
         // then
-        MenuItemAssertions.checkAssertionsForMenuItems(menuItemsReturned);
+        MenuItemAssertions.checkAssertionsForMenuItemsInMenu(menuItemsReturned);
     }
 
     @Test

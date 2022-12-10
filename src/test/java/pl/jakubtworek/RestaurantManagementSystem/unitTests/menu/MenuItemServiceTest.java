@@ -99,6 +99,6 @@ class MenuItemServiceTest {
         List<MenuItemDTO> menuItemsReturned = menuItemService.findByMenu("Food");
 
         // then
-        MenuItemDTOAssertions.checkAssertionsForMenuItems(menuItemsReturned);
+        MenuItemDTOAssertions.checkAssertionsForMenuItemsInMenu(menuItemsReturned);
     }
 }

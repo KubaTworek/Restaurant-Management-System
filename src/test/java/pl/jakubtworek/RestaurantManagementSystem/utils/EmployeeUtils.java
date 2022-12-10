@@ -36,30 +36,30 @@ public class EmployeeUtils {
     }
 
     public static EmployeeRequest createCookRequest(){
-        return new EmployeeRequest("James", "Smith", "Cook");
+        return new EmployeeRequest("John", "Smith", "Cook");
     }
     public static EmployeeRequest createWaiterRequest(){
-        return new EmployeeRequest("James", "Smith", "Waiter");
+        return new EmployeeRequest("James", "Patel", "Waiter");
     }
     public static EmployeeRequest createDeliveryRequest(){
-        return new EmployeeRequest("James", "Smith", "DeliveryMan");
+        return new EmployeeRequest("Ann", "Mary", "DeliveryMan");
     }
 
-    public static class EmployeeAssertions<T extends Employee>{
+    public static class EmployeeAssertions {
 
-        public static void checkAssertionsForEmployee(T employee){
+        public static void checkAssertionsForEmployee(Employee employee){
             assertEquals("John", employee.getFirstName());
             assertEquals("Smith", employee.getLastName());
             assertEquals("Cook", employee.getJob().getName());
         }
 
-        public static void checkAssertionsForCooks(List<T> cooks){
+        public static void checkAssertionsForCooks(List<Employee> cooks){
             assertEquals("John", cooks.get(0).getFirstName());
             assertEquals("Smith", cooks.get(0).getLastName());
             assertEquals("Cook", cooks.get(0).getJob().getName());
         }
 
-        public static void checkAssertionsForEmployees(List<T> employees){
+        public static void checkAssertionsForEmployees(List<Employee> employees){
             assertEquals("John", employees.get(0).getFirstName());
             assertEquals("Smith", employees.get(0).getLastName());
             assertEquals("Cook", employees.get(0).getJob().getName());
@@ -74,21 +74,21 @@ public class EmployeeUtils {
         }
     }
 
-    public static class EmployeeDTOAssertions<T extends EmployeeDTO>{
+    public static class EmployeeDTOAssertions {
 
-        public static void checkAssertionsForEmployee(T employee){
+        public static void checkAssertionsForEmployee(EmployeeDTO employee){
             assertEquals("John", employee.getFirstName());
             assertEquals("Smith", employee.getLastName());
             assertEquals("Cook", employee.getJob().getName());
         }
 
-        public static void checkAssertionsForCooks(List<T> cooks){
+        public static void checkAssertionsForCooks(List<EmployeeDTO> cooks){
             assertEquals("John", cooks.get(0).getFirstName());
             assertEquals("Smith", cooks.get(0).getLastName());
             assertEquals("Cook", cooks.get(0).getJob().getName());
         }
 
-        public static void checkAssertionsForEmployees(List<T> employees){
+        public static void checkAssertionsForEmployees(List<EmployeeDTO> employees){
             assertEquals("John", employees.get(0).getFirstName());
             assertEquals("Smith", employees.get(0).getLastName());
             assertEquals("Cook", employees.get(0).getJob().getName());
@@ -103,21 +103,21 @@ public class EmployeeUtils {
         }
     }
 
-    public static class EmployeeResponseAssertions<T extends EmployeeResponse>{
+    public static class EmployeeResponseAssertions {
 
-        public static void checkAssertionsForEmployee(T employee){
+        public static void checkAssertionsForEmployee(EmployeeResponse employee){
             assertEquals("John", employee.getFirstName());
             assertEquals("Smith", employee.getLastName());
             assertEquals("Cook", employee.getJob().getName());
         }
 
-        public static void checkAssertionsForCooks(List<T> cooks){
+        public static void checkAssertionsForCooks(List<EmployeeResponse> cooks){
             assertEquals("John", cooks.get(0).getFirstName());
             assertEquals("Smith", cooks.get(0).getLastName());
             assertEquals("Cook", cooks.get(0).getJob().getName());
         }
 
-        public static void checkAssertionsForEmployees(List<T> employees){
+        public static void checkAssertionsForEmployees(List<EmployeeResponse> employees){
             assertEquals("John", employees.get(0).getFirstName());
             assertEquals("Smith", employees.get(0).getLastName());
             assertEquals("Cook", employees.get(0).getJob().getName());

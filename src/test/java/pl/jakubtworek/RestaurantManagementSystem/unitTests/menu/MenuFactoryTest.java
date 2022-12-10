@@ -25,6 +25,6 @@ class MenuFactoryTest {
         MenuDTO menu = menuFactory.createMenu(menuDTO);
 
         // then
-        assertEquals("Drinks", menu.getName());
+        assertEquals("Food", menu.getName());
     }
 }

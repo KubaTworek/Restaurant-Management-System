@@ -13,6 +13,7 @@ import pl.jakubtworek.RestaurantManagementSystem.service.impl.MenuServiceImpl;
 
 import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 
@@ -49,7 +50,7 @@ class MenuServiceTest {
         MenuDTO menuCreated = menuService.save(menu);
 
         // then
-        MenuDTOAssertions.checkAssertionsForMenu(menuCreated);
+        assertEquals("Food", menuCreated.getName());
     }
 
 
@@ -87,9 +88,9 @@ class MenuServiceTest {
         Optional<Menu> menu = Optional.of(createMenu());
 
         // when
-        when(menuRepository.findById(1L)).thenReturn(menu);
+        when(menuRepository.findById(2L)).thenReturn(menu);
 
-        MenuDTO menuReturned = menuService.findById(1L).orElse(null);
+        MenuDTO menuReturned = menuService.findById(2L).orElse(null);
 
         // then
         MenuDTOAssertions.checkAssertionsForMenu(menuReturned);
@@ -101,9 +102,9 @@ class MenuServiceTest {
         Optional<Menu> menu = Optional.of(createMenu());
 
         // when
-        when(menuRepository.findByName("Menu")).thenReturn(menu);
+        when(menuRepository.findByName("Food")).thenReturn(menu);
 
-        MenuDTO menuReturned = menuService.findByName("Menu").orElse(null);
+        MenuDTO menuReturned = menuService.findByName("Food").orElse(null);
 
         // then
         MenuDTOAssertions.checkAssertionsForMenu(menuReturned);

@@ -28,7 +28,7 @@ class MenuItemFactoryTest {
         // then
         assertEquals("Chicken", menuItem.getName());
         assertEquals(10.99, menuItem.getPrice());
-        assertEquals("Drinks", menuItem.getMenu().getName());
+        assertEquals("Food", menuItem.getMenu().getName());
         assertNull(menuItem.getOrders());
     }
 }
