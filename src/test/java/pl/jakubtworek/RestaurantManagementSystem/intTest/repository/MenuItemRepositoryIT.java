@@ -12,6 +12,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.spy;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.createMenu;
 
 @SpringBootTest
 @Transactional
@@ -20,51 +21,7 @@ class MenuItemRepositoryIT {
     @Autowired
     private MenuItemRepository menuItemRepository;
 
-    @Test
-    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    void shouldReturnAllMenuItems() {
-        // when
-        List<MenuItem> menuItems = menuItemRepository.findAll();
-
-        // then
-        assertEquals(3, menuItems.size());
-        assertEquals(1, menuItems.get(0).getId());
-        assertEquals("Chicken", menuItems.get(0).getName());
-        assertEquals(10.99, menuItems.get(0).getPrice());
-        assertEquals(2, menuItems.get(0).getMenu().getId());
-        assertEquals("Food", menuItems.get(0).getMenu().getName());
-        assertEquals(1, menuItems.get(0).getOrders().size());
-        assertEquals(2, menuItems.get(1).getId());
-        assertEquals("Coke", menuItems.get(1).getName());
-        assertEquals(1.99, menuItems.get(1).getPrice());
-        assertEquals(1, menuItems.get(1).getMenu().getId());
-        assertEquals("Drinks", menuItems.get(1).getMenu().getName());
-        assertEquals(2, menuItems.get(1).getOrders().size());
-        assertEquals(3, menuItems.get(2).getId());
-        assertEquals("Tiramisu", menuItems.get(2).getName());
-        assertEquals(5.99, menuItems.get(2).getPrice());
-        assertEquals(2, menuItems.get(2).getMenu().getId());
-        assertEquals("Food", menuItems.get(2).getMenu().getName());
-        assertEquals(1, menuItems.get(2).getOrders().size());
-    }
-
-    @Test
-    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    void shouldReturnOneMenuItem() {
-        // when
-        Optional<MenuItem> menuItem = menuItemRepository.findById(1L);
-
-        // then
-        assertNotNull(menuItem.get());
-        assertEquals(1, menuItem.get().getId());
-        assertEquals("Chicken", menuItem.get().getName());
-        assertEquals(10.99, menuItem.get().getPrice());
-        assertEquals(2, menuItem.get().getMenu().getId());
-        assertEquals("Food", menuItem.get().getMenu().getName());
-        assertEquals(1, menuItem.get().getOrders().size());
-    }
-
-/*    @Test
+    /*    @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnCreatedMenuItem() {
 
@@ -83,18 +40,32 @@ class MenuItemRepositoryIT {
 
     @Test
     @Sql({"/deleting-data.sql", "/inserting-data.sql"})
-    public void shouldReturnMenuItems_whenMenuNamePass() {
+    void shouldReturnAllMenuItems() {
         // when
-        List<MenuItem> menuItems = menuItemRepository.findByMenu(spy(new Menu(1L,"Drinks",List.of())));
+        List<MenuItem> menuItemsReturned = menuItemRepository.findAll();
 
         // then
-        assertEquals(1, menuItems.size());
-        assertEquals(2, menuItems.get(0).getId());
-        assertEquals("Coke", menuItems.get(0).getName());
-        assertEquals(1.99, menuItems.get(0).getPrice());
-        assertEquals(1, menuItems.get(0).getMenu().getId());
-        assertEquals("Drinks", menuItems.get(0).getMenu().getName());
-        assertEquals(2, menuItems.get(0).getOrders().size());
+        checkAssertionsForMenuItems(menuItemsReturned);
+    }
+
+    @Test
+    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
+    void shouldReturnOneMenuItem() {
+        // when
+        MenuItem menuItemReturned = menuItemRepository.findById(1L).orElse(null);
+
+        // then
+        checkAssertionsForMenuItem(menuItemReturned);
+    }
+
+    @Test
+    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
+    public void shouldReturnMenuItems_whenMenuNamePass() {
+        // when
+        List<MenuItem> menuItemsReturned = menuItemRepository.findByMenu(createMenu());
+
+        // then
+        checkAssertionsForMenuItems(menuItemsReturned);
     }
 
     @Test
@@ -105,5 +76,18 @@ class MenuItemRepositoryIT {
 
         // then
         assertEquals(0, menuItems.size());
+    }
+
+    private void checkAssertionsForMenuItem(MenuItem menuItem) {
+        assertEquals("Chicken", menuItem.getName());
+        assertEquals(10.99, menuItem.getPrice());
+    }
+
+    private void checkAssertionsForMenuItems(List<MenuItem> menuItems) {
+        assertEquals("Chicken", menuItems.get(0).getName());
+        assertEquals(10.99, menuItems.get(0).getPrice());
+
+        assertEquals("Tiramisu", menuItems.get(1).getName());
+        assertEquals(5.99, menuItems.get(1).getPrice());
     }
 }

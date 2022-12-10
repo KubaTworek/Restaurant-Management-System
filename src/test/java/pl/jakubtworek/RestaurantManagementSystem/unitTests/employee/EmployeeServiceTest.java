@@ -52,8 +52,8 @@ class EmployeeServiceTest {
         Job job = createJobCook();
         Employee expectedEmployee = createCook();
 
-        when(employeeFactory.createEmployee(any(EmployeeRequest.class), any(JobDTO.class))).thenReturn(expectedEmployeeDTO);
-        when(employeeRepository.save(any(Employee.class))).thenReturn(expectedEmployee);
+        when(employeeFactory.createEmployee(any(), any())).thenReturn(expectedEmployeeDTO);
+        when(employeeRepository.save(any())).thenReturn(expectedEmployee);
         when(jobRepository.findByName(any())).thenReturn(Optional.of(job));
 
         // when

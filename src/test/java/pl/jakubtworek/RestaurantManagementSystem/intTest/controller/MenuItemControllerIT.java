@@ -9,10 +9,10 @@ import pl.jakubtworek.RestaurantManagementSystem.exception.MenuItemNotFoundExcep
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 
@@ -28,30 +28,6 @@ class MenuItemControllerIT {
     private MenuRepository menuRepository;
 
     @Test
-    void shouldReturnMenuItemById() throws Exception {
-        // given
-        Optional<MenuItem> expectedMenuItem = Optional.of(createChickenMenuItem());
-
-        // when
-        when(menuItemRepository.findById(1L)).thenReturn(expectedMenuItem);
-
-        MenuItemResponse menuItem = menuItemController.getMenuItemById(1L).getBody();
-
-        // then
-        assertEquals("Chicken", menuItem.getName());
-        assertEquals(10.99, menuItem.getPrice());
-    }
-
-    @Test
-    void shouldReturnErrorResponse_whenAskedForNonExistingMenuItem() {
-        // when
-        Exception exception = assertThrows(MenuItemNotFoundException.class, () -> menuItemController.getMenuItemById(4L));
-
-        // then
-        assertEquals("There are no menu item in restaurant with that id: 4", exception.getMessage());
-    }
-
-    @Test
     void shouldReturnCreatedMenuItem() throws Exception {
         // given
         MenuItemRequest menuItemRequest = createChickenMenuItemRequest();
@@ -62,11 +38,10 @@ class MenuItemControllerIT {
         when(menuRepository.findByName("Food")).thenReturn(expectedMenu);
         when(menuItemRepository.save(any())).thenReturn(menuItemCreated);
 
-        MenuItemResponse menuItemResponse = menuItemController.saveMenuItem(menuItemRequest).getBody();
+        MenuItemResponse menuItemReturned = menuItemController.saveMenuItem(menuItemRequest).getBody();
 
         // then
-        assertEquals("Chicken", menuItemResponse.getName());
-        assertEquals(10.99, menuItemResponse.getPrice());
+        checkAssertionsForMenuItem(menuItemReturned);
     }
 
     @Test
@@ -81,5 +56,55 @@ class MenuItemControllerIT {
 
         // then
         assertEquals("Menu item with id: 1 was deleted", response);
+    }
+
+    @Test
+    void shouldReturnMenuItemById() throws Exception {
+        // given
+        Optional<MenuItem> expectedMenuItem = Optional.of(createChickenMenuItem());
+
+        // when
+        when(menuItemRepository.findById(1L)).thenReturn(expectedMenuItem);
+
+        MenuItemResponse menuItemReturned = menuItemController.getMenuItemById(1L).getBody();
+
+        // then
+        checkAssertionsForMenuItem(menuItemReturned);
+    }
+
+    @Test
+    void shouldReturnMenuItemByMenu() throws Exception {
+        // given
+        List<MenuItem> expectedMenuItems = createMenuItemListForFood();
+
+        // when
+        when(menuItemRepository.findByMenu(any())).thenReturn(expectedMenuItems);
+
+        List<MenuItemResponse> menuItemsReturned = menuItemController.getMenuItemsByMenu("Food").getBody();
+
+        // then
+        checkAssertionsForMenuItems(menuItemsReturned);
+    }
+
+    @Test
+    void shouldThrowException_whenMenuItemNotExist() {
+        // when
+        Exception exception = assertThrows(MenuItemNotFoundException.class, () -> menuItemController.getMenuItemById(4L));
+
+        // then
+        assertEquals("There are no menu item in restaurant with that id: 4", exception.getMessage());
+    }
+
+    private void checkAssertionsForMenuItem(MenuItemResponse menuItem) {
+        assertEquals("Chicken", menuItem.getName());
+        assertEquals(10.99, menuItem.getPrice());
+    }
+
+    private void checkAssertionsForMenuItems(List<MenuItemResponse> menuItems) {
+        assertEquals("Chicken", menuItems.get(0).getName());
+        assertEquals(10.99, menuItems.get(0).getPrice());
+
+        assertEquals("Tiramisu", menuItems.get(1).getName());
+        assertEquals(5.99, menuItems.get(1).getPrice());
     }
 }

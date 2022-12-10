@@ -4,16 +4,21 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.*;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.*;
 import pl.jakubtworek.RestaurantManagementSystem.exception.OrderNotFoundException;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.createChickenMenuItem;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.UserUtils.createUser;
 
 @SpringBootTest
 class OrderControllerIT {
@@ -23,85 +28,40 @@ class OrderControllerIT {
 
     @MockBean
     private OrderRepository orderRepository;
-
-
-    @Test
-    void shouldReturnAllOrders() {
-        // given
-        List<Order> expectedOrders = createOrders();
-
-        // when
-        when(orderRepository.findAll()).thenReturn(expectedOrders);
-
-        List<OrderResponse> ordersReturned = orderController.getOrders().getBody();
-
-        // then
-        assertEquals(12.99, ordersReturned.get(0).getPrice());
-        assertEquals("2022-08-22", ordersReturned.get(0).getDate());
-        assertEquals("12:00", ordersReturned.get(0).getHourOrder());
-        assertEquals("12:15", ordersReturned.get(0).getHourAway());
-        assertEquals("On-site", ordersReturned.get(0).getTypeOfOrder().getType());
-        assertEquals("Chicken", ordersReturned.get(0).getMenuItems().get(0).getName());
-        assertEquals(10.99, ordersReturned.get(0).getMenuItems().get(0).getPrice());
-        assertEquals("Coke", ordersReturned.get(0).getMenuItems().get(1).getName());
-        assertEquals(1.99, ordersReturned.get(0).getMenuItems().get(1).getPrice());
-        assertEquals("John", ordersReturned.get(0).getEmployees().get(0).getFirstName());
-        assertEquals("Smith", ordersReturned.get(0).getEmployees().get(0).getLastName());
-        assertEquals("Cook", ordersReturned.get(0).getEmployees().get(0).getJob().getName());
-
-        assertEquals(30.99, ordersReturned.get(1).getPrice());
-        assertEquals("2022-08-22", ordersReturned.get(1).getDate());
-        assertEquals("12:05", ordersReturned.get(1).getHourOrder());
-        assertNull(ordersReturned.get(1).getHourAway());
-        assertEquals("Delivery", ordersReturned.get(1).getTypeOfOrder().getType());
-        assertEquals("Tiramisu", ordersReturned.get(1).getMenuItems().get(0).getName());
-        assertEquals(5.99, ordersReturned.get(1).getMenuItems().get(0).getPrice());
-        assertEquals("Coke", ordersReturned.get(1).getMenuItems().get(1).getName());
-        assertEquals(1.99, ordersReturned.get(1).getMenuItems().get(1).getPrice());
-        assertEquals("John", ordersReturned.get(1).getEmployees().get(0).getFirstName());
-        assertEquals("Smith", ordersReturned.get(1).getEmployees().get(0).getLastName());
-        assertEquals("Cook", ordersReturned.get(1).getEmployees().get(0).getJob().getName());
-    }
+    @MockBean
+    private TypeOfOrderRepository typeOfOrderRepository;
+    @MockBean
+    private UserRepository userRepository;
+    @MockBean
+    private MenuItemRepository menuItemRepository;
+    @MockBean
+    private Authentication authentication;
+    @MockBean
+    private SecurityContext securityContext;
 
     @Test
-    void shouldReturnOrderById() throws Exception {
-        // given
-        Optional<Order> expectedOrder = Optional.of(createOnsiteOrder());
-
-        // when
-        when(orderRepository.findById(1L)).thenReturn(expectedOrder);
-
-        OrderResponse orderReturned = orderController.getOrderById(1L).getBody();
-
-        // then
-        assertEquals(12.99, orderReturned.getPrice());
-        assertEquals("2022-08-22", orderReturned.getDate());
-        assertEquals("12:00", orderReturned.getHourOrder());
-        assertEquals("12:15", orderReturned.getHourAway());
-        assertEquals("On-site", orderReturned.getTypeOfOrder().getType());
-        assertEquals("Chicken", orderReturned.getMenuItems().get(0).getName());
-        assertEquals(10.99, orderReturned.getMenuItems().get(0).getPrice());
-        assertEquals("Coke", orderReturned.getMenuItems().get(1).getName());
-        assertEquals(1.99, orderReturned.getMenuItems().get(1).getPrice());
-        assertEquals("John", orderReturned.getEmployees().get(0).getFirstName());
-        assertEquals("Smith", orderReturned.getEmployees().get(0).getLastName());
-        assertEquals("Cook", orderReturned.getEmployees().get(0).getJob().getName());
-    }
-
-    @Test
-    void shouldReturnErrorResponse_whenAskedForNonExistingOrder() {
-        // when
-        Exception exception = assertThrows(OrderNotFoundException.class, () -> orderController.getOrderById(3L));
-
-        // then
-        assertEquals("There are no order in restaurant with that id: 3", exception.getMessage());
-    }
-
-/*    @Test
     void shouldReturnCreatedOrder() throws Exception {
+        // given
+        Order order = createOnsiteOrder();
+        User user = createUser();
+        TypeOfOrder typeOfOrder = createOnsiteType();
+        MenuItem menuItem = createChickenMenuItem();
+        OrderRequest orderRequest = createOnsiteOrderRequest();
 
-    }*/
+        // when
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        when(authentication.getName()).thenReturn("user");
+        when(orderRepository.save(any())).thenReturn(order);
+        when(userRepository.findByUsername(any())).thenReturn(Optional.of(user));
+        when(typeOfOrderRepository.findByType(any())).thenReturn(Optional.of(typeOfOrder));
+        when(menuItemRepository.findByName(any())).thenReturn(Optional.of(menuItem));
 
+        OrderResponse orderCreated = orderController.saveOrder(orderRequest).getBody();
+
+        // then
+        checkAssertionsForOrder(orderCreated);
+    }
 
     @Test
     void shouldReturnResponseConfirmingDeletedOrder() throws Exception {
@@ -117,8 +77,47 @@ class OrderControllerIT {
         assertEquals("Order with id: 1 was deleted", response);
     }
 
+    @Test
+    void shouldReturnAllOrders() {
+        // given
+        List<Order> expectedOrders = createOrders();
+
+        // when
+        when(orderRepository.findAll()).thenReturn(expectedOrders);
+
+        List<OrderResponse> ordersReturned = orderController.getOrders().getBody();
+
+        // then
+        checkAssertionsForOrders(ordersReturned);
+    }
+
+    @Test
+    void shouldReturnOrderById() throws Exception {
+        // given
+        Optional<Order> expectedOrder = Optional.of(createOnsiteOrder());
+
+        // when
+        when(orderRepository.findById(1L)).thenReturn(expectedOrder);
+
+        OrderResponse orderReturned = orderController.getOrderById(1L).getBody();
+
+        // then
+        checkAssertionsForOrder(orderReturned);
+    }
+
+    @Test
+    void shouldThrowException_whenOrderNotExist() {
+        // when
+        Exception exception = assertThrows(OrderNotFoundException.class, () -> orderController.getOrderById(3L));
+
+        // then
+        assertEquals("There are no order in restaurant with that id: 3", exception.getMessage());
+    }
+
+
+
 /*    @Test
-    void shouldReturnOrders_whenDateIsPassed() {
+    void shouldReturnOrdersByDate() {
         // given
         List<Order> expectedOrders = createOrders();
 
@@ -224,5 +223,48 @@ class OrderControllerIT {
         assertEquals("John", ordersReturned.get(0).getEmployees().get(0).getFirstName());
         assertEquals("Smith", ordersReturned.get(0).getEmployees().get(0).getLastName());
         assertEquals("Cook", ordersReturned.get(0).getEmployees().get(0).getJob().getName());
+    }
+
+    private void checkAssertionsForOrder(OrderResponse order){
+        assertEquals(12.99, order.getPrice());
+        assertEquals("2022-08-22", order.getDate());
+        assertEquals("12:00", order.getHourOrder());
+        assertEquals("12:15", order.getHourAway());
+        assertEquals("On-site", order.getTypeOfOrder().getType());
+        assertEquals("Chicken", order.getMenuItems().get(0).getName());
+        assertEquals(10.99, order.getMenuItems().get(0).getPrice());
+        assertEquals("Coke", order.getMenuItems().get(1).getName());
+        assertEquals(1.99, order.getMenuItems().get(1).getPrice());
+        assertEquals("John", order.getEmployees().get(0).getFirstName());
+        assertEquals("Smith", order.getEmployees().get(0).getLastName());
+        assertEquals("Cook", order.getEmployees().get(0).getJob().getName());
+    }
+
+    private void checkAssertionsForOrders(List<OrderResponse> orders){
+        assertEquals(12.99, orders.get(0).getPrice());
+        assertEquals("2022-08-22", orders.get(0).getDate());
+        assertEquals("12:00", orders.get(0).getHourOrder());
+        assertEquals("12:15", orders.get(0).getHourAway());
+        assertEquals("On-site", orders.get(0).getTypeOfOrder().getType());
+        assertEquals("Chicken", orders.get(0).getMenuItems().get(0).getName());
+        assertEquals(10.99, orders.get(0).getMenuItems().get(0).getPrice());
+        assertEquals("Coke", orders.get(0).getMenuItems().get(1).getName());
+        assertEquals(1.99, orders.get(0).getMenuItems().get(1).getPrice());
+        assertEquals("John", orders.get(0).getEmployees().get(0).getFirstName());
+        assertEquals("Smith", orders.get(0).getEmployees().get(0).getLastName());
+        assertEquals("Cook", orders.get(0).getEmployees().get(0).getJob().getName());
+
+        assertEquals(30.99, orders.get(1).getPrice());
+        assertEquals("2022-08-22", orders.get(1).getDate());
+        assertEquals("12:05", orders.get(1).getHourOrder());
+        assertNull(orders.get(1).getHourAway());
+        assertEquals("Delivery", orders.get(1).getTypeOfOrder().getType());
+        assertEquals("Tiramisu", orders.get(1).getMenuItems().get(0).getName());
+        assertEquals(5.99, orders.get(1).getMenuItems().get(0).getPrice());
+        assertEquals("Coke", orders.get(1).getMenuItems().get(1).getName());
+        assertEquals(1.99, orders.get(1).getMenuItems().get(1).getPrice());
+        assertEquals("John", orders.get(1).getEmployees().get(0).getFirstName());
+        assertEquals("Smith", orders.get(1).getEmployees().get(0).getLastName());
+        assertEquals("Cook", orders.get(1).getEmployees().get(0).getJob().getName());
     }
 }

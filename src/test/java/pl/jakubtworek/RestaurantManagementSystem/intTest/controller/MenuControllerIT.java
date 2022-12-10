@@ -6,7 +6,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.*;
-import pl.jakubtworek.RestaurantManagementSystem.exception.*;
+import pl.jakubtworek.RestaurantManagementSystem.exception.MenuNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuRepository;
 
@@ -27,53 +27,6 @@ class MenuControllerIT {
     private MenuRepository menuRepository;
 
     @Test
-    void shouldReturnAllMenu() {
-        // given
-        List<Menu> expectedMenu = createMenuList();
-
-        // when
-        when(menuRepository.findAll()).thenReturn(expectedMenu);
-
-        List<MenuResponse> menuReturned = menuController.getMenus().getBody();
-
-        // then
-        assertEquals("Drinks", menuReturned.get(0).getName());
-        assertEquals("Coke", menuReturned.get(0).getMenuItems().get(0).getName());
-        assertEquals(1.99, menuReturned.get(0).getMenuItems().get(0).getPrice());
-
-        assertEquals("Food", menuReturned.get(1).getName());
-        assertEquals("Chicken", menuReturned.get(1).getMenuItems().get(0).getName());
-        assertEquals(10.99, menuReturned.get(1).getMenuItems().get(0).getPrice());
-        assertEquals("Tiramisu", menuReturned.get(1).getMenuItems().get(1).getName());
-        assertEquals(5.99, menuReturned.get(1).getMenuItems().get(1).getPrice());
-    }
-
-    @Test
-    void shouldReturnMenuById() throws Exception {
-        // given
-        Optional<Menu> expectedMenu = Optional.of(createMenu());
-
-        // when
-        when(menuRepository.findById(1L)).thenReturn(expectedMenu);
-
-        MenuResponse menuReturned = menuController.getMenuById(1L).getBody();
-
-        // then
-        assertEquals("Drinks", menuReturned.getName());
-        assertEquals("Coke", menuReturned.getMenuItems().get(0).getName());
-        assertEquals(1.99, menuReturned.getMenuItems().get(0).getPrice());
-    }
-
-    @Test
-    void shouldReturnErrorResponse_whenAskedForNonExistingMenu() {
-        // when
-        Exception exception = assertThrows(MenuNotFoundException.class, () -> menuController.getMenuById(3L));
-
-        // then
-        assertEquals("There are no menu in restaurant with that id: 3", exception.getMessage());
-    }
-
-    @Test
     void shouldReturnCreatedMenu() {
         // given
         MenuRequest menuRequest = createMenuRequest();
@@ -85,9 +38,8 @@ class MenuControllerIT {
         MenuResponse menuReturned = menuController.saveMenu(menuRequest).getBody();
 
         // then
-        assertEquals("Drinks", menuReturned.getName());
+        checkAssertionsForMenu(menuReturned);
     }
-
 
     @Test
     void shouldReturnResponseConfirmingDeletedMenu() throws Exception {
@@ -101,5 +53,60 @@ class MenuControllerIT {
 
         // then
         assertEquals("Menu with id: 1 was deleted", response);
+    }
+
+    @Test
+    void shouldReturnAllMenu() {
+        // given
+        List<Menu> expectedMenu = createMenuList();
+
+        // when
+        when(menuRepository.findAll()).thenReturn(expectedMenu);
+
+        List<MenuResponse> menuReturned = menuController.getMenus().getBody();
+
+        // then
+        checkAssertionsForMenus(menuReturned);
+    }
+
+    @Test
+    void shouldReturnMenuById() throws Exception {
+        // given
+        Optional<Menu> expectedMenu = Optional.of(createMenu());
+
+        // when
+        when(menuRepository.findById(1L)).thenReturn(expectedMenu);
+
+        MenuResponse menuReturned = menuController.getMenuById(1L).getBody();
+
+        // then
+        checkAssertionsForMenu(menuReturned);
+    }
+
+    @Test
+    void shouldThrowException_whenMenuNotExist() {
+        // when
+        Exception exception = assertThrows(MenuNotFoundException.class, () -> menuController.getMenuById(3L));
+
+        // then
+        assertEquals("There are no menu in restaurant with that id: 3", exception.getMessage());
+    }
+
+    private void checkAssertionsForMenu(MenuResponse menu){
+        assertEquals("Drinks", menu.getName());
+        assertEquals("Coke", menu.getMenuItems().get(0).getName());
+        assertEquals(1.99, menu.getMenuItems().get(0).getPrice());
+    }
+
+    private void checkAssertionsForMenus(List<MenuResponse> menus){
+        assertEquals("Drinks", menus.get(0).getName());
+        assertEquals("Coke", menus.get(0).getMenuItems().get(0).getName());
+        assertEquals(1.99, menus.get(0).getMenuItems().get(0).getPrice());
+
+        assertEquals("Food", menus.get(1).getName());
+        assertEquals("Chicken", menus.get(1).getMenuItems().get(0).getName());
+        assertEquals(10.99, menus.get(1).getMenuItems().get(0).getPrice());
+        assertEquals("Tiramisu", menus.get(1).getMenuItems().get(1).getName());
+        assertEquals(5.99, menus.get(1).getMenuItems().get(1).getPrice());
     }
 }
