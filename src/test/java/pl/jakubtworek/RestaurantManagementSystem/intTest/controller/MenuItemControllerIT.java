@@ -41,7 +41,7 @@ class MenuItemControllerIT {
         MenuItemResponse menuItemReturned = menuItemController.saveMenuItem(menuItemRequest).getBody();
 
         // then
-        checkAssertionsForMenuItem(menuItemReturned);
+        MenuItemResponseAssertions.checkAssertionsForMenuItem(menuItemReturned);
     }
 
     @Test
@@ -69,7 +69,7 @@ class MenuItemControllerIT {
         MenuItemResponse menuItemReturned = menuItemController.getMenuItemById(1L).getBody();
 
         // then
-        checkAssertionsForMenuItem(menuItemReturned);
+        MenuItemResponseAssertions.checkAssertionsForMenuItem(menuItemReturned);
     }
 
     @Test
@@ -83,7 +83,7 @@ class MenuItemControllerIT {
         List<MenuItemResponse> menuItemsReturned = menuItemController.getMenuItemsByMenu("Food").getBody();
 
         // then
-        checkAssertionsForMenuItems(menuItemsReturned);
+        MenuItemResponseAssertions.checkAssertionsForMenuItems(menuItemsReturned);
     }
 
     @Test
@@ -93,18 +93,5 @@ class MenuItemControllerIT {
 
         // then
         assertEquals("There are no menu item in restaurant with that id: 4", exception.getMessage());
-    }
-
-    private void checkAssertionsForMenuItem(MenuItemResponse menuItem) {
-        assertEquals("Chicken", menuItem.getName());
-        assertEquals(10.99, menuItem.getPrice());
-    }
-
-    private void checkAssertionsForMenuItems(List<MenuItemResponse> menuItems) {
-        assertEquals("Chicken", menuItems.get(0).getName());
-        assertEquals(10.99, menuItems.get(0).getPrice());
-
-        assertEquals("Tiramisu", menuItems.get(1).getName());
-        assertEquals(5.99, menuItems.get(1).getPrice());
     }
 }

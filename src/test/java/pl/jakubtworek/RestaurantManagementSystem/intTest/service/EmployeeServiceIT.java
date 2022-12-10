@@ -5,12 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.*;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
 import pl.jakubtworek.RestaurantManagementSystem.exception.*;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 
-import java.util.*;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.*;
@@ -32,7 +32,7 @@ class EmployeeServiceIT {
         EmployeeDTO employeeCreated = employeeService.save(employee);
 
         // then
-        checkAssertionsForEmployee(employeeCreated);
+        EmployeeDTOAssertions.checkAssertionsForEmployee(employeeCreated);
     }
 
     @Test
@@ -53,7 +53,7 @@ class EmployeeServiceIT {
         List<EmployeeDTO> employeesReturned = employeeService.findAll();
 
         // then
-        checkAssertionsForEmployees(employeesReturned);
+        EmployeeDTOAssertions.checkAssertionsForEmployees(employeesReturned);
     }
 
     @Test
@@ -63,7 +63,7 @@ class EmployeeServiceIT {
         EmployeeDTO employeeReturned = employeeService.findById(1L).orElse(null);
 
         // then
-        checkAssertionsForEmployee(employeeReturned);
+        EmployeeDTOAssertions.checkAssertionsForEmployee(employeeReturned);
     }
 
     @Test
@@ -73,10 +73,10 @@ class EmployeeServiceIT {
         List<EmployeeDTO> employeesReturned = employeeService.findByJob("Cook");
 
         // then
-        checkAssertionsForCooks(employeesReturned);
+        EmployeeDTOAssertions.checkAssertionsForCooks(employeesReturned);
     }
 
-    private void checkAssertionsForEmployee(EmployeeDTO employee){
+/*    private void checkAssertionsForEmployee(EmployeeDTO employee){
         assertEquals("John", employee.getFirstName());
         assertEquals("Smith", employee.getLastName());
         assertEquals("Cook", employee.getJob().getName());
@@ -100,5 +100,5 @@ class EmployeeServiceIT {
         assertEquals("Ann", employees.get(2).getFirstName());
         assertEquals("Mary", employees.get(2).getLastName());
         assertEquals("DeliveryMan", employees.get(2).getJob().getName());
-    }
+    }*/
 }

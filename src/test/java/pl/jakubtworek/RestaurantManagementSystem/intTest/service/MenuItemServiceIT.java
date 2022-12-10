@@ -5,15 +5,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
-import pl.jakubtworek.RestaurantManagementSystem.controller.menu.*;
+import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
 import pl.jakubtworek.RestaurantManagementSystem.exception.MenuNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
 import pl.jakubtworek.RestaurantManagementSystem.repository.MenuItemRepository;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuItemService;
+import pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 
-import java.util.*;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.createChickenMenuItemRequest;
 
 @SpringBootTest
@@ -35,7 +35,7 @@ class MenuItemServiceIT {
         MenuItemDTO menuItemCreated = menuItemService.save(menuItem);
 
         // then
-        checkAssertionsForMenuItem(menuItemCreated);
+        MenuItemDTOAssertions.checkAssertionsForMenuItem(menuItemCreated);
     }
 
     @Test
@@ -45,7 +45,7 @@ class MenuItemServiceIT {
         MenuItemDTO menuItemReturned = menuItemService.findById(1L).orElse(null);
 
         // then
-        checkAssertionsForMenuItem(menuItemReturned);
+        MenuItemDTOAssertions.checkAssertionsForMenuItem(menuItemReturned);
     }
 
     @Test
@@ -55,19 +55,6 @@ class MenuItemServiceIT {
         List<MenuItemDTO> menuItemsReturned = menuItemService.findByMenu("Food");
 
         // then
-        checkAssertionsForMenuItems(menuItemsReturned);
-    }
-
-    private void checkAssertionsForMenuItem(MenuItemDTO menuItem) {
-        assertEquals("Chicken", menuItem.getName());
-        assertEquals(10.99, menuItem.getPrice());
-    }
-
-    private void checkAssertionsForMenuItems(List<MenuItemDTO> menuItems) {
-        assertEquals("Chicken", menuItems.get(0).getName());
-        assertEquals(10.99, menuItems.get(0).getPrice());
-
-        assertEquals("Tiramisu", menuItems.get(1).getName());
-        assertEquals(5.99, menuItems.get(1).getPrice());
+        MenuItemDTOAssertions.checkAssertionsForMenuItems(menuItemsReturned);
     }
 }

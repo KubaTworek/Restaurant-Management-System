@@ -4,7 +4,7 @@ import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
 import pl.jakubtworek.RestaurantManagementSystem.exception.*;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuItemFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
@@ -13,7 +13,6 @@ import pl.jakubtworek.RestaurantManagementSystem.service.impl.MenuItemServiceImp
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 
@@ -56,7 +55,7 @@ class MenuItemServiceTest {
         MenuItemDTO menuItemCreated = menuItemService.save(menuItem);
 
         // then
-        checkAssertionsForMenuItem(menuItemCreated);
+        MenuItemDTOAssertions.checkAssertionsForMenuItem(menuItemCreated);
     }
 
     @Test
@@ -84,7 +83,7 @@ class MenuItemServiceTest {
         MenuItemDTO menuItemReturned = menuItemService.findById(1L).orElse(null);
 
         // then
-        checkAssertionsForMenuItem(menuItemReturned);
+        MenuItemDTOAssertions.checkAssertionsForMenuItem(menuItemReturned);
     }
 
     @Test
@@ -100,19 +99,6 @@ class MenuItemServiceTest {
         List<MenuItemDTO> menuItemsReturned = menuItemService.findByMenu("Food");
 
         // then
-        checkAssertionsForMenuItems(menuItemsReturned);
-    }
-
-    private void checkAssertionsForMenuItem(MenuItemDTO menuItem) {
-        assertEquals("Chicken", menuItem.getName());
-        assertEquals(10.99, menuItem.getPrice());
-    }
-
-    private void checkAssertionsForMenuItems(List<MenuItemDTO> menuItems) {
-        assertEquals("Chicken", menuItems.get(0).getName());
-        assertEquals(10.99, menuItems.get(0).getPrice());
-
-        assertEquals("Tiramisu", menuItems.get(1).getName());
-        assertEquals(5.99, menuItems.get(1).getPrice());
+        MenuItemDTOAssertions.checkAssertionsForMenuItems(menuItemsReturned);
     }
 }

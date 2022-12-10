@@ -43,7 +43,7 @@ class EmployeeControllerTest {
         EmployeeResponse employeeCreated = employeeController.saveEmployee(employee).getBody();
 
         // then
-        checkAssertionsForEmployee(employeeCreated);
+        EmployeeResponseAssertions.checkAssertionsForEmployee(employeeCreated);
     }
 
     @Test
@@ -74,7 +74,7 @@ class EmployeeControllerTest {
         List<EmployeeResponse> employeesReturned = employeeController.getEmployees().getBody();
 
         // then
-        checkAssertionsForEmployees(employeesReturned);
+        EmployeeResponseAssertions.checkAssertionsForEmployees(employeesReturned);
     }
 
     @Test
@@ -88,7 +88,7 @@ class EmployeeControllerTest {
         EmployeeResponse employeeReturned = employeeController.getEmployeeById(1L).getBody();
 
         // then
-        checkAssertionsForEmployee(employeeReturned);
+        EmployeeResponseAssertions.checkAssertionsForEmployee(employeeReturned);
     }
 
     @Test
@@ -114,32 +114,6 @@ class EmployeeControllerTest {
         List<EmployeeResponse> employeesReturned = employeeController.getEmployeeByJobName("Cook").getBody();
 
         // then
-        checkAssertionsForCooks(employeesReturned);
-    }
-
-    private void checkAssertionsForEmployee(EmployeeResponse employee){
-        assertEquals("John", employee.getFirstName());
-        assertEquals("Smith", employee.getLastName());
-        assertEquals("Cook", employee.getJob().getName());
-    }
-
-    private void checkAssertionsForCooks(List<EmployeeResponse> cooks){
-        assertEquals("John", cooks.get(0).getFirstName());
-        assertEquals("Smith", cooks.get(0).getLastName());
-        assertEquals("Cook", cooks.get(0).getJob().getName());
-    }
-
-    private void checkAssertionsForEmployees(List<EmployeeResponse> employees){
-        assertEquals("John", employees.get(0).getFirstName());
-        assertEquals("Smith", employees.get(0).getLastName());
-        assertEquals("Cook", employees.get(0).getJob().getName());
-
-        assertEquals("James", employees.get(1).getFirstName());
-        assertEquals("Patel", employees.get(1).getLastName());
-        assertEquals("Waiter", employees.get(1).getJob().getName());
-
-        assertEquals("Ann", employees.get(2).getFirstName());
-        assertEquals("Mary", employees.get(2).getLastName());
-        assertEquals("DeliveryMan", employees.get(2).getJob().getName());
+        EmployeeResponseAssertions.checkAssertionsForCooks(employeesReturned);
     }
 }
