@@ -8,7 +8,7 @@ import pl.jakubtworek.RestaurantManagementSystem.exception.OrderNotFoundExceptio
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Validated
@@ -26,7 +26,7 @@ public class OrderController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteOrder(@PathVariable Long id) throws OrderNotFoundException {
+    public ResponseEntity<String> deleteOrder(@PathVariable UUID id) throws OrderNotFoundException {
         orderService.deleteById(id);
 
         return new ResponseEntity<>("Order with id: " + id + " was deleted", HttpStatus.OK);
@@ -43,7 +43,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderResponse> getOrderById(@PathVariable Long id) throws OrderNotFoundException {
+    public ResponseEntity<OrderResponse> getOrderById(@PathVariable UUID id) throws OrderNotFoundException {
         OrderResponse orderResponse = orderService.findById(id)
                 .map(OrderDTO::convertDTOToResponse)
                 .orElseThrow(() -> new OrderNotFoundException("There are no order in restaurant with that id: " + id));
@@ -54,7 +54,7 @@ public class OrderController {
     @GetMapping("/find")
     public ResponseEntity<List<OrderResponse>> getOrderByParams(@RequestParam(required = false) String date,
                                                                 @RequestParam(required = false) String typeOfOrder,
-                                                                @RequestParam(required = false) Long employeeId
+                                                                @RequestParam(required = false) UUID employeeId
                                                          ) {
         List<OrderResponse> ordersFound = orderService.findByParams(date, typeOfOrder, employeeId)
                 .stream()

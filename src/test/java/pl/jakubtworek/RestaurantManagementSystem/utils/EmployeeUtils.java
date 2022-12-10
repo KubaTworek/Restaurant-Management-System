@@ -4,35 +4,35 @@ import pl.jakubtworek.RestaurantManagementSystem.controller.employee.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EmployeeUtils {
 
     public static List<Employee> createEmployees(){
-        Employee employee1 = new Employee(1L, "John", "Smith", new Job(1L,"Cook",List.of()), List.of());
-        Employee employee2 = new Employee(2L, "James", "Patel", new Job(2L,"Waiter",List.of()), List.of());
-        Employee employee3 = new Employee(3L, "Ann", "Mary", new Job(3L,"DeliveryMan",List.of()), List.of());
+        Employee employee1 = new Employee(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002"), "John", "Smith", new Job(UUID.fromString("504ab5ae-7844-11ed-a1eb-0242ac120002"),"Cook",List.of()), List.of());
+        Employee employee2 = new Employee(UUID.fromString("e62db8e2-7843-11ed-a1eb-0242ac120002"), "James", "Patel", new Job(UUID.fromString("560f3bcc-7844-11ed-a1eb-0242ac120002"),"Waiter",List.of()), List.of());
+        Employee employee3 = new Employee(UUID.fromString("f2e9839a-7843-11ed-a1eb-0242ac120002"), "Ann", "Mary", new Job(UUID.fromString("5b4c279e-7844-11ed-a1eb-0242ac120002"),"DeliveryMan",List.of()), List.of());
         return List.of(employee1, employee2, employee3);
     }
 
     public static Employee createCook(){
-        return new Employee(1L, "John", "Smith", new Job(1L,"Cook",List.of()), List.of());
+        return new Employee(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002"), "John", "Smith", new Job(UUID.fromString("504ab5ae-7844-11ed-a1eb-0242ac120002"),"Cook",List.of()), List.of());
     }
 
     public static List<Employee> createCooks(){
-        return List.of(new Employee(1L, "John", "Smith", new Job(1L,"Cook",List.of()), List.of()));
+        return List.of(new Employee(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002"), "John", "Smith", new Job(UUID.fromString("504ab5ae-7844-11ed-a1eb-0242ac120002"),"Cook",List.of()), List.of()));
     }
 
     public static Job createJobCook(){
-        return new Job(1L, "Cook", List.of());
+        return new Job(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002"), "Cook", List.of());
     }
     public static Job createJobWaiter(){
-        return new Job(2L, "Waiter", List.of());
+        return new Job(UUID.fromString("e62db8e2-7843-11ed-a1eb-0242ac120002"), "Waiter", List.of());
     }
     public static Job createJobDeliveryman(){
-        return new Job(3L, "DeliveryMan", List.of());
+        return new Job(UUID.fromString("f2e9839a-7843-11ed-a1eb-0242ac120002"), "DeliveryMan", List.of());
     }
 
     public static EmployeeRequest createCookRequest(){

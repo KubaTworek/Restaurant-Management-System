@@ -29,7 +29,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
     @Override
-    public void deleteById(Long theId) throws MenuItemNotFoundException {
+    public void deleteById(UUID theId) throws MenuItemNotFoundException {
         MenuItem menuItem = menuItemRepository.findById(theId)
                 .orElseThrow(() -> new MenuItemNotFoundException("There are no menu item in restaurant with that id: " + theId));
         menuItem.remove();
@@ -37,7 +37,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
     @Override
-    public Optional<MenuItemDTO> findById(Long theId) {
+    public Optional<MenuItemDTO> findById(UUID theId) {
         return menuItemRepository.findById(theId).map(MenuItem::convertEntityToDTO);
     }
 

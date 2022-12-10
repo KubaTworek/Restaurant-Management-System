@@ -4,10 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 
-import java.util.Optional;
+import java.util.*;
 
 @Repository
-public interface AuthoritiesRepository extends JpaRepository<Authorities, Long> {
+public interface AuthoritiesRepository extends JpaRepository<Authorities, UUID> {
     Optional<Authorities> findAuthoritiesByAuthority(String role);
 }
 

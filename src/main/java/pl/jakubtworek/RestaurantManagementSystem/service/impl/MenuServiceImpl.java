@@ -10,8 +10,7 @@ import pl.jakubtworek.RestaurantManagementSystem.repository.MenuRepository;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,7 +26,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public void deleteById(Long theId) throws MenuNotFoundException {
+    public void deleteById(UUID theId) throws MenuNotFoundException {
         Menu menu = menuRepository.findById(theId)
                 .orElseThrow(() -> new MenuNotFoundException("There are no menu in restaurant with that id: " + theId));
         menuRepository.delete(menu);
@@ -42,7 +41,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public Optional<MenuDTO> findById(Long theId) {
+    public Optional<MenuDTO> findById(UUID theId) {
         return menuRepository.findById(theId).map(Menu::convertEntityToDTO);
     }
 

@@ -24,7 +24,6 @@ public class OrderFactory {
         double price = calculateOrderPrice(orderRequest.getMenuItems());
 
         return OrderDTO.builder()
-                .id(0L)
                 .typeOfOrder(typeOfOrderDTO)
                 .hourOrder(time)
                 .hourAway(null)

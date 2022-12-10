@@ -7,6 +7,6 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import java.util.*;
 
 @Repository
-public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
     List<Employee> findByJob(Job theJob);
 }

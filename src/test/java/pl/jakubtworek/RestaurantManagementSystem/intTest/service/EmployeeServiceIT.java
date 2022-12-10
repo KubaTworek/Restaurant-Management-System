@@ -3,14 +3,13 @@ package pl.jakubtworek.RestaurantManagementSystem.intTest.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
 import pl.jakubtworek.RestaurantManagementSystem.exception.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.*;
@@ -23,23 +22,23 @@ class EmployeeServiceIT {
     private EmployeeService employeeService;
 
     @Test
-    @Sql(statements = "INSERT INTO `job` VALUES (1, 'Cook'), (2, 'Waiter'), (3, 'DeliveryMan')")
     void shouldReturnCreatedEmployee() throws JobNotFoundException {
         // given
         EmployeeRequest employee = createCookRequest();
 
         // when
         EmployeeDTO employeeCreated = employeeService.save(employee);
+        List<EmployeeDTO> employees = employeeService.findAll();
 
         // then
         EmployeeDTOAssertions.checkAssertionsForEmployee(employeeCreated);
+        assertEquals(1, employees.size());
     }
 
     @Test
-    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnLowerSizeOfList_whenDeleteOne() throws EmployeeNotFoundException {
         // when
-        employeeService.deleteById(2L);
+        employeeService.deleteById(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002"));
         List<EmployeeDTO> employees = employeeService.findAll();
 
         // then
@@ -47,7 +46,6 @@ class EmployeeServiceIT {
     }
 
     @Test
-    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnAllEmployees(){
         // when
         List<EmployeeDTO> employeesReturned = employeeService.findAll();
@@ -57,17 +55,15 @@ class EmployeeServiceIT {
     }
 
     @Test
-    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnOneEmployee(){
         // when
-        EmployeeDTO employeeReturned = employeeService.findById(1L).orElse(null);
+        EmployeeDTO employeeReturned = employeeService.findById(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002")).orElse(null);
 
         // then
         EmployeeDTOAssertions.checkAssertionsForEmployee(employeeReturned);
     }
 
     @Test
-    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnEmployees_whenJobNamePass() throws JobNotFoundException {
         // when
         List<EmployeeDTO> employeesReturned = employeeService.findByJob("Cook");

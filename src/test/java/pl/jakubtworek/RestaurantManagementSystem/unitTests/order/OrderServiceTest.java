@@ -95,9 +95,9 @@ class OrderServiceTest {
         Optional<Order> order = Optional.of(createOnsiteOrder());
 
         // when
-        when(orderRepository.findById(1L)).thenReturn(order);
+        when(orderRepository.findById(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002"))).thenReturn(order);
 
-        orderService.deleteById(1L);
+        orderService.deleteById(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002"));
 
         // then
         verify(orderRepository).delete(order.get());
@@ -123,9 +123,9 @@ class OrderServiceTest {
         Optional<Order> order = Optional.of(createOnsiteOrder());
 
         // when
-        when(orderRepository.findById(1L)).thenReturn(order);
+        when(orderRepository.findById(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002"))).thenReturn(order);
 
-        OrderDTO orderReturned = orderService.findById(1L).orElse(null);
+        OrderDTO orderReturned = orderService.findById(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002")).orElse(null);
 
         // then
         OrderDTOAssertions.checkAssertionsForOrder(orderReturned);

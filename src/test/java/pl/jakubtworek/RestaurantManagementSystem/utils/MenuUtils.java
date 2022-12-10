@@ -4,20 +4,20 @@ import pl.jakubtworek.RestaurantManagementSystem.controller.menu.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.spy;
 
 public class MenuUtils {
     public static List<Menu> createMenuList(){
-        Menu menu1 = spy(new Menu(1L, "Drinks", createMenuItemListForDrinks()));
-        Menu menu2 = spy(new Menu(2L, "Food", createMenuItemListForFood()));
+        Menu menu1 = spy(new Menu(UUID.fromString("31da2070-7847-11ed-a1eb-0242ac120002"), "Drinks", createMenuItemListForDrinks()));
+        Menu menu2 = spy(new Menu(UUID.fromString("340a81aa-7847-11ed-a1eb-0242ac120002"), "Food", createMenuItemListForFood()));
         return List.of(menu1, menu2);
     }
 
     public static Menu createMenu(){
-        return new Menu(2L, "Food", createMenuItemListForFood());
+        return new Menu(UUID.fromString("340a81aa-7847-11ed-a1eb-0242ac120002"), "Food", createMenuItemListForFood());
     }
 
     public static List<MenuItem> createMenuItemListForDrinks() {
@@ -32,15 +32,15 @@ public class MenuUtils {
     }
 
     public static MenuItem createChickenMenuItem() {
-        return new MenuItem(1L, "Chicken", 10.99, null, List.of());
+        return new MenuItem(UUID.fromString("46e3e96a-7847-11ed-a1eb-0242ac120002"), "Chicken", 10.99, null, List.of());
     }
 
     public static MenuItem createCokeMenuItem() {
-        return new MenuItem(2L, "Coke", 1.99, null, List.of());
+        return new MenuItem(UUID.fromString("4b14e962-7847-11ed-a1eb-0242ac120002"), "Coke", 1.99, null, List.of());
     }
 
     public static MenuItem createTiramisuMenuItem() {
-        return new MenuItem(3L, "Tiramisu", 5.99, null, List.of());
+        return new MenuItem(UUID.fromString("4ebbb050-7847-11ed-a1eb-0242ac120002"), "Tiramisu", 5.99, null, List.of());
     }
 
     public static MenuRequest createMenuRequest(){
@@ -51,7 +51,7 @@ public class MenuUtils {
         return new MenuItemRequest("Chicken", 10.99, "Food");
     }
 
-    public static class MenuAssertions<T extends Menu>{
+    public static class MenuAssertions {
         public static void checkAssertionsForMenu(Menu menu){
             assertEquals("Food", menu.getName());
             assertEquals("Chicken", menu.getMenuItems().get(0).getName());

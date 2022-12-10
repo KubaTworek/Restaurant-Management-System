@@ -4,7 +4,7 @@ import lombok.*;
 import org.modelmapper.ModelMapper;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.TypeOfOrder;
 
-import java.util.List;
+import java.util.*;
 
 @Getter
 @Setter
@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TypeOfOrderDTO {
-    private Long id;
+    private UUID id;
     private String type;
     private List<OrderDTO> orders;
 

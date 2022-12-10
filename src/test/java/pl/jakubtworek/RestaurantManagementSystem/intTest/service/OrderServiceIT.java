@@ -6,7 +6,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.*;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.exception.OrderNotFoundException;
@@ -15,7 +14,7 @@ import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -34,7 +33,6 @@ class OrderServiceIT {
     private SecurityContext securityContext;
 
     @Test
-    @Sql(statements = {"INSERT INTO `type_of_order` VALUES (1,'On-site'), (2,'Delivery')", "INSERT INTO `menu` VALUES (1,'Drinks'), (2,'Food')", "INSERT INTO `menu_item`(id,name,price,menu_id) VALUES (1,'Chicken',10.99,2), (2,'Coke',1.99,1), (3,'Tiramisu',5.99,2)", "INSERT INTO `authorities`(`id`, `authority`) VALUES (1, 'admin'), (2, 'user')", "INSERT INTO `users`(`id`, `username`, `password`, `role_id`) VALUES (1, 'admin', 'admin', 1), (2, 'user', 'user', 2)"})
     void shouldReturnCreatedOrder() throws Exception {
         // given
         OrderRequest order = createOnsiteOrderRequest();
@@ -45,6 +43,7 @@ class OrderServiceIT {
         when(authentication.getName()).thenReturn("user");
 
         OrderDTO orderCreated = orderService.save(order);
+        List<OrderDTO> orders = orderService.findAll();
 
         LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -58,14 +57,14 @@ class OrderServiceIT {
         assertEquals(10.99, orderCreated.getMenuItems().get(0).getPrice());
         assertEquals("Coke", orderCreated.getMenuItems().get(1).getName());
         assertEquals(1.99, orderCreated.getMenuItems().get(1).getPrice());
+        assertEquals(1, orders.size());
     }
 
 
     @Test
-    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnLowerSizeOfList_whenDeleteOne() throws OrderNotFoundException {
         // when
-        orderService.deleteById(1L);
+        orderService.deleteById(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002"));
         List<OrderDTO> orders = orderService.findAll();
 
         // then
@@ -73,7 +72,6 @@ class OrderServiceIT {
     }
 
     @Test
-    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnAllOrders() {
         // when
         List<OrderDTO> ordersReturned = orderService.findAll();
@@ -83,17 +81,19 @@ class OrderServiceIT {
     }
 
     @Test
-    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
     void shouldReturnOneOrder() {
+        UUID generated = UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002");
+
+
         // when
-        OrderDTO orderReturned = orderService.findById(1L).orElse(null);
+        OrderDTO orderReturned = orderService.findById(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002")).orElse(null);
 
         // then
         OrderDTOAssertions.checkAssertionsForOrder(orderReturned);
     }
 
 /*    @Test
-    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
+    @Sql({"/deleting-data.sql", "/data.sql"})
     void shouldReturnOrders_whenPassDate() {
         // given
         String date = "2022-08-22";
@@ -106,7 +106,7 @@ class OrderServiceIT {
     }
 
     @Test
-    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
+    @Sql({"/deleting-data.sql", "/data.sql"})
     void shouldReturnOrders_whenPassTypeOfOrder() {
         // given
         TypeOfOrder typeOfOrder = createOnsiteType();
@@ -119,7 +119,7 @@ class OrderServiceIT {
     }
 
     @Test
-    @Sql({"/deleting-data.sql", "/inserting-data.sql"})
+    @Sql({"/deleting-data.sql", "/data.sql"})
     void shouldReturnOrders_whenPassEmployee() {
         // when
         List<OrderDTO> orders = orderService.findByEmployeeId(1L);

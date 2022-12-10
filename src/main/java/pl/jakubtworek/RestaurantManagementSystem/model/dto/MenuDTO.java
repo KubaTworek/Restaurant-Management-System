@@ -5,7 +5,7 @@ import org.modelmapper.ModelMapper;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuResponse;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Menu;
 
-import java.util.List;
+import java.util.*;
 
 @Getter
 @Setter
@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MenuDTO {
-    private Long id;
+    private UUID id;
     private String name;
     private List<MenuItemDTO> menuItems;
 

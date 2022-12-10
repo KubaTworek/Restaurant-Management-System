@@ -51,12 +51,12 @@ class MenuControllerTest {
         Optional<MenuDTO> expectedMenu = Optional.of(createMenu().convertEntityToDTO());
 
         // when
-        when(menuService.findById(1L)).thenReturn(expectedMenu);
+        when(menuService.findById(UUID.fromString("31da2070-7847-11ed-a1eb-0242ac120002"))).thenReturn(expectedMenu);
 
-        String response = menuController.deleteMenu(1L).getBody();
+        String response = menuController.deleteMenu(UUID.fromString("31da2070-7847-11ed-a1eb-0242ac120002")).getBody();
 
         // then
-        assertEquals("Menu with id: 1 was deleted", response);
+        assertEquals("Menu with id: 31da2070-7847-11ed-a1eb-0242ac120002 was deleted", response);
     }
 
     @Test
@@ -82,9 +82,9 @@ class MenuControllerTest {
         Optional<MenuDTO> expectedMenu = Optional.of(createMenu().convertEntityToDTO());
 
         // when
-        when(menuService.findById(1L)).thenReturn(expectedMenu);
+        when(menuService.findById(UUID.fromString("31da2070-7847-11ed-a1eb-0242ac120002"))).thenReturn(expectedMenu);
 
-        MenuResponse menuReturned = menuController.getMenuById(1L).getBody();
+        MenuResponse menuReturned = menuController.getMenuById(UUID.fromString("31da2070-7847-11ed-a1eb-0242ac120002")).getBody();
 
         // then
         assertEquals("Food", menuReturned.getName());
@@ -93,9 +93,9 @@ class MenuControllerTest {
     @Test
     void shouldThrowException_whenMenuNotExist() {
         // when
-        Exception exception = assertThrows(MenuNotFoundException.class, () -> menuController.getMenuById(3L));
+        Exception exception = assertThrows(MenuNotFoundException.class, () -> menuController.getMenuById(UUID.fromString("b41874c8-784d-11ed-a1eb-0242ac120002")));
 
         // then
-        assertEquals("There are no menu in restaurant with that id: 3", exception.getMessage());
+        assertEquals("There are no menu in restaurant with that id: b41874c8-784d-11ed-a1eb-0242ac120002", exception.getMessage());
     }
 }

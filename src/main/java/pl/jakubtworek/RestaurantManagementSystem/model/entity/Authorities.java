@@ -3,7 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.*;
 
 @Getter
 @Setter
@@ -15,9 +15,9 @@ import java.util.List;
 public class Authorities {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")
-    private Long id;
+    private UUID id;
 
     @Column(name = "authority", nullable = false)
     private String authority;

@@ -2,8 +2,7 @@ package pl.jakubtworek.RestaurantManagementSystem.controller.menu;
 
 import lombok.*;
 
-import javax.validation.constraints.NotNull;
-import java.util.List;
+import java.util.*;
 
 @Getter
 @Setter
@@ -11,8 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 public class MenuResponse {
 
-    private Long id;
-    @NotNull(message = "Menu name cannot be null.")
+    private UUID id;
     private String name;
     private List<MenuItemResponse> menuItems;
 }

@@ -64,9 +64,9 @@ class MenuItemServiceTest {
         Optional<MenuItem> menuItem = Optional.of(createChickenMenuItem());
 
         // when
-        when(menuItemRepository.findById(1L)).thenReturn(menuItem);
+        when(menuItemRepository.findById(UUID.fromString("46e3e96a-7847-11ed-a1eb-0242ac120002"))).thenReturn(menuItem);
 
-        menuItemService.deleteById(1L);
+        menuItemService.deleteById(UUID.fromString("46e3e96a-7847-11ed-a1eb-0242ac120002"));
 
         // then
         verify(menuItemRepository).delete(any());
@@ -78,9 +78,9 @@ class MenuItemServiceTest {
         Optional<MenuItem> menuItem = Optional.of(createChickenMenuItem());
 
         // when
-        when(menuItemRepository.findById(1L)).thenReturn(menuItem);
+        when(menuItemRepository.findById(UUID.fromString("46e3e96a-7847-11ed-a1eb-0242ac120002"))).thenReturn(menuItem);
 
-        MenuItemDTO menuItemReturned = menuItemService.findById(1L).orElse(null);
+        MenuItemDTO menuItemReturned = menuItemService.findById(UUID.fromString("46e3e96a-7847-11ed-a1eb-0242ac120002")).orElse(null);
 
         // then
         MenuItemDTOAssertions.checkAssertionsForMenuItem(menuItemReturned);

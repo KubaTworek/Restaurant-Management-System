@@ -4,7 +4,7 @@ import lombok.*;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeResponse;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemResponse;
 
-import java.util.List;
+import java.util.*;
 
 @Getter
 @Setter
@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderResponse {
-    private Long id;
+    private UUID id;
     private double price;
     private String date;
     private String hourOrder;

@@ -69,9 +69,9 @@ class EmployeeServiceTest {
         Employee expectedEmployee = createCook();
 
         // when
-        when(employeeRepository.findById(1L)).thenReturn(Optional.of(expectedEmployee));
+        when(employeeRepository.findById(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002"))).thenReturn(Optional.of(expectedEmployee));
 
-        employeeService.deleteById(1L);
+        employeeService.deleteById(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002"));
 
         // then
         verify(employeeRepository).delete(any());
@@ -93,10 +93,10 @@ class EmployeeServiceTest {
     @Test
     void shouldReturnEmployeeById(){
         Optional<Employee> employee = Optional.of(createCook());
-        when(employeeRepository.findById(1L)).thenReturn(employee);
+        when(employeeRepository.findById(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002"))).thenReturn(employee);
 
         // when
-        EmployeeDTO employeeReturned = employeeService.findById(1L).orElse(null);
+        EmployeeDTO employeeReturned = employeeService.findById(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002")).orElse(null);
 
         // then
         EmployeeDTOAssertions.checkAssertionsForEmployee(employeeReturned);

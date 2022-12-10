@@ -2,7 +2,6 @@ package pl.jakubtworek.RestaurantManagementSystem.intTest.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.*;
@@ -18,7 +17,6 @@ import static org.mockito.Mockito.when;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 class MenuControllerIT {
     @Autowired
     private MenuController menuController;
@@ -47,12 +45,12 @@ class MenuControllerIT {
         Optional<Menu> expectedMenu = Optional.of(createMenu());
 
         // when
-        when(menuRepository.findById(1L)).thenReturn(expectedMenu);
+        when(menuRepository.findById(UUID.fromString("31da2070-7847-11ed-a1eb-0242ac120002"))).thenReturn(expectedMenu);
 
-        String response = menuController.deleteMenu(1L).getBody();
+        String response = menuController.deleteMenu(UUID.fromString("31da2070-7847-11ed-a1eb-0242ac120002")).getBody();
 
         // then
-        assertEquals("Menu with id: 1 was deleted", response);
+        assertEquals("Menu with id: 31da2070-7847-11ed-a1eb-0242ac120002 was deleted", response);
     }
 
     @Test
@@ -75,9 +73,9 @@ class MenuControllerIT {
         Optional<Menu> expectedMenu = Optional.of(createMenu());
 
         // when
-        when(menuRepository.findById(1L)).thenReturn(expectedMenu);
+        when(menuRepository.findById(UUID.fromString("31da2070-7847-11ed-a1eb-0242ac120002"))).thenReturn(expectedMenu);
 
-        MenuResponse menuReturned = menuController.getMenuById(1L).getBody();
+        MenuResponse menuReturned = menuController.getMenuById(UUID.fromString("31da2070-7847-11ed-a1eb-0242ac120002")).getBody();
 
         // then
         assertEquals("Food", menuReturned.getName());
@@ -86,9 +84,9 @@ class MenuControllerIT {
     @Test
     void shouldThrowException_whenMenuNotExist() {
         // when
-        Exception exception = assertThrows(MenuNotFoundException.class, () -> menuController.getMenuById(3L));
+        Exception exception = assertThrows(MenuNotFoundException.class, () -> menuController.getMenuById(UUID.fromString("b41874c8-784d-11ed-a1eb-0242ac120002")));
 
         // then
-        assertEquals("There are no menu in restaurant with that id: 3", exception.getMessage());
+        assertEquals("There are no menu in restaurant with that id: b41874c8-784d-11ed-a1eb-0242ac120002", exception.getMessage());
     }
 }

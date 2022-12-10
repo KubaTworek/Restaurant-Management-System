@@ -69,12 +69,12 @@ class OrderControllerIT {
         Optional<Order> expectedOrder = Optional.of(createOnsiteOrder());
 
         // when
-        when(orderRepository.findById(1L)).thenReturn(expectedOrder);
+        when(orderRepository.findById(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002"))).thenReturn(expectedOrder);
 
-        String response = orderController.deleteOrder(1L).getBody();
+        String response = orderController.deleteOrder(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002")).getBody();
 
         // then
-        assertEquals("Order with id: 1 was deleted", response);
+        assertEquals("Order with id: 8e4087ce-7846-11ed-a1eb-0242ac120002 was deleted", response);
     }
 
     @Test
@@ -97,9 +97,9 @@ class OrderControllerIT {
         Optional<Order> expectedOrder = Optional.of(createOnsiteOrder());
 
         // when
-        when(orderRepository.findById(1L)).thenReturn(expectedOrder);
+        when(orderRepository.findById(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002"))).thenReturn(expectedOrder);
 
-        OrderResponse orderReturned = orderController.getOrderById(1L).getBody();
+        OrderResponse orderReturned = orderController.getOrderById(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002")).getBody();
 
         // then
         OrderResponseAssertions.checkAssertionsForOrder(orderReturned);
@@ -108,10 +108,10 @@ class OrderControllerIT {
     @Test
     void shouldThrowException_whenOrderNotExist() {
         // when
-        Exception exception = assertThrows(OrderNotFoundException.class, () -> orderController.getOrderById(3L));
+        Exception exception = assertThrows(OrderNotFoundException.class, () -> orderController.getOrderById(UUID.fromString("a0f7ae28-7847-11ed-a1eb-0242ac120002")));
 
         // then
-        assertEquals("There are no order in restaurant with that id: 3", exception.getMessage());
+        assertEquals("There are no order in restaurant with that id: a0f7ae28-7847-11ed-a1eb-0242ac120002", exception.getMessage());
     }
 
 
@@ -187,8 +187,8 @@ class OrderControllerIT {
         // then
         assertEquals(12.98, ordersReturned.get(0).getPrice());
         assertEquals("2022-08-22", ordersReturned.get(0).getDate());
-        assertEquals("12:00", ordersReturned.get(0).getHourOrder());
-        assertEquals("12:15", ordersReturned.get(0).getHourAway());
+        assertEquals("12:00:00", ordersReturned.get(0).getHourOrder());
+        assertEquals("12:15:00", ordersReturned.get(0).getHourAway());
         assertEquals("On-site", ordersReturned.get(0).getTypeOfOrder().getType());
         assertEquals("Chicken", ordersReturned.get(0).getMenuItems().get(0).getName());
         assertEquals(10.99, ordersReturned.get(0).getMenuItems().get(0).getPrice());
@@ -213,7 +213,7 @@ class OrderControllerIT {
         // then
         assertEquals(7.98, ordersReturned.get(0).getPrice());
         assertEquals("2022-08-22", ordersReturned.get(0).getDate());
-        assertEquals("12:05", ordersReturned.get(0).getHourOrder());
+        assertEquals("12:05:00", ordersReturned.get(0).getHourOrder());
         assertNull(ordersReturned.get(0).getHourAway());
         assertEquals("Delivery", ordersReturned.get(0).getTypeOfOrder().getType());
         assertEquals("Tiramisu", ordersReturned.get(0).getMenuItems().get(0).getName());

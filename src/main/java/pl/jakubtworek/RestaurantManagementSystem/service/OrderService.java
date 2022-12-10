@@ -8,11 +8,11 @@ import java.util.*;
 
 public interface OrderService {
     OrderDTO save(OrderRequest orderRequest) throws Exception;
-    void deleteById(Long theId) throws OrderNotFoundException;
+    void deleteById(UUID theId) throws OrderNotFoundException;
     void update(OrderDTO theOrder);
     List<OrderDTO> findAll();
-    Optional<OrderDTO> findById(Long theId);
-    List<OrderDTO> findByParams(String date, String typeOfOrder, Long employeeId);
+    Optional<OrderDTO> findById(UUID theId);
+    List<OrderDTO> findByParams(String date, String typeOfOrder, UUID employeeId);
     List<OrderDTO> findMadeOrders();
     List<OrderDTO> findUnmadeOrders();
 }

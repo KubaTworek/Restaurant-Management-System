@@ -15,7 +15,6 @@ public class EmployeeFactory {
         String lastName = employeeRequest.getLastName();
 
         return EmployeeDTO.builder()
-                .id(0L)
                 .firstName(firstName)
                 .lastName(lastName)
                 .job(jobDTO)

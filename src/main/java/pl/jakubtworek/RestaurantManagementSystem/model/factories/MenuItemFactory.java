@@ -2,8 +2,7 @@ package pl.jakubtworek.RestaurantManagementSystem.model.factories;
 
 import org.springframework.stereotype.Component;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 
 @Component
 public class MenuItemFactory {
@@ -15,7 +14,6 @@ public class MenuItemFactory {
         double price = menuItemRequest.getPrice();
 
         return MenuItemDTO.builder()
-                .id(0L)
                 .name(name)
                 .price(price)
                 .menu(menuDTO)

@@ -49,12 +49,12 @@ class EmployeeControllerIT {
         Optional<Employee> expectedEmployee = Optional.of(createCook());
 
         // when
-        when(employeeRepository.findById(eq(1L))).thenReturn(expectedEmployee);
+        when(employeeRepository.findById(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002"))).thenReturn(expectedEmployee);
 
-        String response = employeeController.deleteEmployee(1L).getBody();
+        String response = employeeController.deleteEmployee(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002")).getBody();
 
         // then
-        assertEquals("Employee with id: 1 was deleted", response);
+        assertEquals("Employee with id: d9481fe6-7843-11ed-a1eb-0242ac120002 was deleted", response);
     }
 
     @Test
@@ -77,9 +77,9 @@ class EmployeeControllerIT {
         Optional<Employee> expectedEmployee = Optional.of(createCook());
 
         // when
-        when(employeeRepository.findById(1L)).thenReturn(expectedEmployee);
+        when(employeeRepository.findById(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002"))).thenReturn(expectedEmployee);
 
-        EmployeeResponse employeeReturned = employeeController.getEmployeeById(1L).getBody();
+        EmployeeResponse employeeReturned = employeeController.getEmployeeById(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002")).getBody();
 
         // then
         EmployeeResponseAssertions.checkAssertionsForEmployee(employeeReturned);
@@ -88,10 +88,10 @@ class EmployeeControllerIT {
     @Test
     void shouldReturnErrorResponse_whenEmployeeNotExist() {
         // when
-        Exception exception = assertThrows(EmployeeNotFoundException.class, () -> employeeController.getEmployeeById(4L));
+        Exception exception = assertThrows(EmployeeNotFoundException.class, () -> employeeController.getEmployeeById(UUID.fromString("604ae7b0-7846-11ed-a1eb-0242ac120002")));
 
         // then
-        assertEquals("There are no employees in restaurant with that id: 4", exception.getMessage());
+        assertEquals("There are no employees in restaurant with that id: 604ae7b0-7846-11ed-a1eb-0242ac120002", exception.getMessage());
     }
 
     @Test

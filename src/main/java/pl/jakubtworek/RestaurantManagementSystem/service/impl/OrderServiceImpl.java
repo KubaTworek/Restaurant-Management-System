@@ -55,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void deleteById(Long theId) throws OrderNotFoundException {
+    public void deleteById(UUID theId) throws OrderNotFoundException {
         Order order = orderRepository.findById(theId)
                 .orElseThrow(() -> new OrderNotFoundException("There are no order in restaurant with that id: " + theId));
         orderRepository.delete(order);
@@ -70,12 +70,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Optional<OrderDTO> findById(Long theId) {
+    public Optional<OrderDTO> findById(UUID theId) {
         return orderRepository.findById(theId).map(Order::convertEntityToDTO);
     }
 
     @Override
-    public List<OrderDTO> findByParams(String date, String typeOfOrder, Long employeeId) {
+    public List<OrderDTO> findByParams(String date, String typeOfOrder, UUID employeeId) {
         TypeOfOrder typeOfOrderFound = typeOfOrderRepository.findByType(typeOfOrder).orElse(null);
 
         return getOrdersByParams(date, typeOfOrderFound, employeeId)
@@ -118,7 +118,7 @@ public class OrderServiceImpl implements OrderService {
                 .convertEntityToDTO();
     }
 
-    private List<Order> getOrdersByParams(String date, TypeOfOrder typeOfOrderFound, Long employeeId) {
+    private List<Order> getOrdersByParams(String date, TypeOfOrder typeOfOrderFound, UUID employeeId) {
         if(date == null && typeOfOrderFound == null && employeeId == null){
             return orderRepository.findAll();
         } else if (typeOfOrderFound == null && employeeId == null){

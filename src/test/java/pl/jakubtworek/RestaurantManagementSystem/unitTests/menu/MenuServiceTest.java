@@ -60,9 +60,9 @@ class MenuServiceTest {
         Menu menu = createMenu();
 
         // when
-        when(menuRepository.findById(1L)).thenReturn(Optional.of(menu));
+        when(menuRepository.findById(UUID.fromString("31da2070-7847-11ed-a1eb-0242ac120002"))).thenReturn(Optional.of(menu));
 
-        menuService.deleteById(1L);
+        menuService.deleteById(UUID.fromString("31da2070-7847-11ed-a1eb-0242ac120002"));
 
         // then
         verify(menuRepository).delete(menu);
@@ -88,9 +88,9 @@ class MenuServiceTest {
         Optional<Menu> menu = Optional.of(createMenu());
 
         // when
-        when(menuRepository.findById(2L)).thenReturn(menu);
+        when(menuRepository.findById(UUID.fromString("340a81aa-7847-11ed-a1eb-0242ac120002"))).thenReturn(menu);
 
-        MenuDTO menuReturned = menuService.findById(2L).orElse(null);
+        MenuDTO menuReturned = menuService.findById(UUID.fromString("340a81aa-7847-11ed-a1eb-0242ac120002")).orElse(null);
 
         // then
         MenuDTOAssertions.checkAssertionsForMenu(menuReturned);

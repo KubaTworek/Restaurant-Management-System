@@ -12,7 +12,6 @@ public class MenuFactory {
         String name = menuRequest.getName();
 
         return MenuDTO.builder()
-                        .id(0L)
                         .name(name)
                         .menuItems(null)
                         .build();

@@ -36,7 +36,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void deleteById(Long theId) throws EmployeeNotFoundException {
+    public void deleteById(UUID theId) throws EmployeeNotFoundException {
         Employee employee = employeeRepository.findById(theId)
                 .orElseThrow(() -> new EmployeeNotFoundException("There are no employees in restaurant with that id: " + theId));
         employee.remove();
@@ -52,7 +52,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Optional<EmployeeDTO> findById(Long theId) {
+    public Optional<EmployeeDTO> findById(UUID theId) {
         return employeeRepository.findById(theId).map(Employee::convertEntityToDTO);
     }
 

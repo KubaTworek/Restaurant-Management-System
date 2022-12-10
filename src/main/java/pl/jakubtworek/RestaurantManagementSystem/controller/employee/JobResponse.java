@@ -3,6 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.controller.employee;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -10,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class JobResponse {
 
-    private Long id;
+    private UUID id;
 
     @NotNull(message = "Job name cannot be null.")
     private String name;

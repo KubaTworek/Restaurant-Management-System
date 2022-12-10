@@ -50,12 +50,12 @@ class MenuItemControllerIT {
         Optional<MenuItem> expectedMenuItem = Optional.of(createChickenMenuItem());
 
         // when
-        when(menuItemRepository.findById(1L)).thenReturn(expectedMenuItem);
+        when(menuItemRepository.findById(UUID.fromString("46e3e96a-7847-11ed-a1eb-0242ac120002"))).thenReturn(expectedMenuItem);
 
-        String response = menuItemController.deleteMenuItem(1L).getBody();
+        String response = menuItemController.deleteMenuItem(UUID.fromString("46e3e96a-7847-11ed-a1eb-0242ac120002")).getBody();
 
         // then
-        assertEquals("Menu item with id: 1 was deleted", response);
+        assertEquals("Menu item with id: 46e3e96a-7847-11ed-a1eb-0242ac120002 was deleted", response);
     }
 
     @Test
@@ -64,9 +64,9 @@ class MenuItemControllerIT {
         Optional<MenuItem> expectedMenuItem = Optional.of(createChickenMenuItem());
 
         // when
-        when(menuItemRepository.findById(1L)).thenReturn(expectedMenuItem);
+        when(menuItemRepository.findById(UUID.fromString("46e3e96a-7847-11ed-a1eb-0242ac120002"))).thenReturn(expectedMenuItem);
 
-        MenuItemResponse menuItemReturned = menuItemController.getMenuItemById(1L).getBody();
+        MenuItemResponse menuItemReturned = menuItemController.getMenuItemById(UUID.fromString("46e3e96a-7847-11ed-a1eb-0242ac120002")).getBody();
 
         // then
         MenuItemResponseAssertions.checkAssertionsForMenuItem(menuItemReturned);
@@ -91,9 +91,9 @@ class MenuItemControllerIT {
     @Test
     void shouldThrowException_whenMenuItemNotExist() {
         // when
-        Exception exception = assertThrows(MenuItemNotFoundException.class, () -> menuItemController.getMenuItemById(4L));
+        Exception exception = assertThrows(MenuItemNotFoundException.class, () -> menuItemController.getMenuItemById(UUID.fromString("b41874c8-784d-11ed-a1eb-0242ac120002")));
 
         // then
-        assertEquals("There are no menu item in restaurant with that id: 4", exception.getMessage());
+        assertEquals("There are no menu item in restaurant with that id: b41874c8-784d-11ed-a1eb-0242ac120002", exception.getMessage());
     }
 }

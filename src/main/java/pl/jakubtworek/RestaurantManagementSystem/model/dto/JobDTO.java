@@ -5,7 +5,7 @@ import org.modelmapper.ModelMapper;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 
-import java.util.List;
+import java.util.*;
 
 @Getter
 @Setter
@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class JobDTO {
 
-    private Long id;
+    private UUID id;
     private String name;
     private List<Employee> employees;
 

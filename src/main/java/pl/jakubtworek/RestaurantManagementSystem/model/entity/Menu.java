@@ -19,9 +19,9 @@ import java.util.*;
 public class Menu {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")
-    private Long id;
+    private UUID id;
 
     @Column(name="name")
     @NotNull

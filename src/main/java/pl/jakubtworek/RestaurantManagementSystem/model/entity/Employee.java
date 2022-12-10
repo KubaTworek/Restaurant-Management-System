@@ -18,9 +18,9 @@ import java.util.*;
 public class Employee {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")
-    private Long id;
+    private UUID id;
 
     @NotNull
     @Column(name="first_name")

@@ -7,14 +7,14 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import java.util.*;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Long> {
+public interface OrderRepository extends JpaRepository<Order, UUID> {
     List<Order> findByDate(String date);
     List<Order> findByTypeOfOrder(TypeOfOrder typeOfOrder);
-    List<Order> findByEmployeesId(Long employeeId);
-    List<Order> findByDateAndEmployeesId(String date, Long employeeId);
+    List<Order> findByEmployeesId(UUID employeeId);
+    List<Order> findByDateAndEmployeesId(String date, UUID employeeId);
     List<Order> findByDateAndTypeOfOrder(String date, TypeOfOrder typeOfOrder);
-    List<Order> findByTypeOfOrderAndEmployeesId(TypeOfOrder typeOfOrder, Long employeeId);
-    List<Order> findByDateAndEmployeesIdAndTypeOfOrder(String date, Long employeeId, TypeOfOrder typeOfOrder);
+    List<Order> findByTypeOfOrderAndEmployeesId(TypeOfOrder typeOfOrder, UUID employeeId);
+    List<Order> findByDateAndEmployeesIdAndTypeOfOrder(String date, UUID employeeId, TypeOfOrder typeOfOrder);
     List<Order> findOrdersByHourAwayIsNull();
     List<Order> findOrdersByHourAwayIsNotNull();
 }

@@ -8,7 +8,7 @@ import pl.jakubtworek.RestaurantManagementSystem.exception.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.service.*;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Validated
@@ -26,7 +26,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteEmployee(@PathVariable Long id) throws EmployeeNotFoundException {
+    public ResponseEntity<String> deleteEmployee(@PathVariable UUID id) throws EmployeeNotFoundException {
         employeeService.deleteById(id);
 
         return new ResponseEntity<>("Employee with id: " + id + " was deleted", HttpStatus.OK);
@@ -43,7 +43,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EmployeeResponse> getEmployeeById(@PathVariable Long id) throws EmployeeNotFoundException {
+    public ResponseEntity<EmployeeResponse> getEmployeeById(@PathVariable UUID id) throws EmployeeNotFoundException {
         EmployeeResponse employeeResponse = employeeService.findById(id)
                 .map(EmployeeDTO::convertDTOToResponse)
                 .orElseThrow(() -> new EmployeeNotFoundException("There are no employees in restaurant with that id: " + id));

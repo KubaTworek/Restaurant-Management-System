@@ -51,12 +51,12 @@ class OrderControllerTest {
         Optional<OrderDTO> expectedOrder = Optional.of(createOnsiteOrder().convertEntityToDTO());
 
         // when
-        when(orderService.findById(1L)).thenReturn(expectedOrder);
+        when(orderService.findById(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002"))).thenReturn(expectedOrder);
 
-        String response = orderController.deleteOrder(1L).getBody();
+        String response = orderController.deleteOrder(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002")).getBody();
 
         // then
-        assertEquals("Order with id: 1 was deleted", response);
+        assertEquals("Order with id: 8e4087ce-7846-11ed-a1eb-0242ac120002 was deleted", response);
     }
 
     @Test
@@ -82,9 +82,9 @@ class OrderControllerTest {
         Optional<OrderDTO> expectedOrder = Optional.of(createOnsiteOrder().convertEntityToDTO());
 
         // when
-        when(orderService.findById(1L)).thenReturn(expectedOrder);
+        when(orderService.findById(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002"))).thenReturn(expectedOrder);
 
-        OrderResponse orderReturned = orderController.getOrderById(1L).getBody();
+        OrderResponse orderReturned = orderController.getOrderById(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002")).getBody();
 
         // then
         OrderResponseAssertions.checkAssertionsForOrder(orderReturned);
@@ -93,10 +93,10 @@ class OrderControllerTest {
     @Test
     void shouldThrowException_whenOrderNotExist() {
         // when
-        Exception exception = assertThrows(OrderNotFoundException.class, () -> orderController.getOrderById(3L));
+        Exception exception = assertThrows(OrderNotFoundException.class, () -> orderController.getOrderById(UUID.fromString("a0f7ae28-7847-11ed-a1eb-0242ac120002")));
 
         // then
-        assertEquals("There are no order in restaurant with that id: 3", exception.getMessage());
+        assertEquals("There are no order in restaurant with that id: a0f7ae28-7847-11ed-a1eb-0242ac120002", exception.getMessage());
     }
 
 /*    @Test

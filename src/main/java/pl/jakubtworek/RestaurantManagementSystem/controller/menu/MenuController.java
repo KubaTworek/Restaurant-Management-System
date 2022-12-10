@@ -9,7 +9,7 @@ import pl.jakubtworek.RestaurantManagementSystem.exception.MenuNotFoundException
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -28,7 +28,7 @@ public class MenuController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteMenu(@PathVariable Long id) throws MenuNotFoundException {
+    public ResponseEntity<String> deleteMenu(@PathVariable UUID id) throws MenuNotFoundException {
         menuService.deleteById(id);
 
         return new ResponseEntity<>("Menu with id: " + id + " was deleted", HttpStatus.OK);
@@ -45,7 +45,7 @@ public class MenuController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MenuResponse> getMenuById(@PathVariable Long id) throws MenuNotFoundException {
+    public ResponseEntity<MenuResponse> getMenuById(@PathVariable UUID id) throws MenuNotFoundException {
         MenuResponse menuResponse = menuService.findById(id)
                 .map(MenuDTO::convertDTOToResponse)
                 .orElseThrow(() -> new MenuNotFoundException("There are no menu in restaurant with that id: " + id));
