@@ -162,7 +162,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.All in Restaurant-Management-System">
+  <component name="RunManager" selected="JUnit.OrderServiceIT.shouldReturnCreatedOrder">
     <configuration name="All in Restaurant-Management-System" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Restaurant-Management-System" />
       <option name="PACKAGE_NAME" value="" />
@@ -182,22 +182,6 @@
       <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.repository" />
       <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.repository.EmployeeRepositoryIT" />
       <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="EmployeeRepositoryIT.shouldReturnAllEmployees" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Restaurant-Management-System" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.intTest.repository.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.repository" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.repository.EmployeeRepositoryIT" />
-      <option name="METHOD_NAME" value="shouldReturnAllEmployees" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -233,6 +217,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="OrderServiceIT.shouldReturnCreatedOrder" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Restaurant-Management-System" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.intTest.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.service" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.service.OrderServiceIT" />
+      <option name="METHOD_NAME" value="shouldReturnCreatedOrder" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="RestaurantManagementSystemApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="Restaurant-Management-System" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="pl.jakubtworek.RestaurantManagementSystem.RestaurantManagementSystemApplication" />
@@ -242,11 +242,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.OrderServiceIT.shouldReturnCreatedOrder" />
         <item itemvalue="JUnit.All in Restaurant-Management-System" />
         <item itemvalue="JUnit.MenuItemRepositoryIT.shouldReturnAllMenuItems" />
         <item itemvalue="JUnit.EmployeeServiceIT" />
         <item itemvalue="JUnit.EmployeeRepositoryIT" />
-        <item itemvalue="JUnit.EmployeeRepositoryIT.shouldReturnAllEmployees" />
       </list>
     </recent_temporary>
   </component>

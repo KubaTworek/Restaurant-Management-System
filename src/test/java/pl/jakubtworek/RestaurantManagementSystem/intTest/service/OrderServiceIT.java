@@ -48,21 +48,16 @@ class OrderServiceIT {
 
         LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter time = DateTimeFormatter.ofPattern("hh:mm:ss");
-        
+
         // then
         assertEquals(12.98, orderCreated.getPrice());
         assertEquals(date.format(localDateTime), orderCreated.getDate());
-        assertEquals(time.format(localDateTime), orderCreated.getHourOrder());
-        assertEquals("12:15", orderCreated.getHourAway());
+        assertEquals(null, orderCreated.getHourAway());
         assertEquals("On-site", orderCreated.getTypeOfOrder().getType());
         assertEquals("Chicken", orderCreated.getMenuItems().get(0).getName());
         assertEquals(10.99, orderCreated.getMenuItems().get(0).getPrice());
         assertEquals("Coke", orderCreated.getMenuItems().get(1).getName());
         assertEquals(1.99, orderCreated.getMenuItems().get(1).getPrice());
-        assertEquals("John", orderCreated.getEmployees().get(0).getFirstName());
-        assertEquals("Smith", orderCreated.getEmployees().get(0).getLastName());
-        assertEquals("Cook", orderCreated.getEmployees().get(0).getJob().getName());
     }
 
 
