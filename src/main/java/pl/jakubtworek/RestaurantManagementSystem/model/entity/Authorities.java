@@ -22,6 +22,6 @@ public class Authorities {
     @Column(name = "authority", nullable = false)
     private String authority;
 
-    @OneToMany(mappedBy = "authorities")
+    @OneToMany(mappedBy = "authorities", cascade = {CascadeType.REMOVE, CascadeType.DETACH})
     private List<User> users;
 }

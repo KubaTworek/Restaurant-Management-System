@@ -76,9 +76,9 @@ class UserServiceTest {
         Optional<User> user = Optional.of(new User(UUID.fromString("9c9b3ed6-798b-11ed-a1eb-0242ac120002"), "user", "$2a$12$iWBt07UWbcIxuPpVUS2ssO78P9W0ezJUK5CW6c7b4X6PvT33vctv2", authority, List.of()));
 
         // when
-        when(userRepository.findByUsername("username")).thenReturn(user);
+        when(userRepository.findByUsername("user")).thenReturn(user);
 
-        userService.deleteByUsername("username");
+        userService.deleteByUsername("user");
 
         // then
         verify(userRepository).delete(user.get());
