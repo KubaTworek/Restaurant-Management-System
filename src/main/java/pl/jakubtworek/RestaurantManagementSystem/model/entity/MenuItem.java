@@ -30,7 +30,7 @@ public class MenuItem {
     @NotNull
     private double price;
 
-    @ManyToOne(fetch=FetchType.LAZY, cascade = {CascadeType.DETACH})
+    @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.DETACH})
     @JoinColumn(name="menu_id")
     private Menu menu;
 
@@ -53,8 +53,10 @@ public class MenuItem {
     }
 
     public void remove(){
-        for(Order o : orders){
-            o.getMenuItems().remove(this);
+        if(orders != null) {
+            for(Order o : orders){
+                o.getMenuItems().remove(this);
+            }
         }
 
         if(menu != null) menu.getMenuItems().remove(this);

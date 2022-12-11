@@ -55,6 +55,7 @@ class EmployeeServiceTest {
         when(employeeFactory.createEmployee(any(), any())).thenReturn(expectedEmployeeDTO);
         when(employeeRepository.save(any())).thenReturn(expectedEmployee);
         when(jobRepository.findByName(any())).thenReturn(Optional.of(job));
+        when(jobRepository.getReferenceById(any())).thenReturn(job);
 
         // when
         EmployeeDTO employeeCreated = employeeService.save(employeeRequest);
@@ -115,7 +116,7 @@ class EmployeeServiceTest {
         List<EmployeeDTO> employeesReturned = employeeService.findByJob("Job");
 
         // then
-        EmployeeDTOAssertions.checkAssertionsForEmployees(employeesReturned);
+        EmployeeDTOAssertions.checkAssertionsForCooks(employeesReturned);
     }
 
     @Test

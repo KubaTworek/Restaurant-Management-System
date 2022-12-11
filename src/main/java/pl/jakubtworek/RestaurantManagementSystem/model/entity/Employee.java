@@ -54,8 +54,10 @@ public class Employee {
     }
 
     public void remove(){
-        for(Order o : orders){
-            o.getEmployees().remove(this);
+        if(orders != null) {
+            for(Order o : orders){
+                o.getEmployees().remove(this);
+            }
         }
     }
 

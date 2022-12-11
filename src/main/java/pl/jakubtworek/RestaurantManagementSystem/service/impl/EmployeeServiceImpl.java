@@ -7,10 +7,9 @@ import pl.jakubtworek.RestaurantManagementSystem.exception.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.EmployeeQueueFacade;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.JobDTO;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.EmployeeFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
 import pl.jakubtworek.RestaurantManagementSystem.service.EmployeeService;
 
 import java.util.*;
@@ -29,6 +28,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         JobDTO jobDTO = getJobDTO(employeeRequest.getJob());
 
         Employee employee = employeeFactory.createEmployee(employeeRequest, jobDTO).convertDTOToEntity();
+        Job job = jobRepository.getReferenceById(jobDTO.getId());
+        job.add(employee);
         EmployeeDTO employeeCreated = employeeRepository.save(employee).convertEntityToDTO();
         employeeQueueFacade.addEmployeeToProperQueue(employeeCreated);
 
@@ -61,7 +62,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Job jobFound = jobRepository.findByName(jobName)
                 .orElseThrow(() -> new JobNotFoundException("There are no job in restaurant with that name: " + jobName));
 
-        return employeeRepository.findByJob(jobFound)
+        return jobFound.getEmployees()
                 .stream()
                 .map(Employee::convertEntityToDTO)
                 .collect(Collectors.toList());

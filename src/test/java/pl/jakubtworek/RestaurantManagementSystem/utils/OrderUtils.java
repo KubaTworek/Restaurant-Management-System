@@ -5,6 +5,8 @@ import pl.jakubtworek.RestaurantManagementSystem.controller.order.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,6 +39,13 @@ public class OrderUtils {
 
     public static TypeOfOrder createDeliveryType(){
         return new TypeOfOrder(null, "Delivery", List.of());
+    }
+
+    static LocalDateTime localDateTime = LocalDateTime.now();
+    static DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    public static String getDate(){
+        return date.format(localDateTime);
     }
 
     public static class OrderAssertions {
@@ -175,5 +184,9 @@ public class OrderUtils {
             assertEquals("Smith", orders.get(1).getEmployees().get(0).getLastName());
             assertEquals("Cook", orders.get(1).getEmployees().get(0).getJob().getName());
         }
+    }
+
+    public static class TimeSetter {
+
     }
 }

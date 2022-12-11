@@ -25,6 +25,9 @@ public class MenuItemServiceImpl implements MenuItemService {
         MenuDTO menuDTO = getMenuDTO(menuItemRequest.getMenu());
 
         MenuItem menuItem = menuItemFactory.createMenuItem(menuItemRequest, menuDTO).convertDTOToEntity();
+        Menu menu = menuRepository.getReferenceById(menuDTO.getId());
+        menu.add(menuItem);
+
         return menuItemRepository.save(menuItem).convertEntityToDTO();
     }
 
@@ -46,7 +49,7 @@ public class MenuItemServiceImpl implements MenuItemService {
         Menu menu = menuRepository.findByName(menuName)
                 .orElseThrow(() -> new MenuNotFoundException("There are no menu in restaurant with that name: " + menuName));
 
-        return menuItemRepository.findByMenu(menu)
+        return menu.getMenuItems()
                 .stream()
                 .map(MenuItem::convertEntityToDTO)
                 .collect(Collectors.toList());

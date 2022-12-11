@@ -9,6 +9,8 @@ import pl.jakubtworek.RestaurantManagementSystem.model.factories.UserFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 import pl.jakubtworek.RestaurantManagementSystem.service.UserService;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -22,6 +24,10 @@ public class UserServiceImpl implements UserService {
 
         User userCreated = userFactory.createUser(userRequest, authority).convertDTOToEntity();
         return userRepository.save(userCreated).convertEntityToDTO();
+    }
+
+    public Optional<UserDTO> findByUsername(String username){
+        return userRepository.findByUsername(username).map(User::convertEntityToDTO);
     }
 
     private Authorities getAuthority(String authority){

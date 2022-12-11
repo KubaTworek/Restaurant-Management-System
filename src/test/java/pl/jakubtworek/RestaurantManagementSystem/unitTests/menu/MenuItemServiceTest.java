@@ -51,6 +51,7 @@ class MenuItemServiceTest {
         when(menuRepository.findByName(any())).thenReturn(expectedMenu);
         when(menuItemFactory.createMenuItem(any(), any())).thenReturn(expectedMenuItemDTO);
         when(menuItemRepository.save(any())).thenReturn(expectedMenuItem);
+        when(menuRepository.getReferenceById(any())).thenReturn(expectedMenu.get());
 
         MenuItemDTO menuItemCreated = menuItemService.save(menuItem);
 

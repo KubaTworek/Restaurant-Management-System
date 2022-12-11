@@ -20,15 +20,15 @@ public class MenuUtils {
         return new Menu(UUID.fromString("340a81aa-7847-11ed-a1eb-0242ac120002"), "Food", createMenuItemListForFood());
     }
 
-    public static List<MenuItem> createMenuItemListForDrinks() {
+    public static ArrayList<MenuItem> createMenuItemListForDrinks() {
         MenuItem menuItem = createCokeMenuItem();
-        return List.of(menuItem);
+        return new ArrayList<>(List.of(menuItem));
     }
 
-    public static List<MenuItem> createMenuItemListForFood() {
+    public static ArrayList<MenuItem> createMenuItemListForFood() {
         MenuItem menuItem1 = createChickenMenuItem();
         MenuItem menuItem2 = createTiramisuMenuItem();
-        return List.of(menuItem1, menuItem2);
+        return new ArrayList<>(List.of(menuItem1, menuItem2));
     }
 
     public static MenuItem createChickenMenuItem() {

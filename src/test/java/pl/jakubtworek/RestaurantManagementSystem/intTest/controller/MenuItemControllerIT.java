@@ -36,6 +36,7 @@ class MenuItemControllerIT {
 
         // when
         when(menuRepository.findByName("Food")).thenReturn(expectedMenu);
+        when(menuRepository.getReferenceById(any())).thenReturn(expectedMenu.get());
         when(menuItemRepository.save(any())).thenReturn(menuItemCreated);
 
         MenuItemResponse menuItemReturned = menuItemController.saveMenuItem(menuItemRequest).getBody();

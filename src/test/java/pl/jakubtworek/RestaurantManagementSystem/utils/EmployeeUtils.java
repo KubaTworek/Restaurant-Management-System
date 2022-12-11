@@ -18,15 +18,15 @@ public class EmployeeUtils {
     }
 
     public static Employee createCook(){
-        return new Employee(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002"), "John", "Smith", new Job(UUID.fromString("504ab5ae-7844-11ed-a1eb-0242ac120002"),"Cook",List.of()), List.of());
+        return new Employee(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002"), "John", "Smith", new Job(UUID.fromString("504ab5ae-7844-11ed-a1eb-0242ac120002"),"Cook", List.of()), List.of());
     }
 
     public static List<Employee> createCooks(){
-        return List.of(new Employee(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002"), "John", "Smith", new Job(UUID.fromString("504ab5ae-7844-11ed-a1eb-0242ac120002"),"Cook",List.of()), List.of()));
+        return List.of(new Employee(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002"), "John", "Smith", new Job(UUID.fromString("504ab5ae-7844-11ed-a1eb-0242ac120002"),"Cook", List.of(createCook())), List.of()));
     }
 
     public static Job createJobCook(){
-        return new Job(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002"), "Cook", List.of());
+        return new Job(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002"), "Cook", new ArrayList<>(List.of(createCook())));
     }
     public static Job createJobWaiter(){
         return new Job(UUID.fromString("e62db8e2-7843-11ed-a1eb-0242ac120002"), "Waiter", List.of());

@@ -36,6 +36,7 @@ class EmployeeControllerIT {
         // when
         when(employeeRepository.save(any())).thenReturn(expectedEmployee);
         when(jobRepository.findByName(any())).thenReturn(Optional.of(job));
+        when(jobRepository.getReferenceById(any())).thenReturn(job);
 
         EmployeeResponse employeeCreated = employeeController.saveEmployee(employeeRequest).getBody();
 
