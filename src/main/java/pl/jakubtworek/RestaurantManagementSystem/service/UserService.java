@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface UserService {
     UserDTO save(UserRequest userRequest);
+    void deleteByUsername(String username);
     Optional<UserDTO> findByUsername(String username);
 }

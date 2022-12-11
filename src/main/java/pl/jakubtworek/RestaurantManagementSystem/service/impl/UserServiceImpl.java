@@ -1,6 +1,7 @@
 package pl.jakubtworek.RestaurantManagementSystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.controller.user.UserRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.UserDTO;
@@ -24,6 +25,13 @@ public class UserServiceImpl implements UserService {
 
         User userCreated = userFactory.createUser(userRequest, authority).convertDTOToEntity();
         return userRepository.save(userCreated).convertEntityToDTO();
+    }
+
+    @Override
+    public void deleteByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("There are no user registered with that username: " + username));
+        userRepository.delete(user);
     }
 
     public Optional<UserDTO> findByUsername(String username){
