@@ -6,7 +6,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.*;
 import pl.jakubtworek.RestaurantManagementSystem.exception.MenuItemNotFoundException;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 
@@ -52,7 +51,7 @@ class MenuItemControllerIT {
         Menu foodMenu = createMenu();
         MenuItem oldMenuItem = new MenuItem(UUID.randomUUID(), "Chicken", 10.99, foodMenu, List.of());
         MenuItemRequest newMenuItem = new MenuItemRequest("Chicken Wings", 9.99, "Food");
-        MenuItemDTO updatedMenuItem = new MenuItemDTO(UUID.randomUUID(), "Chicken Wings", 9.99, foodMenu.convertEntityToDTO(), List.of());
+        MenuItem updatedMenuItem = new MenuItem(UUID.randomUUID(), "Chicken Wings", 9.99, foodMenu, List.of());
 
         // when
         when(menuItemRepository.getReferenceById(any())).thenReturn(oldMenuItem);
@@ -61,7 +60,8 @@ class MenuItemControllerIT {
         MenuItemResponse menuItemUpdated = menuItemController.updateMenuItem(newMenuItem, UUID.randomUUID()).getBody();
 
         // then
-        MenuItemResponseAssertions.checkAssertionsForMenuItem(menuItemUpdated);
+        assertEquals("Chicken Wings", menuItemUpdated.getName());
+        assertEquals(9.99, menuItemUpdated.getPrice());
     }
 
     @Test
