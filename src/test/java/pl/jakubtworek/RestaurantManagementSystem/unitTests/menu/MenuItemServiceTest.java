@@ -91,11 +91,9 @@ class MenuItemServiceTest {
     void shouldReturnOneMenuItem_whenMenuNameIsPass() throws MenuNotFoundException {
         // given
         List<MenuItem> menuItems = createMenuItemListForFood();
-        Optional<Menu> menu = Optional.of(createMenu());
 
         // when
-        when(menuRepository.findByName("Food")).thenReturn(menu);
-        when(menuItemRepository.findByMenu(menu.get())).thenReturn(menuItems);
+        when(menuItemRepository.findByMenuName("Food")).thenReturn(menuItems);
 
         List<MenuItemDTO> menuItemsReturned = menuItemService.findByMenu("Food");
 

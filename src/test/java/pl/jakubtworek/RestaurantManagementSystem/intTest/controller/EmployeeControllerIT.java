@@ -98,25 +98,14 @@ class EmployeeControllerIT {
     @Test
     void shouldReturnEmployeesByJob() throws Exception {
         // given
-        Optional<Job> expectedJob = Optional.of(createJobCook());
         List<Employee> expectedCooks = createCooks();
 
         // when
-        when(jobRepository.findByName("Cook")).thenReturn(expectedJob);
-        when(employeeRepository.findByJob(any())).thenReturn(expectedCooks);
+        when(employeeRepository.findByJobName("Cook")).thenReturn(expectedCooks);
 
         List<EmployeeResponse> employeesReturned = employeeController.getEmployeeByJobName("Cook").getBody();
 
         // then
         EmployeeResponseAssertions.checkAssertionsForCooks(employeesReturned);
-    }
-
-    @Test
-    void shouldThrowException_whenJobIsNotExist() {
-        // when
-        Exception exception = assertThrows(JobNotFoundException.class, () -> employeeController.getEmployeeByJobName("something"));
-
-        // then
-        assertEquals("There are no job in restaurant with that name: something", exception.getMessage());
     }
 }

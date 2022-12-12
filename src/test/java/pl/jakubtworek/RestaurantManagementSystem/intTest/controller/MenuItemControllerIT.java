@@ -77,11 +77,9 @@ class MenuItemControllerIT {
     void shouldReturnMenuItemByMenu() throws Exception {
         // given
         List<MenuItem> expectedMenuItems = createMenuItemListForFood();
-        Optional<Menu> expectedMenu = Optional.of(createMenu());
 
         // when
-        when(menuItemRepository.findByMenu(any())).thenReturn(expectedMenuItems);
-        when(menuRepository.findByName("Food")).thenReturn(expectedMenu);
+        when(menuItemRepository.findByMenuName("Food")).thenReturn(expectedMenuItems);
 
         List<MenuItemResponse> menuItemsReturned = menuItemController.getMenuItemsByMenu("Food").getBody();
 

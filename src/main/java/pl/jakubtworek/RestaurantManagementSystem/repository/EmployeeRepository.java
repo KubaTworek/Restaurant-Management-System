@@ -8,5 +8,5 @@ import java.util.*;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
-    List<Employee> findByJob(Job theJob);
+    List<Employee> findByJobName(String jobName);
 }

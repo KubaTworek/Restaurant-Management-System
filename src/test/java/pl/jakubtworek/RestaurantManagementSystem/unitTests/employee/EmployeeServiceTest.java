@@ -2,10 +2,10 @@ package pl.jakubtworek.RestaurantManagementSystem.unitTests.employee;
 
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.*;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
 import pl.jakubtworek.RestaurantManagementSystem.exception.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.EmployeeQueueFacade;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.EmployeeFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
@@ -13,7 +13,6 @@ import pl.jakubtworek.RestaurantManagementSystem.service.impl.EmployeeServiceImp
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.*;
 
@@ -104,27 +103,16 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void shouldReturnEmployeesByJobName() throws JobNotFoundException {
+    void shouldReturnEmployeesByJobName() {
         // given
         List<Employee> employees = createEmployees();
-        Job job = createJobCook();
 
         // when
-        when(jobRepository.findByName("Job")).thenReturn(Optional.of(job));
-        when(employeeRepository.findByJob(job)).thenReturn(employees);
+        when(employeeRepository.findByJobName("Job")).thenReturn(employees);
 
         List<EmployeeDTO> employeesReturned = employeeService.findByJob("Job");
 
         // then
         EmployeeDTOAssertions.checkAssertionsForCooks(employeesReturned);
-    }
-
-    @Test
-    void shouldThrowException_whenJobNotExist() {
-        // when
-        Exception exception = assertThrows(JobNotFoundException.class, () -> employeeService.findByJob("Random"));
-
-        // then
-        assertEquals("There are no job in restaurant with that name: Random", exception.getMessage());
     }
 }

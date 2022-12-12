@@ -58,11 +58,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeDTO> findByJob(String jobName) throws JobNotFoundException {
-        Job jobFound = jobRepository.findByName(jobName)
-                .orElseThrow(() -> new JobNotFoundException("There are no job in restaurant with that name: " + jobName));
-
-        return jobFound.getEmployees()
+    public List<EmployeeDTO> findByJob(String jobName) {
+        return employeeRepository.findByJobName(jobName)
                 .stream()
                 .map(Employee::convertEntityToDTO)
                 .collect(Collectors.toList());

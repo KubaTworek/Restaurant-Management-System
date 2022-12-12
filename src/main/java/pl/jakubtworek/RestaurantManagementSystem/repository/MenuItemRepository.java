@@ -8,6 +8,6 @@ import java.util.*;
 
 @Repository
 public interface MenuItemRepository extends JpaRepository<MenuItem, UUID> {
-    List<MenuItem> findByMenu(Menu menu);
+    List<MenuItem> findByMenuName(String menuName);
     Optional<MenuItem> findByName(String name);
 }

@@ -45,11 +45,8 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
     @Override
-    public List<MenuItemDTO> findByMenu(String menuName) throws MenuNotFoundException {
-        Menu menu = menuRepository.findByName(menuName)
-                .orElseThrow(() -> new MenuNotFoundException("There are no menu in restaurant with that name: " + menuName));
-
-        return menu.getMenuItems()
+    public List<MenuItemDTO> findByMenu(String menuName) {
+        return menuItemRepository.findByMenuName(menuName)
                 .stream()
                 .map(MenuItem::convertEntityToDTO)
                 .collect(Collectors.toList());
