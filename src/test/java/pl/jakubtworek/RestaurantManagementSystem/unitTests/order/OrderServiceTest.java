@@ -133,10 +133,6 @@ class OrderServiceTest {
 
     @Test
     void isInvokingRightMethodByParams() {
-        TypeOfOrder typeOfOrder = createOnsiteType();
-        when(typeOfOrderRepository.findByType("typeOfOrder")).thenReturn(Optional.of(typeOfOrder));
-        when(typeOfOrderRepository.findByType(null)).thenReturn(null);
-
         orderService.findByParams(null, null, null);
         verify(orderRepository).findAll();
 
@@ -144,8 +140,7 @@ class OrderServiceTest {
         verify(orderRepository).findByDate(any());
 
         orderService.findByParams(null, "typeOfOrder", null);
-
-        verify(orderRepository).findByTypeOfOrder(any());
+        verify(orderRepository).findByTypeOfOrderType(any());
 
         orderService.findByParams(null, null, UUID.randomUUID());
         verify(orderRepository).findByEmployeesId(any());
@@ -154,13 +149,13 @@ class OrderServiceTest {
         verify(orderRepository).findByDateAndEmployeesId(any(), any());
 
         orderService.findByParams("Date", "typeOfOrder", null);
-        verify(orderRepository).findByDateAndTypeOfOrder(any(), any());
+        verify(orderRepository).findByDateAndTypeOfOrderType(any(), any());
 
         orderService.findByParams(null, "typeOfOrder", UUID.randomUUID());
-        verify(orderRepository).findByTypeOfOrderAndEmployeesId(any(), any());
+        verify(orderRepository).findByTypeOfOrderTypeAndEmployeesId(any(), any());
 
         orderService.findByParams("Date", "typeOfOrder", UUID.randomUUID());
-        verify(orderRepository).findByDateAndEmployeesIdAndTypeOfOrder(any(), any(), any());
+        verify(orderRepository).findByDateAndEmployeesIdAndTypeOfOrderType(any(), any(), any());
     }
 
     @Test

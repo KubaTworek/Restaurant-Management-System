@@ -1,6 +1,8 @@
 package pl.jakubtworek.RestaurantManagementSystem.intTest.service;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -17,11 +19,14 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 import pl.jakubtworek.RestaurantManagementSystem.service.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.createOnsiteOrderRequest;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
 
 @SpringBootTest
 @Transactional
@@ -190,39 +195,35 @@ class OrderServiceIT {
         assertEquals(1.99, orderReturned.getMenuItems().get(1).getPrice());
     }
 
-/*    @Test
-    @Sql({"/deleting-data.sql", "/data.sql"})
-    void shouldReturnOrders_whenPassDate() {
-        // given
-        String date = "2022-08-22";
-
+    @ParameterizedTest
+    @MethodSource("params")
+    void shouldReturnOrdersByParams(int expectedSize, String date, String typeOfOrder, UUID employeeId) {
         // when
-        List<OrderDTO> orders = orderService.findByDate(date);
+        List<OrderDTO> ordersReturned = orderService.findByParams(date, typeOfOrder, employeeId);
 
+        for(OrderDTO o : ordersReturned){
+            System.out.println(o.getTypeOfOrder().getType());
+        }
         // then
-        assertEquals(2, orders.size());
+        assertEquals(expectedSize, ordersReturned.size());
     }
 
-    @Test
-    @Sql({"/deleting-data.sql", "/data.sql"})
-    void shouldReturnOrders_whenPassTypeOfOrder() {
-        // given
-        TypeOfOrder typeOfOrder = createOnsiteType();
-
-        // when
-        List<OrderDTO> orders = orderService.findByTypeOfOrder(typeOfOrder);
-
-        // then
-        assertEquals(1, orders.size());
+    private static Stream<Arguments> params() {
+        return Stream.of(
+                Arguments.of(2, null, null, null),
+                Arguments.of(2, getTodayDate(), null, null),
+                Arguments.of(1, null, "On-site", null),
+                Arguments.of(0, null, null, UUID.randomUUID()),
+                Arguments.of(0, getTodayDate(), null, UUID.randomUUID()),
+                Arguments.of(1, getTodayDate(), "On-site", null),
+                Arguments.of(0, null, "On-site", UUID.randomUUID()),
+                Arguments.of(0, getTodayDate(), "On-site", UUID.randomUUID())
+        );
     }
 
-    @Test
-    @Sql({"/deleting-data.sql", "/data.sql"})
-    void shouldReturnOrders_whenPassEmployee() {
-        // when
-        List<OrderDTO> orders = orderService.findByEmployeeId(1L);
-
-        // then
-        assertEquals(2, orders.size());
-    }*/
+    private static String getTodayDate(){
+        LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return date.format(localDateTime);
+    }
 }

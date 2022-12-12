@@ -76,19 +76,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDTO> findByParams(String date, String typeOfOrder, UUID employeeId) {
-        Optional<TypeOfOrder> typeOfOrderFound = typeOfOrderRepository.findByType(typeOfOrder);
-
-        if(typeOfOrderFound != null){
-            return getOrdersByParams(date, typeOfOrderFound.get(), employeeId)
-                    .stream()
-                    .map(Order::convertEntityToDTO)
-                    .collect(Collectors.toList());
-        } else {
-            return getOrdersByParams(date, null, employeeId)
-                    .stream()
-                    .map(Order::convertEntityToDTO)
-                    .collect(Collectors.toList());
-        }
+        return getOrdersByParams(date, typeOfOrder, employeeId)
+                .stream()
+                .map(Order::convertEntityToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -125,23 +116,23 @@ public class OrderServiceImpl implements OrderService {
                 .convertEntityToDTO();
     }
 
-    private List<Order> getOrdersByParams(String date, TypeOfOrder typeOfOrderFound, UUID employeeId) {
+    private List<Order> getOrdersByParams(String date, String typeOfOrderFound, UUID employeeId) {
         if(date == null && typeOfOrderFound == null && employeeId == null){
             return orderRepository.findAll();
         } else if (typeOfOrderFound == null && employeeId == null){
             return orderRepository.findByDate(date);
         } else if (date == null && employeeId == null){
-            return orderRepository.findByTypeOfOrder(typeOfOrderFound);
+            return orderRepository.findByTypeOfOrderType(typeOfOrderFound);
         } else if (date == null && typeOfOrderFound == null){
             return orderRepository.findByEmployeesId(employeeId);
         } else if (employeeId == null){
-            return orderRepository.findByDateAndTypeOfOrder(date, typeOfOrderFound);
+            return orderRepository.findByDateAndTypeOfOrderType(date, typeOfOrderFound);
         } else if (date == null){
-            return orderRepository.findByTypeOfOrderAndEmployeesId(typeOfOrderFound, employeeId);
+            return orderRepository.findByTypeOfOrderTypeAndEmployeesId(typeOfOrderFound, employeeId);
         } else if (typeOfOrderFound == null){
             return orderRepository.findByDateAndEmployeesId(date, employeeId);
         } else {
-            return orderRepository.findByDateAndEmployeesIdAndTypeOfOrder(date, employeeId, typeOfOrderFound);
+            return orderRepository.findByDateAndEmployeesIdAndTypeOfOrderType(date, employeeId, typeOfOrderFound);
         }
     }
 }

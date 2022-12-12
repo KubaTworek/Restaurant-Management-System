@@ -1,6 +1,8 @@
 package pl.jakubtworek.RestaurantManagementSystem.intTest.controller;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -12,10 +14,11 @@ import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.createChickenMenuItem;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.UserUtils.createUser;
@@ -113,63 +116,41 @@ class OrderControllerIT {
         // then
         assertEquals("There are no order in restaurant with that id: a0f7ae28-7847-11ed-a1eb-0242ac120002", exception.getMessage());
     }
-    
-/*    @Test
-    void shouldReturnOrdersByDate() {
+
+    @ParameterizedTest
+    @MethodSource("params")
+    void shouldReturnOrdersByDate(String date, String typeOfOrder, UUID employeeId) {
         // given
         List<Order> expectedOrders = createOrders();
 
         // when
-        when(orderRepository.findByDate("2022-08-22")).thenReturn(expectedOrders);
+        when(orderRepository.findAll()).thenReturn(expectedOrders);
+        when(orderRepository.findByDate(any())).thenReturn(expectedOrders);
+        when(orderRepository.findByTypeOfOrderType(any())).thenReturn(expectedOrders);
+        when(orderRepository.findByEmployeesId(any())).thenReturn(expectedOrders);
+        when(orderRepository.findByDateAndEmployeesId(any(), any())).thenReturn(expectedOrders);
+        when(orderRepository.findByDateAndTypeOfOrderType(any(), any())).thenReturn(expectedOrders);
+        when(orderRepository.findByTypeOfOrderTypeAndEmployeesId(any(), any())).thenReturn(expectedOrders);
+        when(orderRepository.findByDateAndEmployeesIdAndTypeOfOrderType(any(), any(), any())).thenReturn(expectedOrders);
 
-        List<OrderResponse> ordersReturned = orderController.getOrderByParams("2022-08-22", null, null).getBody();
+        List<OrderResponse> ordersReturned = orderController.getOrderByParams(date, typeOfOrder, employeeId).getBody();
 
         // then
-        assertEquals(2, ordersReturned.size());
+        OrderResponseAssertions.checkAssertionsForOrders(ordersReturned);
     }
 
-    @Test
-    void shouldReturnOrders_whenTypeOfOrderIsPassed() {
-        // given
-        TypeOfOrder expectedTypeOfOrder = createOnsiteType();
-        List<Order> expectedOrders = List.of(createOnsiteOrder());
-
-        // when
-        when(typeOfOrderRepository.findByType(any())).thenReturn(Optional.of(expectedTypeOfOrder));
-        when(orderRepository.findByTypeOfOrder(any())).thenReturn(expectedOrders);
-
-        List<OrderResponse> ordersReturned = orderController.getOrderByParams(null, "On-site", null).getBody();
-
-        // then
-        assertEquals(12.99, ordersReturned.get(0).getPrice());
-        assertEquals("2022-08-22", ordersReturned.get(0).getDate());
-        assertEquals("12:00", ordersReturned.get(0).getHourOrder());
-        assertEquals("12:15", ordersReturned.get(0).getHourAway());
-        assertEquals("On-site", ordersReturned.get(0).getTypeOfOrder().getType());
-        assertEquals("Chicken", ordersReturned.get(0).getMenuItems().get(0).getName());
-        assertEquals(10.99, ordersReturned.get(0).getMenuItems().get(0).getPrice());
-        assertEquals("Coke", ordersReturned.get(0).getMenuItems().get(1).getName());
-        assertEquals(1.99, ordersReturned.get(0).getMenuItems().get(1).getPrice());
-        assertEquals("John", ordersReturned.get(0).getEmployees().get(0).getFirstName());
-        assertEquals("Smith", ordersReturned.get(0).getEmployees().get(0).getLastName());
-        assertEquals("Cook", ordersReturned.get(0).getEmployees().get(0).getJob().getName());
+    private static Stream<Arguments> params() {
+        return Stream.of(
+                Arguments.of(null, null, null),
+                Arguments.of("Date", null, null),
+                Arguments.of(null, "typeOfOrder", null),
+                Arguments.of(null, null, UUID.randomUUID()),
+                Arguments.of("Date", null, UUID.randomUUID()),
+                Arguments.of("Date", "typeOfOrder", null),
+                Arguments.of(null, "typeOfOrder", UUID.randomUUID()),
+                Arguments.of("Date", "typeOfOrder", UUID.randomUUID())
+        );
     }
-
-    @Test
-    void shouldReturnOrders_whenEmployeeIsPassed() {
-        // given
-        List<Order> expectedOrders = createOrders();
-        Optional<Employee> employee = Optional.of(createCook());
-
-        // when
-        when(employeeRepository.findById(1L)).thenReturn(employee);
-        when(orderRepository.findByEmployeesId(1L)).thenReturn(expectedOrders);
-
-        List<OrderResponse> ordersReturned = orderController.getOrderByParams(null, null, 1L).getBody();
-
-        // then
-        assertEquals(2, ordersReturned.size());
-    }*/
 
 
     @Test
