@@ -75,6 +75,25 @@ class MenuItemServiceIT {
     }
 
     @Test
+    void shouldReturnUpdatedMenuItem() throws MenuNotFoundException {
+        // given
+        MenuItemRequest menuItem = new MenuItemRequest("Chicken Wings", 9.99, "Food");
+
+        // when
+        List<MenuDTO> menuDTOS1 = menuService.findAll();
+        MenuItemDTO menuItemCreated = menuItemService.update(menuItem, idMenuItem);
+        List<MenuDTO> menuDTOS2 = menuService.findAll();
+
+        // then
+        assertEquals(idMenuItem, menuItemCreated.getId());
+        assertEquals("Chicken Wings", menuItemCreated.getName());
+        assertEquals(9.99, menuItemCreated.getPrice());
+        assertEquals("Food", menuItemCreated.getMenu().getName());
+        assertEquals(2, menuDTOS1.size());
+        assertEquals(2, menuDTOS2.size());
+    }
+
+    @Test
     void shouldDeleteMenuItem() throws MenuItemNotFoundException {
         // when
         MenuItemDTO menuItemDTO1 = menuItemService.findById(idMenuItem).orElse(null);

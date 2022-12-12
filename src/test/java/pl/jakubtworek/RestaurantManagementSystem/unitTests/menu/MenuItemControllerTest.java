@@ -45,6 +45,21 @@ class MenuItemControllerTest {
         MenuItemResponseAssertions.checkAssertionsForMenuItem(menuItemCreated);
     }
 
+    @Test
+    void shouldReturnUpdatedMenuItem() throws Exception {
+        // given
+        MenuItemRequest menuItemRequest = createChickenMenuItemRequest();
+        MenuItemDTO expectedMenuItem = createChickenMenuItem().convertEntityToDTO();
+
+        // when
+        when(menuItemService.update(any(), any())).thenReturn(expectedMenuItem);
+
+        MenuItemResponse menuItemCreated = menuItemController.updateMenuItem(menuItemRequest, UUID.randomUUID()).getBody();
+
+        // then
+        MenuItemResponseAssertions.checkAssertionsForMenuItem(menuItemCreated);
+    }
+
 
     @Test
     void shouldReturnResponseConfirmingDeletedMenu() throws Exception {

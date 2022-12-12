@@ -4,7 +4,7 @@ import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
 import pl.jakubtworek.RestaurantManagementSystem.exception.*;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuItemFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
@@ -13,6 +13,7 @@ import pl.jakubtworek.RestaurantManagementSystem.service.impl.MenuItemServiceImp
 
 import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 
@@ -57,6 +58,27 @@ class MenuItemServiceTest {
 
         // then
         MenuItemDTOAssertions.checkAssertionsForMenuItem(menuItemCreated);
+    }
+
+    @Test
+    void shouldReturnUpdatedMenuItem() throws MenuNotFoundException {
+        // given
+        Menu foodMenu = createMenu();
+        MenuItem oldMenuItem = new MenuItem(UUID.randomUUID(), "Chicken", 10.99, foodMenu, List.of());
+        MenuItemRequest newMenuItem = new MenuItemRequest("Chicken Wings", 9.99, "Food");
+        MenuItemDTO updatedMenuItemDTO = new MenuItemDTO(UUID.randomUUID(), "Chicken Wings", 9.99, foodMenu.convertEntityToDTO(), List.of());
+        MenuItem updatedMenuItem = new MenuItem(UUID.randomUUID(), "Chicken Wings", 9.99, foodMenu, List.of());
+
+        // when
+        when(menuItemRepository.getReferenceById(any())).thenReturn(oldMenuItem);
+        when(menuItemFactory.updateMenuItem(any(), any())).thenReturn(updatedMenuItemDTO);
+        when(menuItemRepository.save(any())).thenReturn(updatedMenuItem);
+        MenuItemDTO menuItemCreated = menuItemService.update(newMenuItem, UUID.randomUUID());
+
+        // then
+        assertEquals("Chicken Wings", menuItemCreated.getName());
+        assertEquals(9.99, menuItemCreated.getPrice());
+        assertEquals("Food", menuItemCreated.getMenu().getName());
     }
 
     @Test
