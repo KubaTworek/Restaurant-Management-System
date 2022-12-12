@@ -46,6 +46,21 @@ class MenuControllerTest {
     }
 
     @Test
+    void shouldReturnUpdatedMenu() {
+        // given
+        MenuRequest menu = createMenuRequest();
+        MenuDTO expectedMenu = createMenu().convertEntityToDTO();
+
+        // when
+        when(menuService.update(any(), any())).thenReturn(expectedMenu);
+
+        MenuResponse menuUpdated = menuController.updateMenu(menu, UUID.randomUUID()).getBody();
+
+        // then
+        assertEquals("Food", menuUpdated.getName());
+    }
+
+    @Test
     void shouldReturnResponseConfirmingDeletedMenu() throws Exception {
         // given
         Optional<MenuDTO> expectedMenu = Optional.of(createMenu().convertEntityToDTO());

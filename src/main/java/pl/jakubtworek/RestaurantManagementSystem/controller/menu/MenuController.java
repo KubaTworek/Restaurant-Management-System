@@ -27,6 +27,13 @@ public class MenuController {
         return new ResponseEntity<>(menuResponse, HttpStatus.CREATED);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<MenuResponse> updateMenu(@RequestBody MenuRequest menuRequest, @PathVariable UUID id) {
+        MenuResponse menuResponse = menuService.update(menuRequest, id).convertDTOToResponse();
+
+        return new ResponseEntity<>(menuResponse, HttpStatus.CREATED);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteMenu(@PathVariable UUID id) throws MenuNotFoundException {
         menuService.deleteById(id);

@@ -53,6 +53,23 @@ class MenuServiceTest {
         assertEquals("Food", menuCreated.getName());
     }
 
+    @Test
+    void shouldReturnUpdatedMenu(){
+        // given
+        MenuRequest menu = createMenuRequest();
+        Menu expectedMenu = createMenu();
+        MenuDTO expectedMenuDTO = createMenu().convertEntityToDTO();
+
+        // when
+        when(menuFactory.updateMenu(any(), any())).thenReturn(expectedMenuDTO);
+        when(menuRepository.save(any())).thenReturn(expectedMenu);
+
+        MenuDTO menuCreated = menuService.update(menu, UUID.randomUUID());
+
+        // then
+        assertEquals("Food", menuCreated.getName());
+    }
+
 
     @Test
     void verifyIsMenuIsDeleted() throws MenuNotFoundException {

@@ -55,7 +55,6 @@ class MenuItemControllerIT {
         MenuItemDTO updatedMenuItem = new MenuItemDTO(UUID.randomUUID(), "Chicken Wings", 9.99, foodMenu.convertEntityToDTO(), List.of());
 
         // when
-        /*when(menuRepository.findByName("Food")).thenReturn(expectedMenu);*/
         when(menuItemRepository.getReferenceById(any())).thenReturn(oldMenuItem);
         when(menuItemRepository.save(any())).thenReturn(updatedMenuItem);
 

@@ -57,6 +57,19 @@ class MenuServiceIT {
     }
 
     @Test
+    void shouldReturnUpdatedMenu() {
+        // given
+        MenuRequest menu = new MenuRequest("Alcohol");
+
+        // when
+        MenuDTO menuUpdated = menuService.update(menu, idMenu);
+
+        // then
+        assertEquals("Alcohol", menuUpdated.getName());
+        assertEquals(2, menuUpdated.getMenuItems().size());
+    }
+
+    @Test
     void shouldDeleteMenu() throws MenuNotFoundException {
         // when
         MenuDTO menuDTO1 = menuService.findById(idMenu).orElse(null);

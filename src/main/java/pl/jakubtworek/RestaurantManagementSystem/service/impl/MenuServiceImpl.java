@@ -26,6 +26,13 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
+    public MenuDTO update(MenuRequest menuRequest, UUID menuId) {
+        Menu oldMenu = menuRepository.getReferenceById(menuId);
+        Menu newMenu = menuFactory.updateMenu(menuRequest, oldMenu).convertDTOToEntity();
+        return menuRepository.save(newMenu).convertEntityToDTO();
+    }
+
+    @Override
     public void deleteById(UUID theId) throws MenuNotFoundException {
         Menu menu = menuRepository.findById(theId)
                 .orElseThrow(() -> new MenuNotFoundException("There are no menu in restaurant with that id: " + theId));

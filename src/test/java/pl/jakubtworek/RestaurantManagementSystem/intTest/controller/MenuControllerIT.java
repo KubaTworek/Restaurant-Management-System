@@ -40,6 +40,22 @@ class MenuControllerIT {
     }
 
     @Test
+    void shouldReturnUpdatedMenu() {
+        // given
+        MenuRequest menuRequest = createMenuRequest();
+        Menu menuCreated = createMenu();
+
+        // when
+        when(menuRepository.save(any())).thenReturn(menuCreated);
+        when(menuRepository.getReferenceById(any())).thenReturn(menuCreated);
+
+        MenuResponse menuReturned = menuController.updateMenu(menuRequest, UUID.randomUUID()).getBody();
+
+        // then
+        assertEquals("Food", menuReturned.getName());
+    }
+
+    @Test
     void shouldReturnResponseConfirmingDeletedMenu() throws Exception {
         // given
         Optional<Menu> expectedMenu = Optional.of(createMenu());

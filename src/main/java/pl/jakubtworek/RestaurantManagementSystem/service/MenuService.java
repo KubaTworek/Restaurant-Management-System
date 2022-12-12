@@ -8,6 +8,7 @@ import java.util.*;
 
 public interface MenuService {
     MenuDTO save(MenuRequest menuRequest);
+    MenuDTO update(MenuRequest menuRequest, UUID menuId);
     void deleteById(UUID theId) throws MenuNotFoundException;
     List<MenuDTO> findAll();
     Optional<MenuDTO> findById(UUID theId);
