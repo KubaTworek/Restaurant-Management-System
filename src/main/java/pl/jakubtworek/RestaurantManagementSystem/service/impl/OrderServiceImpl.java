@@ -76,12 +76,19 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDTO> findByParams(String date, String typeOfOrder, UUID employeeId) {
-        TypeOfOrder typeOfOrderFound = typeOfOrderRepository.findByType(typeOfOrder).orElse(null);
+        Optional<TypeOfOrder> typeOfOrderFound = typeOfOrderRepository.findByType(typeOfOrder);
 
-        return getOrdersByParams(date, typeOfOrderFound, employeeId)
-                .stream()
-                .map(Order::convertEntityToDTO)
-                .collect(Collectors.toList());
+        if(typeOfOrderFound != null){
+            return getOrdersByParams(date, typeOfOrderFound.get(), employeeId)
+                    .stream()
+                    .map(Order::convertEntityToDTO)
+                    .collect(Collectors.toList());
+        } else {
+            return getOrdersByParams(date, null, employeeId)
+                    .stream()
+                    .map(Order::convertEntityToDTO)
+                    .collect(Collectors.toList());
+        }
     }
 
     @Override

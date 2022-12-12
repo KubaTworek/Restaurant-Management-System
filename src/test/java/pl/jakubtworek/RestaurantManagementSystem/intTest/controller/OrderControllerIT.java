@@ -113,9 +113,7 @@ class OrderControllerIT {
         // then
         assertEquals("There are no order in restaurant with that id: a0f7ae28-7847-11ed-a1eb-0242ac120002", exception.getMessage());
     }
-
-
-
+    
 /*    @Test
     void shouldReturnOrdersByDate() {
         // given

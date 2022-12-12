@@ -99,7 +99,7 @@ class OrderControllerTest {
         assertEquals("There are no order in restaurant with that id: a0f7ae28-7847-11ed-a1eb-0242ac120002", exception.getMessage());
     }
 
-/*    @Test
+    @Test
     void shouldReturnOrders_whenDateIsPassed() {
         // given
         List<OrderDTO> expectedOrders = createOrders()
@@ -108,12 +108,12 @@ class OrderControllerTest {
                 .collect(Collectors.toList());
 
         // when
-        when(orderService.findByDate(eq("2022-08-22"))).thenReturn(expectedOrders);
+        when(orderService.findByParams("2022-08-22", null, null)).thenReturn(expectedOrders);
 
         List<OrderResponse> ordersReturned = orderController.getOrderByParams("2022-08-22", null, null).getBody();
 
         // then
-        assertEquals(2, ordersReturned.size());
+        OrderResponseAssertions.checkAssertionsForOrders(ordersReturned);
     }
 
     @Test
@@ -123,16 +123,14 @@ class OrderControllerTest {
                 .stream()
                 .map(Order::convertEntityToDTO)
                 .collect(Collectors.toList());
-        TypeOfOrder typeOfOrder = createOnsiteType();
 
         // when
-        when(typeOfOrderService.findByType(anyString())).thenReturn(Optional.of(typeOfOrder.convertEntityToDTO()));
-        when(orderService.findByTypeOfOrder(any())).thenReturn(expectedOrders);
+        when(orderService.findByParams(null, "On-site", null)).thenReturn(expectedOrders);
 
         List<OrderResponse> ordersReturned = orderController.getOrderByParams(null, "On-site", null).getBody();
 
         // then
-        assertEquals(2, ordersReturned.size());
+        OrderResponseAssertions.checkAssertionsForOrders(ordersReturned);
     }
 
     @Test
@@ -144,13 +142,13 @@ class OrderControllerTest {
                 .collect(Collectors.toList());
 
         // when
-        when(orderService.findByEmployeeId(1L)).thenReturn(expectedOrders);
+        when(orderService.findByParams(null, null, UUID.fromString("7692a636-79c5-11ed-a1eb-0242ac120002"))).thenReturn(expectedOrders);
 
-        List<OrderResponse> ordersReturned = orderController.getOrderByParams(null, null, 1L).getBody();
+        List<OrderResponse> ordersReturned = orderController.getOrderByParams(null, null, UUID.fromString("7692a636-79c5-11ed-a1eb-0242ac120002")).getBody();
 
         // then
-        assertEquals(2, ordersReturned.size());
-    }*/
+        OrderResponseAssertions.checkAssertionsForOrders(ordersReturned);
+    }
 
 
     @Test

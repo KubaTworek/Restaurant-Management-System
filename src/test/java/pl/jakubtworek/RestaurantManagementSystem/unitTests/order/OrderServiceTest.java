@@ -131,49 +131,37 @@ class OrderServiceTest {
         OrderDTOAssertions.checkAssertionsForOrder(orderReturned);
     }
 
-/*    @Test
-    void shouldReturnOrders_whenDateIsPass() {
-        // given
-        Optional<List<Order>> orders = Optional.of(createOrders());
-
-        // when
-        when(orderRepository.findByDate("Date")).thenReturn(orders);
-
-        List<OrderDTO> ordersReturned = orderService.findByDate("Date");
-
-        // then
-        assertEquals(2,ordersReturned.size());
-    }
-
     @Test
-    void shouldReturnOrders_whenTypeOfOrderIsPass() {
-        // given
-        Optional<List<Order>> orders = Optional.of(createOrders());
+    void isInvokingRightMethodByParams() {
         TypeOfOrder typeOfOrder = createOnsiteType();
+        when(typeOfOrderRepository.findByType("typeOfOrder")).thenReturn(Optional.of(typeOfOrder));
+        when(typeOfOrderRepository.findByType(null)).thenReturn(null);
 
-        // when
-        when(orderRepository.findByTypeOfOrder(typeOfOrder)).thenReturn(orders);
+        orderService.findByParams(null, null, null);
+        verify(orderRepository).findAll();
 
-        List<OrderDTO> ordersReturned = orderService.findByTypeOfOrder(typeOfOrder);
+        orderService.findByParams("Date", null, null);
+        verify(orderRepository).findByDate(any());
 
-        // then
-        assertEquals(2,ordersReturned.size());
+        orderService.findByParams(null, "typeOfOrder", null);
+
+        verify(orderRepository).findByTypeOfOrder(any());
+
+        orderService.findByParams(null, null, UUID.randomUUID());
+        verify(orderRepository).findByEmployeesId(any());
+
+        orderService.findByParams("Date", null, UUID.randomUUID());
+        verify(orderRepository).findByDateAndEmployeesId(any(), any());
+
+        orderService.findByParams("Date", "typeOfOrder", null);
+        verify(orderRepository).findByDateAndTypeOfOrder(any(), any());
+
+        orderService.findByParams(null, "typeOfOrder", UUID.randomUUID());
+        verify(orderRepository).findByTypeOfOrderAndEmployeesId(any(), any());
+
+        orderService.findByParams("Date", "typeOfOrder", UUID.randomUUID());
+        verify(orderRepository).findByDateAndEmployeesIdAndTypeOfOrder(any(), any(), any());
     }
-
-    @Test
-    void shouldReturnOrders_whenEmployeeIsPass() {
-        // given
-        Optional<List<Order>> orders = Optional.of(createOrders());
-
-        // when
-        when(orderRepository.findByEmployeesId(1L)).thenReturn(orders);
-
-        List<OrderDTO> ordersReturned = orderService.findByEmployeeId(1L);
-
-        // then
-        assertEquals(2,ordersReturned.size());
-    }*/
-
 
     @Test
     void shouldReturnMadeOrders() {
