@@ -1,4 +1,4 @@
-package pl.jakubtworek.RestaurantManagementSystem.config;
+package pl.jakubtworek.RestaurantManagementSystem.security.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.*;

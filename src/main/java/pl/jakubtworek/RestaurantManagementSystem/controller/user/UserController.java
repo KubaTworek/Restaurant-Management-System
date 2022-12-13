@@ -18,7 +18,7 @@ public class UserController {
         return new ResponseEntity<>(userCreated, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{username}")
+    @DeleteMapping("/users/{username}")
     public ResponseEntity<String> deleteUser(@PathVariable String username){
         userService.deleteByUsername(username);
 
