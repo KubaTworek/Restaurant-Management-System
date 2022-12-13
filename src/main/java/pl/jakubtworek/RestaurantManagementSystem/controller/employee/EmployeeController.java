@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderResponse;
 import pl.jakubtworek.RestaurantManagementSystem.exception.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
 import pl.jakubtworek.RestaurantManagementSystem.service.*;
@@ -37,6 +38,7 @@ public class EmployeeController {
         List<EmployeeResponse> employeesFound = employeeService.findAll()
                 .stream()
                 .map(EmployeeDTO::convertDTOToResponse)
+                .map(EmployeeResponse::addLinkToResponse)
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(employeesFound, HttpStatus.OK);
@@ -46,6 +48,7 @@ public class EmployeeController {
     public ResponseEntity<EmployeeResponse> getEmployeeById(@PathVariable UUID id) throws EmployeeNotFoundException {
         EmployeeResponse employeeResponse = employeeService.findById(id)
                 .map(EmployeeDTO::convertDTOToResponse)
+                .map(EmployeeResponse::addLinkToResponse)
                 .orElseThrow(() -> new EmployeeNotFoundException("There are no employees in restaurant with that id: " + id));
 
         return new ResponseEntity<>(employeeResponse, HttpStatus.OK);
@@ -56,6 +59,7 @@ public class EmployeeController {
         List<EmployeeResponse> employeesResponse = employeeService.findByJob(jobName)
                 .stream()
                 .map(EmployeeDTO::convertDTOToResponse)
+                .map(EmployeeResponse::addLinkToResponse)
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(employeesResponse, HttpStatus.OK);

@@ -1,6 +1,9 @@
 package pl.jakubtworek.RestaurantManagementSystem.controller.menu;
 
 import lombok.*;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderController;
 
 import java.util.*;
 
@@ -8,9 +11,16 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MenuResponse {
-
+public class MenuResponse extends RepresentationModel<MenuResponse> {
     private UUID id;
     private String name;
     private List<MenuItemResponse> menuItems;
+
+    protected static MenuResponse addLinkToResponse(MenuResponse response){
+        response.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash(response.getId()).withSelfRel());
+        for(MenuItemResponse mi: response.getMenuItems()){
+            mi.add(WebMvcLinkBuilder.linkTo(MenuItemController.class).slash(mi.getId()).withSelfRel());
+        }
+        return response;
+    }
 }

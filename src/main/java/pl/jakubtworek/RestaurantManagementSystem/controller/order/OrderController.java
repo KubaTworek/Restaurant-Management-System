@@ -37,6 +37,7 @@ public class OrderController {
         List<OrderResponse> ordersFound = orderService.findAll()
                 .stream()
                 .map(OrderDTO::convertDTOToResponse)
+                .map(OrderResponse::addLinkToResponse)
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(ordersFound, HttpStatus.OK);
@@ -46,6 +47,7 @@ public class OrderController {
     public ResponseEntity<OrderResponse> getOrderById(@PathVariable UUID id) throws OrderNotFoundException {
         OrderResponse orderResponse = orderService.findById(id)
                 .map(OrderDTO::convertDTOToResponse)
+                .map(OrderResponse::addLinkToResponse)
                 .orElseThrow(() -> new OrderNotFoundException("There are no order in restaurant with that id: " + id));
 
         return new ResponseEntity<>(orderResponse, HttpStatus.OK);
@@ -59,6 +61,7 @@ public class OrderController {
         List<OrderResponse> ordersFound = orderService.findByParams(date, typeOfOrder, employeeId)
                 .stream()
                 .map(OrderDTO::convertDTOToResponse)
+                .map(OrderResponse::addLinkToResponse)
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(ordersFound, HttpStatus.OK);
@@ -69,6 +72,7 @@ public class OrderController {
         List<OrderResponse> ordersFound = orderService.findMadeOrders()
                 .stream()
                 .map(OrderDTO::convertDTOToResponse)
+                .map(OrderResponse::addLinkToResponse)
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(ordersFound, HttpStatus.OK);
@@ -79,6 +83,7 @@ public class OrderController {
         List<OrderResponse> ordersFound = orderService.findUnmadeOrders()
                 .stream()
                 .map(OrderDTO::convertDTOToResponse)
+                .map(OrderResponse::addLinkToResponse)
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(ordersFound, HttpStatus.OK);

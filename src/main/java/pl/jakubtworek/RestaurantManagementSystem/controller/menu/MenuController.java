@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeResponse;
 import pl.jakubtworek.RestaurantManagementSystem.exception.MenuNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;
@@ -46,6 +47,7 @@ public class MenuController {
         List<MenuResponse> menuFound = menuService.findAll()
                 .stream()
                 .map(MenuDTO::convertDTOToResponse)
+                .map(MenuResponse::addLinkToResponse)
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(menuFound, HttpStatus.OK);
@@ -55,6 +57,7 @@ public class MenuController {
     public ResponseEntity<MenuResponse> getMenuById(@PathVariable UUID id) throws MenuNotFoundException {
         MenuResponse menuResponse = menuService.findById(id)
                 .map(MenuDTO::convertDTOToResponse)
+                .map(MenuResponse::addLinkToResponse)
                 .orElseThrow(() -> new MenuNotFoundException("There are no menu in restaurant with that id: " + id));
 
         return new ResponseEntity<>(menuResponse, HttpStatus.OK);

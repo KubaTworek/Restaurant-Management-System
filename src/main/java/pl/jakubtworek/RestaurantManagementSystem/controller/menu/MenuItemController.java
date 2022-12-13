@@ -43,6 +43,7 @@ public class MenuItemController {
     public ResponseEntity<MenuItemResponse> getMenuItemById(@PathVariable UUID id) throws MenuItemNotFoundException {
         MenuItemResponse menuItemResponse = menuItemService.findById(id)
                 .map(MenuItemDTO::convertDTOToResponse)
+                .map(MenuItemResponse::addLinkToResponse)
                 .orElseThrow(() -> new MenuItemNotFoundException("There are no menu item in restaurant with that id: " + id));
 
         return new ResponseEntity<>(menuItemResponse, HttpStatus.OK);
@@ -53,6 +54,7 @@ public class MenuItemController {
         List<MenuItemResponse> menuItemsResponse = menuItemService.findByMenu(menuName)
                 .stream()
                 .map(MenuItemDTO::convertDTOToResponse)
+                .map(MenuItemResponse::addLinkToResponse)
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(menuItemsResponse, HttpStatus.OK);
