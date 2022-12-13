@@ -18,8 +18,10 @@ public class MenuResponse extends RepresentationModel<MenuResponse> {
 
     protected static MenuResponse addLinkToResponse(MenuResponse response){
         response.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash(response.getId()).withSelfRel());
-        for(MenuItemResponse mi: response.getMenuItems()){
-            mi.add(WebMvcLinkBuilder.linkTo(MenuItemController.class).slash(mi.getId()).withSelfRel());
+        if(response.getMenuItems() != null){
+            for(MenuItemResponse mi: response.getMenuItems()){
+                mi.add(WebMvcLinkBuilder.linkTo(MenuItemController.class).slash(mi.getId()).withSelfRel());
+            }
         }
         return response;
     }

@@ -27,12 +27,17 @@ public class OrderResponse extends RepresentationModel<OrderResponse> {
 
     protected static OrderResponse addLinkToResponse(OrderResponse response){
         response.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash(response.getId()).withSelfRel());
-        response.getUser().add(WebMvcLinkBuilder.linkTo(UserController.class).slash(response.getId()).withSelfRel());
-        for(EmployeeResponse e: response.getEmployees()){
-            e.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash(e.getId()).withSelfRel());
+        if(response.getUser() != null)
+            response.getUser().add(WebMvcLinkBuilder.linkTo(UserController.class).slash(response.getId()).withSelfRel());
+        if(response.getEmployees() != null){
+            for(EmployeeResponse e: response.getEmployees()){
+                e.add(WebMvcLinkBuilder.linkTo(EmployeeController.class).slash(e.getId()).withSelfRel());
+            }
         }
-        for(MenuItemResponse mi: response.getMenuItems()){
-            mi.add(WebMvcLinkBuilder.linkTo(MenuItemController.class).slash(mi.getId()).withSelfRel());
+        if(response.getMenuItems() != null){
+            for(MenuItemResponse mi: response.getMenuItems()){
+                mi.add(WebMvcLinkBuilder.linkTo(MenuItemController.class).slash(mi.getId()).withSelfRel());
+            }
         }
         return response;
     }
