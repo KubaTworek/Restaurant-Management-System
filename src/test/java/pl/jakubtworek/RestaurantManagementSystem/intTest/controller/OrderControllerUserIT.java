@@ -1,8 +1,6 @@
 package pl.jakubtworek.RestaurantManagementSystem.intTest.controller;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.*;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -10,11 +8,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.*;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.*;
 import pl.jakubtworek.RestaurantManagementSystem.exception.OrderNotFoundException;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -27,7 +25,7 @@ import static pl.jakubtworek.RestaurantManagementSystem.utils.UserUtils.createUs
 class OrderControllerUserIT {
 
     @Autowired
-    private OrderController orderController;
+    private OrderControllerUser orderController;
 
     @MockBean
     private OrderRepository orderRepository;
@@ -42,6 +40,13 @@ class OrderControllerUserIT {
     @MockBean
     private SecurityContext securityContext;
 
+    @BeforeEach
+    void setup(){
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        when(authentication.getName()).thenReturn("user");
+    }
+
     @Test
     void shouldReturnCreatedOrder() throws Exception {
         // given
@@ -52,9 +57,6 @@ class OrderControllerUserIT {
         OrderRequest orderRequest = createOnsiteOrderRequest();
 
         // when
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        SecurityContextHolder.setContext(securityContext);
-        when(authentication.getName()).thenReturn("user");
         when(orderRepository.save(any())).thenReturn(order);
         when(userRepository.findByUsername(any())).thenReturn(Optional.of(user));
         when(typeOfOrderRepository.findByType(any())).thenReturn(Optional.of(typeOfOrder));
@@ -74,6 +76,7 @@ class OrderControllerUserIT {
         // when
         when(orderRepository.findById(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002"))).thenReturn(expectedOrder);
 
+
         String response = orderController.deleteOrder(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002")).getBody();
 
         // then
@@ -86,7 +89,7 @@ class OrderControllerUserIT {
         List<Order> expectedOrders = createOrders();
 
         // when
-        when(orderRepository.findAll()).thenReturn(expectedOrders);
+        when(orderRepository.findByUserUsername("user")).thenReturn(expectedOrders);
 
         List<OrderResponse> ordersReturned = orderController.getOrders().getBody();
 
@@ -97,9 +100,11 @@ class OrderControllerUserIT {
     @Test
     void shouldReturnOrderById() throws Exception {
         // given
+        List<Order> orders = createOrders();
         Optional<Order> expectedOrder = Optional.of(createOnsiteOrder());
 
         // when
+        when(orderRepository.findByUserUsername("user")).thenReturn(orders);
         when(orderRepository.findById(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002"))).thenReturn(expectedOrder);
 
         OrderResponse orderReturned = orderController.getOrderById(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002")).getBody();
@@ -117,49 +122,13 @@ class OrderControllerUserIT {
         assertEquals("There are no order in restaurant with that id: a0f7ae28-7847-11ed-a1eb-0242ac120002", exception.getMessage());
     }
 
-    @ParameterizedTest
-    @MethodSource("params")
-    void shouldReturnOrdersByDate(String date, String typeOfOrder, UUID employeeId) {
-        // given
-        List<Order> expectedOrders = createOrders();
-
-        // when
-        when(orderRepository.findAll()).thenReturn(expectedOrders);
-        when(orderRepository.findByDate(any())).thenReturn(expectedOrders);
-        when(orderRepository.findByTypeOfOrderType(any())).thenReturn(expectedOrders);
-        when(orderRepository.findByEmployeesId(any())).thenReturn(expectedOrders);
-        when(orderRepository.findByDateAndEmployeesId(any(), any())).thenReturn(expectedOrders);
-        when(orderRepository.findByDateAndTypeOfOrderType(any(), any())).thenReturn(expectedOrders);
-        when(orderRepository.findByTypeOfOrderTypeAndEmployeesId(any(), any())).thenReturn(expectedOrders);
-        when(orderRepository.findByDateAndEmployeesIdAndTypeOfOrderType(any(), any(), any())).thenReturn(expectedOrders);
-
-        List<OrderResponse> ordersReturned = orderController.getOrderByParams(date, typeOfOrder, employeeId).getBody();
-
-        // then
-        OrderResponseAssertions.checkAssertionsForOrders(ordersReturned);
-    }
-
-    private static Stream<Arguments> params() {
-        return Stream.of(
-                Arguments.of(null, null, null),
-                Arguments.of("Date", null, null),
-                Arguments.of(null, "typeOfOrder", null),
-                Arguments.of(null, null, UUID.randomUUID()),
-                Arguments.of("Date", null, UUID.randomUUID()),
-                Arguments.of("Date", "typeOfOrder", null),
-                Arguments.of(null, "typeOfOrder", UUID.randomUUID()),
-                Arguments.of("Date", "typeOfOrder", UUID.randomUUID())
-        );
-    }
-
-
     @Test
     void shouldReturnMadeOrders() {
         // given
         List<Order> expectedOrders = List.of(createOnsiteOrder());
 
         // when
-        when(orderRepository.findOrdersByHourAwayIsNotNull()).thenReturn(expectedOrders);
+        when(orderRepository.findOrdersByHourAwayIsNotNullAndUserUsername("user")).thenReturn(expectedOrders);
 
         List<OrderResponse> ordersReturned = orderController.getOrderMade().getBody();
 
@@ -178,14 +147,13 @@ class OrderControllerUserIT {
         assertEquals("Cook", ordersReturned.get(0).getEmployees().get(0).getJob().getName());
     }
 
-
     @Test
     void shouldReturnUnmadeOrders() {
         // given
         List<Order> expectedOrders = List.of(createDeliveryOrder());
 
         // when
-        when(orderRepository.findOrdersByHourAwayIsNull()).thenReturn(expectedOrders);
+        when(orderRepository.findOrdersByHourAwayIsNullAndUserUsername("user")).thenReturn(expectedOrders);
 
         List<OrderResponse> ordersReturned = orderController.getOrderUnmade().getBody();
 

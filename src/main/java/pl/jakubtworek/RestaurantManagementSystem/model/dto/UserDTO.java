@@ -16,7 +16,7 @@ public class UserDTO {
     private UUID id;
     private String username;
     private String password;
-    private Authorities authorities;
+    private AuthoritiesDTO authorities;
     private List<OrderDTO> orders;
 
     public void add(OrderDTO tempOrder) {

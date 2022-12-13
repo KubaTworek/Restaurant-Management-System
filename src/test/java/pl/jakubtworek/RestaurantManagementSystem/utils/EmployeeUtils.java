@@ -11,14 +11,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class EmployeeUtils {
 
     public static List<Employee> createEmployees(){
-        Employee employee1 = new Employee(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002"), "John", "Smith", new Job(UUID.fromString("504ab5ae-7844-11ed-a1eb-0242ac120002"),"Cook",List.of()), List.of());
-        Employee employee2 = new Employee(UUID.fromString("e62db8e2-7843-11ed-a1eb-0242ac120002"), "James", "Patel", new Job(UUID.fromString("560f3bcc-7844-11ed-a1eb-0242ac120002"),"Waiter",List.of()), List.of());
-        Employee employee3 = new Employee(UUID.fromString("f2e9839a-7843-11ed-a1eb-0242ac120002"), "Ann", "Mary", new Job(UUID.fromString("5b4c279e-7844-11ed-a1eb-0242ac120002"),"DeliveryMan",List.of()), List.of());
+        Employee employee1 = createCook();
+        Employee employee2 = createWaiter();
+        Employee employee3 = createDelivery();
         return List.of(employee1, employee2, employee3);
     }
 
     public static Employee createCook(){
         return new Employee(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002"), "John", "Smith", new Job(UUID.fromString("504ab5ae-7844-11ed-a1eb-0242ac120002"),"Cook", List.of()), List.of());
+    }
+
+    public static Employee createWaiter(){
+        return new Employee(UUID.fromString("04b4f06c-7ad0-11ed-a1eb-0242ac120002"), "James", "Patel", new Job(UUID.fromString("504ab5ae-7844-11ed-a1eb-0242ac120002"),"Waiter", List.of()), List.of());
+    }
+
+    public static Employee createDelivery(){
+        return new Employee(UUID.fromString("07df111e-7ad0-11ed-a1eb-0242ac120002"), "Ann", "Mary", new Job(UUID.fromString("504ab5ae-7844-11ed-a1eb-0242ac120002"),"DeliveryMan", List.of()), List.of());
     }
 
     public static List<Employee> createCooks(){

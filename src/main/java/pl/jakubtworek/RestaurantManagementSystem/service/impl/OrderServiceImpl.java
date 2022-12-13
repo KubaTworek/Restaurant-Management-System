@@ -78,11 +78,13 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderDTO> findByParams(String date, String typeOfOrder, UUID employeeId, String username) {
         return orderRepository.findAll()
                 .stream()
-                .filter(o -> Objects.equals(o.getDate(), date))
-                .filter(o -> Objects.equals(o.getTypeOfOrder().getType(), typeOfOrder))
-                .filter(o -> Objects.equals(o.getUser().getUsername(), username))
-                .filter(o -> o.getEmployees()
-                        .stream().anyMatch(e -> e.getId() == employeeId))
+                .filter(o -> Objects.equals(o.getDate(), date) || date == null)
+                .filter(o -> Objects.equals(o.getTypeOfOrder().getType(), typeOfOrder) || typeOfOrder == null)
+                .filter(o -> Objects.equals(o.getUser().getUsername(), username) || username == null)
+                .filter(o -> !(o.getEmployees() == null && employeeId != null))
+                .filter(o -> (o.getEmployees() == null && employeeId == null) || o.getEmployees()
+                        .stream()
+                        .anyMatch(e -> Objects.equals(e.getId(), employeeId) || employeeId == null))
                 .map(Order::convertEntityToDTO)
                 .collect(Collectors.toList());
     }
@@ -105,9 +107,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void deleteByIdAndUsername(UUID theId, String username) throws OrderNotFoundException {
-        Order order = orderRepository.findByIdAndUserUsername(theId, username)
+        Order order = orderRepository.findById(theId)
                 .orElseThrow(() -> new OrderNotFoundException("There are no order in restaurant with that id: " + theId));
-        orderRepository.delete(order);
+        List<Order> orders = orderRepository.findByUserUsername(username);
+
+        if(orders.contains(order)){
+            orderRepository.delete(order);
+        }
     }
 
     @Override
@@ -119,8 +125,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Optional<OrderDTO> findByIdAndUsername(UUID theId, String username) {
-        return orderRepository.findByIdAndUserUsername(theId, username).map(Order::convertEntityToDTO);
+    public Optional<OrderDTO> findByIdAndUsername(UUID theId, String username) throws OrderNotFoundException {
+        OrderDTO order = orderRepository.findById(theId).map(Order::convertEntityToDTO)
+                .orElseThrow(() -> new OrderNotFoundException("There are no order in restaurant with that id: " + theId));
+        List<OrderDTO> orders = orderRepository.findByUserUsername(username)
+                .stream()
+                .map(Order::convertEntityToDTO)
+                .collect(Collectors.toList());
+
+        if(orders.stream().anyMatch(o -> o.getId() == order.getId())){
+            return Optional.ofNullable(order);
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override

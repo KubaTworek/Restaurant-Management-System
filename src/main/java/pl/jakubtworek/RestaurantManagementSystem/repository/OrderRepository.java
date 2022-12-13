@@ -11,7 +11,6 @@ public interface OrderRepository extends JpaRepository<Order, UUID> {
     List<Order> findOrdersByHourAwayIsNull();
     List<Order> findOrdersByHourAwayIsNotNull();
     List<Order> findByUserUsername(String username);
-    Optional<Order> findByIdAndUserUsername(UUID orderId, String username);
     List<Order> findOrdersByHourAwayIsNullAndUserUsername(String username);
     List<Order> findOrdersByHourAwayIsNotNullAndUserUsername(String username);
 }

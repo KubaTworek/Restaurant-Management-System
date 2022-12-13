@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.controller.user.UserRequest;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.UserDTO;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.UserFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO save(UserRequest userRequest) {
-        Authorities authority = getAuthority(userRequest.getRole());
+        AuthoritiesDTO authority = getAuthority(userRequest.getRole()).convertEntityToDTO();
 
         User userCreated = userFactory.createUser(userRequest, authority).convertDTOToEntity();
         return userRepository.save(userCreated).convertEntityToDTO();

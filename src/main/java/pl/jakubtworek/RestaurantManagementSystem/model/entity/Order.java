@@ -2,7 +2,6 @@ package pl.jakubtworek.RestaurantManagementSystem.model.entity;
 
 import lombok.*;
 import org.hibernate.annotations.*;
-import org.modelmapper.ModelMapper;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
 
 import javax.persistence.CascadeType;
@@ -11,6 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -59,7 +59,7 @@ public class Order {
             joinColumns = @JoinColumn(name="order_id"),
             inverseJoinColumns = @JoinColumn(name="employee_id")
     )
-    private List<Employee> employees;
+    private List<Employee> employees = new ArrayList<>();
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="user_id")
@@ -87,6 +87,30 @@ public class Order {
     }
 
     public OrderDTO convertEntityToDTO() {
-        return new ModelMapper().map(this, OrderDTO.class);
+        if(employees != null){
+            return OrderDTO.builder()
+                    .id(this.id)
+                    .price(this.price)
+                    .date(this.date)
+                    .hourOrder(this.hourOrder)
+                    .hourAway(this.hourAway)
+                    .typeOfOrder(this.typeOfOrder.convertEntityToDTO())
+                    .userDTO(this.user.convertEntityToDTO())
+                    .menuItems(this.menuItems.stream().map(MenuItem::convertEntityToDTO).collect(Collectors.toList()))
+                    .employees(this.employees.stream().map(Employee::convertEntityToDTO).collect(Collectors.toList()))
+                    .build();
+        } else {
+            return OrderDTO.builder()
+                    .id(this.id)
+                    .price(this.price)
+                    .date(this.date)
+                    .hourOrder(this.hourOrder)
+                    .hourAway(this.hourAway)
+                    .typeOfOrder(this.typeOfOrder.convertEntityToDTO())
+                    .userDTO(this.user.convertEntityToDTO())
+                    .menuItems(this.menuItems.stream().map(MenuItem::convertEntityToDTO).collect(Collectors.toList()))
+                    .employees(null)
+                    .build();
+        }
     }
 }

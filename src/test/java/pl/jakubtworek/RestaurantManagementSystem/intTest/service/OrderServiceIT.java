@@ -128,7 +128,6 @@ class OrderServiceIT {
         assertEquals(3, orders.size());
     }
 
-
     @Test
     void shouldDeleteOrder() throws OrderNotFoundException {
         // when
@@ -197,28 +196,138 @@ class OrderServiceIT {
 
     @ParameterizedTest
     @MethodSource("params")
-    void shouldReturnOrdersByParams(int expectedSize, String date, String typeOfOrder, UUID employeeId) {
+    void shouldReturnOrdersByParams(int expectedSize, String date, String typeOfOrder, UUID employeeId, String username) {
         // when
-        List<OrderDTO> ordersReturned = orderService.findByParams(date, typeOfOrder, employeeId);
+        List<OrderDTO> ordersReturned = orderService.findByParams(date, typeOfOrder, employeeId, username);
 
-        for(OrderDTO o : ordersReturned){
-            System.out.println(o.getTypeOfOrder().getType());
-        }
         // then
         assertEquals(expectedSize, ordersReturned.size());
     }
 
     private static Stream<Arguments> params() {
         return Stream.of(
-                Arguments.of(2, null, null, null),
-                Arguments.of(2, getTodayDate(), null, null),
-                Arguments.of(1, null, "On-site", null),
-                Arguments.of(0, null, null, UUID.randomUUID()),
-                Arguments.of(0, getTodayDate(), null, UUID.randomUUID()),
-                Arguments.of(1, getTodayDate(), "On-site", null),
-                Arguments.of(0, null, "On-site", UUID.randomUUID()),
-                Arguments.of(0, getTodayDate(), "On-site", UUID.randomUUID())
+                Arguments.of(2, null, null, null, null),
+                Arguments.of(2, getTodayDate(), null, null, null),
+                Arguments.of(1, null, "On-site", null, null),
+                Arguments.of(0, null, null, UUID.randomUUID(), null),
+                Arguments.of(0, getTodayDate(), null, UUID.randomUUID(), null),
+                Arguments.of(1, getTodayDate(), "On-site", null, null),
+                Arguments.of(0, null, "On-site", UUID.randomUUID(), null),
+                Arguments.of(0, getTodayDate(), "On-site", UUID.randomUUID(), null)
         );
+    }
+
+    @Test
+    void shouldReturnMadeOrders() {
+        // when
+        List<OrderDTO> ordersReturned = orderService.findMadeOrders();
+
+        // then
+        assertEquals(0, ordersReturned.size());
+    }
+
+    @Test
+    void shouldReturnUnmadeOrders() {
+        // when
+        List<OrderDTO> ordersReturned = orderService.findUnmadeOrders();
+
+        // then
+        assertEquals(12.98, ordersReturned.get(0).getPrice());
+        assertNull(ordersReturned.get(0).getHourAway());
+        assertEquals("On-site", ordersReturned.get(0).getTypeOfOrder().getType());
+        assertEquals("Chicken", ordersReturned.get(0).getMenuItems().get(0).getName());
+        assertEquals(10.99, ordersReturned.get(0).getMenuItems().get(0).getPrice());
+        assertEquals("Coke", ordersReturned.get(0).getMenuItems().get(1).getName());
+        assertEquals(1.99, ordersReturned.get(0).getMenuItems().get(1).getPrice());
+
+        assertEquals(7.98, ordersReturned.get(1).getPrice());
+        assertNull(ordersReturned.get(1).getHourAway());
+        assertEquals("Delivery", ordersReturned.get(1).getTypeOfOrder().getType());
+        assertEquals("Tiramisu", ordersReturned.get(1).getMenuItems().get(0).getName());
+        assertEquals(5.99, ordersReturned.get(1).getMenuItems().get(0).getPrice());
+        assertEquals("Coke", ordersReturned.get(1).getMenuItems().get(1).getName());
+        assertEquals(1.99, ordersReturned.get(1).getMenuItems().get(1).getPrice());
+    }
+
+    @Test
+    void shouldDeleteOrderByUsername() throws OrderNotFoundException {
+        // when
+        OrderDTO order1 = orderService.findByIdAndUsername(idOrder, "user").orElse(null);
+        orderService.deleteByIdAndUsername(idOrder, "user");
+        assertThrows(OrderNotFoundException.class, () -> orderService.findByIdAndUsername(idOrder, "user"));
+
+        // then
+        assertNotNull(order1);
+    }
+
+    @Test
+    void shouldReturnAllOrdersByUser() {
+        // when
+        List<OrderDTO> ordersReturned = orderService.findAllByUsername("user");
+
+        // then
+        assertEquals(12.98, ordersReturned.get(0).getPrice());
+        assertNull(ordersReturned.get(0).getHourAway());
+        assertEquals("On-site", ordersReturned.get(0).getTypeOfOrder().getType());
+        assertEquals("Chicken", ordersReturned.get(0).getMenuItems().get(0).getName());
+        assertEquals(10.99, ordersReturned.get(0).getMenuItems().get(0).getPrice());
+        assertEquals("Coke", ordersReturned.get(0).getMenuItems().get(1).getName());
+        assertEquals(1.99, ordersReturned.get(0).getMenuItems().get(1).getPrice());
+
+        assertEquals(7.98, ordersReturned.get(1).getPrice());
+        assertNull(ordersReturned.get(1).getHourAway());
+        assertEquals("Delivery", ordersReturned.get(1).getTypeOfOrder().getType());
+        assertEquals("Tiramisu", ordersReturned.get(1).getMenuItems().get(0).getName());
+        assertEquals(5.99, ordersReturned.get(1).getMenuItems().get(0).getPrice());
+        assertEquals("Coke", ordersReturned.get(1).getMenuItems().get(1).getName());
+        assertEquals(1.99, ordersReturned.get(1).getMenuItems().get(1).getPrice());
+    }
+
+    @Test
+    void shouldReturnOrderByIdByUser() throws OrderNotFoundException {
+        // when
+        OrderDTO orderReturned = orderService.findByIdAndUsername(idOrder, "user").orElse(null);
+
+        // then
+        assertEquals(12.98, orderReturned.getPrice());
+        assertNull(orderReturned.getHourAway());
+        assertEquals("On-site", orderReturned.getTypeOfOrder().getType());
+        assertEquals("Chicken", orderReturned.getMenuItems().get(0).getName());
+        assertEquals(10.99, orderReturned.getMenuItems().get(0).getPrice());
+        assertEquals("Coke", orderReturned.getMenuItems().get(1).getName());
+        assertEquals(1.99, orderReturned.getMenuItems().get(1).getPrice());
+    }
+
+    @Test
+    void shouldReturnMadeOrdersByUser() {
+        // when
+        List<OrderDTO> ordersReturned = orderService.findMadeOrdersAndUsername("user");
+
+        // then
+        assertEquals(0, ordersReturned.size());
+    }
+
+    @Test
+    void shouldReturnUnmadeOrdersByUser() {
+        // when
+        List<OrderDTO> ordersReturned = orderService.findUnmadeOrdersAndUsername("user");
+
+        // then
+        assertEquals(12.98, ordersReturned.get(0).getPrice());
+        assertNull(ordersReturned.get(0).getHourAway());
+        assertEquals("On-site", ordersReturned.get(0).getTypeOfOrder().getType());
+        assertEquals("Chicken", ordersReturned.get(0).getMenuItems().get(0).getName());
+        assertEquals(10.99, ordersReturned.get(0).getMenuItems().get(0).getPrice());
+        assertEquals("Coke", ordersReturned.get(0).getMenuItems().get(1).getName());
+        assertEquals(1.99, ordersReturned.get(0).getMenuItems().get(1).getPrice());
+
+        assertEquals(7.98, ordersReturned.get(1).getPrice());
+        assertNull(ordersReturned.get(1).getHourAway());
+        assertEquals("Delivery", ordersReturned.get(1).getTypeOfOrder().getType());
+        assertEquals("Tiramisu", ordersReturned.get(1).getMenuItems().get(0).getName());
+        assertEquals(5.99, ordersReturned.get(1).getMenuItems().get(0).getPrice());
+        assertEquals("Coke", ordersReturned.get(1).getMenuItems().get(1).getName());
+        assertEquals(1.99, ordersReturned.get(1).getMenuItems().get(1).getPrice());
     }
 
     private static String getTodayDate(){

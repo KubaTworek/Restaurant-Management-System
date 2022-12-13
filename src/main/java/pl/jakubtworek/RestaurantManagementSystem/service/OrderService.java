@@ -17,7 +17,7 @@ public interface OrderService {
     List<OrderDTO> findUnmadeOrders();
     void deleteByIdAndUsername(UUID theId, String username) throws OrderNotFoundException;
     List<OrderDTO> findAllByUsername(String username);
-    Optional<OrderDTO> findByIdAndUsername(UUID theId, String username);
+    Optional<OrderDTO> findByIdAndUsername(UUID theId, String username) throws OrderNotFoundException;
     List<OrderDTO> findMadeOrdersAndUsername(String username);
     List<OrderDTO> findUnmadeOrdersAndUsername(String username);
 }

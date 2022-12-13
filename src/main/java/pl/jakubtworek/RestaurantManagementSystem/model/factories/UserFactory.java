@@ -4,8 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pl.jakubtworek.RestaurantManagementSystem.controller.user.UserRequest;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.UserDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Authorities;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 
 @Component
 @RequiredArgsConstructor
@@ -14,7 +13,7 @@ public class UserFactory {
 
     public UserDTO createUser(
             UserRequest userRequest,
-            Authorities authority
+            AuthoritiesDTO authority
     ) {
         String username = userRequest.getUsername();
         String passwordEncrypted = passwordEncoder.encode(userRequest.getPassword());

@@ -19,9 +19,10 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.createChickenMenuItem;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.*;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.UserUtils.createUser;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.UserUtils.*;
 
 @SpringBootTest
 class OrderControllerIT {
@@ -119,39 +120,36 @@ class OrderControllerIT {
 
     @ParameterizedTest
     @MethodSource("params")
-    void shouldReturnOrdersByDate(String date, String typeOfOrder, UUID employeeId) {
+    void shouldReturnOrdersByParams(int expectedAmountOfOrders, String date, String typeOfOrder, UUID employeeId, String username) {
         // given
-        List<Order> expectedOrders = createOrders();
+        Order order1 = new Order(null, 12.98, "2022-08-24", "12:00:00", null, createOnsiteType(), List.of(createChickenMenuItem(), createCokeMenuItem()), List.of(createCook()), createUser());
+        Order order2 = new Order(null, 12.98, "2022-08-22", "12:00:00", "12:15:00", createOnsiteType(), List.of(createChickenMenuItem(), createCokeMenuItem()), List.of(createCook(), createWaiter()), createUser());
+        Order order3 = new Order(null, 12.98, "2022-08-23", "12:00:00", "12:15:00", createOnsiteType(), List.of(createChickenMenuItem(), createCokeMenuItem()), List.of(createCook(), createWaiter()), createAdmin());
+        Order order4 = new Order(null, 12.98, "2022-08-22", "12:00:00", "12:15:00", createDeliveryType(), List.of(createChickenMenuItem(), createCokeMenuItem()), List.of(createCook(), createDelivery()), createUser());
+        Order order5 = new Order(null, 12.98, "2022-08-23", "12:00:00", "12:15:00", createDeliveryType(), List.of(createChickenMenuItem(), createCokeMenuItem()), List.of(createCook(), createDelivery()), createAdmin());
+        List<Order> expectedOrders = List.of(order1, order2, order3, order4, order5);
 
         // when
         when(orderRepository.findAll()).thenReturn(expectedOrders);
-        when(orderRepository.findByDate(any())).thenReturn(expectedOrders);
-        when(orderRepository.findByTypeOfOrderType(any())).thenReturn(expectedOrders);
-        when(orderRepository.findByEmployeesId(any())).thenReturn(expectedOrders);
-        when(orderRepository.findByDateAndEmployeesId(any(), any())).thenReturn(expectedOrders);
-        when(orderRepository.findByDateAndTypeOfOrderType(any(), any())).thenReturn(expectedOrders);
-        when(orderRepository.findByTypeOfOrderTypeAndEmployeesId(any(), any())).thenReturn(expectedOrders);
-        when(orderRepository.findByDateAndEmployeesIdAndTypeOfOrderType(any(), any(), any())).thenReturn(expectedOrders);
 
-        List<OrderResponse> ordersReturned = orderController.getOrderByParams(date, typeOfOrder, employeeId).getBody();
+        List<OrderResponse> ordersReturned = orderController.getOrderByParams(date, typeOfOrder, employeeId, username).getBody();
 
         // then
-        OrderResponseAssertions.checkAssertionsForOrders(ordersReturned);
+        assertEquals(expectedAmountOfOrders, ordersReturned.size());
     }
 
     private static Stream<Arguments> params() {
         return Stream.of(
-                Arguments.of(null, null, null),
-                Arguments.of("Date", null, null),
-                Arguments.of(null, "typeOfOrder", null),
-                Arguments.of(null, null, UUID.randomUUID()),
-                Arguments.of("Date", null, UUID.randomUUID()),
-                Arguments.of("Date", "typeOfOrder", null),
-                Arguments.of(null, "typeOfOrder", UUID.randomUUID()),
-                Arguments.of("Date", "typeOfOrder", UUID.randomUUID())
+                Arguments.of(5, null, null, null, null),
+                Arguments.of(2, "2022-08-23", null, null, null),
+                Arguments.of(3, null, "On-site", null, null),
+                Arguments.of(2, null, null, UUID.fromString("04b4f06c-7ad0-11ed-a1eb-0242ac120002"), null),
+                Arguments.of(1, "2022-08-23", null, UUID.fromString("04b4f06c-7ad0-11ed-a1eb-0242ac120002"), null),
+                Arguments.of(1, "2022-08-23", "On-site", null, null),
+                Arguments.of(2, null, "On-site", UUID.fromString("04b4f06c-7ad0-11ed-a1eb-0242ac120002"), null),
+                Arguments.of(1, "2022-08-23", "On-site", UUID.fromString("04b4f06c-7ad0-11ed-a1eb-0242ac120002"), null)
         );
     }
-
 
     @Test
     void shouldReturnMadeOrders() {

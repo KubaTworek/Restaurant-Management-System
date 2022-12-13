@@ -2,6 +2,8 @@ package pl.jakubtworek.RestaurantManagementSystem.unitTests.order;
 
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.*;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.*;
 import pl.jakubtworek.RestaurantManagementSystem.exception.OrderNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
@@ -15,19 +17,29 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
 
-class OrderControllerTest {
+class OrderControllerUserTest {
     @Mock
     private OrderService orderService;
+    @Mock
+    private Authentication authentication;
+    @Mock
+    private SecurityContext securityContext;
 
-    private OrderController orderController;
+    private OrderControllerUser orderController;
 
     @BeforeEach
     void setup() {
         orderService = mock(OrderService.class);
+        authentication = mock(Authentication.class);
+        securityContext = mock(SecurityContext.class);
 
-        orderController = new OrderController(
+        orderController = new OrderControllerUser(
                 orderService
         );
+
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        when(authentication.getName()).thenReturn("user");
     }
 
     @Test
@@ -51,7 +63,7 @@ class OrderControllerTest {
         Optional<OrderDTO> expectedOrder = Optional.of(createOnsiteOrder().convertEntityToDTO());
 
         // when
-        when(orderService.findById(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002"))).thenReturn(expectedOrder);
+        when(orderService.findByIdAndUsername(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002"), "user")).thenReturn(expectedOrder);
 
         String response = orderController.deleteOrder(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002")).getBody();
 
@@ -68,7 +80,7 @@ class OrderControllerTest {
                 .collect(Collectors.toList());
 
         // when
-        when(orderService.findAll()).thenReturn(expectedOrders);
+        when(orderService.findAllByUsername("user")).thenReturn(expectedOrders);
 
         List<OrderResponse> ordersReturned = orderController.getOrders().getBody();
 
@@ -82,7 +94,7 @@ class OrderControllerTest {
         Optional<OrderDTO> expectedOrder = Optional.of(createOnsiteOrder().convertEntityToDTO());
 
         // when
-        when(orderService.findById(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002"))).thenReturn(expectedOrder);
+        when(orderService.findByIdAndUsername(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002"), "user")).thenReturn(expectedOrder);
 
         OrderResponse orderReturned = orderController.getOrderById(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002")).getBody();
 
@@ -100,76 +112,6 @@ class OrderControllerTest {
     }
 
     @Test
-    void shouldReturnOrders_whenDateIsPassed() {
-        // given
-        List<OrderDTO> expectedOrders = createOrders()
-                .stream()
-                .map(Order::convertEntityToDTO)
-                .collect(Collectors.toList());
-
-        // when
-        when(orderService.findByParams("2022-08-22", null, null, null)).thenReturn(expectedOrders);
-
-        List<OrderResponse> ordersReturned = orderController.getOrderByParams("2022-08-22", null, null, null).getBody();
-
-        // then
-        OrderResponseAssertions.checkAssertionsForOrders(ordersReturned);
-    }
-
-    @Test
-    void shouldReturnOrders_whenTypeOfOrderIsPassed() {
-        // given
-        List<OrderDTO> expectedOrders = createOrders()
-                .stream()
-                .map(Order::convertEntityToDTO)
-                .collect(Collectors.toList());
-
-        // when
-        when(orderService.findByParams(null, "On-site", null, null)).thenReturn(expectedOrders);
-
-        List<OrderResponse> ordersReturned = orderController.getOrderByParams(null, "On-site", null, null).getBody();
-
-        // then
-        OrderResponseAssertions.checkAssertionsForOrders(ordersReturned);
-    }
-
-    @Test
-    void shouldReturnOrders_whenEmployeeIdIsPassed() {
-        // given
-        List<OrderDTO> expectedOrders = createOrders()
-                .stream()
-                .map(Order::convertEntityToDTO)
-                .collect(Collectors.toList());
-
-        // when
-        when(orderService.findByParams(null, null, UUID.fromString("7692a636-79c5-11ed-a1eb-0242ac120002"), null)).thenReturn(expectedOrders);
-
-        List<OrderResponse> ordersReturned = orderController.getOrderByParams(null, null, UUID.fromString("7692a636-79c5-11ed-a1eb-0242ac120002"), null).getBody();
-
-        // then
-        OrderResponseAssertions.checkAssertionsForOrders(ordersReturned);
-    }
-
-    @Test
-    void shouldReturnOrders_whenUsernameIsPassed() {
-        // given
-        List<OrderDTO> expectedOrders = createOrders()
-                .stream()
-                .map(Order::convertEntityToDTO)
-                .collect(Collectors.toList());
-
-        // when
-        when(orderService.findByParams(null, null, null, "user")).thenReturn(expectedOrders);
-
-        List<OrderResponse> ordersReturned = orderController.getOrderByParams(null, null, null, "user").getBody();
-
-        // then
-        OrderResponseAssertions.checkAssertionsForOrders(ordersReturned);
-    }
-
-
-
-    @Test
     void shouldReturnMadeOrders() {
         // given
         List<OrderDTO> expectedOrders = createOrders()
@@ -178,7 +120,7 @@ class OrderControllerTest {
                 .collect(Collectors.toList());
 
         // when
-        when(orderService.findMadeOrders()).thenReturn(expectedOrders);
+        when(orderService.findMadeOrdersAndUsername("user")).thenReturn(expectedOrders);
 
         List<OrderResponse> ordersReturned = orderController.getOrderMade().getBody();
 
@@ -195,7 +137,7 @@ class OrderControllerTest {
                 .collect(Collectors.toList());
 
         // when
-        when(orderService.findUnmadeOrders()).thenReturn(expectedOrders);
+        when(orderService.findUnmadeOrdersAndUsername("user")).thenReturn(expectedOrders);
 
         List<OrderResponse> ordersReturned = orderController.getOrderUnmade().getBody();
 

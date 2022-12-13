@@ -35,7 +35,7 @@ public class OrderControllerUser {
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderResponse>> getOrdersByUsername() {
+    public ResponseEntity<List<OrderResponse>> getOrders() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         List<OrderResponse> ordersFound = orderService.findAllByUsername(username)
                 .stream()

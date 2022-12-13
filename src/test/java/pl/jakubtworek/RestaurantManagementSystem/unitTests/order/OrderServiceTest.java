@@ -1,10 +1,12 @@
 package pl.jakubtworek.RestaurantManagementSystem.unitTests.order;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.*;
 import org.mockito.Mock;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.*;
-import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
+import pl.jakubtworek.RestaurantManagementSystem.controller.order.*;
 import pl.jakubtworek.RestaurantManagementSystem.exception.OrderNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueueFacade;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
@@ -16,11 +18,14 @@ import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 import pl.jakubtworek.RestaurantManagementSystem.service.impl.OrderServiceImpl;
 
 import java.util.*;
+import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.createChickenMenuItem;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.*;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.UserUtils.createUser;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.UserUtils.*;
 
 class OrderServiceTest {
     @Mock
@@ -131,31 +136,37 @@ class OrderServiceTest {
         OrderDTOAssertions.checkAssertionsForOrder(orderReturned);
     }
 
-    @Test
-    void isInvokingRightMethodByParams() {
-        orderService.findByParams(null, null, null);
-        verify(orderRepository).findAll();
+    @ParameterizedTest
+    @MethodSource("params")
+    void shouldReturnOrdersByParams(int expectedAmountOfOrders, String date, String typeOfOrder, UUID employeeId, String username) {
+        // given
+        Order order1 = new Order(null, 12.98, "2022-08-24", "12:00:00", null, createOnsiteType(), List.of(createChickenMenuItem(), createCokeMenuItem()), List.of(createCook()), createUser());
+        Order order2 = new Order(null, 12.98, "2022-08-22", "12:00:00", "12:15:00", createOnsiteType(), List.of(createChickenMenuItem(), createCokeMenuItem()), List.of(createCook(), createWaiter()), createUser());
+        Order order3 = new Order(null, 12.98, "2022-08-23", "12:00:00", "12:15:00", createOnsiteType(), List.of(createChickenMenuItem(), createCokeMenuItem()), List.of(createCook(), createWaiter()), createAdmin());
+        Order order4 = new Order(null, 12.98, "2022-08-22", "12:00:00", "12:15:00", createDeliveryType(), List.of(createChickenMenuItem(), createCokeMenuItem()), List.of(createCook(), createDelivery()), createUser());
+        Order order5 = new Order(null, 12.98, "2022-08-23", "12:00:00", "12:15:00", createDeliveryType(), List.of(createChickenMenuItem(), createCokeMenuItem()), List.of(createCook(), createDelivery()), createAdmin());
+        List<Order> expectedOrders = List.of(order1, order2, order3, order4, order5);
 
-        orderService.findByParams("Date", null, null);
-        verify(orderRepository).findByDate(any());
+        // when
+        when(orderRepository.findAll()).thenReturn(expectedOrders);
 
-        orderService.findByParams(null, "typeOfOrder", null);
-        verify(orderRepository).findByTypeOfOrderType(any());
+        List<OrderDTO> ordersReturned = orderService.findByParams(date, typeOfOrder, employeeId, username);
 
-        orderService.findByParams(null, null, UUID.randomUUID());
-        verify(orderRepository).findByEmployeesId(any());
+        // then
+        assertEquals(expectedAmountOfOrders, ordersReturned.size());
+    }
 
-        orderService.findByParams("Date", null, UUID.randomUUID());
-        verify(orderRepository).findByDateAndEmployeesId(any(), any());
-
-        orderService.findByParams("Date", "typeOfOrder", null);
-        verify(orderRepository).findByDateAndTypeOfOrderType(any(), any());
-
-        orderService.findByParams(null, "typeOfOrder", UUID.randomUUID());
-        verify(orderRepository).findByTypeOfOrderTypeAndEmployeesId(any(), any());
-
-        orderService.findByParams("Date", "typeOfOrder", UUID.randomUUID());
-        verify(orderRepository).findByDateAndEmployeesIdAndTypeOfOrderType(any(), any(), any());
+    private static Stream<Arguments> params() {
+        return Stream.of(
+                Arguments.of(5, null, null, null, null),
+                Arguments.of(2, "2022-08-23", null, null, null),
+                Arguments.of(3, null, "On-site", null, null),
+                Arguments.of(2, null, null, UUID.fromString("04b4f06c-7ad0-11ed-a1eb-0242ac120002"), null),
+                Arguments.of(1, "2022-08-23", null, UUID.fromString("04b4f06c-7ad0-11ed-a1eb-0242ac120002"), null),
+                Arguments.of(1, "2022-08-23", "On-site", null, null),
+                Arguments.of(2, null, "On-site", UUID.fromString("04b4f06c-7ad0-11ed-a1eb-0242ac120002"), null),
+                Arguments.of(1, "2022-08-23", "On-site", UUID.fromString("04b4f06c-7ad0-11ed-a1eb-0242ac120002"), null)
+        );
     }
 
     @Test
@@ -181,6 +192,64 @@ class OrderServiceTest {
         when(orderRepository.findOrdersByHourAwayIsNull()).thenReturn(orders);
 
         List<OrderDTO> ordersReturned = orderService.findUnmadeOrders();
+
+        // then
+        OrderDTOAssertions.checkAssertionsForOrders(ordersReturned);
+    }
+
+    @Test
+    void shouldReturnAllOrdersByUser() {
+        // given
+        List<Order> orders = createOrders();
+
+        // when
+        when(orderRepository.findByUserUsername("user")).thenReturn(orders);
+
+        List<OrderDTO> ordersReturned = orderService.findAllByUsername("user");
+
+        // then
+        OrderDTOAssertions.checkAssertionsForOrders(ordersReturned);
+    }
+
+    @Test
+    void shouldReturnOrderByIdByUser() throws OrderNotFoundException {
+        // given
+        List<Order> orders = createOrders();
+        Optional<Order> order = Optional.of(createOnsiteOrder());
+
+        // when
+        when(orderRepository.findByUserUsername("user")).thenReturn(orders);
+        when(orderRepository.findById(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002"))).thenReturn(order);
+
+        OrderDTO orderReturned = orderService.findByIdAndUsername(UUID.fromString("8e4087ce-7846-11ed-a1eb-0242ac120002"), "user").orElse(null);
+
+        // then
+        OrderDTOAssertions.checkAssertionsForOrder(orderReturned);
+    }
+
+    @Test
+    void shouldReturnMadeOrdersByUser() {
+        // given
+        List<Order> orders = createOrders();
+
+        // when
+        when(orderRepository.findOrdersByHourAwayIsNotNullAndUserUsername("user")).thenReturn(orders);
+
+        List<OrderDTO> ordersReturned = orderService.findMadeOrdersAndUsername("user");
+
+        // then
+        OrderDTOAssertions.checkAssertionsForOrders(ordersReturned);
+    }
+
+    @Test
+    void shouldReturnUnmadeOrdersByUser() {
+        // given
+        List<Order> orders = createOrders();
+
+        // when
+        when(orderRepository.findOrdersByHourAwayIsNullAndUserUsername("user")).thenReturn(orders);
+
+        List<OrderDTO> ordersReturned = orderService.findUnmadeOrdersAndUsername("user");
 
         // then
         OrderDTOAssertions.checkAssertionsForOrders(ordersReturned);
