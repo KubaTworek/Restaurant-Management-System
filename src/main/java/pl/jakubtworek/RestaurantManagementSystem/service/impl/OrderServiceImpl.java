@@ -134,7 +134,7 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList());
 
         if(orders.stream().anyMatch(o -> o.getId() == order.getId())){
-            return Optional.ofNullable(order);
+            return Optional.of(order);
         } else {
             return Optional.empty();
         }
