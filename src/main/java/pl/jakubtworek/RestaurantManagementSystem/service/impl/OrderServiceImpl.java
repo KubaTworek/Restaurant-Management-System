@@ -128,16 +128,12 @@ public class OrderServiceImpl implements OrderService {
     public Optional<OrderDTO> findByIdAndUsername(UUID theId, String username) throws OrderNotFoundException {
         OrderDTO order = orderRepository.findById(theId).map(Order::convertEntityToDTO)
                 .orElseThrow(() -> new OrderNotFoundException("There are no order in restaurant with that id: " + theId));
-        List<OrderDTO> orders = orderRepository.findByUserUsername(username)
-                .stream()
-                .map(Order::convertEntityToDTO)
-                .collect(Collectors.toList());
 
-        if(orders.stream().anyMatch(o -> o.getId() == order.getId())){
-            return Optional.of(order);
-        } else {
-            return Optional.empty();
-        }
+        return orderRepository.findByUserUsername(username)
+                .stream()
+                .filter(o -> o.getId() == order.getId())
+                .findFirst()
+                .map(Order::convertEntityToDTO);
     }
 
     @Override
