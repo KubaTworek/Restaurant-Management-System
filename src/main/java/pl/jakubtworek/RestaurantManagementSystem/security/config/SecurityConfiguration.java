@@ -53,7 +53,7 @@ public class SecurityConfiguration {
                 .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
                 .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests((authz) -> authz
-                        .antMatchers("/employees", "/users").hasRole("ADMIN")
+                        .antMatchers("/employees", "/users", "/admin-orders").hasRole("ADMIN")
                         .antMatchers(HttpMethod.POST, "/menu", "/menu-items").hasRole("ADMIN")
                         .antMatchers(HttpMethod.PUT, "/menu", "/menu-items").hasRole("ADMIN")
                         .antMatchers("/orders").authenticated()

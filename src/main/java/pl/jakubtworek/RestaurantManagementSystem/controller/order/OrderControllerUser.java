@@ -2,6 +2,7 @@ package pl.jakubtworek.RestaurantManagementSystem.controller.order;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.jakubtworek.RestaurantManagementSystem.exception.OrderNotFoundException;
@@ -14,8 +15,8 @@ import java.util.stream.Collectors;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin-orders")
-public class OrderController {
+@RequestMapping("/orders")
+public class OrderControllerUser {
     private final OrderService orderService;
 
     @PostMapping
@@ -27,14 +28,16 @@ public class OrderController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteOrder(@PathVariable UUID id) throws OrderNotFoundException {
-        orderService.deleteById(id);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        orderService.deleteByIdAndUsername(id, username);
 
         return new ResponseEntity<>("Order with id: " + id + " was deleted", HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderResponse>> getOrders() {
-        List<OrderResponse> ordersFound = orderService.findAll()
+    public ResponseEntity<List<OrderResponse>> getOrdersByUsername() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<OrderResponse> ordersFound = orderService.findAllByUsername(username)
                 .stream()
                 .map(OrderDTO::convertDTOToResponse)
                 .map(OrderResponse::addLinkToResponse)
@@ -45,32 +48,20 @@ public class OrderController {
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponse> getOrderById(@PathVariable UUID id) throws OrderNotFoundException {
-        OrderResponse orderResponse = orderService.findById(id)
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        OrderResponse orderResponse = orderService.findByIdAndUsername(id, username)
                 .map(OrderDTO::convertDTOToResponse)
                 .map(OrderResponse::addLinkToResponse)
                 .orElseThrow(() -> new OrderNotFoundException("There are no order in restaurant with that id: " + id));
 
+
         return new ResponseEntity<>(orderResponse, HttpStatus.OK);
-    }
-
-    @GetMapping("/find")
-    public ResponseEntity<List<OrderResponse>> getOrderByParams(@RequestParam(required = false) String date,
-                                                                @RequestParam(required = false) String typeOfOrder,
-                                                                @RequestParam(required = false) UUID employeeId,
-                                                                @RequestParam(required = false) String username
-                                                         ) {
-        List<OrderResponse> ordersFound = orderService.findByParams(date, typeOfOrder, employeeId, username)
-                .stream()
-                .map(OrderDTO::convertDTOToResponse)
-                .map(OrderResponse::addLinkToResponse)
-                .collect(Collectors.toList());
-
-        return new ResponseEntity<>(ordersFound, HttpStatus.OK);
     }
 
     @GetMapping("/ready")
     public ResponseEntity<List<OrderResponse>> getOrderMade() {
-        List<OrderResponse> ordersFound = orderService.findMadeOrders()
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<OrderResponse> ordersFound = orderService.findMadeOrdersAndUsername(username)
                 .stream()
                 .map(OrderDTO::convertDTOToResponse)
                 .map(OrderResponse::addLinkToResponse)
@@ -81,7 +72,8 @@ public class OrderController {
 
     @GetMapping("/unready")
     public ResponseEntity<List<OrderResponse>> getOrderUnmade() {
-        List<OrderResponse> ordersFound = orderService.findUnmadeOrders()
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<OrderResponse> ordersFound = orderService.findUnmadeOrdersAndUsername(username)
                 .stream()
                 .map(OrderDTO::convertDTOToResponse)
                 .map(OrderResponse::addLinkToResponse)

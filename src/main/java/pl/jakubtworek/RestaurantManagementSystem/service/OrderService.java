@@ -12,7 +12,12 @@ public interface OrderService {
     void update(OrderDTO theOrder);
     List<OrderDTO> findAll();
     Optional<OrderDTO> findById(UUID theId);
-    List<OrderDTO> findByParams(String date, String typeOfOrder, UUID employeeId);
+    List<OrderDTO> findByParams(String date, String typeOfOrder, UUID employeeId, String username);
     List<OrderDTO> findMadeOrders();
     List<OrderDTO> findUnmadeOrders();
+    void deleteByIdAndUsername(UUID theId, String username) throws OrderNotFoundException;
+    List<OrderDTO> findAllByUsername(String username);
+    Optional<OrderDTO> findByIdAndUsername(UUID theId, String username);
+    List<OrderDTO> findMadeOrdersAndUsername(String username);
+    List<OrderDTO> findUnmadeOrdersAndUsername(String username);
 }

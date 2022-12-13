@@ -8,13 +8,10 @@ import java.util.*;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, UUID> {
-    List<Order> findByDate(String date);
-    List<Order> findByTypeOfOrderType(String typeOfOrder);
-    List<Order> findByEmployeesId(UUID employeeId);
-    List<Order> findByDateAndEmployeesId(String date, UUID employeeId);
-    List<Order> findByDateAndTypeOfOrderType(String date, String typeOfOrder);
-    List<Order> findByTypeOfOrderTypeAndEmployeesId(String typeOfOrder, UUID employeeId);
-    List<Order> findByDateAndEmployeesIdAndTypeOfOrderType(String date, UUID employeeId, String typeOfOrder);
     List<Order> findOrdersByHourAwayIsNull();
     List<Order> findOrdersByHourAwayIsNotNull();
+    List<Order> findByUserUsername(String username);
+    Optional<Order> findByIdAndUserUsername(UUID orderId, String username);
+    List<Order> findOrdersByHourAwayIsNullAndUserUsername(String username);
+    List<Order> findOrdersByHourAwayIsNotNullAndUserUsername(String username);
 }
