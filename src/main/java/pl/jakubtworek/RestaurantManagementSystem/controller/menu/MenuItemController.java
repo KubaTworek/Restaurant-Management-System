@@ -49,7 +49,7 @@ public class MenuItemController {
         return new ResponseEntity<>(menuItemResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/{menuName}")
+    @GetMapping("/menu/{menuName}")
     public ResponseEntity<List<MenuItemResponse>> getMenuItemsByMenu(@PathVariable String menuName) throws MenuNotFoundException {
         List<MenuItemResponse> menuItemsResponse = menuItemService.findByMenu(menuName)
                 .stream()

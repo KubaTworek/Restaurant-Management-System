@@ -43,11 +43,6 @@ class UserServiceIT {
         SecurityContextHolder.setContext(securityContext);
         when(authentication.getName()).thenReturn("user");
 
-        Authorities authoritiesUser = new Authorities(null, "user", List.of());
-        Authorities authoritiesAdmin = new Authorities(null, "admin", List.of());
-        authoritiesRepository.save(authoritiesUser);
-        authoritiesRepository.save(authoritiesAdmin);
-
         UserRequest userRequest = new UserRequest("user", "user", "user");
         userService.save(userRequest);
 

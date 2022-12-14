@@ -63,8 +63,6 @@ class OrderServiceIT {
         SecurityContextHolder.setContext(securityContext);
         when(authentication.getName()).thenReturn("user");
 
-        Authorities authorities = new Authorities(null, "user", List.of());
-        authoritiesRepository.save(authorities);
         UserRequest userRequest = new UserRequest("user", "user", "user");
         userService.save(userRequest);
 
