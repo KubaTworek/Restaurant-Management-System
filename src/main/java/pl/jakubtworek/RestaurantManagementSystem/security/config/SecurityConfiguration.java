@@ -44,7 +44,7 @@ public class SecurityConfiguration {
                                         .antMatchers(HttpMethod.PUT, "/menu", "/menu-items").hasRole("ADMIN")
                                         .antMatchers("/orders").authenticated()
                                         .antMatchers(HttpMethod.GET, "/menu", "menu-items").permitAll()
-                                        .antMatchers("/register").permitAll()
+                                        .antMatchers("/register", "/swagger-ui/**").permitAll()
                                         .and().headers().frameOptions().disable()
                                         .and().formLogin();
                             } catch (Exception e) {

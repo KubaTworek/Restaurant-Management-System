@@ -5,22 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6804a3ab-3eba-4f33-a440-5fed16101a6e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/user/LoginResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/security/config/H2DialectCustom.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/schema.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/security/config/ConfigSwagger.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/menu/MenuItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/controller/menu/MenuItemController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/model/entity/Authorities.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/model/entity/Authorities.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/model/entity/Job.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/model/entity/Job.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/model/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/model/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/RestaurantManagementSystemApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/RestaurantManagementSystemApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/security/config/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/security/config/SecurityConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/security/filter/JWTTokenGeneratorFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/RestaurantManagementSystem/security/filter/JWTTokenGeneratorFilter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/service/OrderServiceIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/service/OrderServiceIT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/service/UserServiceIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/jakubtworek/RestaurantManagementSystem/intTest/service/UserServiceIT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/schema.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/schema.sql.mv.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/schema.sql.mv.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/schema.sql.trace.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/schema.sql.trace.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -278,7 +268,7 @@
       <workItem from="1670553405856" duration="68206000" />
       <workItem from="1670825717827" duration="5711000" />
       <workItem from="1670891545275" duration="20586000" />
-      <workItem from="1670980745919" duration="13771000" />
+      <workItem from="1670980745919" duration="16130000" />
     </task>
     <servers />
   </component>
