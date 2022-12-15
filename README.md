@@ -1,5 +1,5 @@
 # Restaurant Management System
-> Project is REST API based on CRUD methods. Project was written in Java and Spring. Project of database was created with using best practices. Database was implemented in MySql. Restaurant gives us opportunity to manage menu, orders and employees. It gives us possibility to get some stats about restaurant and managing all staff. App was written with Clean Code and OOP programming practice. Unit and integration tests were code using JUnit and Mockito.
+> REST APIs based on CRUD methods. The project was written in Java using Spring. The database tries to maintain a third normal form, it was built on an internal H2 database. The Admin position gives us the ability to manage the restaurant, modify the menu and employees, and collect information on placed orders. User privileges allow us to place orders, while we don't even need to be authenticated to view the menu. The project has been written in accordance with the principles of Clean Code and good object-oriented programming practices. All classes and methods have been tested with unit and integration tests.
 
 
 ## Table of Contents
@@ -8,23 +8,26 @@
 * [Run and Test](#run-and-test)
 * [Endpoints](#endpoints)
 * [Database](#database)
-* [Screenshots](#screenshots)
 * [Project Status](#project-status)
 * [Room for Improvement](#room-for-improvement)
 * [Contact](#contact)
 
 
 ## General Information
-- Restaurant management system gives us opportunity to adding, modifying, deleting menu items. There is a possibility to manage employees as Cooks, Delievers and Waiters. Also we can adding two types of orders: delivery and on-site. We got a real-time working kitchen, where it is used multi-threading to making food. Everything is saved in relational database.
-- Project goal is improvement my programming skills and show my ability to write good quality code.
-- Project with similiar requirements, On my GUI classes, I have to do project with similar requirements (https://github.com/KubaTworek/Restaurant-Management) but I decided to build it also as WebApp in Java with using some frameworks.
+- Restaurant manager gives us the ability to add, modify and delete menus and the dishes belonging to them. We also have the ability to manage employees such as cooks, waiters and delivery men. The customer has the ability to place orders on the spot and for take-out. The restaurant also has a cook and order delivery system, which is used by waiters and delivery personnel. A system of authentication and authorization by login data and JWT token has been introduced.
+
+
+- The purpose of writing this project is to improve my programming skills, learn various tools and demonstrate my ability to write readable and working code.
+
+
+- I prepared a project with similar requirements in my GUI classes (https://github.com/KubaTworek/Restaurant-Management) but I decided to develop it further as a full-fledged web application using a wide range of tools.
 
 
 ## Technologies Used
-- Java
-- SpringBoot
+- Java 11
+- Spring Boot
+- Spring Security
 - Hibernate, JPA
-- MySQL
 - Postman
 
 ## Run and Test
@@ -66,30 +69,29 @@ This API provides HTTP endpoint's and tools for the following:
 # Employee
 * Create an employee: `POST/employees/{jobName}`
 * Delete an employee (by id): `DELETE/employees/{employeeId}`
-* Find every employee in restaurant: `GET/employees`
+* Find all employees in restaurant: `GET/employees`
 * Find unique employee in restaurant (by id): `GET/employees/{employeeId}`
-* Find employees in restaurant (by job name): `GET/employees/{jobName}`
+* Find employees in restaurant by param (name) : `GET/employees` 
 
 Request Body [Employee]
 ```
 {
-     "firstName": varchar(20),
-     "lastName": varchar(20),
-     "job": {
-        "id": Long,
-        "name": varchar(20)
-     }
+     "firstName": varchar(50),
+     "lastName": varchar(50),
+     "job": varchar[Cook/Waiter/DeliveryMan]
 }
 ```
 
 # Menu
 * Create a menu: `POST/menu`
-* Create a menu item and add to menu (by menu name): `POST/menu-items/{menuName}`
+* Update a menu: `PUT/menu`
+* Create a menu item and add to menu (by menu name): `POST/menu-items`
+* Update a menu item and add to menu (by menu name): `PUT/menu-items`
 * Delete a menu (by id): `DELETE/menu/{menuId}`
 * Delete a menu item (by id): `DELETE/menu-items/{menuItemId}`
 * Find every menu in restaurant: `GET/menu`
 * Find unique menu in restaurant (by id): `GET/menu/{menuId}`
-* Find unique menu item in restaurant (by id): `GET/menu-items/{menuItemId}`
+* Find menu items in restaurant (by menu name): `GET/menu-items/menu/{menuName}`
 
 Request Body [Menu]
 ```
@@ -103,47 +105,84 @@ Request Body [Menu-Item]
 {
      "name": varchar(20),
      "price": double,
-     "menu": {
-        "id": Long,
-        "name": varchar(20)
-     }
+     "menu": varchar[Menu name]
 }
 ```
 
 # Order
-* Create an order with type of order: `POST/orders/{typeOfOrder}`
+* Create an order: `POST/orders`
 * Delete an order (by id): `DELETE/orders/{orderId}`
 * Find every order in restaurant: `GET/orders`
 * Find unique order in restaurant (by id): `GET/orders/{orderId}`
-* Find orders in restaurant (by date): `GET/orders/date/{date}`
-* Find orders in restaurant (by type of order): `GET/orders/type-of-order/{typeOfOrder}`
-* Find orders in restaurant (by employee id): `GET/orders/employee/{employeeId}`
 * Find made orders in restaurant: `GET/orders/ready`
 * Find unmade orders in restaurant: `GET/orders/unready`
   
 Request Body [Order]
 ```
 {
-    "typeOfOrder": {
-        "id": Long,
-        "type": varchar(20)
-    },
+    "typeOfOrder": varchar[On-site, Delivery]
       "menuItems": [
     {
-        "id": Long,
         "name": varchar(20),
-        "price": Double
+        "price": Double,
+        "menu": varchar(20)
     },
     {
-        "id": Long,
         "name": varchar(20),
-        "price": Double
+        "price": Double,
+        "menu": varchar(20)
     },
     {
-        "id": Long,
         "name": varchar(20),
-        "price": Double
+        "price": Double,
+        "menu": varchar(20)
     }
+}
+```
+
+# Order-Admin
+* Create an order: `POST/admin-orders`
+* Delete an order (by id): `DELETE/admin-orders/{orderId}`
+* Find all order in restaurant: `GET/admin-orders`
+* Find unique order in restaurant (by id): `GET/admin-orders/{orderId}`
+* Find made orders in restaurant: `GET/admin-orders/ready`
+* Find unmade orders in restaurant: `GET/admin-orders/unready`
+* Find orders in restaurant by params (by type of order, date, employee id): `GET/admin-orders/find` 
+
+
+Request Body [Order]
+```
+{
+    "typeOfOrder": varchar[On-site, Delivery]
+      "menuItems": [
+    {
+        "name": varchar(20),
+        "price": Double,
+        "menu": varchar(20)
+    },
+    {
+        "name": varchar(20),
+        "price": Double,
+        "menu": varchar(20)
+    },
+    {
+        "name": varchar(20),
+        "price": Double,
+        "menu": varchar(20)
+    }
+}
+```
+
+# User
+* Register user with a specific role: `POST/user`
+* Delete user (by username): `DELETE/users/{username}`
+
+Request Body [User]
+```
+{
+    "username": varchar(20),
+    "password": varchar(50),
+    "role": varchar[ROLE_USER, ROLE_ADMIN]
 }
 ```
 
@@ -151,12 +190,6 @@ Request Body [Order]
 ## Database
 ![Example screenshot](database-schema.png)
 <!-- If you have screenshots you'd like to share, include them here. -->
-  
-  
-## Screenshots
-![Example screenshot](./img/screenshot.png)
-<!-- If you have screenshots you'd like to share, include them here. -->
-
 
 ## Project Status
 Project is: _in_progress_
@@ -165,14 +198,10 @@ Project is: _in_progress_
 ## Room for Improvement
 
 Room for improvement:
-- Add frontend build in Angular
-
-To do:
-- add daily income
-- add possibility of refusing to take order by client
-- add tips
-- add priority to on-site orders
-
+- Add frontend build in React
+- Add Rest API tests prepared in Rest Assured
+- Add restaurants and owners of them
+- Add couriers
 
 ## Contact
 Created by me :)
