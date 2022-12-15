@@ -61,7 +61,8 @@ public class Order {
     )
     private List<Employee> employees = new ArrayList<>();
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="user_id")
     @NotNull
     private User user;

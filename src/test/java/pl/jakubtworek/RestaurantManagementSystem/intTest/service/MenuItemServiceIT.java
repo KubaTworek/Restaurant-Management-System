@@ -3,12 +3,12 @@ package pl.jakubtworek.RestaurantManagementSystem.intTest.service;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.*;
 import pl.jakubtworek.RestaurantManagementSystem.exception.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.MenuItem;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 import pl.jakubtworek.RestaurantManagementSystem.service.*;
 import pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.MenuItemDTOAssertions;
@@ -20,6 +20,7 @@ import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.createCh
 
 @SpringBootTest
 @Transactional
+@ActiveProfiles("test")
 class MenuItemServiceIT {
 
     @Autowired
@@ -50,13 +51,8 @@ class MenuItemServiceIT {
         MenuItem menuItem3 = menuItemService.save(menuItemRequest3).convertDTOToEntity();
         idMenuItem = menuItem1.getId();
 
-        TypeOfOrder onsite = new TypeOfOrder(null, "On-site", List.of());
-        TypeOfOrder delivery = new TypeOfOrder(null, "Delivery", List.of());
-        typeOfOrderRepository.save(onsite);
-        typeOfOrderRepository.save(delivery);
-
-        Order onsiteOrder = new Order(null, 12.98, "2022-08-22", "12:00:00", "12:15:00", typeOfOrderRepository.findByType("On-site").get(), List.of(menuItem1, menuItem2), List.of(), null);
-        Order deliveryOrder = new Order(null, 7.98, "2022-08-22", "12:05:00", null, typeOfOrderRepository.findByType("Delivery").get(), List.of(menuItem3, menuItem2), List.of(), null);
+        pl.jakubtworek.RestaurantManagementSystem.model.entity.Order onsiteOrder = new pl.jakubtworek.RestaurantManagementSystem.model.entity.Order(null, 12.98, "2022-08-22", "12:00:00", "12:15:00", typeOfOrderRepository.findByType("On-site").get(), List.of(menuItem1, menuItem2), List.of(), null);
+        pl.jakubtworek.RestaurantManagementSystem.model.entity.Order deliveryOrder = new pl.jakubtworek.RestaurantManagementSystem.model.entity.Order(null, 7.98, "2022-08-22", "12:05:00", null, typeOfOrderRepository.findByType("Delivery").get(), List.of(menuItem3, menuItem2), List.of(), null);
 
         orderRepository.save(onsiteOrder);
         orderRepository.save(deliveryOrder);

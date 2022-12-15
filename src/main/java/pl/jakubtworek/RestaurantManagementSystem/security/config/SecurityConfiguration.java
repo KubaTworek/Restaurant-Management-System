@@ -41,8 +41,9 @@ public class SecurityConfiguration {
                                 authz
                                         .antMatchers("/employees", "/users", "/admin-orders").hasRole("ADMIN")
                                         .antMatchers(HttpMethod.POST, "/menu", "/menu-items").hasRole("ADMIN")
+                                        .antMatchers(HttpMethod.DELETE, "/menu", "/menu-items").hasRole("ADMIN")
                                         .antMatchers(HttpMethod.PUT, "/menu", "/menu-items").hasRole("ADMIN")
-                                        .antMatchers("/orders").authenticated()
+                                        .antMatchers("/orders").hasRole("USER")
                                         .antMatchers(HttpMethod.GET, "/menu", "menu-items").permitAll()
                                         .antMatchers("/register", "/swagger-ui/**").permitAll()
                                         .and().headers().frameOptions().disable()

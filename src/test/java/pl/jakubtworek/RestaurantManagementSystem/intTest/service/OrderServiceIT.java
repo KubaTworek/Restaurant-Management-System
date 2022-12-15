@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.*;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.*;
@@ -15,7 +16,6 @@ import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.controller.user.UserRequest;
 import pl.jakubtworek.RestaurantManagementSystem.exception.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 import pl.jakubtworek.RestaurantManagementSystem.service.*;
 
@@ -26,10 +26,11 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.createOnsiteOrderRequest;
 
 @SpringBootTest
 @Transactional
+@ActiveProfiles("test")
 class OrderServiceIT {
 
     @Autowired
@@ -63,7 +64,7 @@ class OrderServiceIT {
         SecurityContextHolder.setContext(securityContext);
         when(authentication.getName()).thenReturn("user");
 
-        UserRequest userRequest = new UserRequest("user", "user", "user");
+        UserRequest userRequest = new UserRequest("user", "user", "ROLE_USER");
         userService.save(userRequest);
 
         MenuRequest menu1 = new MenuRequest("Drinks");
@@ -78,13 +79,6 @@ class OrderServiceIT {
         menuItemService.save(menuItem2);
         menuItemService.save(menuItem3);
 
-        Job job1 = new Job(null, "Cook", new ArrayList<>());
-        Job job2 = new Job(null, "Waiter", new ArrayList<>());
-        Job job3 = new Job(null, "DeliveryMan", new ArrayList<>());
-        jobRepository.save(job1);
-        jobRepository.save(job2);
-        jobRepository.save(job3);
-
         EmployeeRequest employeeRequest1 = new EmployeeRequest("John", "Smith", "Cook");
         EmployeeRequest employeeRequest2 = new EmployeeRequest("James", "Patel", "Waiter");
         EmployeeRequest employeeRequest3 = new EmployeeRequest("Ann", "Mary", "DeliveryMan");
@@ -93,10 +87,6 @@ class OrderServiceIT {
         employeeService.save(employeeRequest2);
         employeeService.save(employeeRequest3);
 
-        TypeOfOrder onsite = new TypeOfOrder(null, "On-site", List.of());
-        TypeOfOrder delivery = new TypeOfOrder(null, "Delivery", List.of());
-        typeOfOrderRepository.save(onsite);
-        typeOfOrderRepository.save(delivery);
 
         OrderRequest onsiteOrder = new OrderRequest("On-site", List.of(menuItem1, menuItem2));
         OrderRequest deliveryOrder = new OrderRequest("Delivery", List.of(menuItem3, menuItem2));

@@ -6,11 +6,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.*;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.controller.user.UserRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 import pl.jakubtworek.RestaurantManagementSystem.service.*;
 
@@ -21,6 +21,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @Transactional
+@ActiveProfiles("test")
 class UserServiceIT {
 
     @Autowired
@@ -43,13 +44,8 @@ class UserServiceIT {
         SecurityContextHolder.setContext(securityContext);
         when(authentication.getName()).thenReturn("user");
 
-        UserRequest userRequest = new UserRequest("user", "user", "user");
+        UserRequest userRequest = new UserRequest("user", "user", "ROLE_USER");
         userService.save(userRequest);
-
-        TypeOfOrder onsite = new TypeOfOrder(null, "On-site", List.of());
-        TypeOfOrder delivery = new TypeOfOrder(null, "Delivery", List.of());
-        typeOfOrderRepository.save(onsite);
-        typeOfOrderRepository.save(delivery);
 
         OrderRequest onsiteOrder = new OrderRequest("On-site", List.of());
         OrderRequest deliveryOrder = new OrderRequest("Delivery", List.of());
@@ -61,7 +57,7 @@ class UserServiceIT {
     @Test
     void shouldReturnCreatedUser() {
         // given
-        UserRequest userRequest = new UserRequest("admin", "admin", "admin");
+        UserRequest userRequest = new UserRequest("admin", "admin", "ROLE_ADMIN");
 
         // when
         UserDTO userCreated = userService.save(userRequest);

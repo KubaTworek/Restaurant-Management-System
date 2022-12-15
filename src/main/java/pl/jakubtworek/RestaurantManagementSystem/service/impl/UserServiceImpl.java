@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
 
     private Authorities getAuthority(String authority){
         return authoritiesRepository.findAuthoritiesByAuthority(authority)
-                .orElse(authoritiesRepository.findAuthoritiesByAuthority("user")
+                .orElse(authoritiesRepository.findAuthoritiesByAuthority("ROLE_USER")
                 .orElse(null));
     }
 }

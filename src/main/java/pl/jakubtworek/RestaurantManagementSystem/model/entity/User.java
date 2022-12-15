@@ -1,10 +1,14 @@
 package pl.jakubtworek.RestaurantManagementSystem.model.entity;
 
 import lombok.*;
+import org.hibernate.annotations.*;
 import org.modelmapper.ModelMapper;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.UserDTO;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.*;
 
 @Getter
@@ -21,17 +25,18 @@ public class User {
     @Column(name="id")
     private UUID id;
 
-    @Column(name = "username", nullable = false, unique = true)
+    @Column(name = "username")
     private String username;
 
     @Column(name="password")
     private String password;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="role_id")
     private Authorities authorities;
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE, CascadeType.DETACH})
+    @OneToMany(fetch=FetchType.EAGER, mappedBy = "user", cascade = {CascadeType.REMOVE, CascadeType.DETACH})
     private List<Order> orders;
 
     public void add(Order tempOrder) {

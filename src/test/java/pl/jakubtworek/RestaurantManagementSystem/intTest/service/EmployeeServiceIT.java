@@ -3,6 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.intTest.service;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeRequest;
 import pl.jakubtworek.RestaurantManagementSystem.exception.*;
@@ -19,28 +20,22 @@ import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.*;
 
 @SpringBootTest
 @Transactional
+@ActiveProfiles("test")
 class EmployeeServiceIT {
 
     @Autowired
     private EmployeeService employeeService;
     @Autowired
-    private JobRepository jobRepository;
-    @Autowired
     private TypeOfOrderRepository typeOfOrderRepository;
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private JobRepository jobRepository;
 
     static private UUID idEmployee;
 
     @BeforeEach
     public void setup() throws MenuNotFoundException, JobNotFoundException {
-        Job job1 = new Job(null, "Cook", new ArrayList<>());
-        Job job2 = new Job(null, "Waiter", new ArrayList<>());
-        Job job3 = new Job(null, "DeliveryMan", new ArrayList<>());
-        jobRepository.save(job1);
-        jobRepository.save(job2);
-        jobRepository.save(job3);
-
         EmployeeRequest employeeRequest1 = new EmployeeRequest("John", "Smith", "Cook");
         EmployeeRequest employeeRequest2 = new EmployeeRequest("James", "Patel", "Waiter");
         EmployeeRequest employeeRequest3 = new EmployeeRequest("Ann", "Mary", "DeliveryMan");
@@ -49,11 +44,6 @@ class EmployeeServiceIT {
         Employee employee2 = employeeService.save(employeeRequest2).convertDTOToEntity();
         Employee employee3 = employeeService.save(employeeRequest3).convertDTOToEntity();
         idEmployee = employee1.getId();
-
-        TypeOfOrder onsite = new TypeOfOrder(null, "On-site", List.of());
-        TypeOfOrder delivery = new TypeOfOrder(null, "Delivery", List.of());
-        typeOfOrderRepository.save(onsite);
-        typeOfOrderRepository.save(delivery);
 
         Order onsiteOrder = new Order(null, 12.98, "2022-08-22", "12:00:00", "12:15:00", typeOfOrderRepository.findByType("On-site").get(), List.of(), List.of(employee1), null);
         Order deliveryOrder = new Order(null, 7.98, "2022-08-22", "12:05:00", null, typeOfOrderRepository.findByType("Delivery").get(), List.of(), List.of(employee1), null);

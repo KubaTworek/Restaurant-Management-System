@@ -1,3 +1,4 @@
+/*
 package pl.jakubtworek.RestaurantManagementSystem.security.config;
 
 import org.springframework.cache.annotation.EnableCaching;
@@ -49,3 +50,4 @@ public class ConfigSwagger {
         return new ApiKey("apiKey", "Authorization", "header");
     }
 }
+*/
