@@ -53,7 +53,7 @@ public class Order {
     private List<MenuItem> menuItems;
 
     @LazyCollection(LazyCollectionOption.FALSE)
-    @ManyToMany(fetch=FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.DETACH})
+    @ManyToMany(fetch=FetchType.EAGER, cascade = {CascadeType.DETACH})
     @JoinTable(
             name="Order_Employee",
             joinColumns = @JoinColumn(name="order_id"),
@@ -85,6 +85,11 @@ public class Order {
             employees.add(tempEmployee);
             tempEmployee.add(this);
         }
+    }
+
+    public void remove(Employee tempEmployee){
+        employees.remove(tempEmployee);
+        tempEmployee.getOrders().remove(this);
     }
 
     public OrderDTO convertEntityToDTO() {

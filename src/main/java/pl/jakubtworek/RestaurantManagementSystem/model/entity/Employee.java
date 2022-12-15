@@ -35,12 +35,7 @@ public class Employee {
     @JoinColumn(name="job_id")
     private Job job;
 
-    @ManyToMany(fetch=FetchType.EAGER)
-    @JoinTable(
-            name="Order_Employee",
-            joinColumns = @JoinColumn(name="employee_id"),
-            inverseJoinColumns = @JoinColumn(name="order_id")
-    )
+    @ManyToMany(mappedBy = "employees")
     private List<Order> orders;
 
     public void add(Order tempOrder) {
@@ -53,12 +48,9 @@ public class Employee {
         }
     }
 
-    public void remove(){
-        if(orders != null) {
-            for(Order o : orders){
-                o.getEmployees().remove(this);
-            }
-        }
+    public void remove(Order tempOrder){
+        orders.remove(tempOrder);
+        tempOrder.getEmployees().remove(this);
     }
 
     public EmployeeDTO convertEntityToDTO() {

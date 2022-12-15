@@ -50,7 +50,6 @@ public class OrderServiceImpl implements OrderService {
     public void update(OrderDTO orderDTO){
         Order order = orderRepository.findById(orderDTO.getId()).orElse(orderDTO.convertDTOToEntity());
         order.setHourAway(orderDTO.getHourAway());
-        order.setEmployees(orderDTO.getEmployees().stream().map(EmployeeDTO::convertDTOToEntity).collect(Collectors.toList()));
         orderRepository.save(order);
     }
 

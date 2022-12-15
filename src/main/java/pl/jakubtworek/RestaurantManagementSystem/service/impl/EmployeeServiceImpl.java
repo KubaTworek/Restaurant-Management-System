@@ -40,7 +40,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void deleteById(UUID theId) throws EmployeeNotFoundException {
         Employee employee = employeeRepository.findById(theId)
                 .orElseThrow(() -> new EmployeeNotFoundException("There are no employees in restaurant with that id: " + theId));
-        employee.remove();
         employeeRepository.delete(employee);
     }
 

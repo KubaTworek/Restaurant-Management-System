@@ -22,6 +22,6 @@ public class UserController {
     public ResponseEntity<String> deleteUser(@PathVariable String username){
         userService.deleteByUsername(username);
 
-        return new ResponseEntity<>("User with username: " + username + " was deleted", HttpStatus.CREATED);
+        return new ResponseEntity<>("User with username: " + username + " was deleted", HttpStatus.OK);
     }
 }
