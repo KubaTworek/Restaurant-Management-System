@@ -24,7 +24,7 @@ public class OrderDTO {
     private UserDTO userDTO;
 
     public void add(EmployeeDTO tempEmployee) {
-        if(employees == null) {
+        if (employees == null) {
             employees = new ArrayList<>();
         }
         employees.add(tempEmployee);
@@ -33,6 +33,7 @@ public class OrderDTO {
     public Order convertDTOToEntity() {
         return new ModelMapper().map(this, Order.class);
     }
+
     public OrderResponse convertDTOToResponse() {
         return new ModelMapper().map(this, OrderResponse.class);
     }

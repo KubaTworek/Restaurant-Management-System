@@ -66,6 +66,11 @@ newman run Restaurant-Management-System.postman_collection.json
 
 This API provides HTTP endpoint's and tools for the following:
 
+* JWT [ADMIN] = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJSZXN0YXVyYW50Iiwic3ViIjoiSldUIFRva2VuIiwidXNlcm5hbWUiOiJhZG1pbiIsImF1dGhvcml0aWVzIjoiUk9MRV9BRE1JTiIsImlhdCI6MTY3MDk5MDgwMSwiZXhwIjoxMDAxNjcwOTkwODAxfQ.-3BdaIuq5rSWzf9zIdkR3S1ftAk9SSGY5iaX0zCYO08
+
+
+* JWT [USER] = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJSZXN0YXVyYW50Iiwic3ViIjoiSldUIFRva2VuIiwidXNlcm5hbWUiOiJ1c2VyIiwiYXV0aG9yaXRpZXMiOiJST0xFX1VTRVIiLCJpYXQiOjE2NzA5OTA3MTEsImV4cCI6MTAwMTY3MDk5MDcxMX0.FQXWI59l0axX413c5H4F1lByE2mSK4fe4pBvvR-gYV8
+
 # Employee
 * Create an employee: `POST/employees/{jobName}`
 * Delete an employee (by id): `DELETE/employees/{employeeId}`

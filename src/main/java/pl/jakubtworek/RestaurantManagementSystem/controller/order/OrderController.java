@@ -58,7 +58,7 @@ public class OrderController {
                                                                 @RequestParam(required = false) String typeOfOrder,
                                                                 @RequestParam(required = false) UUID employeeId,
                                                                 @RequestParam(required = false) String username
-                                                         ) {
+    ) {
         List<OrderResponse> ordersFound = orderService.findByParams(date, typeOfOrder, employeeId, username)
                 .stream()
                 .map(OrderDTO::convertDTOToResponse)

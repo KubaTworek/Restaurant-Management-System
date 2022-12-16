@@ -13,42 +13,42 @@ import java.util.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="employee")
+@Table(name = "employee")
 @Entity
 public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
+    @Column(name = "id")
     private UUID id;
 
     @NotNull
-    @Column(name="first_name")
+    @Column(name = "first_name")
     private String firstName;
 
     @NotNull
-    @Column(name="last_name")
+    @Column(name = "last_name")
     private String lastName;
 
     @NotNull
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="job_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_id")
     private Job job;
 
     @ManyToMany(mappedBy = "employees")
     private List<Order> orders;
 
     public void add(Order tempOrder) {
-        if(orders == null) {
+        if (orders == null) {
             orders = new ArrayList<>();
         }
-        if(!orders.contains(tempOrder)){
+        if (!orders.contains(tempOrder)) {
             orders.add(tempOrder);
             tempOrder.add(this);
         }
     }
 
-    public void remove(Order tempOrder){
+    public void remove(Order tempOrder) {
         orders.remove(tempOrder);
         tempOrder.getEmployees().remove(this);
     }

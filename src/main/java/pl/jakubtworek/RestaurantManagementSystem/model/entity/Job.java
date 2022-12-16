@@ -13,16 +13,16 @@ import java.util.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="job")
+@Table(name = "job")
 @Entity
 public class Job {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
+    @Column(name = "id")
     private UUID id;
 
-    @Column(name="name")
+    @Column(name = "name")
     @NotNull
     private String name;
 
@@ -30,7 +30,7 @@ public class Job {
     private List<Employee> employees;
 
     public void add(Employee tempEmployee) {
-        if(employees == null) {
+        if (employees == null) {
             employees = new ArrayList<>();
         }
 

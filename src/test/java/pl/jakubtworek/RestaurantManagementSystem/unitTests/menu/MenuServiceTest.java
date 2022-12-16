@@ -26,7 +26,7 @@ class MenuServiceTest {
     private MenuService menuService;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         menuRepository = mock(MenuRepository.class);
         menuFactory = mock(MenuFactory.class);
 
@@ -37,7 +37,7 @@ class MenuServiceTest {
     }
 
     @Test
-    void shouldReturnCreatedMenu(){
+    void shouldReturnCreatedMenu() {
         // given
         MenuRequest menu = createMenuRequest();
         Menu expectedMenu = createMenu();
@@ -54,7 +54,7 @@ class MenuServiceTest {
     }
 
     @Test
-    void shouldReturnUpdatedMenu(){
+    void shouldReturnUpdatedMenu() {
         // given
         MenuRequest menu = createMenuRequest();
         Menu expectedMenu = createMenu();

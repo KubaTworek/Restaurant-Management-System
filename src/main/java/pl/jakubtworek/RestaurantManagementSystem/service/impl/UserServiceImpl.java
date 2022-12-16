@@ -34,13 +34,13 @@ public class UserServiceImpl implements UserService {
         userRepository.delete(user);
     }
 
-    public Optional<UserDTO> findByUsername(String username){
+    public Optional<UserDTO> findByUsername(String username) {
         return userRepository.findByUsername(username).map(User::convertEntityToDTO);
     }
 
-    private Authorities getAuthority(String authority){
+    private Authorities getAuthority(String authority) {
         return authoritiesRepository.findAuthoritiesByAuthority(authority)
                 .orElse(authoritiesRepository.findAuthoritiesByAuthority("ROLE_USER")
-                .orElse(null));
+                        .orElse(null));
     }
 }

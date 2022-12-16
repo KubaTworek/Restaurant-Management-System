@@ -17,7 +17,6 @@ import java.nio.charset.StandardCharsets;
 
 public class JWTTokenValidatorFilter extends OncePerRequestFilter {
 
-
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -34,10 +33,10 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
                         .getBody();
                 String username = String.valueOf(claims.get("username"));
                 String authorities = (String) claims.get("authorities");
-                Authentication auth = new UsernamePasswordAuthenticationToken(username,null,
+                Authentication auth = new UsernamePasswordAuthenticationToken(username, null,
                         AuthorityUtils.commaSeparatedStringToAuthorityList(authorities));
                 SecurityContextHolder.getContext().setAuthentication(auth);
-            }catch (Exception e) {
+            } catch (Exception e) {
                 throw new BadCredentialsException("Invalid Token received!");
             }
 
@@ -45,9 +44,8 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
         chain.doFilter(request, response);
     }
 
-
-    @Override protected boolean shouldNotFilter(HttpServletRequest request) {
-        return request.getServletPath().equals("/user"); }
-
-
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return request.getServletPath().equals("/user");
+    }
 }

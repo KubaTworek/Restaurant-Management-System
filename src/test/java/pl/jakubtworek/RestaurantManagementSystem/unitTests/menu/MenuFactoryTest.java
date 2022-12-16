@@ -18,7 +18,7 @@ class MenuFactoryTest {
     }
 
     @Test
-    void shouldReturnCreatedMenu(){
+    void shouldReturnCreatedMenu() {
         // given
         MenuRequest menuDTO = createMenuRequest();
 
@@ -30,7 +30,7 @@ class MenuFactoryTest {
     }
 
     @Test
-    void shouldReturnUpdatedMenu(){
+    void shouldReturnUpdatedMenu() {
         // given
         MenuRequest newMenu = new MenuRequest("Alcohol");
         Menu oldMenu = createMenu();

@@ -1,15 +1,15 @@
 package pl.jakubtworek.RestaurantManagementSystem.exception;
 
-public class OrderNotFoundException extends Exception{
-    public OrderNotFoundException(){
+public class OrderNotFoundException extends Exception {
+    public OrderNotFoundException() {
         super();
     }
 
-    public OrderNotFoundException(String msg){
+    public OrderNotFoundException(String msg) {
         super(msg);
     }
 
-    public OrderNotFoundException(String msg, Throwable cause){
+    public OrderNotFoundException(String msg, Throwable cause) {
         super(msg, cause);
     }
 }

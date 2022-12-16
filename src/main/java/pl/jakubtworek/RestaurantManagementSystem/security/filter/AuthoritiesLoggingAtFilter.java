@@ -15,5 +15,4 @@ public class AuthoritiesLoggingAtFilter implements Filter {
         LOG.info("Authentication Validation is in progress");
         chain.doFilter(request, response);
     }
-
 }

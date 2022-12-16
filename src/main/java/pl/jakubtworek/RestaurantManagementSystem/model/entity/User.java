@@ -1,14 +1,10 @@
 package pl.jakubtworek.RestaurantManagementSystem.model.entity;
 
 import lombok.*;
-import org.hibernate.annotations.*;
 import org.modelmapper.ModelMapper;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.UserDTO;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.util.*;
 
 @Getter
@@ -16,34 +12,33 @@ import java.util.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="users")
+@Table(name = "users")
 @Entity
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
+    @Column(name = "id")
     private UUID id;
 
     @Column(name = "username")
     private String username;
 
-    @Column(name="password")
+    @Column(name = "password")
     private String password;
 
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="role_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")
     private Authorities authorities;
 
-    @OneToMany(fetch=FetchType.EAGER, mappedBy = "user", cascade = {CascadeType.REMOVE, CascadeType.DETACH})
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = {CascadeType.REMOVE, CascadeType.DETACH})
     private List<Order> orders;
 
     public void add(Order tempOrder) {
-        if(orders == null) {
+        if (orders == null) {
             orders = new ArrayList<>();
         }
-        if(!orders.contains(tempOrder)){
+        if (!orders.contains(tempOrder)) {
             orders.add(tempOrder);
         }
     }

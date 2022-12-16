@@ -13,7 +13,7 @@ import java.util.*;
 
 @Component
 @RequiredArgsConstructor
-public class RestaurantAuthenticationProvider implements AuthenticationProvider{
+public class RestaurantAuthenticationProvider implements AuthenticationProvider {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 

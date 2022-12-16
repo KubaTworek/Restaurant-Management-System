@@ -1,11 +1,8 @@
 package pl.jakubtworek.RestaurantManagementSystem.model.business;
 
 import org.springframework.stereotype.Service;
-import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.Observer;
-import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersMadeOnsiteQueue;
-import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.WaiterQueue;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
+import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.*;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
 
 @Service

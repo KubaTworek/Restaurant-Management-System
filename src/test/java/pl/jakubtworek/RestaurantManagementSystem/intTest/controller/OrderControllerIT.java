@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.*;
@@ -26,7 +26,6 @@ import static pl.jakubtworek.RestaurantManagementSystem.utils.UserUtils.*;
 
 @SpringBootTest
 class OrderControllerIT {
-
     @Autowired
     private OrderController orderController;
 

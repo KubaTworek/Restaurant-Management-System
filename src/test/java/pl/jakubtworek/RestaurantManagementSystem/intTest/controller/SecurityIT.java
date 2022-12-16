@@ -23,7 +23,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 class SecurityIT {
-
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -32,11 +31,11 @@ class SecurityIT {
     @Autowired
     private UserController userController;
 
-    private final String USER_JWT= "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJSZXN0YXVyYW50Iiwic3ViIjoiSldUIFRva2VuIiwidXNlcm5hbWUiOiJ1c2VyIiwiYXV0aG9yaXRpZXMiOiJST0xFX1VTRVIiLCJpYXQiOjE2NzA5OTA3MTEsImV4cCI6MTAwMTY3MDk5MDcxMX0.FQXWI59l0axX413c5H4F1lByE2mSK4fe4pBvvR-gYV8";
+    private final String USER_JWT = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJSZXN0YXVyYW50Iiwic3ViIjoiSldUIFRva2VuIiwidXNlcm5hbWUiOiJ1c2VyIiwiYXV0aG9yaXRpZXMiOiJST0xFX1VTRVIiLCJpYXQiOjE2NzA5OTA3MTEsImV4cCI6MTAwMTY3MDk5MDcxMX0.FQXWI59l0axX413c5H4F1lByE2mSK4fe4pBvvR-gYV8";
     private final String ADMIN_JWT = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJSZXN0YXVyYW50Iiwic3ViIjoiSldUIFRva2VuIiwidXNlcm5hbWUiOiJhZG1pbiIsImF1dGhvcml0aWVzIjoiUk9MRV9BRE1JTiIsImlhdCI6MTY3MDk5MDgwMSwiZXhwIjoxMDAxNjcwOTkwODAxfQ.-3BdaIuq5rSWzf9zIdkR3S1ftAk9SSGY5iaX0zCYO08";
 
     @BeforeEach
-    void setup() throws Exception {
+    void setup() {
         UserRequest userRequest = new UserRequest("user", "user", "ROLE_USER");
         UserRequest adminRequest = new UserRequest("admin", "admin", "ROLE_ADMIN");
         userController.registerUser(userRequest);
@@ -89,15 +88,15 @@ class SecurityIT {
     @Test
     public void employeesPost_withValidJwtToken_returnsOk() throws Exception {
         this.mockMvc.perform(post("/employees")
-                .content(objectMapper.writeValueAsString(new EmployeeRequest("Jakub", "Tworek", "Cook")))
+                        .content(objectMapper.writeValueAsString(new EmployeeRequest("Jakub", "Tworek", "Cook")))
                         .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", ADMIN_JWT))
+                        .header("Authorization", ADMIN_JWT))
                 .andExpect(status().isCreated());
     }
 
     @WithMockUser("admin")
     @Test
-    public void employeesDelete_withValidJwtToken_returnsOk() throws Exception {
+    public void employeesDelete_withValidJwtToken_returnsNotFound() throws Exception {
         this.mockMvc.perform(delete("/employees/79ff0068-7c12-11ed-a1eb-0242ac120002").header("Authorization", ADMIN_JWT)).andExpect(status().isNotFound());
     }
 
@@ -123,25 +122,25 @@ class SecurityIT {
 
     @WithMockUser("user")
     @Test
-    public void ordersGet_userAuth_returnsForbidden() throws Exception {
+    public void ordersGet_userAuth_returnsOk() throws Exception {
         this.mockMvc.perform(get("/orders").header("Authorization", USER_JWT)).andExpect(status().isOk());
     }
 
     @WithMockUser("user")
     @Test
-    public void ordersDelete_userAuth_returnsForbidden() throws Exception {
+    public void ordersDelete_userAuth_returnsNotFound() throws Exception {
         this.mockMvc.perform(delete("/orders/79ff0068-7c12-11ed-a1eb-0242ac120002").header("Authorization", USER_JWT)).andExpect(status().isNotFound());
     }
 
     @WithMockUser("admin")
     @Test
-    public void ordersGet_withValidJwtToken_returnsOk() throws Exception {
+    public void ordersGet_withValidJwtToken_returnsForbidden() throws Exception {
         this.mockMvc.perform(get("/orders").header("Authorization", ADMIN_JWT)).andExpect(status().isForbidden());
     }
 
     @WithMockUser("admin")
     @Test
-    public void ordersPost_withValidJwtToken_returnsOk() throws Exception {
+    public void ordersPost_withValidJwtToken_returnsForbidden() throws Exception {
         this.mockMvc.perform(post("/orders")
                         .header("Authorization", ADMIN_JWT))
                 .andExpect(status().isForbidden());
@@ -149,7 +148,7 @@ class SecurityIT {
 
     @WithMockUser("admin")
     @Test
-    public void ordersDelete_withValidJwtToken_returnsOk() throws Exception {
+    public void ordersDelete_withValidJwtToken_returnsForbidden() throws Exception {
         this.mockMvc.perform(delete("/orders").header("Authorization", ADMIN_JWT)).andExpect(status().isForbidden());
     }
 
@@ -204,7 +203,7 @@ class SecurityIT {
 
     @WithAnonymousUser()
     @Test
-    public void menuGet_noAuth_returnsUnauthorized() throws Exception {
+    public void menuGet_noAuth_returnsOk() throws Exception {
         this.mockMvc.perform(get("/menu")).andExpect(status().isOk());
     }
 
@@ -216,13 +215,13 @@ class SecurityIT {
 
     @WithAnonymousUser()
     @Test
-    public void menuDelete_noAuth_returnsUnauthorized() throws Exception {
+    public void menuDelete_noAuth_returnsNotFound() throws Exception {
         this.mockMvc.perform(delete("/menu/79ff0068-7c12-11ed-a1eb-0242ac120002")).andExpect(status().isNotFound());
     }
 
     @WithMockUser("user")
     @Test
-    public void menuGet_userAuth_returnsForbidden() throws Exception {
+    public void menuGet_userAuth_returnsOk() throws Exception {
         this.mockMvc.perform(get("/menu").header("Authorization", USER_JWT)).andExpect(status().isOk());
     }
 
@@ -235,7 +234,7 @@ class SecurityIT {
 
     @WithMockUser("user")
     @Test
-    public void menuDelete_userAuth_returnsForbidden() throws Exception {
+    public void menuDelete_userAuth_returnsNotFound() throws Exception {
         this.mockMvc.perform(delete("/menu/79ff0068-7c12-11ed-a1eb-0242ac120002").header("Authorization", USER_JWT)).andExpect(status().isNotFound());
     }
 
@@ -247,7 +246,7 @@ class SecurityIT {
 
     @WithMockUser("admin")
     @Test
-    public void menuPost_withValidJwtToken_returnsOk() throws Exception {
+    public void menuPost_withValidJwtToken_returnsCreated() throws Exception {
         this.mockMvc.perform(post("/menu")
                         .content(objectMapper.writeValueAsString(new MenuRequest("Desserts")))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -257,7 +256,7 @@ class SecurityIT {
 
     @WithMockUser("admin")
     @Test
-    public void menuDelete_withValidJwtToken_returnsOk() throws Exception {
+    public void menuDelete_withValidJwtToken_returnsNotFound() throws Exception {
         this.mockMvc.perform(delete("/menu/79ff0068-7c12-11ed-a1eb-0242ac120002").header("Authorization", ADMIN_JWT)).andExpect(status().isNotFound());
     }
 
@@ -265,7 +264,7 @@ class SecurityIT {
 
     @WithAnonymousUser()
     @Test
-    public void menuItemGet_noAuth_returnsUnauthorized() throws Exception {
+    public void menuItemGet_noAuth_returnsNotFound() throws Exception {
         this.mockMvc.perform(get("/menu-items/79ff0068-7c12-11ed-a1eb-0242ac120002")).andExpect(status().isNotFound());
     }
 
@@ -277,13 +276,13 @@ class SecurityIT {
 
     @WithAnonymousUser()
     @Test
-    public void menuItemDelete_noAuth_returnsUnauthorized() throws Exception {
+    public void menuItemDelete_noAuth_returnsNotFound() throws Exception {
         this.mockMvc.perform(delete("/menu-items/79ff0068-7c12-11ed-a1eb-0242ac120002")).andExpect(status().isNotFound());
     }
 
     @WithMockUser("user")
     @Test
-    public void menuItemGet_userAuth_returnsForbidden() throws Exception {
+    public void menuItemGet_userAuth_returnsNotFound() throws Exception {
         this.mockMvc.perform(get("/menu-items/79ff0068-7c12-11ed-a1eb-0242ac120002").header("Authorization", USER_JWT)).andExpect(status().isNotFound());
     }
 
@@ -296,23 +295,23 @@ class SecurityIT {
 
     @WithMockUser("user")
     @Test
-    public void menuItemDelete_userAuth_returnsForbidden() throws Exception {
+    public void menuItemDelete_userAuth_returnsNotFound() throws Exception {
         this.mockMvc.perform(delete("/menu-items/79ff0068-7c12-11ed-a1eb-0242ac120002").header("Authorization", USER_JWT)).andExpect(status().isNotFound());
     }
 
     @WithMockUser("admin")
     @Test
-    public void menuItemGet_withValidJwtToken_returnsOk() throws Exception {
+    public void menuItemGet_withValidJwtToken_returnsNotFound() throws Exception {
         this.mockMvc.perform(get("/menu-items/79ff0068-7c12-11ed-a1eb-0242ac120002").header("Authorization", ADMIN_JWT)).andExpect(status().isNotFound());
     }
 
     @WithMockUser("admin")
     @Test
-    public void menuItemPost_withValidJwtToken_returnsOk() throws Exception {
+    public void menuItemPost_withValidJwtToken_returnsCreated() throws Exception {
         this.mockMvc.perform(post("/menu")
-                        .content(objectMapper.writeValueAsString(new MenuRequest("Desserts")))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", ADMIN_JWT));
+                .content(objectMapper.writeValueAsString(new MenuRequest("Desserts")))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", ADMIN_JWT));
         this.mockMvc.perform(post("/menu-items")
                         .content(objectMapper.writeValueAsString(new MenuItemRequest("Tiramisu", 4.99, "Desserts")))
                         .contentType(MediaType.APPLICATION_JSON)

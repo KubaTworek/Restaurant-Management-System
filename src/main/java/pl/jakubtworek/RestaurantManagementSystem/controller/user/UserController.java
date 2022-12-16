@@ -12,14 +12,14 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> registerUser(@RequestBody UserRequest userRequest){
+    public ResponseEntity<UserResponse> registerUser(@RequestBody UserRequest userRequest) {
         UserResponse userCreated = userService.save(userRequest).convertDTOToResponse();
 
         return new ResponseEntity<>(userCreated, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/users/{username}")
-    public ResponseEntity<String> deleteUser(@PathVariable String username){
+    public ResponseEntity<String> deleteUser(@PathVariable String username) {
         userService.deleteByUsername(username);
 
         return new ResponseEntity<>("User with username: " + username + " was deleted", HttpStatus.OK);

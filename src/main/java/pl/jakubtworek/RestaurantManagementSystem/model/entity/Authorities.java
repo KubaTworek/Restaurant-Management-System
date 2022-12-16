@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.AuthoritiesDTO;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @Getter
@@ -12,16 +13,17 @@ import java.util.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="authorities")
+@Table(name = "authorities")
 @Entity
 public class Authorities {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
+    @Column(name = "id")
     private UUID id;
 
-    @Column(name = "authority", nullable = false)
+    @NotNull
+    @Column(name = "authority")
     private String authority;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "authorities", cascade = {CascadeType.REMOVE, CascadeType.DETACH})

@@ -14,16 +14,16 @@ import java.util.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="menu")
+@Table(name = "menu")
 @Entity
 public class Menu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
+    @Column(name = "id")
     private UUID id;
 
-    @Column(name="name")
+    @Column(name = "name")
     @NotNull
     private String name;
 
@@ -31,7 +31,7 @@ public class Menu {
     private List<MenuItem> menuItems;
 
     public void add(MenuItem tempMenuItem) {
-        if(menuItems == null) {
+        if (menuItems == null) {
             menuItems = new ArrayList<>();
         }
 

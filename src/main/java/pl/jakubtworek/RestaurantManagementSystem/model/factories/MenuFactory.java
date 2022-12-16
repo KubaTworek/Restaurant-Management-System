@@ -12,23 +12,23 @@ import java.util.stream.Collectors;
 public class MenuFactory {
     public MenuDTO createMenu(
             MenuRequest menuRequest
-    ){
+    ) {
         String name = menuRequest.getName();
 
         return MenuDTO.builder()
-                        .name(name)
-                        .menuItems(null)
-                        .build();
+                .name(name)
+                .menuItems(null)
+                .build();
     }
 
     public MenuDTO updateMenu(
             MenuRequest newMenu,
             Menu oldMenu
-    ){
+    ) {
         UUID id = oldMenu.getId();
         String name = newMenu.getName();
         List<MenuItemDTO> menuItems;
-        if(oldMenu.getMenuItems() != null){
+        if (oldMenu.getMenuItems() != null) {
             menuItems = oldMenu.getMenuItems().stream().map(MenuItem::convertEntityToDTO).collect(Collectors.toList());
         } else {
             menuItems = new ArrayList<>();

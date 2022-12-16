@@ -1,18 +1,12 @@
 package pl.jakubtworek.RestaurantManagementSystem.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import javax.validation.*;
+import java.util.*;
 
 import static java.util.stream.Collectors.toMap;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -43,7 +37,7 @@ public class RestExceptionHandler {
 
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleException(EmployeeNotFoundException exc){
+    public ResponseEntity<ErrorResponse> handleException(EmployeeNotFoundException exc) {
         ErrorResponse error = new ErrorResponse();
 
         error.setStatus(HttpStatus.NOT_FOUND.value());
@@ -53,7 +47,7 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleException(JobNotFoundException exc){
+    public ResponseEntity<ErrorResponse> handleException(JobNotFoundException exc) {
         ErrorResponse error = new ErrorResponse();
 
         error.setStatus(HttpStatus.NOT_FOUND.value());
@@ -63,7 +57,7 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleException(MenuNotFoundException exc){
+    public ResponseEntity<ErrorResponse> handleException(MenuNotFoundException exc) {
         ErrorResponse error = new ErrorResponse();
 
         error.setStatus(HttpStatus.NOT_FOUND.value());
@@ -73,7 +67,7 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleException(TypeOfOrderNotFoundException exc){
+    public ResponseEntity<ErrorResponse> handleException(TypeOfOrderNotFoundException exc) {
         ErrorResponse error = new ErrorResponse();
 
         error.setStatus(HttpStatus.NOT_FOUND.value());
@@ -83,7 +77,7 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleException(OrderNotFoundException exc){
+    public ResponseEntity<ErrorResponse> handleException(OrderNotFoundException exc) {
         ErrorResponse error = new ErrorResponse();
 
         error.setStatus(HttpStatus.NOT_FOUND.value());
@@ -93,7 +87,7 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleException(MenuItemNotFoundException exc){
+    public ResponseEntity<ErrorResponse> handleException(MenuItemNotFoundException exc) {
         ErrorResponse error = new ErrorResponse();
 
         error.setStatus(HttpStatus.NOT_FOUND.value());

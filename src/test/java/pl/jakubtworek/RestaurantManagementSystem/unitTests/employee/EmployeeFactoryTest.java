@@ -17,7 +17,7 @@ class EmployeeFactoryTest {
     }
 
     @Test
-    void shouldReturnCook_whenProvideCook(){
+    void shouldReturnCook_whenProvideCook() {
         // given
         EmployeeRequest employeeRequest = createCookRequest();
         JobDTO job = createJobCook().convertEntityToDTO();
@@ -32,7 +32,7 @@ class EmployeeFactoryTest {
     }
 
     @Test
-    void shouldReturnWaiter_whenProvideWaiter(){
+    void shouldReturnWaiter_whenProvideWaiter() {
         // given
         EmployeeRequest employeeRequest = createWaiterRequest();
         JobDTO job = createJobWaiter().convertEntityToDTO();
@@ -47,7 +47,7 @@ class EmployeeFactoryTest {
     }
 
     @Test
-    void shouldReturnDeliveryman_whenProvideDeliveryman(){
+    void shouldReturnDeliveryman_whenProvideDeliveryman() {
         // given
         EmployeeRequest employeeRequest = createDeliveryRequest();
         JobDTO job = createJobDeliveryman().convertEntityToDTO();

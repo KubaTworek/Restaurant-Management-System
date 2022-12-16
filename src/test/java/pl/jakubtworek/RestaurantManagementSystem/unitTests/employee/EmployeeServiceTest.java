@@ -29,7 +29,7 @@ class EmployeeServiceTest {
     private EmployeeServiceImpl employeeService;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         employeeRepository = mock(EmployeeRepository.class);
         jobRepository = mock(JobRepository.class);
         employeeFactory = mock(EmployeeFactory.class);
@@ -78,7 +78,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void shouldReturnAllEmployees(){
+    void shouldReturnAllEmployees() {
         // given
         List<Employee> employees = createEmployees();
         when(employeeRepository.findAll()).thenReturn(employees);
@@ -91,7 +91,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void shouldReturnEmployeeById(){
+    void shouldReturnEmployeeById() {
         Optional<Employee> employee = Optional.of(createCook());
         when(employeeRepository.findById(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002"))).thenReturn(employee);
 

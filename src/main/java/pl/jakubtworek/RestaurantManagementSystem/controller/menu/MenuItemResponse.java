@@ -3,7 +3,6 @@ package pl.jakubtworek.RestaurantManagementSystem.controller.menu;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
-import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderController;
 
 import java.util.UUID;
 
@@ -16,7 +15,7 @@ public class MenuItemResponse extends RepresentationModel<MenuItemResponse> {
     private String name;
     private double price;
 
-    protected static MenuItemResponse addLinkToResponse(MenuItemResponse response){
+    protected static MenuItemResponse addLinkToResponse(MenuItemResponse response) {
         response.add(WebMvcLinkBuilder.linkTo(MenuItemController.class).slash(response.getId()).withSelfRel());
         return response;
     }

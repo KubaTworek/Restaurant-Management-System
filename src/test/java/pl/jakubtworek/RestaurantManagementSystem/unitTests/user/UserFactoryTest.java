@@ -13,14 +13,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class UserFactoryTest {
-
     @Mock
     private PasswordEncoder passwordEncoder;
 
     private UserFactory userFactory;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         passwordEncoder = mock(PasswordEncoder.class);
 
         userFactory = new UserFactory(

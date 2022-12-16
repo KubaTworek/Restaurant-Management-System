@@ -13,13 +13,13 @@ public class OrdersQueueFacade {
     private final OrdersMadeOnsiteQueue ordersMadeOnsiteQueue;
     private final OrdersMadeDeliveryQueue ordersMadeDeliveryQueue;
 
-    public void addToQueue(OrderDTO orderDTO){
+    public void addToQueue(OrderDTO orderDTO) {
         ordersQueue.add(orderDTO);
     }
 
-    public void addMadeOrderToQueue(OrderDTO orderDTO){
-        if(Objects.equals(orderDTO.getTypeOfOrder().getType(), "On-site")) ordersMadeOnsiteQueue.add(orderDTO);
-        if(Objects.equals(orderDTO.getTypeOfOrder().getType(), "Delivery")) ordersMadeDeliveryQueue.add(orderDTO);
+    public void addMadeOrderToQueue(OrderDTO orderDTO) {
+        if (Objects.equals(orderDTO.getTypeOfOrder().getType(), "On-site")) ordersMadeOnsiteQueue.add(orderDTO);
+        if (Objects.equals(orderDTO.getTypeOfOrder().getType(), "Delivery")) ordersMadeDeliveryQueue.add(orderDTO);
     }
 }
 

@@ -13,16 +13,16 @@ import java.util.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="type_of_order")
+@Table(name = "type_of_order")
 @Entity
 public class TypeOfOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
+    @Column(name = "id")
     private UUID id;
 
-    @Column(name="type")
+    @Column(name = "type")
     @NotNull
     private String type;
 
@@ -30,7 +30,7 @@ public class TypeOfOrder {
     private List<Order> orders;
 
     public void add(Order tempOrder) {
-        if(orders == null) {
+        if (orders == null) {
             orders = new ArrayList<>();
         }
 

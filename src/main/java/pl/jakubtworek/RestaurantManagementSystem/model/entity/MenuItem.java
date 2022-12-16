@@ -13,53 +13,53 @@ import java.util.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="menu_item")
+@Table(name = "menu_item")
 @Entity
 public class MenuItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
+    @Column(name = "id")
     private UUID id;
 
-    @Column(name="name")
+    @Column(name = "name")
     @NotNull
     private String name;
 
-    @Column(name="price")
+    @Column(name = "price")
     @NotNull
     private double price;
 
-    @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.DETACH})
-    @JoinColumn(name="menu_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH})
+    @JoinColumn(name = "menu_id")
     private Menu menu;
 
-    @ManyToMany(fetch=FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
-            name="Order_Menu_Item",
-            joinColumns = @JoinColumn(name="menu_item_id"),
-            inverseJoinColumns = @JoinColumn(name="order_id")
+            name = "Order_Menu_Item",
+            joinColumns = @JoinColumn(name = "menu_item_id"),
+            inverseJoinColumns = @JoinColumn(name = "order_id")
     )
     private List<Order> orders;
 
     public void add(Order tempOrder) {
-        if(orders == null) {
+        if (orders == null) {
             orders = new ArrayList<>();
         }
-        if(!orders.contains(tempOrder)){
+        if (!orders.contains(tempOrder)) {
             orders.add(tempOrder);
             tempOrder.add(this);
         }
     }
 
-    public void remove(){
-        if(orders != null) {
-            for(Order o : orders){
+    public void remove() {
+        if (orders != null) {
+            for (Order o : orders) {
                 o.getMenuItems().remove(this);
             }
         }
 
-        if(menu != null) menu.getMenuItems().remove(this);
+        if (menu != null) menu.getMenuItems().remove(this);
     }
 
     public MenuItemDTO convertEntityToDTO() {

@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmployeeRequest {
-
     @NotNull(message = "First name cannot be null.")
     private String firstName;
     @NotNull(message = "Last name cannot be null.")

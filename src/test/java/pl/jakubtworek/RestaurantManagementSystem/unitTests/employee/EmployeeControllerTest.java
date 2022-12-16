@@ -22,7 +22,7 @@ class EmployeeControllerTest {
     private EmployeeController employeeController;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         employeeService = mock(EmployeeService.class);
 
         employeeController = new EmployeeController(
@@ -93,7 +93,8 @@ class EmployeeControllerTest {
     @Test
     void shouldThrowException_whenEmployeeNotExist() {
         // when
-        Exception exception = assertThrows(EmployeeNotFoundException.class, () -> employeeController.getEmployeeById(UUID.fromString("277584b0-7844-11ed-a1eb-0242ac120002")));
+        Exception exception = assertThrows(EmployeeNotFoundException.class,
+                () -> employeeController.getEmployeeById(UUID.fromString("277584b0-7844-11ed-a1eb-0242ac120002")));
 
         // then
         assertEquals("There are no employees in restaurant with that id: 277584b0-7844-11ed-a1eb-0242ac120002", exception.getMessage());

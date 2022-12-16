@@ -3,7 +3,6 @@ package pl.jakubtworek.RestaurantManagementSystem.model.business.queues;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
 
 import java.util.Objects;
 
@@ -14,9 +13,9 @@ public class EmployeeQueueFacade {
     private final WaiterQueue waiterQueue;
     private final DeliveryQueue deliveryQueue;
 
-    public void addEmployeeToProperQueue(EmployeeDTO employeeDTO){
-        if(Objects.equals(employeeDTO.getJob().getName(), "Cook")) cooksQueue.add(employeeDTO);
-        if(Objects.equals(employeeDTO.getJob().getName(), "Waiter")) waiterQueue.add(employeeDTO);
-        if(Objects.equals(employeeDTO.getJob().getName(), "DeliveryMan")) deliveryQueue.add(employeeDTO);
+    public void addEmployeeToProperQueue(EmployeeDTO employeeDTO) {
+        if (Objects.equals(employeeDTO.getJob().getName(), "Cook")) cooksQueue.add(employeeDTO);
+        if (Objects.equals(employeeDTO.getJob().getName(), "Waiter")) waiterQueue.add(employeeDTO);
+        if (Objects.equals(employeeDTO.getJob().getName(), "DeliveryMan")) deliveryQueue.add(employeeDTO);
     }
 }

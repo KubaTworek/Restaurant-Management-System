@@ -1,11 +1,9 @@
 package pl.jakubtworek.RestaurantManagementSystem.controller.menu;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import pl.jakubtworek.RestaurantManagementSystem.controller.employee.EmployeeResponse;
 import pl.jakubtworek.RestaurantManagementSystem.exception.MenuNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuDTO;
 import pl.jakubtworek.RestaurantManagementSystem.service.MenuService;

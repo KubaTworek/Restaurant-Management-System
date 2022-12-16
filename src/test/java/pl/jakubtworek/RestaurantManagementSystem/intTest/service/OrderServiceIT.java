@@ -32,7 +32,6 @@ import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.createO
 @Transactional
 @ActiveProfiles("test")
 class OrderServiceIT {
-
     @Autowired
     private OrderService orderService;
     @Autowired
@@ -86,7 +85,6 @@ class OrderServiceIT {
         employeeService.save(employeeRequest1);
         employeeService.save(employeeRequest2);
         employeeService.save(employeeRequest3);
-
 
         OrderRequest onsiteOrder = new OrderRequest("On-site", List.of(menuItem1, menuItem2));
         OrderRequest deliveryOrder = new OrderRequest("Delivery", List.of(menuItem3, menuItem2));
@@ -318,7 +316,7 @@ class OrderServiceIT {
         assertEquals(1.99, ordersReturned.get(1).getMenuItems().get(1).getPrice());
     }
 
-    private static String getTodayDate(){
+    private static String getTodayDate() {
         LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return date.format(localDateTime);

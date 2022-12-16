@@ -23,7 +23,6 @@ import static pl.jakubtworek.RestaurantManagementSystem.utils.UserUtils.createUs
 
 @SpringBootTest
 class OrderControllerUserIT {
-
     @Autowired
     private OrderControllerUser orderController;
 
@@ -41,7 +40,7 @@ class OrderControllerUserIT {
     private SecurityContext securityContext;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
         when(authentication.getName()).thenReturn("user");
@@ -116,7 +115,8 @@ class OrderControllerUserIT {
     @Test
     void shouldThrowException_whenOrderNotExist() {
         // when
-        Exception exception = assertThrows(OrderNotFoundException.class, () -> orderController.getOrderById(UUID.fromString("a0f7ae28-7847-11ed-a1eb-0242ac120002")));
+        Exception exception = assertThrows(OrderNotFoundException.class,
+                () -> orderController.getOrderById(UUID.fromString("a0f7ae28-7847-11ed-a1eb-0242ac120002")));
 
         // then
         assertEquals("There are no order in restaurant with that id: a0f7ae28-7847-11ed-a1eb-0242ac120002", exception.getMessage());

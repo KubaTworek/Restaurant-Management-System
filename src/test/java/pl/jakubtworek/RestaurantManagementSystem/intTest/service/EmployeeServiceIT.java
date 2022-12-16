@@ -22,7 +22,6 @@ import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.*;
 @Transactional
 @ActiveProfiles("test")
 class EmployeeServiceIT {
-
     @Autowired
     private EmployeeService employeeService;
     @Autowired
@@ -41,8 +40,8 @@ class EmployeeServiceIT {
         EmployeeRequest employeeRequest3 = new EmployeeRequest("Ann", "Mary", "DeliveryMan");
 
         Employee employee1 = employeeService.save(employeeRequest1).convertDTOToEntity();
-        Employee employee2 = employeeService.save(employeeRequest2).convertDTOToEntity();
-        Employee employee3 = employeeService.save(employeeRequest3).convertDTOToEntity();
+        employeeService.save(employeeRequest2).convertDTOToEntity();
+        employeeService.save(employeeRequest3).convertDTOToEntity();
         idEmployee = employee1.getId();
 
         Order onsiteOrder = new Order(null, 12.98, "2022-08-22", "12:00:00", "12:15:00", typeOfOrderRepository.findByType("On-site").get(), List.of(), List.of(employee1), null);

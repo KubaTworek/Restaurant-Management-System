@@ -22,6 +22,7 @@ public class EmployeeDTO {
     public Employee convertDTOToEntity() {
         return new ModelMapper().map(this, Employee.class);
     }
+
     public EmployeeResponse convertDTOToResponse() {
         return new ModelMapper().map(this, EmployeeResponse.class);
     }

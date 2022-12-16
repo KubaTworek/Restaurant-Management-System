@@ -18,7 +18,6 @@ import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 
 @SpringBootTest
 class MenuItemControllerIT {
-
     @Autowired
     private MenuItemController menuItemController;
 
@@ -109,7 +108,8 @@ class MenuItemControllerIT {
     @Test
     void shouldThrowException_whenMenuItemNotExist() {
         // when
-        Exception exception = assertThrows(MenuItemNotFoundException.class, () -> menuItemController.getMenuItemById(UUID.fromString("b41874c8-784d-11ed-a1eb-0242ac120002")));
+        Exception exception = assertThrows(MenuItemNotFoundException.class,
+                () -> menuItemController.getMenuItemById(UUID.fromString("b41874c8-784d-11ed-a1eb-0242ac120002")));
 
         // then
         assertEquals("There are no menu item in restaurant with that id: b41874c8-784d-11ed-a1eb-0242ac120002", exception.getMessage());

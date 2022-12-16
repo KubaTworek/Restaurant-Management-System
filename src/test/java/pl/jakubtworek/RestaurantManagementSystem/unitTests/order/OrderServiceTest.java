@@ -6,7 +6,7 @@ import org.junit.jupiter.params.provider.*;
 import org.mockito.Mock;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.*;
-import pl.jakubtworek.RestaurantManagementSystem.controller.order.*;
+import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.exception.OrderNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueueFacade;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
@@ -48,7 +48,7 @@ class OrderServiceTest {
     private OrderService orderService;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         orderRepository = mock(OrderRepository.class);
         typeOfOrderRepository = mock(TypeOfOrderRepository.class);
         userRepository = mock(UserRepository.class);

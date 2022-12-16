@@ -8,8 +8,12 @@ import java.util.*;
 
 public interface EmployeeService {
     EmployeeDTO save(EmployeeRequest theEmployee) throws JobNotFoundException;
+
     void deleteById(UUID theId) throws EmployeeNotFoundException;
+
     List<EmployeeDTO> findAll();
+
     Optional<EmployeeDTO> findById(UUID theId);
+
     List<EmployeeDTO> findByJob(String jobName) throws JobNotFoundException;
 }

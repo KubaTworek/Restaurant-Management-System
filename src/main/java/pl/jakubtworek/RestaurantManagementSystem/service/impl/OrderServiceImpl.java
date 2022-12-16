@@ -5,11 +5,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
-import pl.jakubtworek.RestaurantManagementSystem.controller.order.*;
+import pl.jakubtworek.RestaurantManagementSystem.controller.order.OrderRequest;
 import pl.jakubtworek.RestaurantManagementSystem.exception.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.OrdersQueueFacade;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.Order;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.OrderFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 import pl.jakubtworek.RestaurantManagementSystem.service.OrderService;
@@ -36,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
 
         TypeOfOrderDTO typeOfOrderDTO = getTypeOfOrderDTO(typeOfOrderName);
         UserDTO userDTO = getUserDTO(username);
-        for(MenuItemRequest miRequests : menuItemRequestList){
+        for (MenuItemRequest miRequests : menuItemRequestList) {
             menuItemDTOList.add(getMenuItemDTO(miRequests.getName()));
         }
 
@@ -47,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void update(OrderDTO orderDTO){
+    public void update(OrderDTO orderDTO) {
         Order order = orderRepository.findById(orderDTO.getId()).orElse(orderDTO.convertDTOToEntity());
         order.setHourAway(orderDTO.getHourAway());
         orderRepository.save(order);
@@ -110,7 +110,7 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new OrderNotFoundException("There are no order in restaurant with that id: " + theId));
         List<Order> orders = orderRepository.findByUserUsername(username);
 
-        if(orders.contains(order)){
+        if (orders.contains(order)) {
             orderRepository.delete(order);
         }
     }
@@ -157,7 +157,7 @@ public class OrderServiceImpl implements OrderService {
                 .convertEntityToDTO();
     }
 
-    private UserDTO getUserDTO(String username){
+    private UserDTO getUserDTO(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found for in restaurant with that username: " + username))
                 .convertEntityToDTO();

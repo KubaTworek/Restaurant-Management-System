@@ -16,16 +16,16 @@ public class OrdersQueue implements Subject {
         this.observerList = new ArrayList<>();
     }
 
-    public void add(OrderDTO order){
+    public void add(OrderDTO order) {
         orders.add(order);
         notifyObservers();
     }
 
-    public OrderDTO get(){
+    public OrderDTO get() {
         return orders.poll();
     }
 
-    public int size(){
+    public int size() {
         return orders.size();
     }
 
@@ -46,13 +46,13 @@ public class OrdersQueue implements Subject {
         }
     }
 
-    static class OrderComparator implements Comparator<OrderDTO>{
+    static class OrderComparator implements Comparator<OrderDTO> {
         @Override
         public int compare(OrderDTO o1, OrderDTO o2) {
             return Integer.compare(isOrderOnsite(o2), isOrderOnsite(o1));
         }
 
-        private int isOrderOnsite(OrderDTO o1){
+        private int isOrderOnsite(OrderDTO o1) {
             if (Objects.equals(o1.getTypeOfOrder().getType(), "On-site")) return 1;
             if (Objects.equals(o1.getTypeOfOrder().getType(), "Delivery")) return -1;
             return 0;

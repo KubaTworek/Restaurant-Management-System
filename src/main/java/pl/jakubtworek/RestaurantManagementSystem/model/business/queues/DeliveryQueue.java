@@ -4,9 +4,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 @Component
 @Scope("singleton")
@@ -18,16 +16,16 @@ public class DeliveryQueue implements Subject {
         this.observerList = new ArrayList<>();
     }
 
-    public void add(EmployeeDTO delivery){
+    public void add(EmployeeDTO delivery) {
         deliveries.add(delivery);
         notifyObservers();
     }
 
-    public EmployeeDTO get(){
+    public EmployeeDTO get() {
         return deliveries.poll();
     }
 
-    public int size(){
+    public int size() {
         return deliveries.size();
     }
 

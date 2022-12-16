@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import pl.jakubtworek.RestaurantManagementSystem.controller.employee.*;
-import pl.jakubtworek.RestaurantManagementSystem.exception.*;
+import pl.jakubtworek.RestaurantManagementSystem.exception.EmployeeNotFoundException;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
 
@@ -17,7 +17,6 @@ import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.*;
 
 @SpringBootTest
 class EmployeeControllerIT {
-
     @Autowired
     private EmployeeController employeeController;
 
@@ -89,7 +88,8 @@ class EmployeeControllerIT {
     @Test
     void shouldReturnErrorResponse_whenEmployeeNotExist() {
         // when
-        Exception exception = assertThrows(EmployeeNotFoundException.class, () -> employeeController.getEmployeeById(UUID.fromString("604ae7b0-7846-11ed-a1eb-0242ac120002")));
+        Exception exception = assertThrows(EmployeeNotFoundException.class,
+                () -> employeeController.getEmployeeById(UUID.fromString("604ae7b0-7846-11ed-a1eb-0242ac120002")));
 
         // then
         assertEquals("There are no employees in restaurant with that id: 604ae7b0-7846-11ed-a1eb-0242ac120002", exception.getMessage());

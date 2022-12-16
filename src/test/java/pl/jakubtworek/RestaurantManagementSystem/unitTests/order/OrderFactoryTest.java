@@ -25,7 +25,7 @@ class OrderFactoryTest {
     }
 
     @Test
-    void shouldReturnCreatedOrder(){
+    void shouldReturnCreatedOrder() {
         // given
         OrderRequest orderRequest = createOnsiteOrderRequest();
         TypeOfOrderDTO typeOfOrderDTO = createOnsiteType().convertEntityToDTO();

@@ -17,7 +17,6 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class UserControllerIT {
-
     @Autowired
     private UserController userController;
 
@@ -27,7 +26,7 @@ class UserControllerIT {
     private AuthoritiesRepository authoritiesRepository;
 
     @Test
-    void shouldReturnCreatedUser(){
+    void shouldReturnCreatedUser() {
         // given
         UserRequest userRequest = new UserRequest("user", "user", "user");
         AuthoritiesDTO authority = new AuthoritiesDTO(UUID.fromString("a1437b9c-798b-11ed-a1eb-0242ac120002"), "user", List.of());

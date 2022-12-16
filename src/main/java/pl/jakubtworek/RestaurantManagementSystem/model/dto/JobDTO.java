@@ -2,8 +2,7 @@ package pl.jakubtworek.RestaurantManagementSystem.model.dto;
 
 import lombok.*;
 import org.modelmapper.ModelMapper;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Employee;
-import pl.jakubtworek.RestaurantManagementSystem.model.entity.Job;
+import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 
 import java.util.*;
 
@@ -13,7 +12,6 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class JobDTO {
-
     private UUID id;
     private String name;
     private List<Employee> employees;

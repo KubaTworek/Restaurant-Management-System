@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MenuRequest {
-
     @NotNull(message = "Menu name cannot be null.")
     private String name;
 }

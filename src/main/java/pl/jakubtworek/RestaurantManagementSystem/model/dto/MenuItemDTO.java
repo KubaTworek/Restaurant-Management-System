@@ -22,6 +22,7 @@ public class MenuItemDTO {
     public MenuItem convertDTOToEntity() {
         return new ModelMapper().map(this, MenuItem.class);
     }
+
     public MenuItemResponse convertDTOToResponse() {
         return new ModelMapper().map(this, MenuItemResponse.class);
     }

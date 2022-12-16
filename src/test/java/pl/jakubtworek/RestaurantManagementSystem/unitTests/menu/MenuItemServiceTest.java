@@ -4,7 +4,7 @@ import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.MenuItemRequest;
 import pl.jakubtworek.RestaurantManagementSystem.exception.*;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.MenuItemDTO;
 import pl.jakubtworek.RestaurantManagementSystem.model.entity.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.MenuItemFactory;
 import pl.jakubtworek.RestaurantManagementSystem.repository.*;
@@ -28,10 +28,10 @@ class MenuItemServiceTest {
     private MenuItemService menuItemService;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         menuItemRepository = mock(MenuItemRepository.class);
         menuRepository = mock(MenuRepository.class);
-        menuItemFactory= mock(MenuItemFactory.class);
+        menuItemFactory = mock(MenuItemFactory.class);
 
         menuItemService = new MenuItemServiceImpl(
                 menuItemRepository,

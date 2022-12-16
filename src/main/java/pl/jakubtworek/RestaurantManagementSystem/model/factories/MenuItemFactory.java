@@ -13,7 +13,7 @@ public class MenuItemFactory {
     public MenuItemDTO createMenuItem(
             MenuItemRequest menuItemRequest,
             MenuDTO menuDTO
-    ){
+    ) {
         String name = menuItemRequest.getName();
         double price = menuItemRequest.getPrice();
 
@@ -28,13 +28,13 @@ public class MenuItemFactory {
     public MenuItemDTO updateMenuItem(
             MenuItem oldMenuItem,
             MenuItemRequest newMenuitem
-    ){
+    ) {
         UUID id = oldMenuItem.getId();
         String name = newMenuitem.getName();
         double price = newMenuitem.getPrice();
         MenuDTO menu = oldMenuItem.getMenu().convertEntityToDTO();
         List<OrderDTO> orders;
-        if(oldMenuItem.getOrders() != null){
+        if (oldMenuItem.getOrders() != null) {
             orders = oldMenuItem.getOrders().stream().map(Order::convertEntityToDTO).collect(Collectors.toList());
         } else {
             orders = new ArrayList<>();

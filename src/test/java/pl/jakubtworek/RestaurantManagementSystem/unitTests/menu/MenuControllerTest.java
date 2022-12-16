@@ -26,7 +26,7 @@ class MenuControllerTest {
         menuService = mock(MenuService.class);
 
         menuController = new MenuController(
-          menuService
+                menuService
         );
     }
 

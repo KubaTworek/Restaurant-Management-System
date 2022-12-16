@@ -16,10 +16,10 @@ public class MenuResponse extends RepresentationModel<MenuResponse> {
     private String name;
     private List<MenuItemResponse> menuItems;
 
-    protected static MenuResponse addLinkToResponse(MenuResponse response){
+    protected static MenuResponse addLinkToResponse(MenuResponse response) {
         response.add(WebMvcLinkBuilder.linkTo(OrderController.class).slash(response.getId()).withSelfRel());
-        if(response.getMenuItems() != null){
-            for(MenuItemResponse mi: response.getMenuItems()){
+        if (response.getMenuItems() != null) {
+            for (MenuItemResponse mi : response.getMenuItems()) {
                 mi.add(WebMvcLinkBuilder.linkTo(MenuItemController.class).slash(mi.getId()).withSelfRel());
             }
         }

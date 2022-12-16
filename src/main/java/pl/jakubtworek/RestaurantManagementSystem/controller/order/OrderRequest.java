@@ -10,7 +10,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderRequest {
-
     @NotNull(message = "Type of order cannot be null.")
     private String typeOfOrder;
     @NotNull(message = "Menu items cannot be null.")

@@ -100,7 +100,8 @@ class MenuControllerIT {
     @Test
     void shouldThrowException_whenMenuNotExist() {
         // when
-        Exception exception = assertThrows(MenuNotFoundException.class, () -> menuController.getMenuById(UUID.fromString("b41874c8-784d-11ed-a1eb-0242ac120002")));
+        Exception exception = assertThrows(MenuNotFoundException.class,
+                () -> menuController.getMenuById(UUID.fromString("b41874c8-784d-11ed-a1eb-0242ac120002")));
 
         // then
         assertEquals("There are no menu in restaurant with that id: b41874c8-784d-11ed-a1eb-0242ac120002", exception.getMessage());

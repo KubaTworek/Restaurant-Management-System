@@ -23,7 +23,6 @@ import static org.mockito.Mockito.when;
 @Transactional
 @ActiveProfiles("test")
 class UserServiceIT {
-
     @Autowired
     private UserService userService;
     @Autowired

@@ -10,13 +10,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.spy;
 
 public class MenuUtils {
-    public static List<Menu> createMenuList(){
+    public static List<Menu> createMenuList() {
         Menu menu1 = spy(new Menu(UUID.fromString("31da2070-7847-11ed-a1eb-0242ac120002"), "Drinks", createMenuItemListForDrinks()));
         Menu menu2 = spy(new Menu(UUID.fromString("340a81aa-7847-11ed-a1eb-0242ac120002"), "Food", createMenuItemListForFood()));
         return List.of(menu1, menu2);
     }
 
-    public static Menu createMenu(){
+    public static Menu createMenu() {
         return new Menu(UUID.fromString("340a81aa-7847-11ed-a1eb-0242ac120002"), "Food", createMenuItemListForFood());
     }
 
@@ -43,7 +43,7 @@ public class MenuUtils {
         return new MenuItem(UUID.fromString("4ebbb050-7847-11ed-a1eb-0242ac120002"), "Tiramisu", 5.99, null, List.of());
     }
 
-    public static MenuRequest createMenuRequest(){
+    public static MenuRequest createMenuRequest() {
         return new MenuRequest("Food");
     }
 
@@ -52,7 +52,7 @@ public class MenuUtils {
     }
 
     public static class MenuAssertions {
-        public static void checkAssertionsForMenu(Menu menu){
+        public static void checkAssertionsForMenu(Menu menu) {
             assertEquals("Food", menu.getName());
             assertEquals("Chicken", menu.getMenuItems().get(0).getName());
             assertEquals(10.99, menu.getMenuItems().get(0).getPrice());
@@ -61,7 +61,7 @@ public class MenuUtils {
             assertEquals(5.99, menu.getMenuItems().get(1).getPrice());
         }
 
-        public static void checkAssertionsForMenus(List<Menu> menus){
+        public static void checkAssertionsForMenus(List<Menu> menus) {
             assertEquals("Drinks", menus.get(0).getName());
             assertEquals("Coke", menus.get(0).getMenuItems().get(0).getName());
             assertEquals(1.99, menus.get(0).getMenuItems().get(0).getPrice());
@@ -75,7 +75,7 @@ public class MenuUtils {
     }
 
     public static class MenuDTOAssertions {
-        public static void checkAssertionsForMenu(MenuDTO menu){
+        public static void checkAssertionsForMenu(MenuDTO menu) {
             assertEquals("Food", menu.getName());
             assertEquals("Chicken", menu.getMenuItems().get(0).getName());
             assertEquals(10.99, menu.getMenuItems().get(0).getPrice());
@@ -84,7 +84,7 @@ public class MenuUtils {
             assertEquals(5.99, menu.getMenuItems().get(1).getPrice());
         }
 
-        public static void checkAssertionsForMenus(List<MenuDTO> menus){
+        public static void checkAssertionsForMenus(List<MenuDTO> menus) {
             assertEquals("Drinks", menus.get(0).getName());
             assertEquals("Coke", menus.get(0).getMenuItems().get(0).getName());
             assertEquals(1.99, menus.get(0).getMenuItems().get(0).getPrice());
@@ -98,7 +98,7 @@ public class MenuUtils {
     }
 
     public static class MenuResponseAssertions {
-        public static void checkAssertionsForMenu(MenuResponse menu){
+        public static void checkAssertionsForMenu(MenuResponse menu) {
             assertEquals("Food", menu.getName());
             assertEquals("Chicken", menu.getMenuItems().get(0).getName());
             assertEquals(10.99, menu.getMenuItems().get(0).getPrice());
@@ -107,7 +107,7 @@ public class MenuUtils {
             assertEquals(5.99, menu.getMenuItems().get(1).getPrice());
         }
 
-        public static void checkAssertionsForMenus(List<MenuResponse> menus){
+        public static void checkAssertionsForMenus(List<MenuResponse> menus) {
             assertEquals("Drinks", menus.get(0).getName());
             assertEquals("Coke", menus.get(0).getMenuItems().get(0).getName());
             assertEquals(1.99, menus.get(0).getMenuItems().get(0).getPrice());

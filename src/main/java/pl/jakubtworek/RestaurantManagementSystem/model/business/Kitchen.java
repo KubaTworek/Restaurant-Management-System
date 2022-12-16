@@ -2,8 +2,7 @@ package pl.jakubtworek.RestaurantManagementSystem.model.business;
 
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.RestaurantManagementSystem.model.business.queues.*;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.EmployeeDTO;
-import pl.jakubtworek.RestaurantManagementSystem.model.dto.OrderDTO;
+import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 
 @Service
 public class Kitchen implements Observer {
@@ -20,8 +19,8 @@ public class Kitchen implements Observer {
     }
 
     @Override
-    public void update(){
-        if(isExistsCookAndOrder()){
+    public void update() {
+        if (isExistsCookAndOrder()) {
             startCooking();
         }
     }
@@ -38,11 +37,11 @@ public class Kitchen implements Observer {
         new Thread(r).start();
     }
 
-    private boolean isExistsCookAndOrder(){
-        return ordersQueue.size()>0 && cooksQueue.size()>0;
+    private boolean isExistsCookAndOrder() {
+        return ordersQueue.size() > 0 && cooksQueue.size() > 0;
     }
 
-    private void preparing(EmployeeDTO employee, OrderDTO order, int time){
+    private void preparing(EmployeeDTO employee, OrderDTO order, int time) {
         int timeToCook = time * 1000;
         try {
             Thread.sleep(timeToCook);

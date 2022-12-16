@@ -20,6 +20,7 @@ public class MenuDTO {
     public Menu convertDTOToEntity() {
         return new ModelMapper().map(this, Menu.class);
     }
+
     public MenuResponse convertDTOToResponse() {
         return new ModelMapper().map(this, MenuResponse.class);
     }

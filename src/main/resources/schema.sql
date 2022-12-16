@@ -79,4 +79,3 @@ INSERT INTO `job` values(random_uuid(), 'DeliveryMan');
 
 INSERT INTO `type_of_order` values(random_uuid(), 'On-site');
 INSERT INTO `type_of_order` values(random_uuid(), 'Delivery');
-

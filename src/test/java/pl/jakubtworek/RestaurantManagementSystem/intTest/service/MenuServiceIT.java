@@ -3,6 +3,7 @@ package pl.jakubtworek.RestaurantManagementSystem.intTest.service;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.RestaurantManagementSystem.controller.menu.*;
 import pl.jakubtworek.RestaurantManagementSystem.exception.MenuNotFoundException;
@@ -16,8 +17,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+@ActiveProfiles("test")
 class MenuServiceIT {
-
     @Autowired
     private MenuService menuService;
     @Autowired
@@ -43,7 +44,7 @@ class MenuServiceIT {
     }
 
     @Test
-    void shouldReturnCreatedMenu(){
+    void shouldReturnCreatedMenu() {
         // given
         MenuRequest menu = new MenuRequest("Alcohol");
 

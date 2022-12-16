@@ -35,19 +35,19 @@ public class OrderFactory {
                 .build();
     }
 
-    private double calculateOrderPrice(List<MenuItemRequest> menuItems){
+    private double calculateOrderPrice(List<MenuItemRequest> menuItems) {
         return menuItems.stream()
                 .mapToDouble(MenuItemRequest::getPrice)
                 .sum();
     }
 
-    private String getTodayDate(){
+    private String getTodayDate() {
         LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return date.format(localDateTime);
     }
 
-    private String getNowTime(){
+    private String getNowTime() {
         LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter time = DateTimeFormatter.ofPattern("hh:mm:ss");
         return time.format(localDateTime);
