@@ -17,20 +17,20 @@ public class EmployeeUtils {
         return List.of(employee1, employee2, employee3);
     }
 
+    public static List<Employee> createCooks() {
+        return List.of(createCook());
+    }
+
     public static Employee createCook() {
-        return new Employee(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002"), "John", "Smith", new Job(UUID.fromString("504ab5ae-7844-11ed-a1eb-0242ac120002"), "Cook", List.of()), List.of());
+        return new Employee(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002"), "John", "Smith", new Job(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002"), "Cook", List.of()), List.of());
     }
 
     public static Employee createWaiter() {
-        return new Employee(UUID.fromString("04b4f06c-7ad0-11ed-a1eb-0242ac120002"), "James", "Patel", new Job(UUID.fromString("504ab5ae-7844-11ed-a1eb-0242ac120002"), "Waiter", List.of()), List.of());
+        return new Employee(UUID.fromString("04b4f06c-7ad0-11ed-a1eb-0242ac120002"), "James", "Patel", createJobWaiter(), List.of());
     }
 
     public static Employee createDelivery() {
-        return new Employee(UUID.fromString("07df111e-7ad0-11ed-a1eb-0242ac120002"), "Ann", "Mary", new Job(UUID.fromString("504ab5ae-7844-11ed-a1eb-0242ac120002"), "DeliveryMan", List.of()), List.of());
-    }
-
-    public static List<Employee> createCooks() {
-        return List.of(new Employee(UUID.fromString("d9481fe6-7843-11ed-a1eb-0242ac120002"), "John", "Smith", new Job(UUID.fromString("504ab5ae-7844-11ed-a1eb-0242ac120002"), "Cook", List.of(createCook())), List.of()));
+        return new Employee(UUID.fromString("07df111e-7ad0-11ed-a1eb-0242ac120002"), "Ann", "Mary", createJobDeliveryman(), List.of());
     }
 
     public static Job createJobCook() {
@@ -55,35 +55,6 @@ public class EmployeeUtils {
 
     public static EmployeeRequest createDeliveryRequest() {
         return new EmployeeRequest("Ann", "Mary", "DeliveryMan");
-    }
-
-    public static class EmployeeAssertions {
-
-        public static void checkAssertionsForEmployee(Employee employee) {
-            assertEquals("John", employee.getFirstName());
-            assertEquals("Smith", employee.getLastName());
-            assertEquals("Cook", employee.getJob().getName());
-        }
-
-        public static void checkAssertionsForCooks(List<Employee> cooks) {
-            assertEquals("John", cooks.get(0).getFirstName());
-            assertEquals("Smith", cooks.get(0).getLastName());
-            assertEquals("Cook", cooks.get(0).getJob().getName());
-        }
-
-        public static void checkAssertionsForEmployees(List<Employee> employees) {
-            assertEquals("John", employees.get(0).getFirstName());
-            assertEquals("Smith", employees.get(0).getLastName());
-            assertEquals("Cook", employees.get(0).getJob().getName());
-
-            assertEquals("James", employees.get(1).getFirstName());
-            assertEquals("Patel", employees.get(1).getLastName());
-            assertEquals("Waiter", employees.get(1).getJob().getName());
-
-            assertEquals("Ann", employees.get(2).getFirstName());
-            assertEquals("Mary", employees.get(2).getLastName());
-            assertEquals("DeliveryMan", employees.get(2).getJob().getName());
-        }
     }
 
     public static class EmployeeDTOAssertions {

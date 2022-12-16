@@ -16,6 +16,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.UserUtils.*;
 
 class UserServiceTest {
     @Mock
@@ -50,11 +51,11 @@ class UserServiceTest {
     void shouldReturnCreatedUser() {
         // given
         UserRequest userRequest = new UserRequest("user", "user", "user");
-        AuthoritiesDTO authority = new AuthoritiesDTO(UUID.fromString("a1437b9c-798b-11ed-a1eb-0242ac120002"), "user", List.of());
-        UserDTO userDTO = new UserDTO(UUID.fromString("9c9b3ed6-798b-11ed-a1eb-0242ac120002"), "user", "$2a$12$iWBt07UWbcIxuPpVUS2ssO78P9W0ezJUK5CW6c7b4X6PvT33vctv2", authority, List.of());
+        Optional<Authorities> authority = Optional.of(createUserRole());
+        UserDTO userDTO = createUser().convertEntityToDTO();
 
         // when
-        when(authoritiesRepository.findAuthoritiesByAuthority("user")).thenReturn(Optional.of(authority.convertDTOToEntity()));
+        when(authoritiesRepository.findAuthoritiesByAuthority("user")).thenReturn(authority);
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
         when(authentication.getName()).thenReturn("user");
@@ -71,8 +72,7 @@ class UserServiceTest {
     @Test
     void shouldReturnResponseConfirmingDeletedOrder() {
         // given
-        Authorities authority = new Authorities(UUID.fromString("a1437b9c-798b-11ed-a1eb-0242ac120002"), "user", List.of());
-        Optional<User> user = Optional.of(new User(UUID.fromString("9c9b3ed6-798b-11ed-a1eb-0242ac120002"), "user", "$2a$12$iWBt07UWbcIxuPpVUS2ssO78P9W0ezJUK5CW6c7b4X6PvT33vctv2", authority, List.of()));
+        Optional<User> user = Optional.of(createUser());
 
         // when
         when(userRepository.findByUsername("user")).thenReturn(user);

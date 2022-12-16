@@ -7,10 +7,9 @@ import pl.jakubtworek.RestaurantManagementSystem.controller.user.UserRequest;
 import pl.jakubtworek.RestaurantManagementSystem.model.dto.*;
 import pl.jakubtworek.RestaurantManagementSystem.model.factories.UserFactory;
 
-import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.UserUtils.createUserRole;
 
 class UserFactoryTest {
     @Mock
@@ -31,7 +30,7 @@ class UserFactoryTest {
     void shouldReturnCreatedUser() {
         // given
         UserRequest userRequest = new UserRequest("user", "user", "user");
-        AuthoritiesDTO authority = new AuthoritiesDTO(UUID.fromString("a1437b9c-798b-11ed-a1eb-0242ac120002"), "user", List.of());
+        AuthoritiesDTO authority = createUserRole().convertEntityToDTO();
 
         // when
         when(passwordEncoder.encode("user")).thenReturn("$2a$12$iWBt07UWbcIxuPpVUS2ssO78P9W0ezJUK5CW6c7b4X6PvT33vctv2");

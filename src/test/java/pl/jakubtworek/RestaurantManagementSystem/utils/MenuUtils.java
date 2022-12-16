@@ -51,27 +51,12 @@ public class MenuUtils {
         return new MenuItemRequest("Chicken", 10.99, "Food");
     }
 
-    public static class MenuAssertions {
-        public static void checkAssertionsForMenu(Menu menu) {
-            assertEquals("Food", menu.getName());
-            assertEquals("Chicken", menu.getMenuItems().get(0).getName());
-            assertEquals(10.99, menu.getMenuItems().get(0).getPrice());
+    public static MenuItemRequest createCokeMenuItemRequest() {
+        return new MenuItemRequest("Coke", 1.99, "Drinks");
+    }
 
-            assertEquals("Tiramisu", menu.getMenuItems().get(1).getName());
-            assertEquals(5.99, menu.getMenuItems().get(1).getPrice());
-        }
-
-        public static void checkAssertionsForMenus(List<Menu> menus) {
-            assertEquals("Drinks", menus.get(0).getName());
-            assertEquals("Coke", menus.get(0).getMenuItems().get(0).getName());
-            assertEquals(1.99, menus.get(0).getMenuItems().get(0).getPrice());
-
-            assertEquals("Food", menus.get(1).getName());
-            assertEquals("Chicken", menus.get(1).getMenuItems().get(0).getName());
-            assertEquals(10.99, menus.get(1).getMenuItems().get(0).getPrice());
-            assertEquals("Tiramisu", menus.get(1).getMenuItems().get(1).getName());
-            assertEquals(5.99, menus.get(1).getMenuItems().get(1).getPrice());
-        }
+    public static MenuItemRequest createTiramisuMenuItemRequest() {
+        return new MenuItemRequest("Tiramisu", 5.99, "Food");
     }
 
     public static class MenuDTOAssertions {
@@ -120,32 +105,6 @@ public class MenuUtils {
         }
     }
 
-    public static class MenuItemAssertions {
-        public static void checkAssertionsForMenuItem(MenuItem menuItem) {
-            assertEquals("Chicken", menuItem.getName());
-            assertEquals(10.99, menuItem.getPrice());
-        }
-
-        public static void checkAssertionsForMenuItemsInMenu(List<MenuItem> menuItems) {
-            assertEquals("Chicken", menuItems.get(0).getName());
-            assertEquals(10.99, menuItems.get(0).getPrice());
-
-            assertEquals("Tiramisu", menuItems.get(1).getName());
-            assertEquals(5.99, menuItems.get(1).getPrice());
-        }
-
-        public static void checkAssertionsForMenuItems(List<MenuItem> menuItems) {
-            assertEquals("Chicken", menuItems.get(0).getName());
-            assertEquals(10.99, menuItems.get(0).getPrice());
-
-            assertEquals("Coke", menuItems.get(1).getName());
-            assertEquals(1.99, menuItems.get(1).getPrice());
-
-            assertEquals("Tiramisu", menuItems.get(2).getName());
-            assertEquals(5.99, menuItems.get(2).getPrice());
-        }
-    }
-
     public static class MenuItemDTOAssertions {
         public static void checkAssertionsForMenuItem(MenuItemDTO menuItem) {
             assertEquals("Chicken", menuItem.getName());
@@ -158,17 +117,6 @@ public class MenuUtils {
 
             assertEquals("Tiramisu", menuItems.get(1).getName());
             assertEquals(5.99, menuItems.get(1).getPrice());
-        }
-
-        public static void checkAssertionsForMenuItems(List<MenuItemDTO> menuItems) {
-            assertEquals("Chicken", menuItems.get(0).getName());
-            assertEquals(10.99, menuItems.get(0).getPrice());
-
-            assertEquals("Coke", menuItems.get(1).getName());
-            assertEquals(1.99, menuItems.get(1).getPrice());
-
-            assertEquals("Tiramisu", menuItems.get(2).getName());
-            assertEquals(5.99, menuItems.get(2).getPrice());
         }
     }
 
@@ -184,17 +132,6 @@ public class MenuUtils {
 
             assertEquals("Tiramisu", menuItems.get(1).getName());
             assertEquals(5.99, menuItems.get(1).getPrice());
-        }
-
-        public static void checkAssertionsForMenuItems(List<MenuItemResponse> menuItems) {
-            assertEquals("Chicken", menuItems.get(0).getName());
-            assertEquals(10.99, menuItems.get(0).getPrice());
-
-            assertEquals("Coke", menuItems.get(1).getName());
-            assertEquals(1.99, menuItems.get(1).getPrice());
-
-            assertEquals("Tiramisu", menuItems.get(2).getName());
-            assertEquals(5.99, menuItems.get(2).getPrice());
         }
     }
 }

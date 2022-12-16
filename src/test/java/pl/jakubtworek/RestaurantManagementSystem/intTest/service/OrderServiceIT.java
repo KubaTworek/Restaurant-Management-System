@@ -26,6 +26,8 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.EmployeeUtils.*;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 import static pl.jakubtworek.RestaurantManagementSystem.utils.OrderUtils.createOnsiteOrderRequest;
 
 @SpringBootTest
@@ -71,16 +73,16 @@ class OrderServiceIT {
         menuService.save(menu1);
         menuService.save(menu2);
 
-        MenuItemRequest menuItem1 = new MenuItemRequest("Chicken", 10.99, "Food");
-        MenuItemRequest menuItem2 = new MenuItemRequest("Coke", 1.99, "Drinks");
-        MenuItemRequest menuItem3 = new MenuItemRequest("Tiramisu", 5.99, "Food");
+        MenuItemRequest menuItem1 = createChickenMenuItemRequest();
+        MenuItemRequest menuItem2 = createCokeMenuItemRequest();
+        MenuItemRequest menuItem3 = createTiramisuMenuItemRequest();
         menuItemService.save(menuItem1);
         menuItemService.save(menuItem2);
         menuItemService.save(menuItem3);
 
-        EmployeeRequest employeeRequest1 = new EmployeeRequest("John", "Smith", "Cook");
-        EmployeeRequest employeeRequest2 = new EmployeeRequest("James", "Patel", "Waiter");
-        EmployeeRequest employeeRequest3 = new EmployeeRequest("Ann", "Mary", "DeliveryMan");
+        EmployeeRequest employeeRequest1 = createCookRequest();
+        EmployeeRequest employeeRequest2 = createWaiterRequest();
+        EmployeeRequest employeeRequest3 = createDeliveryRequest();
 
         employeeService.save(employeeRequest1);
         employeeService.save(employeeRequest2);

@@ -35,9 +35,9 @@ class EmployeeServiceIT {
 
     @BeforeEach
     public void setup() throws MenuNotFoundException, JobNotFoundException {
-        EmployeeRequest employeeRequest1 = new EmployeeRequest("John", "Smith", "Cook");
-        EmployeeRequest employeeRequest2 = new EmployeeRequest("James", "Patel", "Waiter");
-        EmployeeRequest employeeRequest3 = new EmployeeRequest("Ann", "Mary", "DeliveryMan");
+        EmployeeRequest employeeRequest1 = createCookRequest();
+        EmployeeRequest employeeRequest2 = createWaiterRequest();
+        EmployeeRequest employeeRequest3 = createDeliveryRequest();
 
         Employee employee1 = employeeService.save(employeeRequest1).convertDTOToEntity();
         employeeService.save(employeeRequest2).convertDTOToEntity();

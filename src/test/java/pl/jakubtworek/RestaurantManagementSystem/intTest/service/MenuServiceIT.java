@@ -14,6 +14,7 @@ import pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.MenuDTOAssertio
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 
 @SpringBootTest
 @Transactional
@@ -34,9 +35,9 @@ class MenuServiceIT {
         menuService.save(menu1);
         idMenu = menuService.save(menu2).getId();
 
-        MenuItemRequest menuItem1 = new MenuItemRequest("Chicken", 10.99, "Food");
-        MenuItemRequest menuItem2 = new MenuItemRequest("Coke", 1.99, "Drinks");
-        MenuItemRequest menuItem3 = new MenuItemRequest("Tiramisu", 5.99, "Food");
+        MenuItemRequest menuItem1 = createChickenMenuItemRequest();
+        MenuItemRequest menuItem2 = createCokeMenuItemRequest();
+        MenuItemRequest menuItem3 = createTiramisuMenuItemRequest();
 
         menuItemService.save(menuItem1);
         menuItemService.save(menuItem2);

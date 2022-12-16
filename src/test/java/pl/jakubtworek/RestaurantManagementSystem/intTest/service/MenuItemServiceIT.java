@@ -17,7 +17,7 @@ import pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.MenuItemDTOAsse
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.createChickenMenuItemRequest;
+import static pl.jakubtworek.RestaurantManagementSystem.utils.MenuUtils.*;
 
 @SpringBootTest
 @Transactional
@@ -42,9 +42,9 @@ class MenuItemServiceIT {
         menuService.save(menu1);
         idMenu = menuService.save(menu2).getId();
 
-        MenuItemRequest menuItemRequest1 = new MenuItemRequest("Chicken", 10.99, "Food");
-        MenuItemRequest menuItemRequest2 = new MenuItemRequest("Coke", 1.99, "Drinks");
-        MenuItemRequest menuItemRequest3 = new MenuItemRequest("Tiramisu", 5.99, "Food");
+        MenuItemRequest menuItemRequest1 = createChickenMenuItemRequest();
+        MenuItemRequest menuItemRequest2 = createCokeMenuItemRequest();
+        MenuItemRequest menuItemRequest3 = createTiramisuMenuItemRequest();
 
         MenuItem menuItem1 = menuItemService.save(menuItemRequest1).convertDTOToEntity();
         MenuItem menuItem2 = menuItemService.save(menuItemRequest2).convertDTOToEntity();
