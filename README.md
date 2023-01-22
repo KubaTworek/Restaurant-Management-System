@@ -193,8 +193,29 @@ Request Body [User]
 
 
 ## Database
-![Example screenshot](database-schema.png)
-<!-- If you have screenshots you'd like to share, include them here. -->
+
+### Schema
+![Database schema](database/schema.png)
+
+### Description ENG
+
+The database represents restaurant serving orders to customers.
+
+The restaurant has many menus to choose from, which include many dishes.
+
+The restaurant stores data on its employees and customers. In addition, we record the addresses of each customer to delivery orders to them. Employees, of course, have specific positions.
+
+The key element of the database are orders, each of which has a corresponding type assigned to it. Multiple menu items can be assigned to each order, also some of the same. In addition, to the order we assign the customer who ordered it. Each customer can of course place multiple orders. We also assign employees who took part in the preparation or delivery of the order. Employees in their work take part in the preparation of multiple orders.
+
+### Description PL
+
+Baza danych przedstawia restaurację serwującą zamówienia dla klientów.
+
+Restauracja posiada wiele menu do wyboru, które zawiera wiele potraw.
+
+W restauracji przechowywane są dane dotyczące pracowników oraz klientów. Dodatkowo zapisujemy adresy poszczególnych klientów, aby umożliwić dostarczenie zamówień. Pracownicy również, oczywiście mają określone stanowiska.
+
+Kluczowym elementem bazy danych są zamówienia, z których każde ma przypisany odpowiedni typ. Do każdego zamówienia można przypisać wiele pozycji z menu, rowniez kilka takich samych. Dodatkowo do zamówienia przypisujemy klienta, który je zamówił. Każdy klient może naturalne składać wiele zamówień. Do zamówienia przypisujemy również pracowników, którzy brali udział w przygotowaniu lub dostarczeniu zamówienia. Pracownicy w trakcie swojej pracy biorą udział w przygotowaniu wielu zamówień.
 
 ## Project Status
 Project is: _in_progress_
@@ -203,10 +224,11 @@ Project is: _in_progress_
 ## Room for Improvement
 
 Room for improvement:
-- Add frontend build in React
+- Add frontend based on Web Components
 - Add Rest API tests prepared in Rest Assured
-- Add restaurants and owners of them
-- Add couriers
+- Add entities described in database
+- Add SELECT queries, PL/SQL procedures and triggers
+- Break monolith on microservices
 
 ## Contact
-Created by me :)
+Created by https://github.com/KubaTworek
