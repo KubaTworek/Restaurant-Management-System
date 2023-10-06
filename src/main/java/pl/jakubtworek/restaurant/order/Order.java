@@ -1,8 +1,9 @@
 package pl.jakubtworek.restaurant.order;
 
-import pl.jakubtworek.restaurant.auth.User;
-import pl.jakubtworek.restaurant.employee.Employee;
-import pl.jakubtworek.restaurant.menu.MenuItem;
+import pl.jakubtworek.restaurant.auth.query.SimpleUserQueryDto;
+import pl.jakubtworek.restaurant.employee.query.SimpleEmployeeQueryDto;
+import pl.jakubtworek.restaurant.menu.query.SimpleMenuItemQueryDto;
+import pl.jakubtworek.restaurant.order.query.TypeOfOrder;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,11 +20,10 @@ import javax.persistence.Table;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "orders")
-public class Order {
+class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,7 +47,7 @@ public class Order {
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "menu_item_id")
     )
-    private List<MenuItem> menuItems;
+    private List<SimpleMenuItemQueryDto> menuItems;
 
     @ManyToMany(cascade = {CascadeType.DETACH})
     @JoinTable(
@@ -55,24 +55,13 @@ public class Order {
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id")
     )
-    private List<Employee> employees = new ArrayList<>();
+    private List<SimpleEmployeeQueryDto> employees = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private SimpleUserQueryDto user;
 
     public Order() {
-    }
-
-    public Order(final OrderDto source) {
-        this.id = source.getId();
-        this.price = source.getPrice();
-        this.hourOrder = source.getHourOrder();
-        this.hourAway = source.getHourAway();
-        this.typeOfOrder = source.getTypeOfOrder();
-        this.menuItems = source.getMenuItems().stream().map(MenuItem::new).collect(Collectors.toList());
-        this.employees = source.getEmployees().stream().map(Employee::new).collect(Collectors.toList());
-        this.user = new User(source.getUserDto());
     }
 
     Long getId() {
@@ -115,23 +104,25 @@ public class Order {
         this.typeOfOrder = typeOfOrder;
     }
 
-    List<MenuItem> getMenuItems() {
-        return menuItems;
-    }
-
-    public List<Employee> getEmployees() {
+    List<SimpleEmployeeQueryDto> getEmployees() {
         return employees;
     }
 
-    void setEmployees(final List<Employee> employees) {
-        this.employees = employees;
+    List<SimpleMenuItemQueryDto> getMenuItems() {
+        return menuItems;
     }
 
-    User getUser() {
+    SimpleUserQueryDto getUser() {
         return user;
     }
 
-    void setUser(final User user) {
+    void setUser(final SimpleUserQueryDto user) {
         this.user = user;
+    }
+
+    void add(SimpleEmployeeQueryDto employee) {
+        if (employee != null) {
+            employees.add(employee);
+        }
     }
 }

@@ -12,21 +12,21 @@ import java.net.URI;
 @RestController
 @RequestMapping("/users")
 class UserController {
-    private final UserService userService;
+    private final UserFacade userFacade;
 
-    UserController(final UserService userService) {
-        this.userService = userService;
+    UserController(final UserFacade userFacade) {
+        this.userFacade = userFacade;
     }
 
     @PostMapping("/register")
     ResponseEntity<UserDto> register(@RequestBody RegisterRequest registerRequest) {
-        UserDto result = userService.register(registerRequest);
+        UserDto result = userFacade.register(registerRequest);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
     @PostMapping("/login")
     ResponseEntity<LoginResponse> register(@RequestBody LoginRequest loginRequest) {
-        LoginResponse result = userService.login(loginRequest);
+        LoginResponse result = userFacade.login(loginRequest);
         return ResponseEntity.ok().body(result);
     }
 

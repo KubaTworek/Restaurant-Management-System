@@ -17,15 +17,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/menu-items")
 class MenuItemController {
-    private final MenuItemService menuItemService;
+    private final MenuItemFacade menuItemFacade;
 
-    MenuItemController(final MenuItemService menuItemService) {
-        this.menuItemService = menuItemService;
+    MenuItemController(final MenuItemFacade menuItemFacade) {
+        this.menuItemFacade = menuItemFacade;
     }
 
     @PostMapping
     ResponseEntity<MenuItemDto> saveMenuItem(@RequestBody MenuItemRequest menuItemRequest) {
-        MenuItemDto result = menuItemService.save(menuItemRequest);
+        MenuItemDto result = menuItemFacade.save(menuItemRequest);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
@@ -38,20 +38,20 @@ class MenuItemController {
 
     @DeleteMapping("/{id}")
     ResponseEntity<MenuItemDto> deleteMenuItem(@PathVariable Long id) {
-        menuItemService.deleteById(id);
+        menuItemFacade.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
     ResponseEntity<MenuItemDto> getMenuItemById(@PathVariable Long id) {
-        return menuItemService.findById(id)
+        return menuItemFacade.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/menu/{menuName}")
     List<MenuItemDto> getMenuItemsByMenu(@PathVariable String menuName) {
-        return menuItemService.findByMenu(menuName);
+        return menuItemFacade.findByMenu(menuName);
     }
 
     @ExceptionHandler(IllegalStateException.class)

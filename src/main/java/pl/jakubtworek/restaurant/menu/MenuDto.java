@@ -3,12 +3,12 @@ package pl.jakubtworek.restaurant.menu;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MenuDto {
+class MenuDto {
     private Long id;
     private String name;
     private List<MenuItemDto> menuItems;
 
-    MenuDto() {
+    public MenuDto() {
     }
 
     MenuDto(final Menu source) {

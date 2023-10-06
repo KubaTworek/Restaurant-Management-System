@@ -7,11 +7,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-class MenuItemService {
+class MenuItemFacade {
     private final MenuItemRepository menuItemRepository;
     private final MenuRepository menuRepository;
 
-    MenuItemService(final MenuItemRepository menuItemRepository, final MenuRepository menuRepository) {
+    MenuItemFacade(final MenuItemRepository menuItemRepository, final MenuRepository menuRepository) {
         this.menuItemRepository = menuItemRepository;
         this.menuRepository = menuRepository;
     }

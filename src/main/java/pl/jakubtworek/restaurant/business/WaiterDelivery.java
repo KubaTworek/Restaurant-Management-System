@@ -4,9 +4,10 @@ import org.springframework.stereotype.Service;
 import pl.jakubtworek.restaurant.business.queues.Observer;
 import pl.jakubtworek.restaurant.business.queues.OrdersMadeOnsiteQueue;
 import pl.jakubtworek.restaurant.business.queues.WaiterQueue;
-import pl.jakubtworek.restaurant.employee.EmployeeDto;
-import pl.jakubtworek.restaurant.order.OrderDto;
-import pl.jakubtworek.restaurant.order.OrderService;
+import pl.jakubtworek.restaurant.employee.EmployeeFacade;
+import pl.jakubtworek.restaurant.employee.query.SimpleEmployeeQueryDto;
+import pl.jakubtworek.restaurant.order.OrderFacade;
+import pl.jakubtworek.restaurant.order.query.SimpleOrderQueryDto;
 
 import java.time.ZonedDateTime;
 
@@ -16,8 +17,9 @@ class WaiterDelivery extends Delivery implements Observer {
     private final WaiterQueue waiterQueue;
     private final OrdersMadeOnsiteQueue ordersMadeOnsiteQueue;
 
-    WaiterDelivery(OrderService orderService, WaiterQueue waiterQueue, OrdersMadeOnsiteQueue ordersMadeOnsiteQueue) {
-        super(orderService);
+    WaiterDelivery(final OrderFacade orderFacade, final EmployeeFacade employeeFacade, final WaiterQueue waiterQueue,
+                   final OrdersMadeOnsiteQueue ordersMadeOnsiteQueue) {
+        super(orderFacade, employeeFacade);
         this.waiterQueue = waiterQueue;
         this.ordersMadeOnsiteQueue = ordersMadeOnsiteQueue;
         waiterQueue.registerObserver(this);
@@ -33,9 +35,10 @@ class WaiterDelivery extends Delivery implements Observer {
 
     @Override
     void startDelivering() {
-        EmployeeDto employee = waiterQueue.get();
-        OrderDto order = ordersMadeOnsiteQueue.get();
-        order.add(employee);
+        SimpleEmployeeQueryDto employee = waiterQueue.get();
+        SimpleOrderQueryDto order = ordersMadeOnsiteQueue.get();
+        orderFacade.addEmployeeToOrder(order, employee);
+        employeeFacade.addOrderToEmployee(employee, order);
         startDeliveringOrder(employee, order, 2);
     }
 
@@ -45,12 +48,12 @@ class WaiterDelivery extends Delivery implements Observer {
     }
 
     @Override
-    void delivering(EmployeeDto employee, OrderDto order, int time) {
+    void delivering(SimpleEmployeeQueryDto employee, SimpleOrderQueryDto order, int time) {
         int timeToDelivery = time * 1000;
         try {
             Thread.sleep(timeToDelivery);
             order.setHourAway(ZonedDateTime.now());
-            orderService.update(order);
+            orderFacade.update(order);
             waiterQueue.add(employee);
         } catch (InterruptedException e) {
             e.printStackTrace();

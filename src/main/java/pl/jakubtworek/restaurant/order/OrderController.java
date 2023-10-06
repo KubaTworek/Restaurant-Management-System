@@ -16,15 +16,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/orders")
 class OrderController {
-    private final OrderService orderService;
+    private final OrderFacade orderFacade;
 
-    OrderController(final OrderService orderService) {
-        this.orderService = orderService;
+    OrderController(final OrderFacade orderFacade) {
+        this.orderFacade = orderFacade;
     }
 
     @PostMapping
     ResponseEntity<OrderDto> create(@RequestBody OrderRequest orderRequest, @RequestHeader("Authorization") String jwt) {
-        OrderDto result = orderService.save(orderRequest, jwt);
+        OrderDto result = orderFacade.save(orderRequest, jwt);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
@@ -35,17 +35,17 @@ class OrderController {
                                     @RequestParam(required = false) Long employeeId,
                                     @RequestParam(required = false) String username
     ) {
-        return orderService.findByParams(date, typeOfOrder, isReady, employeeId, username);
+        return orderFacade.findByParams(date, typeOfOrder, isReady, employeeId, username);
     }
 
     @GetMapping
     List<OrderDto> get(@RequestHeader("Authorization") String jwt) {
-        return orderService.findAll(jwt);
+        return orderFacade.findAll(jwt);
     }
 
     @GetMapping("/{id}")
     ResponseEntity<OrderDto> getById(@PathVariable Long id) {
-        return orderService.findById(id)
+        return orderFacade.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }

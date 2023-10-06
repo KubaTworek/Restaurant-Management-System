@@ -1,6 +1,7 @@
 package pl.jakubtworek.restaurant.employee;
 
-import pl.jakubtworek.restaurant.order.Order;
+import pl.jakubtworek.restaurant.employee.query.Job;
+import pl.jakubtworek.restaurant.order.query.SimpleOrderQueryDto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,11 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "employee")
-public class Employee {
+class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,20 +30,12 @@ public class Employee {
     private Job job;
 
     @ManyToMany(mappedBy = "employees")
-    private List<Order> orders;
+    private List<SimpleOrderQueryDto> orders;
 
     public Employee() {
     }
 
-    public Employee(final EmployeeDto source) {
-        this.id = source.getId();
-        this.firstName = source.getFirstName();
-        this.lastName = source.getLastName();
-        this.job = source.getJob();
-        this.orders = source.getOrders().stream().map(Order::new).collect(Collectors.toList());
-    }
-
-    public Long getId() {
+    Long getId() {
         return id;
     }
 
@@ -71,7 +63,9 @@ public class Employee {
         this.job = job;
     }
 
-    public List<Order> getOrders() {
-        return orders;
+    void add(SimpleOrderQueryDto order) {
+        if (order != null) {
+            orders.add(order);
+        }
     }
 }

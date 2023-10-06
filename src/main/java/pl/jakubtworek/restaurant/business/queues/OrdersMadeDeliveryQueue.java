@@ -1,7 +1,7 @@
 package pl.jakubtworek.restaurant.business.queues;
 
 import org.springframework.stereotype.Component;
-import pl.jakubtworek.restaurant.order.OrderDto;
+import pl.jakubtworek.restaurant.order.query.SimpleOrderQueryDto;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -9,19 +9,19 @@ import java.util.Queue;
 
 @Component
 public class OrdersMadeDeliveryQueue implements Subject {
-    private final Queue<OrderDto> ordersMadeDelivery = new LinkedList<>();
+    private final Queue<SimpleOrderQueryDto> ordersMadeDelivery = new LinkedList<>();
     private final ArrayList<Observer> observerList;
 
     OrdersMadeDeliveryQueue() {
         this.observerList = new ArrayList<>();
     }
 
-    void add(OrderDto order) {
+    void add(SimpleOrderQueryDto order) {
         ordersMadeDelivery.add(order);
         notifyObservers();
     }
 
-    public OrderDto get() {
+    public SimpleOrderQueryDto get() {
         return ordersMadeDelivery.poll();
     }
 

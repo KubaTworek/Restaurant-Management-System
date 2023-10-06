@@ -11,11 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "menu")
-public class Menu {
+class Menu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,12 +28,6 @@ public class Menu {
     private List<MenuItem> menuItems;
 
     public Menu() {
-    }
-
-    public Menu(final MenuDto source) {
-        this.id = source.getId();
-        this.name = source.getName();
-        this.menuItems = source.getMenuItems().stream().map(MenuItem::new).collect(Collectors.toList());
     }
 
     Long getId() {

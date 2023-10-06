@@ -1,6 +1,6 @@
 package pl.jakubtworek.restaurant.menu;
 
-import pl.jakubtworek.restaurant.order.Order;
+import pl.jakubtworek.restaurant.order.query.SimpleOrderQueryDto;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,11 +15,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "menu_item")
-public class MenuItem {
+class MenuItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,17 +40,9 @@ public class MenuItem {
             joinColumns = @JoinColumn(name = "menu_item_id"),
             inverseJoinColumns = @JoinColumn(name = "order_id")
     )
-    private List<Order> orders;
+    private List<SimpleOrderQueryDto> orders;
 
     public MenuItem() {
-    }
-
-    public MenuItem(final MenuItemDto source) {
-        this.id = source.getId();
-        this.name = source.getName();
-        this.price = source.getPrice();
-        this.menu = new Menu(source.getMenu());
-        this.orders = source.getOrders().stream().map(Order::new).collect(Collectors.toList());
     }
 
     Long getId() {
@@ -74,7 +65,7 @@ public class MenuItem {
         this.menu = menu;
     }
 
-    List<Order> getOrders() {
+    List<SimpleOrderQueryDto> getOrders() {
         return orders;
     }
 }

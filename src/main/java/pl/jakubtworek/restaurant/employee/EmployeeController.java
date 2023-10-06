@@ -17,39 +17,39 @@ import java.util.List;
 @RestController
 @RequestMapping("/employees")
 class EmployeeController {
-    private final EmployeeService employeeService;
+    private final EmployeeFacade employeeFacade;
 
-    EmployeeController(final EmployeeService employeeService) {
-        this.employeeService = employeeService;
+    EmployeeController(final EmployeeFacade employeeFacade) {
+        this.employeeFacade = employeeFacade;
     }
 
     @PostMapping
     ResponseEntity<EmployeeDto> create(@RequestBody EmployeeRequest employeeRequest) {
-        EmployeeDto result = employeeService.save(employeeRequest);
+        EmployeeDto result = employeeFacade.save(employeeRequest);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
     @DeleteMapping("/{id}")
     ResponseEntity<EmployeeDto> delete(@PathVariable Long id) {
-        employeeService.deleteById(id);
+        employeeFacade.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
     List<EmployeeDto> get() {
-        return employeeService.findAll();
+        return employeeFacade.findAll();
     }
 
     @GetMapping("/{id}")
     ResponseEntity<EmployeeDto> getById(@PathVariable Long id) {
-        return employeeService.findById(id)
+        return employeeFacade.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/job")
     List<EmployeeDto> getByJob(@RequestParam String job) {
-        return employeeService.findByJob(job);
+        return employeeFacade.findByJob(job);
     }
 
     @ExceptionHandler(IllegalStateException.class)

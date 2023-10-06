@@ -1,6 +1,6 @@
 package pl.jakubtworek.restaurant.auth;
 
-import pl.jakubtworek.restaurant.order.Order;
+import pl.jakubtworek.restaurant.order.query.SimpleOrderQueryDto;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,11 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
-public class User {
+class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,16 +27,9 @@ public class User {
     @Column(name = "password")
     private String password;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = {CascadeType.REMOVE, CascadeType.DETACH})
-    private List<Order> orders;
+    private List<SimpleOrderQueryDto> orders;
 
     public User() {
-    }
-
-    public User(final UserDto source) {
-        this.id = source.getId();
-        this.username = source.getUsername();
-        this.password = source.getPassword();
-        this.orders = source.getOrders().stream().map(Order::new).collect(Collectors.toList());
     }
 
     Long getId() {
@@ -60,7 +52,7 @@ public class User {
         this.password = password;
     }
 
-    List<Order> getOrders() {
+    List<SimpleOrderQueryDto> getOrders() {
         return orders;
     }
 }

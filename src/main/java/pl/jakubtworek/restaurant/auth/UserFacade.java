@@ -2,22 +2,29 @@ package pl.jakubtworek.restaurant.auth;
 
 import io.jsonwebtoken.Claims;
 import org.springframework.stereotype.Service;
+import pl.jakubtworek.restaurant.auth.query.SimpleUserQueryDto;
 
 import java.time.Instant;
 
 @Service
-public class UserService {
+public class UserFacade {
     private final UserRepository userRepository;
 
-    UserService(final UserRepository userRepository) {
+    UserFacade(final UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public User getUser(String jwt) {
+    public SimpleUserQueryDto getUser(String jwt) {
         Claims claims = JwtService.parseJwtClaims(jwt);
         String username = claims.get("username", String.class);
-        return userRepository.findByUsername(username).
+        User user = userRepository.findByUsername(username).
                 orElseThrow(() -> new IllegalStateException("No user registered with this username!"));
+
+        return new SimpleUserQueryDto(
+                user.getId(),
+                user.getUsername(),
+                user.getPassword()
+        );
     }
 
     UserDto register(RegisterRequest registerRequest) {

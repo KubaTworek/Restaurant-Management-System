@@ -7,10 +7,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-class MenuService {
+class MenuFacade {
     private final MenuRepository menuRepository;
 
-    MenuService(final MenuRepository menuRepository) {
+    MenuFacade(final MenuRepository menuRepository) {
         this.menuRepository = menuRepository;
     }
 
@@ -18,11 +18,6 @@ class MenuService {
         Menu menu = new Menu();
         menu.setName(toSave.getName());
         return new MenuDto(menuRepository.save(menu));
-    }
-
-    MenuDto update(Long menuId, MenuRequest menuRequest) {
-        // todo:
-        return null;
     }
 
     void deleteById(Long id) {

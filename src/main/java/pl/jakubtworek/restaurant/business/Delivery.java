@@ -1,23 +1,26 @@
 package pl.jakubtworek.restaurant.business;
 
-import pl.jakubtworek.restaurant.employee.EmployeeDto;
-import pl.jakubtworek.restaurant.order.OrderDto;
-import pl.jakubtworek.restaurant.order.OrderService;
+import pl.jakubtworek.restaurant.employee.EmployeeFacade;
+import pl.jakubtworek.restaurant.employee.query.SimpleEmployeeQueryDto;
+import pl.jakubtworek.restaurant.order.OrderFacade;
+import pl.jakubtworek.restaurant.order.query.SimpleOrderQueryDto;
 
 abstract class Delivery {
-    final OrderService orderService;
+    final OrderFacade orderFacade;
+    final EmployeeFacade employeeFacade;
 
-    Delivery(OrderService orderService) {
-        this.orderService = orderService;
+    Delivery(final OrderFacade orderFacade, final EmployeeFacade employeeFacade) {
+        this.orderFacade = orderFacade;
+        this.employeeFacade = employeeFacade;
     }
 
     abstract void startDelivering();
 
     abstract boolean isExistsEmployeeAndOrder();
 
-    abstract void delivering(EmployeeDto employee, OrderDto order, int time);
+    abstract void delivering(SimpleEmployeeQueryDto employee, SimpleOrderQueryDto order, int time);
 
-    void startDeliveringOrder(EmployeeDto employee, OrderDto order, int time) {
+    void startDeliveringOrder(SimpleEmployeeQueryDto employee, SimpleOrderQueryDto order, int time) {
         Runnable r = () -> delivering(employee, order, time);
         new Thread(r).start();
     }
