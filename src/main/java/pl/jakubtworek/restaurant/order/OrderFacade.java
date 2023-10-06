@@ -73,12 +73,11 @@ public class OrderFacade {
         order.setUser(user);
 
         OrderDto created = orderRepository.saveAndReturnDto(order);
-        SimpleOrderQueryDto orderQueryDto = SimpleOrderQueryDto.builder()
-                .id(created.getId())
-                .typeOfOrder(created.getTypeOfOrder())
-                .hourOrder(created.getHourOrder())
-                .price(created.getPrice())
-                .build();
+        SimpleOrderQueryDto orderQueryDto = new SimpleOrderQueryDto();
+        orderQueryDto.setId(created.getId());
+        orderQueryDto.setTypeOfOrder(created.getTypeOfOrder());
+        orderQueryDto.setHourOrder(created.getHourOrder());
+        orderQueryDto.setPrice(created.getPrice());
         ordersQueueFacade.addToQueue(orderQueryDto);
         return created;
     }

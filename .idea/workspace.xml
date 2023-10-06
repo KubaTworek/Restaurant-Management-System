@@ -4,28 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6804a3ab-3eba-4f33-a440-5fed16101a6e" name="Changes" comment="create a facade for every feature package">
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/menu/MenuItemQueryRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/menu/MenuQueryRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/employee/EmployeeFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/employee/EmployeeFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/employee/EmployeeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/employee/EmployeeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/employee/SimpleEmployeeQueryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/employee/EmployeeQueryRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/menu/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/menu/Menu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/menu/MenuDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/menu/MenuDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/menu/MenuFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/menu/MenuFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/menu/MenuItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/menu/MenuItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/menu/MenuItemDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/menu/MenuItemDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/menu/MenuItemFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/menu/MenuItemFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/menu/MenuItemRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/menu/MenuItemRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/menu/MenuRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/menu/MenuRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/order/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/order/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/order/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/order/OrderController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/order/OrderDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/order/OrderDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/order/OrderFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/order/OrderFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/order/OrderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/order/OrderRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/order/OrderRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/order/OrderRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/order/SimpleOrderQueryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/order/OrderQueryRepository.java" afterDir="false" />
+    <list default="true" id="6804a3ab-3eba-4f33-a440-5fed16101a6e" name="Changes" comment="provide CQRS">
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/employee/query/SimpleEmployeeQueryDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/employee/query/SimpleEmployeeQueryDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/order/query/SimpleOrderQueryDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/jakubtworek/restaurant/order/query/SimpleOrderQueryDto.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -161,8 +141,8 @@
       <recent name="pl.jakubtworek.RestaurantManagementSystem.model.business" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="pl.jakubtworek.restaurant.employee.query" />
       <recent name="pl.jakubtworek.restaurant.auth" />
+      <recent name="pl.jakubtworek.restaurant.employee.query" />
       <recent name="pl.jakubtworek.RestaurantManagementSystem.controller.user" />
       <recent name="pl.jakubtworek.RestaurantManagementSystem.model.entity" />
       <recent name="pl.jakubtworek.RestaurantManagementSystem.unitTests.order" />
@@ -297,7 +277,7 @@
       <workItem from="1674423337311" duration="370000" />
       <workItem from="1696514717539" duration="491000" />
       <workItem from="1696515222322" duration="375000" />
-      <workItem from="1696538283252" duration="31612000" />
+      <workItem from="1696538283252" duration="32716000" />
     </task>
     <task id="LOCAL-00001" summary="package organized by feature">
       <created>1696611505523</created>
@@ -320,7 +300,14 @@
       <option name="project" value="LOCAL" />
       <updated>1696620511883</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="provide CQRS">
+      <created>1696626240203</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1696626240203</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -342,7 +329,8 @@
     <MESSAGE value="package organized by feature" />
     <MESSAGE value="fix" />
     <MESSAGE value="create a facade for every feature package" />
-    <option name="LAST_COMMIT_MESSAGE" value="create a facade for every feature package" />
+    <MESSAGE value="provide CQRS" />
+    <option name="LAST_COMMIT_MESSAGE" value="provide CQRS" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

@@ -1,7 +1,5 @@
 package pl.jakubtworek.restaurant.order.query;
 
-import lombok.Builder;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.ZonedDateTime;
 
-@Builder
 @Entity
 @Table(name = "orders")
 public class SimpleOrderQueryDto {
@@ -37,12 +34,24 @@ public class SimpleOrderQueryDto {
         return id;
     }
 
+    public void setId(final Long id) {
+        this.id = id;
+    }
+
     public int getPrice() {
         return price;
     }
 
+    public void setPrice(final int price) {
+        this.price = price;
+    }
+
     public ZonedDateTime getHourOrder() {
         return hourOrder;
+    }
+
+    public void setHourOrder(final ZonedDateTime hourOrder) {
+        this.hourOrder = hourOrder;
     }
 
     public ZonedDateTime getHourAway() {
@@ -55,5 +64,9 @@ public class SimpleOrderQueryDto {
 
     public TypeOfOrder getTypeOfOrder() {
         return typeOfOrder;
+    }
+
+    public void setTypeOfOrder(final TypeOfOrder typeOfOrder) {
+        this.typeOfOrder = typeOfOrder;
     }
 }

@@ -1,7 +1,5 @@
 package pl.jakubtworek.restaurant.employee.query;
 
-import lombok.Builder;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,10 +7,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Builder
 @Entity
 @Table(name = "employee")
 public class SimpleEmployeeQueryDto {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,18 +27,27 @@ public class SimpleEmployeeQueryDto {
     public SimpleEmployeeQueryDto() {
     }
 
-    public SimpleEmployeeQueryDto(final Long id, final String firstName, final String lastName, final Job job) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.job = job;
-    }
-
     public Long getId() {
         return id;
     }
 
+    public void setId(final Long id) {
+        this.id = id;
+    }
+
+    public void setFirstName(final String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(final String lastName) {
+        this.lastName = lastName;
+    }
+
     public Job getJob() {
         return job;
+    }
+
+    public void setJob(final Job job) {
+        this.job = job;
     }
 }

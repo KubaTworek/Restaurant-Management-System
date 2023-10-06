@@ -47,12 +47,11 @@ public class EmployeeFacade {
             throw new IllegalStateException("Job is not exist");
         }
         EmployeeDto created = employeeRepository.saveAndReturnDto(employee);
-        SimpleEmployeeQueryDto employeeQueryDto = SimpleEmployeeQueryDto.builder()
-                .id(created.getId())
-                .firstName(created.getFirstName())
-                .lastName(created.getLastName())
-                .job(created.getJob())
-                .build();
+        SimpleEmployeeQueryDto employeeQueryDto = new SimpleEmployeeQueryDto();
+        employeeQueryDto.setId(created.getId());
+        employeeQueryDto.setFirstName(created.getFirstName());
+        employeeQueryDto.setLastName(created.getLastName());
+        employeeQueryDto.setJob(created.getJob());
         employeeQueueFacade.addEmployeeToProperQueue(employeeQueryDto);
 
         return created;
