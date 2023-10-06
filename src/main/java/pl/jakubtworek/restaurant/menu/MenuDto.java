@@ -1,7 +1,6 @@
 package pl.jakubtworek.restaurant.menu;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 class MenuDto {
     private Long id;
@@ -11,21 +10,7 @@ class MenuDto {
     public MenuDto() {
     }
 
-    MenuDto(final Menu source) {
-        this.id = source.getId();
-        this.name = source.getName();
-        this.menuItems = source.getMenuItems().stream().map(MenuItemDto::new).collect(Collectors.toList());
-    }
-
     Long getId() {
         return id;
-    }
-
-    String getName() {
-        return name;
-    }
-
-    List<MenuItemDto> getMenuItems() {
-        return menuItems;
     }
 }

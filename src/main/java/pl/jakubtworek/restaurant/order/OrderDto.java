@@ -14,20 +14,8 @@ class OrderDto {
     OrderDto() {
     }
 
-    OrderDto(final Order source) {
-        this.id = source.getId();
-        this.price = source.getPrice();
-        this.hourOrder = source.getHourOrder();
-        this.hourAway = source.getHourAway();
-        this.typeOfOrder = source.getTypeOfOrder();
-    }
-
     Long getId() {
         return id;
-    }
-
-    TypeOfOrder getTypeOfOrder() {
-        return typeOfOrder;
     }
 
     int getPrice() {
@@ -38,11 +26,7 @@ class OrderDto {
         return hourOrder;
     }
 
-    ZonedDateTime getHourAway() {
-        return hourAway;
-    }
-
-    public void setHourAway(final ZonedDateTime hourAway) {
-        this.hourAway = hourAway;
+    TypeOfOrder getTypeOfOrder() {
+        return typeOfOrder;
     }
 }

@@ -4,31 +4,32 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 class MenuItemFacade {
     private final MenuItemRepository menuItemRepository;
-    private final MenuRepository menuRepository;
+    private final MenuItemQueryRepository menuItemQueryRepository;
+    private final MenuQueryRepository menuQueryRepository;
 
-    MenuItemFacade(final MenuItemRepository menuItemRepository, final MenuRepository menuRepository) {
+    MenuItemFacade(final MenuItemRepository menuItemRepository, final MenuItemQueryRepository menuItemQueryRepository,
+                   final MenuQueryRepository menuQueryRepository) {
         this.menuItemRepository = menuItemRepository;
-        this.menuRepository = menuRepository;
+        this.menuItemQueryRepository = menuItemQueryRepository;
+        this.menuQueryRepository = menuQueryRepository;
     }
 
     Optional<MenuItemDto> findById(Long theId) {
-        return menuItemRepository.findById(theId)
-                .map(MenuItemDto::new);
+        return menuItemQueryRepository.findDtoById(theId);
     }
 
     MenuItemDto save(MenuItemRequest toSave) {
-        Menu menu = menuRepository.findByName(toSave.getMenu())
+        Menu menu = menuQueryRepository.findByName(toSave.getMenu())
                 .orElseThrow(() -> new IllegalStateException("There are no menu in restaurant with that name: " + toSave.getMenu()));
 
         MenuItem menuItem = new MenuItem();
         menuItem.setMenu(menu);
 
-        return new MenuItemDto(menuItemRepository.save(menuItem));
+        return menuItemRepository.saveAndReturnDto(menuItem);
     }
 
     MenuItemDto update(Long menuItemId, MenuItemRequest newMenuItem) {
@@ -41,9 +42,6 @@ class MenuItemFacade {
     }
 
     List<MenuItemDto> findByMenu(String menuName) {
-        return menuItemRepository.findByMenuName(menuName)
-                .stream()
-                .map(MenuItemDto::new)
-                .collect(Collectors.toList());
+        return menuItemQueryRepository.findDtoByMenuName(menuName);
     }
 }

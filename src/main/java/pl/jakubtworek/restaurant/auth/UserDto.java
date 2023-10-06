@@ -8,21 +8,7 @@ class UserDto {
     UserDto() {
     }
 
-    public UserDto(final User source) {
-        this.id = source.getId();
-        this.username = source.getUsername();
-        this.password = source.getPassword();
-    }
-
     Long getId() {
         return id;
-    }
-
-    String getUsername() {
-        return username;
-    }
-
-    String getPassword() {
-        return password;
     }
 }

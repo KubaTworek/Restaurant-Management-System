@@ -33,14 +33,6 @@ public class SimpleOrderQueryDto {
     public SimpleOrderQueryDto() {
     }
 
-    public SimpleOrderQueryDto(final Long id, final int price, final ZonedDateTime hourOrder, final ZonedDateTime hourAway, final TypeOfOrder typeOfOrder) {
-        this.id = id;
-        this.price = price;
-        this.hourOrder = hourOrder;
-        this.hourAway = hourAway;
-        this.typeOfOrder = typeOfOrder;
-    }
-
     public Long getId() {
         return id;
     }

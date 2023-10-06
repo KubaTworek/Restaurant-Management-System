@@ -12,22 +12,20 @@ import pl.jakubtworek.restaurant.order.query.TypeOfOrder;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class OrderFacade {
     private final UserFacade userFacade;
     private final EmployeeFacade employeeFacade;
     private final OrderRepository orderRepository;
-    private final SimpleOrderQueryRepository simpleOrderQueryRepository;
+    private final OrderQueryRepository orderQueryRepository;
     private final OrdersQueueFacade ordersQueueFacade;
 
-    OrderFacade(final UserFacade userFacade, final EmployeeFacade employeeFacade, final OrderRepository orderRepository, final SimpleOrderQueryRepository simpleOrderQueryRepository, final OrdersQueueFacade ordersQueueFacade) {
+    OrderFacade(final UserFacade userFacade, final EmployeeFacade employeeFacade, final OrderRepository orderRepository, final OrderQueryRepository orderQueryRepository, final OrdersQueueFacade ordersQueueFacade) {
         this.userFacade = userFacade;
         this.employeeFacade = employeeFacade;
         this.orderRepository = orderRepository;
-        this.simpleOrderQueryRepository = simpleOrderQueryRepository;
+        this.orderQueryRepository = orderQueryRepository;
         this.ordersQueueFacade = ordersQueueFacade;
     }
 
@@ -47,19 +45,19 @@ public class OrderFacade {
     }
 
     public void addEmployeeToOrder(SimpleOrderQueryDto order, SimpleEmployeeQueryDto employee) {
-        Order orderEntity = orderRepository.findById(order.getId())
+        Order orderEntity = orderQueryRepository.findById(order.getId())
                 .orElseThrow(() -> new IllegalStateException("Order with that id doesn't exist"));
         SimpleEmployeeQueryDto employeeEntity = employeeFacade.getById(employee.getId());
         orderEntity.add(employeeEntity);
     }
 
     public SimpleOrderQueryDto getById(Long id) {
-        return simpleOrderQueryRepository.findById(id)
+        return orderQueryRepository.findSimpleById(id)
                 .orElseThrow(() -> new IllegalStateException("Order with that id doesn't exist"));
     }
 
     public int getNumberOfMenuItems(SimpleOrderQueryDto order) {
-        return orderRepository.findById(order.getId())
+        return orderQueryRepository.findById(order.getId())
                 .map(o -> o.getMenuItems().size())
                 .orElseThrow(() -> new IllegalStateException("Order with that id doesn't exist"));
     }
@@ -74,7 +72,7 @@ public class OrderFacade {
         order.setTypeOfOrder(TypeOfOrder.valueOf(orderRequest.getTypeOfOrder()));
         order.setUser(user);
 
-        OrderDto created = new OrderDto(orderRepository.save(order));
+        OrderDto created = orderRepository.saveAndReturnDto(order);
         SimpleOrderQueryDto orderQueryDto = SimpleOrderQueryDto.builder()
                 .id(created.getId())
                 .typeOfOrder(created.getTypeOfOrder())
@@ -88,43 +86,15 @@ public class OrderFacade {
     List<OrderDto> findAll(String jwt) {
         SimpleUserQueryDto user = userFacade.getUser(jwt);
 
-        return orderRepository.findByUserUsername(user.getUsername())
-                .stream()
-                .map(OrderDto::new)
-                .collect(Collectors.toList());
+        return orderQueryRepository.findByUserUsername(user.getUsername());
     }
 
     Optional<OrderDto> findById(Long id) {
-        return orderRepository.findById(id)
-                .map(OrderDto::new);
+        return orderQueryRepository.findDtoById(id);
     }
 
-    List<OrderDto> findByParams(String date, String typeOfOrder, Boolean isReady, Long employeeId, String username) {
-        Stream<Order> orderStream = orderRepository.findAll().stream();
-
-        if (date != null) {
-            //orderStream = orderStream.filter(order -> date.equals(order.getDate()));todo
-        }
-
-        if (typeOfOrder != null) {
-            orderStream = orderStream.filter(order -> TypeOfOrder.valueOf(typeOfOrder).equals(order.getTypeOfOrder()));
-        }
-
-        if (isReady != null) {
-            //orderStream = orderStream.filter(order -> isReady == order.isReady());todo
-        }
-
-        if (employeeId != null) {
-            orderStream = orderStream.filter(order -> order.getEmployees().stream().anyMatch(employee -> employeeId.equals(employee.getId())));
-        }
-
-        if (username != null) {
-            orderStream = orderStream.filter(order -> username.equals(order.getUser().getUsername()));
-        }
-
-        return orderStream
-                .map(OrderDto::new)
-                .collect(Collectors.toList());
+    List<OrderDto> findByParams(ZonedDateTime fromDate, ZonedDateTime toDate, String typeOfOrder, Boolean isReady, Long employeeId, String username) {
+        return orderQueryRepository.findFilteredOrders(fromDate, toDate, typeOfOrder, isReady, employeeId, username);
     }
 
     private int calculatePrice(final List<String> menuItems) {

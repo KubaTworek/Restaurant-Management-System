@@ -17,16 +17,7 @@ public class SimpleUserQueryDto {
     @Column(name = "username")
     private String username;
 
-    @Column(name = "password")
-    private String password;
-
     public SimpleUserQueryDto() {
-    }
-
-    public SimpleUserQueryDto(final Long id, final String username, final String password) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
     }
 
     public String getUsername() {

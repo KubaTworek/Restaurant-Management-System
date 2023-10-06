@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @RestController
@@ -29,13 +30,14 @@ class OrderController {
     }
 
     @GetMapping
-    List<OrderDto> getOrderByParams(@RequestParam(required = false) String date,
+    List<OrderDto> getOrderByParams(@RequestParam(required = false) ZonedDateTime fromDate,
+                                    @RequestParam(required = false) ZonedDateTime toDate,
                                     @RequestParam(required = false) String typeOfOrder,
                                     @RequestParam(required = false) Boolean isReady,
                                     @RequestParam(required = false) Long employeeId,
                                     @RequestParam(required = false) String username
     ) {
-        return orderFacade.findByParams(date, typeOfOrder, isReady, employeeId, username);
+        return orderFacade.findByParams(fromDate, toDate, typeOfOrder, isReady, employeeId, username);
     }
 
     @GetMapping

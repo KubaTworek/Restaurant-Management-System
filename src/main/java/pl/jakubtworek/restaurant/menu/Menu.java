@@ -30,19 +30,7 @@ class Menu {
     public Menu() {
     }
 
-    Long getId() {
-        return id;
-    }
-
-    String getName() {
-        return name;
-    }
-
     void setName(final String name) {
         this.name = name;
-    }
-
-    List<MenuItem> getMenuItems() {
-        return menuItems;
     }
 }

@@ -4,20 +4,21 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 class MenuFacade {
     private final MenuRepository menuRepository;
+    private final MenuQueryRepository menuQueryRepository;
 
-    MenuFacade(final MenuRepository menuRepository) {
+    MenuFacade(final MenuRepository menuRepository, final MenuQueryRepository menuQueryRepository) {
         this.menuRepository = menuRepository;
+        this.menuQueryRepository = menuQueryRepository;
     }
 
     MenuDto save(MenuRequest toSave) {
         Menu menu = new Menu();
         menu.setName(toSave.getName());
-        return new MenuDto(menuRepository.save(menu));
+        return menuRepository.saveAndReturnDto(menu);
     }
 
     void deleteById(Long id) {
@@ -25,14 +26,10 @@ class MenuFacade {
     }
 
     List<MenuDto> findAll() {
-        return menuRepository.findAll()
-                .stream()
-                .map(MenuDto::new)
-                .collect(Collectors.toList());
+        return menuQueryRepository.findAllDtoBy();
     }
 
     Optional<MenuDto> findById(Long id) {
-        return menuRepository.findById(id)
-                .map(MenuDto::new);
+        return menuQueryRepository.findDtoById(id);
     }
 }

@@ -9,31 +9,30 @@ import pl.jakubtworek.restaurant.order.query.SimpleOrderQueryDto;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class EmployeeFacade {
     private final OrderFacade orderFacade;
     private final EmployeeRepository employeeRepository;
-    private final SimpleEmployeeQueryRepository simpleEmployeeQueryRepository;
+    private final EmployeeQueryRepository employeeQueryRepository;
     private final EmployeeQueueFacade employeeQueueFacade;
 
-    EmployeeFacade(final OrderFacade orderFacade, final EmployeeRepository employeeRepository, final SimpleEmployeeQueryRepository simpleEmployeeQueryRepository, final EmployeeQueueFacade employeeQueueFacade) {
+    EmployeeFacade(final OrderFacade orderFacade, final EmployeeRepository employeeRepository, final EmployeeQueryRepository employeeQueryRepository, final EmployeeQueueFacade employeeQueueFacade) {
         this.orderFacade = orderFacade;
         this.employeeRepository = employeeRepository;
-        this.simpleEmployeeQueryRepository = simpleEmployeeQueryRepository;
+        this.employeeQueryRepository = employeeQueryRepository;
         this.employeeQueueFacade = employeeQueueFacade;
     }
 
     public void addOrderToEmployee(final SimpleEmployeeQueryDto employee, final SimpleOrderQueryDto order) {
-        Employee employeeEntity = employeeRepository.findById(employee.getId())
+        Employee employeeEntity = employeeQueryRepository.findById(employee.getId())
                 .orElseThrow(() -> new IllegalStateException("Employee with that id doesn't exist"));
         SimpleOrderQueryDto orderEntity = orderFacade.getById(order.getId());
         employeeEntity.add(orderEntity);
     }
 
     public SimpleEmployeeQueryDto getById(Long id) {
-        return simpleEmployeeQueryRepository.findById(id)
+        return employeeQueryRepository.findQueryById(id)
                 .orElseThrow(() -> new IllegalStateException("Employee with that id doesn't exist"));
     }
 
@@ -47,7 +46,7 @@ public class EmployeeFacade {
         } else {
             throw new IllegalStateException("Job is not exist");
         }
-        EmployeeDto created = new EmployeeDto(employeeRepository.save(employee));
+        EmployeeDto created = employeeRepository.saveAndReturnDto(employee);
         SimpleEmployeeQueryDto employeeQueryDto = SimpleEmployeeQueryDto.builder()
                 .id(created.getId())
                 .firstName(created.getFirstName())
@@ -64,22 +63,15 @@ public class EmployeeFacade {
     }
 
     List<EmployeeDto> findAll() {
-        return employeeRepository.findAll()
-                .stream()
-                .map(EmployeeDto::new)
-                .collect(Collectors.toList());
+        return employeeQueryRepository.findAllDtoBy();
     }
 
     Optional<EmployeeDto> findById(Long id) {
-        return employeeRepository.findById(id)
-                .map(EmployeeDto::new);
+        return employeeQueryRepository.findDtoById(id);
     }
 
     List<EmployeeDto> findByJob(String jobName) {
-        return employeeRepository.findByJobName(jobName)
-                .stream()
-                .map(EmployeeDto::new)
-                .collect(Collectors.toList());
+        return employeeQueryRepository.findByJobName(jobName);
     }
 
     private boolean isJobExist(String jobName) {

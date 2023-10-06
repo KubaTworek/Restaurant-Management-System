@@ -64,56 +64,28 @@ class Order {
     public Order() {
     }
 
-    Long getId() {
-        return id;
-    }
-
     void setId(final Long id) {
         this.id = id;
-    }
-
-    int getPrice() {
-        return price;
     }
 
     void setPrice(final int price) {
         this.price = price;
     }
 
-    ZonedDateTime getHourOrder() {
-        return hourOrder;
-    }
-
     void setHourOrder(final ZonedDateTime hourOrder) {
         this.hourOrder = hourOrder;
-    }
-
-    ZonedDateTime getHourAway() {
-        return hourAway;
     }
 
     void setHourAway(final ZonedDateTime hourAway) {
         this.hourAway = hourAway;
     }
 
-    TypeOfOrder getTypeOfOrder() {
-        return typeOfOrder;
-    }
-
     void setTypeOfOrder(final TypeOfOrder typeOfOrder) {
         this.typeOfOrder = typeOfOrder;
     }
 
-    List<SimpleEmployeeQueryDto> getEmployees() {
-        return employees;
-    }
-
     List<SimpleMenuItemQueryDto> getMenuItems() {
         return menuItems;
-    }
-
-    SimpleUserQueryDto getUser() {
-        return user;
     }
 
     void setUser(final SimpleUserQueryDto user) {

@@ -9,22 +9,19 @@ import java.time.Instant;
 @Service
 public class UserFacade {
     private final UserRepository userRepository;
+    private final UserQueryRepository userQueryRepository;
 
-    UserFacade(final UserRepository userRepository) {
+    UserFacade(final UserRepository userRepository, final UserQueryRepository userQueryRepository) {
         this.userRepository = userRepository;
+        this.userQueryRepository = userQueryRepository;
     }
 
     public SimpleUserQueryDto getUser(String jwt) {
         Claims claims = JwtService.parseJwtClaims(jwt);
         String username = claims.get("username", String.class);
-        User user = userRepository.findByUsername(username).
-                orElseThrow(() -> new IllegalStateException("No user registered with this username!"));
 
-        return new SimpleUserQueryDto(
-                user.getId(),
-                user.getUsername(),
-                user.getPassword()
-        );
+        return userQueryRepository.findDtoByUsername(username).
+                orElseThrow(() -> new IllegalStateException("No user registered with this username!"));
     }
 
     UserDto register(RegisterRequest registerRequest) {
@@ -34,12 +31,12 @@ public class UserFacade {
 
         validateUserWithThatUsernameDoesNotExist(registerRequest.getUsername());
 
-        return new UserDto(userRepository.save(user));
+        return userRepository.saveAndReturnDto(user);
     }
 
     LoginResponse login(LoginRequest loginRequest) {
 
-        User user = userRepository.findByUsername(loginRequest.getUsername())
+        User user = userQueryRepository.findByUsername(loginRequest.getUsername())
                 .orElseThrow(() -> new IllegalStateException("No user registered with this username!"));
         validPasswords(loginRequest.getPassword(), user.getPassword());
 
@@ -54,7 +51,7 @@ public class UserFacade {
     }
 
     private void validateUserWithThatUsernameDoesNotExist(String username) {
-        if (userRepository.existsByUsername(username)) {
+        if (userQueryRepository.existsByUsername(username)) {
             throw new IllegalStateException("User with this username already exists!");
         }
     }

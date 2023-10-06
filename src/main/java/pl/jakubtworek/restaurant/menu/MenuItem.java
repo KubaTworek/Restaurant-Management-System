@@ -45,27 +45,7 @@ class MenuItem {
     public MenuItem() {
     }
 
-    Long getId() {
-        return id;
-    }
-
-    String getName() {
-        return name;
-    }
-
-    int getPrice() {
-        return price;
-    }
-
-    Menu getMenu() {
-        return menu;
-    }
-
     void setMenu(final Menu menu) {
         this.menu = menu;
-    }
-
-    List<SimpleOrderQueryDto> getOrders() {
-        return orders;
     }
 }

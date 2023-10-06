@@ -32,11 +32,7 @@ class User {
     public User() {
     }
 
-    Long getId() {
-        return id;
-    }
-
-    public String getUsername() {
+    String getUsername() {
         return username;
     }
 
@@ -50,9 +46,5 @@ class User {
 
     void setPassword(final String password) {
         this.password = password;
-    }
-
-    List<SimpleOrderQueryDto> getOrders() {
-        return orders;
     }
 }
