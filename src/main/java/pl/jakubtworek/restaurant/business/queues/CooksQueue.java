@@ -16,7 +16,7 @@ public class CooksQueue implements Subject {
         this.observerList = new ArrayList<>();
     }
 
-    void add(EmployeeDto cook) {
+    public void add(EmployeeDto cook) {
         cooks.add(cook);
         notifyObservers();
     }

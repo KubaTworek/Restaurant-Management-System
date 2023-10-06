@@ -16,7 +16,7 @@ public class WaiterQueue implements Subject {
         this.observerList = new ArrayList<>();
     }
 
-    void add(EmployeeDto waiter) {
+    public void add(EmployeeDto waiter) {
         waiters.add(waiter);
         notifyObservers();
     }

@@ -16,7 +16,7 @@ public class DeliveryQueue implements Subject {
         this.observerList = new ArrayList<>();
     }
 
-    void add(EmployeeDto delivery) {
+    public void add(EmployeeDto delivery) {
         deliveries.add(delivery);
         notifyObservers();
     }

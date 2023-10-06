@@ -54,7 +54,9 @@ public class OrderService {
     }
 
     List<OrderDto> findAll(String jwt) {
-        return orderRepository.findByUserUsername(jwt)
+        String username = userService.getUser(jwt).getUsername();
+
+        return orderRepository.findByUserUsername(username)
                 .stream()
                 .map(OrderDto::new)
                 .collect(Collectors.toList());
