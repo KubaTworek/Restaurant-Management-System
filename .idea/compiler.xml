@@ -7,18 +7,24 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Restaurant-Management-System" />
+        <module name="app" />
+        <module name="monolith" />
+        <module name="adapters" />
+        <module name="domain" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="PasswordManager" target="16" />
-      <module name="Restaurant-Management-System" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="PasswordManager" options="-parameters" />
-      <module name="Restaurant-Management-System" options="-parameters" />
+      <module name="Restaurant-Management-System" options="" />
+      <module name="adapters" options="-parameters" />
+      <module name="app" options="-parameters" />
+      <module name="domain" options="-parameters" />
+      <module name="monolith" options="-parameters" />
     </option>
   </component>
 </project>
