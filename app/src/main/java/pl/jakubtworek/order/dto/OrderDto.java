@@ -9,6 +9,7 @@ public class OrderDto {
     private ZonedDateTime hourOrder;
     private ZonedDateTime hourAway;
     private TypeOfOrder typeOfOrder;
+
     OrderDto() {
     }
 

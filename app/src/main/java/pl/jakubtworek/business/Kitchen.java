@@ -6,9 +6,9 @@ import pl.jakubtworek.business.queues.Observer;
 import pl.jakubtworek.business.queues.OrdersQueue;
 import pl.jakubtworek.business.queues.OrdersQueueFacade;
 import pl.jakubtworek.employee.EmployeeFacade;
-import pl.jakubtworek.employee.dto.SimpleEmployeeQueryDto;
+import pl.jakubtworek.employee.dto.SimpleEmployee;
 import pl.jakubtworek.order.OrderFacade;
-import pl.jakubtworek.order.dto.SimpleOrderQueryDto;
+import pl.jakubtworek.order.dto.SimpleOrder;
 
 @Service
 class Kitchen implements Observer {
@@ -36,15 +36,15 @@ class Kitchen implements Observer {
     }
 
     private void startCooking() {
-        SimpleEmployeeQueryDto employee = cooksQueue.get();
-        SimpleOrderQueryDto order = ordersQueue.get();
+        SimpleEmployee employee = cooksQueue.get();
+        SimpleOrder order = ordersQueue.get();
         orderFacade.addEmployeeToOrder(order, employee);
         employeeFacade.addOrderToEmployee(employee, order);
         int numberOfMenuItems = orderFacade.getNumberOfMenuItems(order);
         startPreparingOrder(employee, order, numberOfMenuItems);
     }
 
-    private void startPreparingOrder(SimpleEmployeeQueryDto employee, SimpleOrderQueryDto order, int time) {
+    private void startPreparingOrder(SimpleEmployee employee, SimpleOrder order, int time) {
         Runnable r = () -> preparing(employee, order, time);
         new Thread(r).start();
     }
@@ -53,7 +53,7 @@ class Kitchen implements Observer {
         return ordersQueue.size() > 0 && cooksQueue.size() > 0;
     }
 
-    private void preparing(SimpleEmployeeQueryDto employee, SimpleOrderQueryDto order, int time) {
+    private void preparing(SimpleEmployee employee, SimpleOrder order, int time) {
         int timeToCook = time * 1000;
         try {
             Thread.sleep(timeToCook);

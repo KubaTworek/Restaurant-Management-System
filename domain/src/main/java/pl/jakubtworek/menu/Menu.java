@@ -1,37 +1,23 @@
 package pl.jakubtworek.menu;
 
-import com.sun.istack.NotNull;
+import pl.jakubtworek.menu.dto.SimpleMenuItem;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import java.util.List;
 
-@Entity
-@Table(name = "menu")
 class Menu {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "name")
-    @NotNull
     private String name;
-
-    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
-    private List<MenuItem> menuItems;
+    private List<SimpleMenuItem> menuItems;
 
     public Menu() {
     }
 
     Long getId() {
         return id;
+    }
+
+    void setId(final Long id) {
+        this.id = id;
     }
 
     String getName() {
@@ -42,7 +28,11 @@ class Menu {
         this.name = name;
     }
 
-    List<MenuItem> getMenuItems() {
+    List<SimpleMenuItem> getMenuItems() {
         return menuItems;
+    }
+
+    void setMenuItems(final List<SimpleMenuItem> menuItems) {
+        this.menuItems = menuItems;
     }
 }

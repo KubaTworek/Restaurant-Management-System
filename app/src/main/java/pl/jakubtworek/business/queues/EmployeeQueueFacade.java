@@ -2,7 +2,7 @@ package pl.jakubtworek.business.queues;
 
 import org.springframework.stereotype.Component;
 import pl.jakubtworek.employee.dto.Job;
-import pl.jakubtworek.employee.dto.SimpleEmployeeQueryDto;
+import pl.jakubtworek.employee.dto.SimpleEmployee;
 
 import java.util.Objects;
 
@@ -18,7 +18,7 @@ public class EmployeeQueueFacade {
         this.deliveryQueue = deliveryQueue;
     }
 
-    public void addEmployeeToProperQueue(SimpleEmployeeQueryDto employee) {
+    public void addEmployeeToProperQueue(SimpleEmployee employee) {
         if (Objects.equals(employee.getJob(), Job.COOK)) cooksQueue.add(employee);
         if (Objects.equals(employee.getJob(), Job.WAITER)) waiterQueue.add(employee);
         if (Objects.equals(employee.getJob(), Job.DELIVERY)) deliveryQueue.add(employee);

@@ -1,8 +1,8 @@
 package pl.jakubtworek.order;
 
-import pl.jakubtworek.auth.dto.SimpleUserQueryDto;
-import pl.jakubtworek.employee.dto.SimpleEmployeeQueryDto;
-import pl.jakubtworek.menu.dto.SimpleMenuItemQueryDto;
+import pl.jakubtworek.auth.dto.SimpleUser;
+import pl.jakubtworek.employee.dto.SimpleEmployee;
+import pl.jakubtworek.menu.dto.SimpleMenuItem;
 import pl.jakubtworek.order.dto.TypeOfOrder;
 
 import javax.persistence.CascadeType;
@@ -47,7 +47,7 @@ class Order {
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "menu_item_id")
     )
-    private List<SimpleMenuItemQueryDto> menuItems;
+    private List<SimpleMenuItem> menuItems;
 
     @ManyToMany(cascade = {CascadeType.DETACH})
     @JoinTable(
@@ -55,17 +55,21 @@ class Order {
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id")
     )
-    private List<SimpleEmployeeQueryDto> employees = new ArrayList<>();
+    private List<SimpleEmployee> employees = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private SimpleUserQueryDto user;
+    private SimpleUser user;
 
     public Order() {
     }
 
-    List<SimpleMenuItemQueryDto> getMenuItems() {
+    List<SimpleMenuItem> getMenuItems() {
         return menuItems;
+    }
+
+    void setMenuItems(final List<SimpleMenuItem> menuItems) {
+        this.menuItems = menuItems;
     }
 
     Long getId() {
@@ -108,19 +112,23 @@ class Order {
         this.typeOfOrder = typeOfOrder;
     }
 
-    List<SimpleEmployeeQueryDto> getEmployees() {
+    List<SimpleEmployee> getEmployees() {
         return employees;
     }
 
-    SimpleUserQueryDto getUser() {
+    void setEmployees(final List<SimpleEmployee> employees) {
+        this.employees = employees;
+    }
+
+    SimpleUser getUser() {
         return user;
     }
 
-    void setUser(final SimpleUserQueryDto user) {
+    void setUser(final SimpleUser user) {
         this.user = user;
     }
 
-    void add(SimpleEmployeeQueryDto employee) {
+    void add(SimpleEmployee employee) {
         if (employee != null) {
             employees.add(employee);
         }

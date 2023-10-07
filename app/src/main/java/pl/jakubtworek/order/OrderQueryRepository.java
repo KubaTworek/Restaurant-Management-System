@@ -1,19 +1,16 @@
 package pl.jakubtworek.order;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 import pl.jakubtworek.order.dto.OrderDto;
-import pl.jakubtworek.order.dto.SimpleOrderQueryDto;
+import pl.jakubtworek.order.dto.SimpleOrder;
 
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-public interface OrderQueryRepository extends JpaRepository<Order, Long> {
-    Optional<SimpleOrderQueryDto> findSimpleById(Long id);
+public interface OrderQueryRepository {
+    Optional<SimpleOrder> findSimpleById(Long id);
 
     Optional<OrderDto> findDtoById(Long id);
 

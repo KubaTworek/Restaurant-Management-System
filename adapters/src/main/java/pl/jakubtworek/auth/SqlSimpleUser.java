@@ -1,4 +1,6 @@
-package pl.jakubtworek.auth.dto;
+package pl.jakubtworek.auth;
+
+import pl.jakubtworek.auth.dto.SimpleUser;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
-public class SimpleUserQueryDto {
+public class SqlSimpleUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,10 +19,14 @@ public class SimpleUserQueryDto {
     @Column(name = "username")
     private String username;
 
-    public SimpleUserQueryDto() {
+    public static SqlSimpleUser fromUser(SimpleUser source) {
+        SqlSimpleUser result = new SqlSimpleUser();
+        result.id = source.getId();
+        result.username = source.getUsername();
+        return result;
     }
 
-    public String getUsername() {
-        return username;
+    public SimpleUser toUser() {
+        return new SimpleUser(id, username);
     }
 }

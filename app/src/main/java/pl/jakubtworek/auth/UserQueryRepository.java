@@ -1,17 +1,13 @@
 package pl.jakubtworek.auth;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-import pl.jakubtworek.auth.dto.SimpleUserQueryDto;
+import pl.jakubtworek.auth.dto.SimpleUser;
 
 import java.util.Optional;
-import java.util.UUID;
 
-@Repository
-public interface UserQueryRepository extends JpaRepository<User, UUID> {
+public interface UserQueryRepository {
     Optional<User> findByUsername(String username);
 
-    Optional<SimpleUserQueryDto> findDtoByUsername(String username);
+    Optional<SimpleUser> findDtoByUsername(String username);
 
     Boolean existsByUsername(String username);
 }

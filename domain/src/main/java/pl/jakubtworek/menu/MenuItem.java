@@ -1,46 +1,15 @@
 package pl.jakubtworek.menu;
 
-import pl.jakubtworek.order.dto.SimpleOrderQueryDto;
+import pl.jakubtworek.order.dto.SimpleOrder;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import java.util.List;
 
-@Entity
-@Table(name = "menu_item")
 class MenuItem {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "price")
     private int price;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH})
-    @JoinColumn(name = "menu_id")
     private Menu menu;
-
-    @ManyToMany
-    @JoinTable(
-            name = "Order_Menu_Item",
-            joinColumns = @JoinColumn(name = "menu_item_id"),
-            inverseJoinColumns = @JoinColumn(name = "order_id")
-    )
-    private List<SimpleOrderQueryDto> orders;
+    private List<SimpleOrder> orders;
 
     public MenuItem() {
     }
@@ -49,12 +18,24 @@ class MenuItem {
         return id;
     }
 
+    void setId(final Long id) {
+        this.id = id;
+    }
+
     String getName() {
         return name;
     }
 
+    void setName(final String name) {
+        this.name = name;
+    }
+
     int getPrice() {
         return price;
+    }
+
+    void setPrice(final int price) {
+        this.price = price;
     }
 
     Menu getMenu() {
@@ -65,7 +46,11 @@ class MenuItem {
         this.menu = menu;
     }
 
-    List<SimpleOrderQueryDto> getOrders() {
+    List<SimpleOrder> getOrders() {
         return orders;
+    }
+
+    void setOrders(final List<SimpleOrder> orders) {
+        this.orders = orders;
     }
 }

@@ -1,39 +1,24 @@
 package pl.jakubtworek.auth;
 
-import pl.jakubtworek.order.dto.SimpleOrderQueryDto;
+import pl.jakubtworek.order.dto.SimpleOrder;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import java.util.List;
 
-@Entity
-@Table(name = "users")
 class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "username")
     private String username;
-
-    @Column(name = "password")
     private String password;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = {CascadeType.REMOVE, CascadeType.DETACH})
-    private List<SimpleOrderQueryDto> orders;
+    private List<SimpleOrder> orders;
 
     public User() {
     }
 
     Long getId() {
         return id;
+    }
+
+    void setId(final Long id) {
+        this.id = id;
     }
 
     String getUsername() {
@@ -50,5 +35,13 @@ class User {
 
     void setPassword(final String password) {
         this.password = password;
+    }
+
+    List<SimpleOrder> getOrders() {
+        return orders;
+    }
+
+    void setOrders(final List<SimpleOrder> orders) {
+        this.orders = orders;
     }
 }

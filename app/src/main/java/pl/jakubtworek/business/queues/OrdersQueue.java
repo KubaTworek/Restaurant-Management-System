@@ -1,7 +1,7 @@
 package pl.jakubtworek.business.queues;
 
 import org.springframework.stereotype.Component;
-import pl.jakubtworek.order.dto.SimpleOrderQueryDto;
+import pl.jakubtworek.order.dto.SimpleOrder;
 import pl.jakubtworek.order.dto.TypeOfOrder;
 
 import java.util.ArrayList;
@@ -12,19 +12,19 @@ import java.util.Queue;
 
 @Component
 public class OrdersQueue implements Subject {
-    private final Queue<SimpleOrderQueryDto> orders = new PriorityQueue<>(new OrderComparator());
+    private final Queue<SimpleOrder> orders = new PriorityQueue<>(new OrderComparator());
     private final ArrayList<Observer> observerList;
 
     OrdersQueue() {
         this.observerList = new ArrayList<>();
     }
 
-    void add(SimpleOrderQueryDto order) {
+    void add(SimpleOrder order) {
         orders.add(order);
         notifyObservers();
     }
 
-    public SimpleOrderQueryDto get() {
+    public SimpleOrder get() {
         return orders.poll();
     }
 
@@ -49,13 +49,13 @@ public class OrdersQueue implements Subject {
         }
     }
 
-    static class OrderComparator implements Comparator<SimpleOrderQueryDto> {
+    static class OrderComparator implements Comparator<SimpleOrder> {
         @Override
-        public int compare(SimpleOrderQueryDto o1, SimpleOrderQueryDto o2) {
+        public int compare(SimpleOrder o1, SimpleOrder o2) {
             return Integer.compare(isOrderOnsite(o2), isOrderOnsite(o1));
         }
 
-        private int isOrderOnsite(SimpleOrderQueryDto o1) {
+        private int isOrderOnsite(SimpleOrder o1) {
             if (Objects.equals(o1.getTypeOfOrder(), TypeOfOrder.ON_SITE) || Objects.equals(o1.getTypeOfOrder(), TypeOfOrder.TAKE_AWAY))
                 return 1;
             if (Objects.equals(o1.getTypeOfOrder(), TypeOfOrder.DELIVERY))

@@ -1,8 +1,11 @@
 package pl.jakubtworek.employee;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import java.util.Optional;
 
-@Repository
-interface EmployeeRepository extends JpaRepository<Employee, Long> {
+interface EmployeeRepository {
+    Optional<Employee> findById(Long id);
+
+    Employee save(Employee entity);
+
+    void deleteById(Long id);
 }

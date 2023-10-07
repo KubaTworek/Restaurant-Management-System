@@ -1,9 +1,12 @@
 # Restaurant Management System
 
 > REST APIs based on CRUD methods. The project was written in Java using Spring. The database tries to maintain a third
-> normal form, it was built on an internal H2 database. The Admin position gives us the ability to manage the restaurant,
-> modify the menu and employees, and collect information on placed orders. User privileges allow us to place orders, while
-> we don't even need to be authenticated to view the menu. The project has been written in accordance with the principles
+> normal form, it was built on an internal H2 database. The Admin position gives us the ability to manage the
+> restaurant,
+> modify the menu and employees, and collect information on placed orders. User privileges allow us to place orders,
+> while
+> we don't even need to be authenticated to view the menu. The project has been written in accordance with the
+> principles
 > of Clean Code and good object-oriented programming practices. All classes and methods have been tested with unit and
 > integration tests.
 

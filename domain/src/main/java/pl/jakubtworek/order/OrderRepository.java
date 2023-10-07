@@ -1,8 +1,9 @@
 package pl.jakubtworek.order;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import java.util.Optional;
 
-@Repository
-interface OrderRepository extends JpaRepository<Order, Long> {
+interface OrderRepository {
+    Optional<Order> findById(Long id);
+
+    Order save(Order entity);
 }

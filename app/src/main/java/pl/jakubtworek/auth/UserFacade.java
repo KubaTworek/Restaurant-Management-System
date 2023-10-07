@@ -1,16 +1,14 @@
 package pl.jakubtworek.auth;
 
 import io.jsonwebtoken.Claims;
-import org.springframework.stereotype.Service;
 import pl.jakubtworek.auth.dto.LoginRequest;
 import pl.jakubtworek.auth.dto.LoginResponse;
 import pl.jakubtworek.auth.dto.RegisterRequest;
-import pl.jakubtworek.auth.dto.SimpleUserQueryDto;
+import pl.jakubtworek.auth.dto.SimpleUser;
 import pl.jakubtworek.auth.dto.UserDto;
 
 import java.time.Instant;
 
-@Service
 public class UserFacade {
     private final UserRepository userRepository;
     private final UserQueryRepository userQueryRepository;
@@ -20,7 +18,7 @@ public class UserFacade {
         this.userQueryRepository = userQueryRepository;
     }
 
-    public SimpleUserQueryDto getUser(String jwt) {
+    public SimpleUser getUser(String jwt) {
         Claims claims = JwtService.parseJwtClaims(jwt);
         String username = claims.get("username", String.class);
 

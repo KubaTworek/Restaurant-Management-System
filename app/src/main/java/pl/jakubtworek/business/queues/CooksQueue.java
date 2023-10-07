@@ -1,7 +1,7 @@
 package pl.jakubtworek.business.queues;
 
 import org.springframework.stereotype.Component;
-import pl.jakubtworek.employee.dto.SimpleEmployeeQueryDto;
+import pl.jakubtworek.employee.dto.SimpleEmployee;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -9,19 +9,19 @@ import java.util.Queue;
 
 @Component
 public class CooksQueue implements Subject {
-    private final Queue<SimpleEmployeeQueryDto> cooks = new LinkedList<>();
+    private final Queue<SimpleEmployee> cooks = new LinkedList<>();
     private final ArrayList<Observer> observerList;
 
     CooksQueue() {
         this.observerList = new ArrayList<>();
     }
 
-    public void add(SimpleEmployeeQueryDto cook) {
+    public void add(SimpleEmployee cook) {
         cooks.add(cook);
         notifyObservers();
     }
 
-    public SimpleEmployeeQueryDto get() {
+    public SimpleEmployee get() {
         return cooks.poll();
     }
 

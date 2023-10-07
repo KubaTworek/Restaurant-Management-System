@@ -1,14 +1,13 @@
 package pl.jakubtworek.menu;
 
-import org.springframework.stereotype.Service;
 import pl.jakubtworek.menu.dto.MenuDto;
 import pl.jakubtworek.menu.dto.MenuRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service
 public class MenuFacade {
     private final MenuItemFacade menuItemFacade;
     private final MenuRepository menuRepository;
@@ -32,7 +31,7 @@ public class MenuFacade {
     }
 
     List<MenuDto> findAll() {
-        return menuQueryRepository.findAllDtoBy();
+        return new ArrayList<>(menuQueryRepository.findBy(MenuDto.class));
     }
 
     Optional<MenuDto> findById(Long id) {

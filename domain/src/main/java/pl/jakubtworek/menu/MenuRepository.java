@@ -1,8 +1,7 @@
 package pl.jakubtworek.menu;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+interface MenuRepository {
+    Menu save(Menu entity);
 
-@Repository
-interface MenuRepository extends JpaRepository<Menu, Long> {
+    void deleteById(Long id);
 }

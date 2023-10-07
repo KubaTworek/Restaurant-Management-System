@@ -1,20 +1,18 @@
 package pl.jakubtworek.employee;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 import pl.jakubtworek.employee.dto.EmployeeDto;
-import pl.jakubtworek.employee.dto.SimpleEmployeeQueryDto;
+import pl.jakubtworek.employee.dto.SimpleEmployee;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
-@Repository
-public interface EmployeeQueryRepository extends JpaRepository<Employee, Long> {
+public interface EmployeeQueryRepository {
     List<EmployeeDto> findByJobName(String jobName);
 
     Optional<EmployeeDto> findDtoById(Long id);
 
-    Optional<SimpleEmployeeQueryDto> findQueryById(Long id);
+    Optional<SimpleEmployee> findQueryById(Long id);
 
-    List<EmployeeDto> findAllDtoBy();
+    <T> Set<T> findBy(Class<T> type);
 }

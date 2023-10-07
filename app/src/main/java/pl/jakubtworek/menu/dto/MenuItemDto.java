@@ -6,6 +6,7 @@ public class MenuItemDto {
     private String name;
     private int price;
     private MenuDto menu;
+
     MenuItemDto() {
     }
 

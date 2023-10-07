@@ -1,42 +1,26 @@
 package pl.jakubtworek.employee;
 
 import pl.jakubtworek.employee.dto.Job;
-import pl.jakubtworek.order.dto.SimpleOrderQueryDto;
+import pl.jakubtworek.order.dto.SimpleOrder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 import java.util.List;
 
-@Entity
-@Table(name = "employee")
 class Employee {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "first_name")
     private String firstName;
-
-    @Column(name = "last_name")
     private String lastName;
-
-    @Column(name = "job")
     private Job job;
-
-    @ManyToMany(mappedBy = "employees")
-    private List<SimpleOrderQueryDto> orders;
+    private List<SimpleOrder> orders;
 
     public Employee() {
     }
 
     Long getId() {
         return id;
+    }
+
+    void setId(final Long id) {
+        this.id = id;
     }
 
     String getFirstName() {
@@ -63,7 +47,15 @@ class Employee {
         this.job = job;
     }
 
-    void add(SimpleOrderQueryDto order) {
+    List<SimpleOrder> getOrders() {
+        return orders;
+    }
+
+    void setOrders(final List<SimpleOrder> orders) {
+        this.orders = orders;
+    }
+
+    void add(SimpleOrder order) {
         if (order != null) {
             orders.add(order);
         }

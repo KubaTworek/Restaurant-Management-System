@@ -1,18 +1,17 @@
 package pl.jakubtworek.employee;
 
-import org.springframework.stereotype.Service;
 import pl.jakubtworek.business.queues.EmployeeQueueFacade;
 import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.employee.dto.EmployeeRequest;
 import pl.jakubtworek.employee.dto.Job;
-import pl.jakubtworek.employee.dto.SimpleEmployeeQueryDto;
+import pl.jakubtworek.employee.dto.SimpleEmployee;
 import pl.jakubtworek.order.OrderFacade;
-import pl.jakubtworek.order.dto.SimpleOrderQueryDto;
+import pl.jakubtworek.order.dto.SimpleOrder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 public class EmployeeFacade {
     private final OrderFacade orderFacade;
     private final EmployeeRepository employeeRepository;
@@ -26,14 +25,14 @@ public class EmployeeFacade {
         this.employeeQueueFacade = employeeQueueFacade;
     }
 
-    public void addOrderToEmployee(final SimpleEmployeeQueryDto employee, final SimpleOrderQueryDto order) {
-        Employee employeeEntity = employeeQueryRepository.findById(employee.getId())
+    public void addOrderToEmployee(final SimpleEmployee employee, final SimpleOrder order) {
+        Employee employeeEntity = employeeRepository.findById(employee.getId())
                 .orElseThrow(() -> new IllegalStateException("Employee with that id doesn't exist"));
-        SimpleOrderQueryDto orderEntity = orderFacade.getById(order.getId());
+        SimpleOrder orderEntity = orderFacade.getById(order.getId());
         employeeEntity.add(orderEntity);
     }
 
-    public SimpleEmployeeQueryDto getById(Long id) {
+    public SimpleEmployee getById(Long id) {
         return employeeQueryRepository.findQueryById(id)
                 .orElseThrow(() -> new IllegalStateException("Employee with that id doesn't exist"));
     }
@@ -49,11 +48,12 @@ public class EmployeeFacade {
             throw new IllegalStateException("Job is not exist");
         }
         EmployeeDto created = toDto(employeeRepository.save(employee));
-        SimpleEmployeeQueryDto employeeQueryDto = new SimpleEmployeeQueryDto();
-        employeeQueryDto.setId(created.getId());
-        employeeQueryDto.setFirstName(created.getFirstName());
-        employeeQueryDto.setLastName(created.getLastName());
-        employeeQueryDto.setJob(created.getJob());
+        SimpleEmployee employeeQueryDto = new SimpleEmployee(
+                created.getId(),
+                created.getFirstName(),
+                created.getLastName(),
+                created.getJob()
+        );
         employeeQueueFacade.addEmployeeToProperQueue(employeeQueryDto);
 
         return created;
@@ -64,7 +64,7 @@ public class EmployeeFacade {
     }
 
     List<EmployeeDto> findAll() {
-        return employeeQueryRepository.findAllDtoBy();
+        return new ArrayList<>(employeeQueryRepository.findBy(EmployeeDto.class));
     }
 
     Optional<EmployeeDto> findById(Long id) {

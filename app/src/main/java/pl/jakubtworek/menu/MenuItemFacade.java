@@ -1,13 +1,12 @@
 package pl.jakubtworek.menu;
 
-import org.springframework.stereotype.Service;
 import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.menu.dto.MenuItemRequest;
+import pl.jakubtworek.menu.dto.SimpleMenuItem;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
 public class MenuItemFacade {
     private final MenuFacade menuFacade;
     private final MenuItemRepository menuItemRepository;
@@ -50,7 +49,15 @@ public class MenuItemFacade {
         return menuItemQueryRepository.findDtoByMenuName(menuName);
     }
 
-    MenuItemDto toDto(MenuItem menuItem) {
+    MenuItemDto toDto(SimpleMenuItem menuItem) {
+        return MenuItemDto.builder()
+                .withId(menuItem.getId())
+                .withName(menuItem.getName())
+                .withPrice(menuItem.getPrice())
+                .build();
+    }
+
+    private MenuItemDto toDto(MenuItem menuItem) {
         return MenuItemDto.builder()
                 .withId(menuItem.getId())
                 .withName(menuItem.getName())

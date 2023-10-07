@@ -1,33 +1,20 @@
 package pl.jakubtworek.order.dto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.time.ZonedDateTime;
 
-@Entity
-@Table(name = "orders")
-public class SimpleOrderQueryDto {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class SimpleOrder {
     private Long id;
-
-    @Column(name = "price")
     private int price;
-
-    @Column(name = "hour_order")
     private ZonedDateTime hourOrder;
-
-    @Column(name = "hour_away")
     private ZonedDateTime hourAway;
-
-    @Column(name = "type_of_order")
     private TypeOfOrder typeOfOrder;
 
-    public SimpleOrderQueryDto() {
+    public SimpleOrder(final Long id, final int price, final ZonedDateTime hourOrder, final ZonedDateTime hourAway, final TypeOfOrder typeOfOrder) {
+        this.id = id;
+        this.price = price;
+        this.hourOrder = hourOrder;
+        this.hourAway = hourAway;
+        this.typeOfOrder = typeOfOrder;
     }
 
     public Long getId() {

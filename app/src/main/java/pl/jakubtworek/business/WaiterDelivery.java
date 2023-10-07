@@ -5,9 +5,9 @@ import pl.jakubtworek.business.queues.Observer;
 import pl.jakubtworek.business.queues.OrdersMadeOnsiteQueue;
 import pl.jakubtworek.business.queues.WaiterQueue;
 import pl.jakubtworek.employee.EmployeeFacade;
-import pl.jakubtworek.employee.dto.SimpleEmployeeQueryDto;
+import pl.jakubtworek.employee.dto.SimpleEmployee;
 import pl.jakubtworek.order.OrderFacade;
-import pl.jakubtworek.order.dto.SimpleOrderQueryDto;
+import pl.jakubtworek.order.dto.SimpleOrder;
 
 import java.time.ZonedDateTime;
 
@@ -35,8 +35,8 @@ class WaiterDelivery extends Delivery implements Observer {
 
     @Override
     void startDelivering() {
-        SimpleEmployeeQueryDto employee = waiterQueue.get();
-        SimpleOrderQueryDto order = ordersMadeOnsiteQueue.get();
+        SimpleEmployee employee = waiterQueue.get();
+        SimpleOrder order = ordersMadeOnsiteQueue.get();
         orderFacade.addEmployeeToOrder(order, employee);
         employeeFacade.addOrderToEmployee(employee, order);
         startDeliveringOrder(employee, order, 2);
@@ -48,7 +48,7 @@ class WaiterDelivery extends Delivery implements Observer {
     }
 
     @Override
-    void delivering(SimpleEmployeeQueryDto employee, SimpleOrderQueryDto order, int time) {
+    void delivering(SimpleEmployee employee, SimpleOrder order, int time) {
         int timeToDelivery = time * 1000;
         try {
             Thread.sleep(timeToDelivery);
