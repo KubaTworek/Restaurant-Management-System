@@ -1,4 +1,4 @@
-package pl.jakubtworek.business.queues;
+package pl.jakubtworek.queue;
 
 import org.springframework.stereotype.Component;
 import pl.jakubtworek.employee.dto.SimpleEmployee;
@@ -8,35 +8,31 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 @Component
-public class WaiterQueue implements Subject {
-    private final Queue<SimpleEmployee> waiters = new LinkedList<>();
+class CooksQueue implements Subject, EmployeeQueue {
+    private final Queue<SimpleEmployee> cooks = new LinkedList<>();
     private final ArrayList<Observer> observerList;
 
-    WaiterQueue() {
+    CooksQueue() {
         this.observerList = new ArrayList<>();
     }
 
-    public void add(SimpleEmployee waiter) {
-        waiters.add(waiter);
+    SimpleEmployee get() {
+        return cooks.poll();
+    }
+
+    int size() {
+        return cooks.size();
+    }
+
+    @Override
+    public void add(SimpleEmployee cook) {
+        cooks.add(cook);
         notifyObservers();
-    }
-
-    public SimpleEmployee get() {
-        return waiters.poll();
-    }
-
-    public int size() {
-        return waiters.size();
     }
 
     @Override
     public void registerObserver(Observer o) {
         observerList.add(o);
-    }
-
-    @Override
-    public void unregisterObserver(Observer o) {
-        observerList.remove(o);
     }
 
     @Override

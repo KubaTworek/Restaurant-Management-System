@@ -1,6 +1,6 @@
 package pl.jakubtworek.employee;
 
-import pl.jakubtworek.business.queues.EmployeeQueueFacade;
+import pl.jakubtworek.queue.EmployeeQueueFacade;
 import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.employee.dto.EmployeeRequest;
 import pl.jakubtworek.employee.dto.Job;

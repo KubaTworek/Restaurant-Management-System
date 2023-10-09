@@ -1,4 +1,4 @@
-package pl.jakubtworek.business.queues;
+package pl.jakubtworek.queue;
 
 import org.springframework.stereotype.Component;
 import pl.jakubtworek.order.dto.SimpleOrder;
@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 @Component
-public class OrdersMadeOnsiteQueue implements Subject {
+class OrdersMadeOnsiteQueue implements Subject {
     private final Queue<SimpleOrder> ordersMadeOnsite = new LinkedList<>();
     private final ArrayList<Observer> observerList;
 
@@ -32,11 +32,6 @@ public class OrdersMadeOnsiteQueue implements Subject {
     @Override
     public void registerObserver(Observer o) {
         observerList.add(o);
-    }
-
-    @Override
-    public void unregisterObserver(Observer o) {
-        observerList.remove(o);
     }
 
     @Override

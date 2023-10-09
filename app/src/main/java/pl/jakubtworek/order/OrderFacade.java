@@ -2,7 +2,7 @@ package pl.jakubtworek.order;
 
 import pl.jakubtworek.auth.UserFacade;
 import pl.jakubtworek.auth.dto.SimpleUser;
-import pl.jakubtworek.business.queues.OrdersQueueFacade;
+import pl.jakubtworek.queue.OrdersQueueFacade;
 import pl.jakubtworek.employee.EmployeeFacade;
 import pl.jakubtworek.employee.dto.SimpleEmployee;
 import pl.jakubtworek.order.dto.OrderDto;

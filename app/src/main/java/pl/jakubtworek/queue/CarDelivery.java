@@ -1,15 +1,10 @@
-package pl.jakubtworek.business;
+package pl.jakubtworek.queue;
 
 import org.springframework.stereotype.Service;
-import pl.jakubtworek.business.queues.DeliveryQueue;
-import pl.jakubtworek.business.queues.Observer;
-import pl.jakubtworek.business.queues.OrdersMadeDeliveryQueue;
 import pl.jakubtworek.employee.EmployeeFacade;
 import pl.jakubtworek.employee.dto.SimpleEmployee;
 import pl.jakubtworek.order.OrderFacade;
 import pl.jakubtworek.order.dto.SimpleOrder;
-
-import java.time.ZonedDateTime;
 
 @Service
 class CarDelivery extends Delivery implements Observer {
@@ -39,24 +34,11 @@ class CarDelivery extends Delivery implements Observer {
         SimpleOrder order = ordersMadeDeliveryQueue.get();
         orderFacade.addEmployeeToOrder(order, employee);
         employeeFacade.addOrderToEmployee(employee, order);
-        startDeliveringOrder(employee, order, 5);
+        startDeliveringOrder(employee, order, 5, deliveryQueue);
     }
 
     @Override
     boolean isExistsEmployeeAndOrder() {
         return ordersMadeDeliveryQueue.size() > 0 && deliveryQueue.size() > 0;
-    }
-
-    @Override
-    void delivering(SimpleEmployee employee, SimpleOrder order, int time) {
-        int timeToDelivery = time * 1000;
-        try {
-            Thread.sleep(timeToDelivery);
-            order.setHourAway(ZonedDateTime.now());
-            orderFacade.update(order);
-            deliveryQueue.add(employee);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }

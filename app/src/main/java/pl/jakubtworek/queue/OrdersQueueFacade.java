@@ -1,4 +1,4 @@
-package pl.jakubtworek.business.queues;
+package pl.jakubtworek.queue;
 
 import org.springframework.stereotype.Component;
 import pl.jakubtworek.order.dto.SimpleOrder;

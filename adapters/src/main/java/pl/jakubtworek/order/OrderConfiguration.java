@@ -3,7 +3,7 @@ package pl.jakubtworek.order;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.jakubtworek.auth.UserFacade;
-import pl.jakubtworek.business.queues.OrdersQueueFacade;
+import pl.jakubtworek.queue.OrdersQueueFacade;
 import pl.jakubtworek.employee.EmployeeFacade;
 
 @Configuration

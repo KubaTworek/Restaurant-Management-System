@@ -1,10 +1,6 @@
-package pl.jakubtworek.business;
+package pl.jakubtworek.queue;
 
 import org.springframework.stereotype.Service;
-import pl.jakubtworek.business.queues.CooksQueue;
-import pl.jakubtworek.business.queues.Observer;
-import pl.jakubtworek.business.queues.OrdersQueue;
-import pl.jakubtworek.business.queues.OrdersQueueFacade;
 import pl.jakubtworek.employee.EmployeeFacade;
 import pl.jakubtworek.employee.dto.SimpleEmployee;
 import pl.jakubtworek.order.OrderFacade;
