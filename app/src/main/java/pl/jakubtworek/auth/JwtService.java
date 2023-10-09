@@ -8,9 +8,9 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
-public class JwtService {
+class JwtService {
 
-    public static String buildJwt(String username, long expirationDate) {
+    static String buildJwt(String username, long expirationDate) {
         return Jwts.builder()
                 .setIssuer("Social Media")
                 .setSubject("JWT Token")
@@ -21,7 +21,7 @@ public class JwtService {
                 .compact();
     }
 
-    public static Claims parseJwtClaims(String jwt) {
+    static Claims parseJwtClaims(String jwt) {
         String jwtWithoutBearer = jwt.replaceFirst("Bearer ", "");
         return Jwts.parserBuilder()
                 .setSigningKey(createSecretKey())
@@ -34,5 +34,4 @@ public class JwtService {
         byte[] keyBytes = SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);
     }
-
 }

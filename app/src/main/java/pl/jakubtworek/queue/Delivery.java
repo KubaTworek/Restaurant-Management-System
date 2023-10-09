@@ -4,8 +4,6 @@ import pl.jakubtworek.employee.dto.SimpleEmployee;
 import pl.jakubtworek.order.OrderFacade;
 import pl.jakubtworek.order.dto.SimpleOrder;
 
-import java.time.ZonedDateTime;
-
 abstract class Delivery {
     final OrderFacade orderFacade;
 
@@ -21,13 +19,14 @@ abstract class Delivery {
         int timeToDelivery = time * 1000;
         try {
             Thread.sleep(timeToDelivery);
-            order.setHourAway(ZonedDateTime.now());
-            orderFacade.update(order);
+            orderFacade.setAsDelivered(order);
             queue.add(employee);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    };
+    }
+
+    ;
 
     void startDeliveringOrder(SimpleEmployee employee, SimpleOrder order, int time, EmployeeQueue queue) {
         Runnable r = () -> delivering(employee, order, time, queue);

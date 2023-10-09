@@ -3,6 +3,8 @@ package pl.jakubtworek.menu;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 interface SqlMenuItemRepository extends JpaRepository<SqlMenuItem, Long> {
 
     <S extends SqlMenuItem> S save(S entity);
@@ -20,6 +22,11 @@ class MenuItemRepositoryImpl implements MenuItemRepository {
 
     MenuItemRepositoryImpl(final SqlMenuItemRepository repository) {
         this.repository = repository;
+    }
+
+    @Override
+    public Optional<MenuItem> findById(final Long id) {
+        return repository.findById(id).map(SqlMenuItem::toMenuItem);
     }
 
     @Override

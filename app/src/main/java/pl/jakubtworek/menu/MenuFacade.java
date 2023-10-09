@@ -19,6 +19,11 @@ public class MenuFacade {
         this.menuQueryRepository = menuQueryRepository;
     }
 
+    public Menu getByName(String name) {
+        return menuQueryRepository.findByName(name)
+                .orElseThrow(() -> new IllegalStateException("There are no menu in restaurant with that name: " + name));
+    }
+
     MenuDto save(MenuRequest toSave) {
         Menu menu = new Menu();
         menu.setName(toSave.getName());

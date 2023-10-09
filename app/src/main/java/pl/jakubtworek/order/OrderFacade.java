@@ -2,13 +2,15 @@ package pl.jakubtworek.order;
 
 import pl.jakubtworek.auth.UserFacade;
 import pl.jakubtworek.auth.dto.SimpleUser;
-import pl.jakubtworek.queue.OrdersQueueFacade;
 import pl.jakubtworek.employee.EmployeeFacade;
 import pl.jakubtworek.employee.dto.SimpleEmployee;
+import pl.jakubtworek.menu.MenuItemFacade;
+import pl.jakubtworek.menu.dto.SimpleMenuItem;
 import pl.jakubtworek.order.dto.OrderDto;
 import pl.jakubtworek.order.dto.OrderRequest;
 import pl.jakubtworek.order.dto.SimpleOrder;
 import pl.jakubtworek.order.dto.TypeOfOrder;
+import pl.jakubtworek.queue.OrdersQueueFacade;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -17,43 +19,38 @@ import java.util.Optional;
 public class OrderFacade {
     private final UserFacade userFacade;
     private final EmployeeFacade employeeFacade;
+    private final MenuItemFacade menuItemFacade;
     private final OrderRepository orderRepository;
     private final OrderQueryRepository orderQueryRepository;
     private final OrdersQueueFacade ordersQueueFacade;
 
-    OrderFacade(final UserFacade userFacade, final EmployeeFacade employeeFacade, final OrderRepository orderRepository, final OrderQueryRepository orderQueryRepository, final OrdersQueueFacade ordersQueueFacade) {
+    OrderFacade(final UserFacade userFacade, final EmployeeFacade employeeFacade, final MenuItemFacade menuItemFacade,
+                final OrderRepository orderRepository, final OrderQueryRepository orderQueryRepository,
+                final OrdersQueueFacade ordersQueueFacade) {
         this.userFacade = userFacade;
         this.employeeFacade = employeeFacade;
+        this.menuItemFacade = menuItemFacade;
         this.orderRepository = orderRepository;
         this.orderQueryRepository = orderQueryRepository;
         this.ordersQueueFacade = ordersQueueFacade;
     }
 
-    public void update(SimpleOrder toUpdate) {
-
-        Order order = new Order();
-        order.setId(toUpdate.getId());
-        order.setPrice(toUpdate.getPrice());
-        order.setHourOrder(toUpdate.getHourOrder());
-        order.setHourAway(toUpdate.getHourAway());
-        order.setTypeOfOrder(toUpdate.getTypeOfOrder());
-        //order.setEmployees(); todo
-        //order.setMenuItems(); todo
-        //order.setUser(); todo
-
-        orderRepository.save(order);
+    public void setAsDelivered(SimpleOrder toUpdate) {
+        orderRepository.findById(toUpdate.getId())
+                .map(o -> {
+                    o.setHourAway(ZonedDateTime.now());
+                    return orderRepository.save(o);
+                })
+                .orElseThrow(() -> new IllegalStateException("Order with that id doesn't exist"));
     }
 
     public void addEmployeeToOrder(SimpleOrder order, SimpleEmployee employee) {
-        Order orderEntity = orderRepository.findById(order.getId())
-                .orElseThrow(() -> new IllegalStateException("Order with that id doesn't exist"));
-        SimpleEmployee employeeEntity = employeeFacade.getById(employee.getId());
-        orderEntity.add(employeeEntity);
-        orderRepository.save(orderEntity);
-    }
-
-    public SimpleOrder getById(Long id) {
-        return orderQueryRepository.findSimpleById(id)
+        orderRepository.findById(order.getId())
+                .map(o -> {
+                    final SimpleEmployee employeeEntity = employeeFacade.getById(employee.getId());
+                    o.add(employeeEntity);
+                    return orderRepository.save(o);
+                })
                 .orElseThrow(() -> new IllegalStateException("Order with that id doesn't exist"));
     }
 
@@ -80,7 +77,6 @@ public class OrderFacade {
                 created.getHourOrder(),
                 null,
                 created.getTypeOfOrder()
-
         );
         ordersQueueFacade.addToQueue(orderQueryDto);
         return created;
@@ -100,8 +96,11 @@ public class OrderFacade {
         return orderQueryRepository.findFilteredOrders(fromDate, toDate, typeOfOrder, isReady, employeeId, username);
     }
 
-    private int calculatePrice(List<String> menuItems) {
-        return 99; //todo
+    private int calculatePrice(List<String> names) {
+        return names.stream()
+                .map(menuItemFacade::getByName)
+                .mapToInt(SimpleMenuItem::getPrice)
+                .sum();
     }
 
     private OrderDto toDto(Order order) {

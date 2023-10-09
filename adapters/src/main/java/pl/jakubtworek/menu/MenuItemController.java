@@ -32,9 +32,8 @@ class MenuItemController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<MenuItemDto> updateMenuItem(@PathVariable Long id, @RequestBody MenuItemRequest menuItemRequest) {
-
-        // todo:
+    ResponseEntity<MenuItemDto> updateMenuItem(@PathVariable Long id, @RequestBody MenuItemRequest toUpdate) {
+        menuItemFacade.update(id, toUpdate);
         return ResponseEntity.noContent().build();
     }
 
