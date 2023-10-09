@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,12 +28,6 @@ class MenuItemController {
     ResponseEntity<MenuItemDto> saveMenuItem(@RequestBody MenuItemRequest menuItemRequest) {
         MenuItemDto result = menuItemFacade.save(menuItemRequest);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
-    }
-
-    @PutMapping("/{id}")
-    ResponseEntity<MenuItemDto> updateMenuItem(@PathVariable Long id, @RequestBody MenuItemRequest toUpdate) {
-        menuItemFacade.update(id, toUpdate);
-        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")

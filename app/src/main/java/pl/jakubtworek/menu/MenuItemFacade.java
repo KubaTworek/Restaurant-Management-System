@@ -1,5 +1,6 @@
 package pl.jakubtworek.menu;
 
+import pl.jakubtworek.menu.dto.MenuDto;
 import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.menu.dto.MenuItemRequest;
 import pl.jakubtworek.menu.dto.SimpleMenuItem;
@@ -32,24 +33,19 @@ public class MenuItemFacade {
     }
 
     MenuItemDto save(MenuItemRequest toSave) {
-        Menu menu = menuQueryRepository.findByName(toSave.getMenu())
+        MenuDto menuDto = menuQueryRepository.findDtoByName(toSave.getMenu())
                 .orElseThrow(() -> new IllegalStateException("There are no menu in restaurant with that name: " + toSave.getMenu()));
 
+        Menu menu = new Menu();
+        menu.setId(menuDto.getId());
+        menu.setName(menuDto.getName());
+
         MenuItem menuItem = new MenuItem();
+        menuItem.setName(toSave.getName());
+        menuItem.setPrice(toSave.getPrice());
         menuItem.setMenu(menu);
 
         return toDto(menuItemRepository.save(menuItem));
-    }
-
-    MenuItemDto update(Long menuItemId, MenuItemRequest toUpdate) {
-        return menuItemRepository.findById(menuItemId)
-                .map(menuItem -> {
-                    menuItem.setName(toUpdate.getName());
-                    menuItem.setPrice(toUpdate.getPrice());
-                    menuItem.setMenu(menuFacade.getByName(toUpdate.getMenu()));
-                    return toDto(menuItemRepository.save(menuItem));
-                })
-                .orElseThrow(() -> new IllegalStateException("There are no menu item in restaurant with that id: " + menuItemId));
     }
 
     void deleteById(Long id) {
@@ -61,11 +57,6 @@ public class MenuItemFacade {
     }
 
     private MenuItemDto toDto(MenuItem menuItem) {
-        return MenuItemDto.builder()
-                .withId(menuItem.getId())
-                .withName(menuItem.getName())
-                .withPrice(menuItem.getPrice())
-                .withMenu(menuFacade.toDto(menuItem.getMenu()))
-                .build();
+        return MenuItemDto.create(menuItem.getId(), menuItem.getName(), menuItem.getPrice());
     }
 }

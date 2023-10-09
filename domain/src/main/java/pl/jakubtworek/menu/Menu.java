@@ -2,12 +2,13 @@ package pl.jakubtworek.menu;
 
 import pl.jakubtworek.menu.dto.SimpleMenuItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 class Menu {
     private Long id;
     private String name;
-    private List<SimpleMenuItem> menuItems;
+    private List<SimpleMenuItem> menuItems = new ArrayList<>();
 
     public Menu() {
     }

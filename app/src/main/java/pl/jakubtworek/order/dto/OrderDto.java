@@ -1,80 +1,60 @@
 package pl.jakubtworek.order.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.time.ZonedDateTime;
 
-public class OrderDto {
+@JsonDeserialize(as = OrderDto.DeserializationImpl.class)
+public interface OrderDto {
 
-    private Long id;
-    private int price;
-    private ZonedDateTime hourOrder;
-    private ZonedDateTime hourAway;
-    private TypeOfOrder typeOfOrder;
-
-    OrderDto() {
+    static OrderDto create(final Long id, final int price, final ZonedDateTime hourOrder, final ZonedDateTime hourAway, final TypeOfOrder typeOfOrder) {
+        return new OrderDto.DeserializationImpl(id, price, hourOrder, hourAway, typeOfOrder);
     }
 
-    OrderDto(final Long id, final int price, final ZonedDateTime hourOrder, final ZonedDateTime hourAway, final TypeOfOrder typeOfOrder) {
-        this.id = id;
-        this.price = price;
-        this.hourOrder = hourOrder;
-        this.hourAway = hourAway;
-        this.typeOfOrder = typeOfOrder;
-    }
+    Long getId();
+    int getPrice();
+    ZonedDateTime getHourOrder();
+    ZonedDateTime getHourAway();
+    TypeOfOrder getTypeOfOrder();
 
-    static public Builder builder() {
-        return new Builder();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public ZonedDateTime getHourOrder() {
-        return hourOrder;
-    }
-
-    public TypeOfOrder getTypeOfOrder() {
-        return typeOfOrder;
-    }
-
-    public static class Builder {
+    class DeserializationImpl implements OrderDto {
         private Long id;
         private int price;
         private ZonedDateTime hourOrder;
         private ZonedDateTime hourAway;
         private TypeOfOrder typeOfOrder;
 
-        public Builder withId(Long id) {
+        DeserializationImpl(final Long id, final int price, final ZonedDateTime hourOrder, final ZonedDateTime hourAway, final TypeOfOrder typeOfOrder) {
             this.id = id;
-            return this;
-        }
-
-        public Builder withPrice(int price) {
             this.price = price;
-            return this;
-        }
-
-        public Builder withHourOrder(ZonedDateTime hourOrder) {
             this.hourOrder = hourOrder;
-            return this;
-        }
-
-        public Builder withHourAway(ZonedDateTime hourAway) {
             this.hourAway = hourAway;
-            return this;
-        }
-
-        public Builder withTypeOfOrder(TypeOfOrder typeOfOrder) {
             this.typeOfOrder = typeOfOrder;
-            return this;
         }
 
-        public OrderDto build() {
-            return new OrderDto(id, price, hourOrder, hourAway, typeOfOrder);
+        @Override
+        public Long getId() {
+            return id;
+        }
+
+        @Override
+        public int getPrice() {
+            return price;
+        }
+
+        @Override
+        public ZonedDateTime getHourOrder() {
+            return hourOrder;
+        }
+
+        @Override
+        public ZonedDateTime getHourAway() {
+            return hourAway;
+        }
+
+        @Override
+        public TypeOfOrder getTypeOfOrder() {
+            return typeOfOrder;
         }
     }
 }

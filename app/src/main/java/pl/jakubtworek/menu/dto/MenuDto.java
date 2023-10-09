@@ -1,52 +1,46 @@
 package pl.jakubtworek.menu.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.util.List;
 
-public class MenuDto {
+@JsonDeserialize(as = MenuDto.DeserializationImpl.class)
+public interface MenuDto {
 
-    private Long id;
-    private String name;
-    private List<MenuItemDto> menuItems;
-
-    public MenuDto() {
+    static MenuDto create(final Long id, final String name, final List<MenuItemDto> menuItems) {
+        return new DeserializationImpl(id, name, menuItems);
     }
 
-    MenuDto(final Long id, final String name, final List<MenuItemDto> menuItems) {
-        this.id = id;
-        this.name = name;
-        this.menuItems = menuItems;
-    }
+    Long getId();
 
-    static public Builder builder() {
-        return new Builder();
-    }
+    String getName();
 
-    public Long getId() {
-        return id;
-    }
+    List<MenuItemDto> getMenuItems();
 
-    public static class Builder {
+    class DeserializationImpl implements MenuDto {
         private Long id;
         private String name;
         private List<MenuItemDto> menuItems;
 
-        public Builder withId(Long id) {
+        DeserializationImpl(final Long id, final String name, final List<MenuItemDto> menuItems) {
             this.id = id;
-            return this;
-        }
-
-        public Builder withName(String name) {
             this.name = name;
-            return this;
-        }
-
-        public Builder withMenuItems(List<MenuItemDto> menuItems) {
             this.menuItems = menuItems;
-            return this;
         }
 
-        public MenuDto build() {
-            return new MenuDto(id, name, menuItems);
+        @Override
+        public Long getId() {
+            return id;
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public List<MenuItemDto> getMenuItems() {
+            return menuItems;
         }
     }
 }

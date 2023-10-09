@@ -3,6 +3,7 @@ package pl.jakubtworek.employee;
 import pl.jakubtworek.employee.dto.Job;
 import pl.jakubtworek.order.dto.SimpleOrder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 class Employee {
@@ -10,7 +11,7 @@ class Employee {
     private String firstName;
     private String lastName;
     private Job job;
-    private List<SimpleOrder> orders;
+    private List<SimpleOrder> orders = new ArrayList<>();
 
     public Employee() {
     }

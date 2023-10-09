@@ -2,6 +2,7 @@ package pl.jakubtworek.menu;
 
 import pl.jakubtworek.order.dto.SimpleOrder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 class MenuItem {
@@ -9,7 +10,7 @@ class MenuItem {
     private String name;
     private int price;
     private Menu menu;
-    private List<SimpleOrder> orders;
+    private List<SimpleOrder> orders = new ArrayList<>();
 
     public MenuItem() {
     }

@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface MenuQueryRepository {
-    Optional<Menu> findByName(String theName);
+    Optional<MenuDto> findDtoByName(String theName);
 
     Optional<MenuDto> findDtoById(Long id);
 

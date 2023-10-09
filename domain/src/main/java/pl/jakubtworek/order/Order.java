@@ -15,7 +15,7 @@ class Order {
     private ZonedDateTime hourOrder;
     private ZonedDateTime hourAway;
     private TypeOfOrder typeOfOrder;
-    private List<SimpleMenuItem> menuItems;
+    private List<SimpleMenuItem> menuItems = new ArrayList<>();
     private List<SimpleEmployee> employees = new ArrayList<>();
     private SimpleUser user;
 

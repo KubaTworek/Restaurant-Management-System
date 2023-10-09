@@ -19,11 +19,6 @@ public class MenuFacade {
         this.menuQueryRepository = menuQueryRepository;
     }
 
-    public Menu getByName(String name) {
-        return menuQueryRepository.findByName(name)
-                .orElseThrow(() -> new IllegalStateException("There are no menu in restaurant with that name: " + name));
-    }
-
     MenuDto save(MenuRequest toSave) {
         Menu menu = new Menu();
         menu.setName(toSave.getName());
@@ -43,18 +38,10 @@ public class MenuFacade {
     }
 
     MenuDto toDto(Menu menu) {
-        return MenuDto.builder()
-                .withId(menu.getId())
-                .withName(menu.getName())
-                .withMenuItems(menu.getMenuItems().stream().map(this::toDto).collect(Collectors.toList()))
-                .build();
+        return MenuDto.create(menu.getId(), menu.getName(), menu.getMenuItems().stream().map(this::toDto).collect(Collectors.toList()));
     }
 
     MenuItemDto toDto(SimpleMenuItem menuItem) {
-        return MenuItemDto.builder()
-                .withId(menuItem.getId())
-                .withName(menuItem.getName())
-                .withPrice(menuItem.getPrice())
-                .build();
+        return MenuItemDto.create(menuItem.getId(), menuItem.getName(), menuItem.getPrice());
     }
 }

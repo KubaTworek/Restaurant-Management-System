@@ -21,7 +21,7 @@ class SqlMenu {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.MERGE)
     private List<SqlSimpleMenuItem> menuItems;
 
     public SqlMenu() {

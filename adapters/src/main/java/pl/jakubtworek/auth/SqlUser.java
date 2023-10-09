@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ class SqlUser {
     private String password;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = {CascadeType.REMOVE, CascadeType.DETACH})
-    private List<SqlSimpleOrder> orders;
+    private List<SqlSimpleOrder> orders = new ArrayList<>();
 
     public SqlUser() {
     }

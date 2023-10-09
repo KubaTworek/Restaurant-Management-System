@@ -22,7 +22,7 @@ public class UserFacade {
         Claims claims = JwtService.parseJwtClaims(jwt);
         String username = claims.get("username", String.class);
 
-        return userQueryRepository.findDtoByUsername(username).
+        return userQueryRepository.findSimpleByUsername(username).
                 orElseThrow(() -> new IllegalStateException("No user registered with this username!"));
     }
 
@@ -38,7 +38,7 @@ public class UserFacade {
 
     LoginResponse login(LoginRequest loginRequest) {
 
-        User user = userQueryRepository.findByUsername(loginRequest.getUsername())
+        UserDto user = userQueryRepository.findDtoByUsername(loginRequest.getUsername())
                 .orElseThrow(() -> new IllegalStateException("No user registered with this username!"));
         validPasswords(loginRequest.getPassword(), user.getPassword());
 
@@ -65,10 +65,6 @@ public class UserFacade {
     }
 
     private UserDto toDto(User user) {
-        return UserDto.builder()
-                .withId(user.getId())
-                .withUsername(user.getUsername())
-                .withPassword(user.getPassword())
-                .build();
+        return UserDto.create(user.getId(), user.getUsername(), user.getPassword());
     }
 }

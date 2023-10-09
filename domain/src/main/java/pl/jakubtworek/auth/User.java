@@ -2,13 +2,14 @@ package pl.jakubtworek.auth;
 
 import pl.jakubtworek.order.dto.SimpleOrder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 class User {
     private Long id;
     private String username;
     private String password;
-    private List<SimpleOrder> orders;
+    private List<SimpleOrder> orders = new ArrayList<>();
 
     public User() {
     }

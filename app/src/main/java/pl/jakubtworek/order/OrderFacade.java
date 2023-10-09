@@ -104,12 +104,6 @@ public class OrderFacade {
     }
 
     private OrderDto toDto(Order order) {
-        return OrderDto.builder()
-                .withId(order.getId())
-                .withPrice(order.getPrice())
-                .withHourOrder(order.getHourOrder())
-                .withHourAway(order.getHourAway())
-                .withTypeOfOrder(order.getTypeOfOrder())
-                .build();
+        return OrderDto.create(order.getId(), order.getPrice(), order.getHourOrder(), order.getHourAway(), order.getTypeOfOrder());
     }
 }

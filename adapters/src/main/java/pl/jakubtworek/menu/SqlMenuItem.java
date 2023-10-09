@@ -29,7 +29,7 @@ class SqlMenuItem {
     @Column(name = "price")
     private int price;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id")
     private SqlMenu menu;
 

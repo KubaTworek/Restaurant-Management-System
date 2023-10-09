@@ -1,58 +1,42 @@
 package pl.jakubtworek.menu.dto;
 
-public class MenuItemDto {
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-    private Long id;
-    private String name;
-    private int price;
-    private MenuDto menu;
+@JsonDeserialize(as = MenuItemDto.DeserializationImpl.class)
+public interface MenuItemDto {
 
-    MenuItemDto() {
+    static MenuItemDto create(final Long id, final String name, final int price) {
+        return new MenuItemDto.DeserializationImpl(id, name, price);
     }
 
-    MenuItemDto(final Long id, final String name, final int price, final MenuDto menu) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.menu = menu;
-    }
+    Long getId();
+    String getName();
+    int getPrice();
 
-    static public Builder builder() {
-        return new Builder();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public static class Builder {
+    class DeserializationImpl implements MenuItemDto {
         private Long id;
         private String name;
         private int price;
-        private MenuDto menu;
 
-        public Builder withId(Long id) {
+        DeserializationImpl(final Long id, final String name, final int price) {
             this.id = id;
-            return this;
-        }
-
-        public Builder withName(String name) {
             this.name = name;
-            return this;
-        }
-
-        public Builder withPrice(int price) {
             this.price = price;
-            return this;
         }
 
-        public Builder withMenu(MenuDto menu) {
-            this.menu = menu;
-            return this;
+        @Override
+        public Long getId() {
+            return id;
         }
 
-        public MenuItemDto build() {
-            return new MenuItemDto(id, name, price, menu);
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public int getPrice() {
+            return price;
         }
     }
 }

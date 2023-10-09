@@ -61,7 +61,11 @@ public class EmployeeFacade {
     }
 
     List<EmployeeDto> findByJob(String jobName) {
-        return employeeQueryRepository.findByJob(jobName);
+        if (isJobExist(jobName)) {
+            return employeeQueryRepository.findByJob(Job.valueOf(jobName));
+        } else {
+            throw new IllegalStateException("Job is not exist");
+        }
     }
 
     private boolean isJobExist(String jobName) {
@@ -74,11 +78,6 @@ public class EmployeeFacade {
     }
 
     private EmployeeDto toDto(Employee employee) {
-        return EmployeeDto.builder()
-                .withId(employee.getId())
-                .withFirstName(employee.getFirstName())
-                .withLastName(employee.getLastName())
-                .withJob(employee.getJob())
-                .build();
+        return EmployeeDto.create(employee.getId(), employee.getFirstName(), employee.getLastName(), employee.getJob());
     }
 }

@@ -1,50 +1,42 @@
 package pl.jakubtworek.auth.dto;
 
-public class UserDto {
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-    private Long id;
-    private String username;
-    private String password;
+@JsonDeserialize(as = UserDto.DeserializationImpl.class)
+public interface UserDto {
 
-    UserDto() {
+    static UserDto create(final Long id, final String username, final String password) {
+        return new UserDto.DeserializationImpl(id, username, password);
     }
 
-    UserDto(final Long id, final String username, final String password) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-    }
+    Long getId();
+    String getUsername();
+    String getPassword();
 
-    static public Builder builder() {
-        return new Builder();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public static class Builder {
+    class DeserializationImpl implements UserDto {
         private Long id;
         private String username;
         private String password;
 
-        public Builder withId(Long id) {
+        DeserializationImpl(final Long id, final String username, final String password) {
             this.id = id;
-            return this;
-        }
-
-        public Builder withUsername(String username) {
             this.username = username;
-            return this;
-        }
-
-        public Builder withPassword(String password) {
             this.password = password;
-            return this;
         }
 
-        public UserDto build() {
-            return new UserDto(id, username, password);
+        @Override
+        public Long getId() {
+            return id;
+        }
+
+        @Override
+        public String getUsername() {
+            return username;
+        }
+
+        @Override
+        public String getPassword() {
+            return password;
         }
     }
 }
