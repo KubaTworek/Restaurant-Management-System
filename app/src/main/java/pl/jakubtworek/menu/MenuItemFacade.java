@@ -2,7 +2,6 @@ package pl.jakubtworek.menu;
 
 import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.menu.dto.MenuItemRequest;
-import pl.jakubtworek.menu.dto.SimpleMenuItem;
 
 import java.util.List;
 import java.util.Optional;
@@ -47,14 +46,6 @@ public class MenuItemFacade {
 
     List<MenuItemDto> findByMenu(String menuName) {
         return menuItemQueryRepository.findDtoByMenuName(menuName);
-    }
-
-    MenuItemDto toDto(SimpleMenuItem menuItem) {
-        return MenuItemDto.builder()
-                .withId(menuItem.getId())
-                .withName(menuItem.getName())
-                .withPrice(menuItem.getPrice())
-                .build();
     }
 
     private MenuItemDto toDto(MenuItem menuItem) {

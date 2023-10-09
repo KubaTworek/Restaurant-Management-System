@@ -8,11 +8,11 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface EmployeeQueryRepository {
-    List<EmployeeDto> findByJobName(String jobName);
+    List<EmployeeDto> findByJob(String job);
 
     Optional<EmployeeDto> findDtoById(Long id);
 
-    Optional<SimpleEmployee> findQueryById(Long id);
+    Optional<SimpleEmployee> findSimpleById(Long id);
 
     <T> Set<T> findBy(Class<T> type);
 }

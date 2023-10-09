@@ -49,6 +49,7 @@ public class OrderFacade {
                 .orElseThrow(() -> new IllegalStateException("Order with that id doesn't exist"));
         SimpleEmployee employeeEntity = employeeFacade.getById(employee.getId());
         orderEntity.add(employeeEntity);
+        orderRepository.save(orderEntity);
     }
 
     public SimpleOrder getById(Long id) {

@@ -18,7 +18,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,12 +54,11 @@ class SqlOrder {
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id")
     )
-    private List<SqlSimpleEmployee> employees = new ArrayList<>();
+    private List<SqlSimpleEmployee> employees;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private SqlSimpleUser user;
-
 
     public SqlOrder() {
     }

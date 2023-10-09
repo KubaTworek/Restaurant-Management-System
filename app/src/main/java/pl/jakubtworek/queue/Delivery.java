@@ -1,6 +1,5 @@
 package pl.jakubtworek.queue;
 
-import pl.jakubtworek.employee.EmployeeFacade;
 import pl.jakubtworek.employee.dto.SimpleEmployee;
 import pl.jakubtworek.order.OrderFacade;
 import pl.jakubtworek.order.dto.SimpleOrder;
@@ -9,11 +8,9 @@ import java.time.ZonedDateTime;
 
 abstract class Delivery {
     final OrderFacade orderFacade;
-    final EmployeeFacade employeeFacade;
 
-    Delivery(final OrderFacade orderFacade, final EmployeeFacade employeeFacade) {
+    Delivery(final OrderFacade orderFacade) {
         this.orderFacade = orderFacade;
-        this.employeeFacade = employeeFacade;
     }
 
     abstract void startDelivering();

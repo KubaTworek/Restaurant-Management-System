@@ -1,7 +1,9 @@
 package pl.jakubtworek.menu;
 
 import pl.jakubtworek.menu.dto.MenuDto;
+import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.menu.dto.MenuRequest;
+import pl.jakubtworek.menu.dto.SimpleMenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +11,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class MenuFacade {
-    private final MenuItemFacade menuItemFacade;
     private final MenuRepository menuRepository;
     private final MenuQueryRepository menuQueryRepository;
 
-    MenuFacade(final MenuItemFacade menuItemFacade, final MenuRepository menuRepository,
-               final MenuQueryRepository menuQueryRepository) {
-        this.menuItemFacade = menuItemFacade;
+    MenuFacade(final MenuRepository menuRepository, final MenuQueryRepository menuQueryRepository) {
         this.menuRepository = menuRepository;
         this.menuQueryRepository = menuQueryRepository;
     }
@@ -42,7 +41,15 @@ public class MenuFacade {
         return MenuDto.builder()
                 .withId(menu.getId())
                 .withName(menu.getName())
-                .withMenuItems(menu.getMenuItems().stream().map(menuItemFacade::toDto).collect(Collectors.toList()))
+                .withMenuItems(menu.getMenuItems().stream().map(this::toDto).collect(Collectors.toList()))
+                .build();
+    }
+
+    MenuItemDto toDto(SimpleMenuItem menuItem) {
+        return MenuItemDto.builder()
+                .withId(menuItem.getId())
+                .withName(menuItem.getName())
+                .withPrice(menuItem.getPrice())
                 .build();
     }
 }

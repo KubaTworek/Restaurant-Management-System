@@ -31,7 +31,7 @@ class OrderController {
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
-    @GetMapping
+    @GetMapping("/filter")
     List<OrderDto> getOrderByParams(@RequestParam(required = false) ZonedDateTime fromDate,
                                     @RequestParam(required = false) ZonedDateTime toDate,
                                     @RequestParam(required = false) String typeOfOrder,

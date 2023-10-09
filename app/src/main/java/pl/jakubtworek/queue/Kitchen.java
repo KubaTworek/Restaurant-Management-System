@@ -1,7 +1,6 @@
 package pl.jakubtworek.queue;
 
 import org.springframework.stereotype.Service;
-import pl.jakubtworek.employee.EmployeeFacade;
 import pl.jakubtworek.employee.dto.SimpleEmployee;
 import pl.jakubtworek.order.OrderFacade;
 import pl.jakubtworek.order.dto.SimpleOrder;
@@ -12,14 +11,12 @@ class Kitchen implements Observer {
     private final CooksQueue cooksQueue;
     private final OrdersQueue ordersQueue;
     private final OrderFacade orderFacade;
-    private final EmployeeFacade employeeFacade;
 
-    Kitchen(final OrdersQueueFacade ordersQueueFacade, final OrdersQueue ordersQueue, final CooksQueue cooksQueue, final OrderFacade orderFacade, final EmployeeFacade employeeFacade) {
+    Kitchen(final OrdersQueueFacade ordersQueueFacade, final OrdersQueue ordersQueue, final CooksQueue cooksQueue, final OrderFacade orderFacade) {
         this.ordersQueueFacade = ordersQueueFacade;
         this.ordersQueue = ordersQueue;
         this.cooksQueue = cooksQueue;
         this.orderFacade = orderFacade;
-        this.employeeFacade = employeeFacade;
         ordersQueue.registerObserver(this);
         cooksQueue.registerObserver(this);
     }
@@ -35,7 +32,6 @@ class Kitchen implements Observer {
         SimpleEmployee employee = cooksQueue.get();
         SimpleOrder order = ordersQueue.get();
         orderFacade.addEmployeeToOrder(order, employee);
-        employeeFacade.addOrderToEmployee(employee, order);
         int numberOfMenuItems = orderFacade.getNumberOfMenuItems(order);
         startPreparingOrder(employee, order, numberOfMenuItems);
     }

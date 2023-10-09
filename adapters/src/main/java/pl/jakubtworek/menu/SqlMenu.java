@@ -1,7 +1,5 @@
 package pl.jakubtworek.menu;
 
-import com.sun.istack.NotNull;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,8 +18,7 @@ class SqlMenu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    @NotNull
+    @Column(name = "name", nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)

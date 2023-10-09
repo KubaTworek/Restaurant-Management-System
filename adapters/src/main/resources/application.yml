@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: 'jdbc:h2:mem:dbtest'
+    username: 'sa'
+    password: 'pass'
+  jpa.hibernate.ddl-auto: update

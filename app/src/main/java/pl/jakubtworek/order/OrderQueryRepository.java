@@ -16,7 +16,7 @@ public interface OrderQueryRepository {
 
     List<OrderDto> findByUserUsername(String username);
 
-    @Query("SELECT o FROM Order o WHERE " +
+    @Query("SELECT o FROM SqlOrder o WHERE " +
             "(:fromDate IS NULL OR o.hourOrder >= :fromDate) " +
             "AND (:toDate IS NULL OR o.hourOrder <= :toDate) " +
             "AND (:typeOfOrder IS NULL OR o.typeOfOrder = :typeOfOrder) " +

@@ -10,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -30,16 +29,11 @@ class SqlMenuItem {
     @Column(name = "price")
     private int price;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "menu_id")
     private SqlMenu menu;
 
-    @ManyToMany
-    @JoinTable(
-            name = "Order_Menu_Item",
-            joinColumns = @JoinColumn(name = "menu_item_id"),
-            inverseJoinColumns = @JoinColumn(name = "order_id")
-    )
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "menuItems")
     private List<SqlSimpleOrder> orders;
 
     public SqlMenuItem() {

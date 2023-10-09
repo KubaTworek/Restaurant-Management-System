@@ -26,6 +26,7 @@ class SqlUser {
 
     @Column(name = "password")
     private String password;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = {CascadeType.REMOVE, CascadeType.DETACH})
     private List<SqlSimpleOrder> orders;
 

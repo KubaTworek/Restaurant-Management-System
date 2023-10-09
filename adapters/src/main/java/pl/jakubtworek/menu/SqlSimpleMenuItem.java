@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -21,6 +23,10 @@ public class SqlSimpleMenuItem {
 
     @Column(name = "price")
     private int price;
+
+    @ManyToOne
+    @JoinColumn(name = "menu_id")
+    private SqlMenu menu;
 
     public static SqlSimpleMenuItem fromMenuItem(SimpleMenuItem source) {
         SqlSimpleMenuItem result = new SqlSimpleMenuItem();

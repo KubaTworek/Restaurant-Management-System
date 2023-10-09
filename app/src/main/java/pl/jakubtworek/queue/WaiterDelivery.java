@@ -1,7 +1,6 @@
 package pl.jakubtworek.queue;
 
 import org.springframework.stereotype.Service;
-import pl.jakubtworek.employee.EmployeeFacade;
 import pl.jakubtworek.employee.dto.SimpleEmployee;
 import pl.jakubtworek.order.OrderFacade;
 import pl.jakubtworek.order.dto.SimpleOrder;
@@ -12,9 +11,9 @@ class WaiterDelivery extends Delivery implements Observer {
     private final WaiterQueue waiterQueue;
     private final OrdersMadeOnsiteQueue ordersMadeOnsiteQueue;
 
-    WaiterDelivery(final OrderFacade orderFacade, final EmployeeFacade employeeFacade, final WaiterQueue waiterQueue,
+    WaiterDelivery(final OrderFacade orderFacade, final WaiterQueue waiterQueue,
                    final OrdersMadeOnsiteQueue ordersMadeOnsiteQueue) {
-        super(orderFacade, employeeFacade);
+        super(orderFacade);
         this.waiterQueue = waiterQueue;
         this.ordersMadeOnsiteQueue = ordersMadeOnsiteQueue;
         waiterQueue.registerObserver(this);
@@ -33,7 +32,6 @@ class WaiterDelivery extends Delivery implements Observer {
         SimpleEmployee employee = waiterQueue.get();
         SimpleOrder order = ordersMadeOnsiteQueue.get();
         orderFacade.addEmployeeToOrder(order, employee);
-        employeeFacade.addOrderToEmployee(employee, order);
         startDeliveringOrder(employee, order, 2, waiterQueue);
     }
 
