@@ -12,20 +12,21 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "menu_item")
+@Table(name = "MENU_ITEMS")
 public class SqlSimpleMenuItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "MENU_ITEM_ID")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "MENU_ITEM_NAME")
     private String name;
 
-    @Column(name = "price")
+    @Column(name = "PRICE")
     private int price;
 
     @ManyToOne
-    @JoinColumn(name = "menu_id")
+    @JoinColumn(name = "MENU_ID")
     private SqlMenu menu;
 
     public static SqlSimpleMenuItem fromMenuItem(SimpleMenuItem source) {

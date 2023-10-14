@@ -14,19 +14,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "employee")
+@Table(name = "EMPLOYEES")
 class SqlEmployee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "EMPLOYEE_ID")
     private Long id;
 
-    @Column(name = "first_name")
+    @Column(name = "FIRST_NAME")
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "LAST_NAME")
     private String lastName;
 
-    @Column(name = "job")
+    @Column(name = "JOB")
     private Job job;
 
     @ManyToMany(mappedBy = "employees")

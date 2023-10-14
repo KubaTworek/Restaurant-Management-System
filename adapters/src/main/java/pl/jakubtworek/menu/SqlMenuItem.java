@@ -17,20 +17,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "menu_item")
+@Table(name = "MENU_ITEMS")
 class SqlMenuItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "MENU_ITEM_ID")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "MENU_ITEM_NAME")
     private String name;
 
-    @Column(name = "price")
+    @Column(name = "PRICE")
     private int price;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "menu_id")
+    @JoinColumn(name = "MENU_ID")
     private SqlMenu menu;
 
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "menuItems")

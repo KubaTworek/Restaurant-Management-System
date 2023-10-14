@@ -22,41 +22,42 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "ORDERS")
 public class SqlSimpleOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ORDER_ID")
     private Long id;
 
-    @Column(name = "price")
+    @Column(name = "PRICE")
     private int price;
 
-    @Column(name = "hour_order")
+    @Column(name = "HOUR_ORDER")
     private ZonedDateTime hourOrder;
 
-    @Column(name = "hour_away")
+    @Column(name = "HOUR_AWAY")
     private ZonedDateTime hourAway;
 
-    @Column(name = "type_of_order")
+    @Column(name = "TYPE_OF_ORDER")
     private TypeOfOrder typeOfOrder;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "USER_ID")
     private SqlSimpleUser user;
 
     @ManyToMany
     @JoinTable(
-            name = "Order_Employee",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "employee_id")
+            name = "ORDERS__EMPLOYEE",
+            joinColumns = @JoinColumn(name = "ORDER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "EMPLOYEE_ID")
     )
     private List<SqlSimpleEmployee> employees;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "Order_Menu_Item",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "menu_item_id")
+            name = "ORDERS__MENU_ITEMS",
+            joinColumns = @JoinColumn(name = "ORDER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "MENU_ITEM_ID")
     )
     private List<SqlSimpleMenuItem> menuItems;
 

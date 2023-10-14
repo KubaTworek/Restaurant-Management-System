@@ -12,13 +12,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "menu")
+@Table(name = "MENU")
 class SqlMenu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "MENU_ID")
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "MENU_NAME")
     private String name;
 
     @OneToMany(mappedBy = "menu", cascade = CascadeType.MERGE)

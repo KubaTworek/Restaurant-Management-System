@@ -22,42 +22,43 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "ORDERS")
 class SqlOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ORDER_ID")
     private Long id;
 
-    @Column(name = "price")
+    @Column(name = "PRICE")
     private int price;
 
-    @Column(name = "hour_order")
+    @Column(name = "HOUR_ORDER")
     private ZonedDateTime hourOrder;
 
-    @Column(name = "hour_away")
+    @Column(name = "HOUR_AWAY")
     private ZonedDateTime hourAway;
 
-    @Column(name = "type_of_order")
+    @Column(name = "TYPE_OF_ORDER")
     private TypeOfOrder typeOfOrder;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.DETACH})
     @JoinTable(
-            name = "Order_Menu_Item",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "menu_item_id")
+            name = "ORDERS__MENU_ITEMS",
+            joinColumns = @JoinColumn(name = "ORDER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "MENU_ITEM_ID")
     )
     private List<SqlSimpleMenuItem> menuItems;
 
     @ManyToMany(cascade = {CascadeType.DETACH})
     @JoinTable(
-            name = "Order_Employee",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "employee_id")
+            name = "ORDERS__EMPLOYEE",
+            joinColumns = @JoinColumn(name = "ORDER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "EMPLOYEE_ID")
     )
     private List<SqlSimpleEmployee> employees;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "USER_ID")
     private SqlSimpleUser user;
 
     public SqlOrder() {

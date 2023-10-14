@@ -1,6 +1,11 @@
 spring:
+  h2.console:
+      enabled: true
+      path: '/console'
   datasource:
-    url: 'jdbc:h2:mem:dbtest'
+    url: 'jdbc:h2:file:~/IdeaProjects/Restaurant-Management-System/database/restaurant-db'
     username: 'sa'
     password: 'pass'
-  jpa.hibernate.ddl-auto: update
+  jpa:
+    hibernate:
+      ddl-auto: validate

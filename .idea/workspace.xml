@@ -4,33 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6804a3ab-3eba-4f33-a440-5fed16101a6e" name="Changes" comment="add necessary business logic">
+    <list default="true" id="6804a3ab-3eba-4f33-a440-5fed16101a6e" name="Changes" comment="CRUD operations works pretty well">
+      <change afterPath="$PROJECT_DIR$/adapters/src/main/resources/db/migration/V1__create_users_table.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adapters/src/main/resources/db/migration/V2__create_employee_table.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adapters/src/main/resources/db/migration/V3__create_menu_table.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adapters/src/main/resources/db/migration/V4__create_menu_item_table.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adapters/src/main/resources/db/migration/V5__create_orders_table.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/restaurant-db.mv.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapters/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/auth/SqlSimpleUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/auth/SqlSimpleUser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/auth/SqlUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/auth/SqlUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/employee/SqlEmployee.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/employee/SqlEmployee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/employee/SqlSimpleEmployee.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/employee/SqlSimpleEmployee.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/menu/SqlMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/menu/SqlMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/menu/SqlMenuItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/menu/SqlMenuItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/menu/SqlMenuRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/menu/SqlMenuRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/UserFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/UserFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/UserQueryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/UserQueryRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/dto/LoginResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/dto/LoginResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/dto/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/dto/UserDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/EmployeeFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/EmployeeFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/EmployeeQueryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/EmployeeQueryRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/dto/EmployeeDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/dto/EmployeeDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/MenuFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/MenuFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/MenuItemFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/MenuItemFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/MenuQueryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/MenuQueryRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/dto/MenuDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/dto/MenuDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/dto/MenuItemDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/dto/MenuItemDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/dto/OrderDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/dto/OrderDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/auth/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/auth/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/employee/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/employee/Employee.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/menu/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/menu/Menu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/menu/MenuItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/menu/MenuItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/menu/MenuRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/menu/MenuRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/menu/SqlSimpleMenuItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/menu/SqlSimpleMenuItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/SqlOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/SqlOrder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/SqlSimpleOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/SqlSimpleOrder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapters/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapters/src/main/resources/schema.sql" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,7 +108,7 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "jdk.selected.JAVA_MODULE": "openjdk-19",
-    "last_opened_file_path": "C:/Users/kubat/IdeaProjects/Restaurant-Management-System",
+    "last_opened_file_path": "C:/Users/kubat/IdeaProjects/Restaurant-Management-System/adapters/src/main/resources/db/migration",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
@@ -154,11 +146,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\kubat\IdeaProjects\Restaurant-Management-System\adapters\src\main\resources\db\migration" />
       <recent name="C:\Users\kubat\IdeaProjects\Restaurant-Management-System\adapters\src\main\resources" />
       <recent name="C:\Users\kubat\IdeaProjects\Restaurant-Management-System\adapters\src\main\java\pl\jakubtworek" />
       <recent name="C:\Users\kubat\IdeaProjects\Restaurant-Management-System\domain\src\main\java\pl\jakubtworek\auth" />
       <recent name="$PROJECT_DIR$/database" />
-      <recent name="$PROJECT_DIR$/src/main/resources" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\kubat\IdeaProjects\Restaurant-Management-System\monolith\src\main\resources" />
