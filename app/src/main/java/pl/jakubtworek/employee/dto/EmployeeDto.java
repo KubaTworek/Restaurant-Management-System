@@ -10,15 +10,18 @@ public interface EmployeeDto {
     }
 
     Long getId();
+
     String getFirstName();
+
     String getLastName();
+
     Job getJob();
 
     class DeserializationImpl implements EmployeeDto {
-        private Long id;
-        private String firstName;
-        private String lastName;
-        private Job job;
+        private final Long id;
+        private final String firstName;
+        private final String lastName;
+        private final Job job;
 
         DeserializationImpl(final Long id, final String firstName, final String lastName, final Job job) {
             this.id = id;

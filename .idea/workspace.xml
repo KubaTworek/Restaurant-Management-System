@@ -4,25 +4,62 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6804a3ab-3eba-4f33-a440-5fed16101a6e" name="Changes" comment="CRUD operations works pretty well">
-      <change afterPath="$PROJECT_DIR$/adapters/src/main/resources/db/migration/V1__create_users_table.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adapters/src/main/resources/db/migration/V2__create_employee_table.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adapters/src/main/resources/db/migration/V3__create_menu_table.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adapters/src/main/resources/db/migration/V4__create_menu_item_table.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adapters/src/main/resources/db/migration/V5__create_orders_table.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/restaurant-db.mv.db" afterDir="false" />
+    <list default="true" id="6804a3ab-3eba-4f33-a440-5fed16101a6e" name="Changes" comment="implement flyway">
+      <change afterPath="$PROJECT_DIR$/adapters/src/test/java/pl/jakubtworek/employee/EmployeeControllerE2ETest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/auth/UserFacadeTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/employee/EmployeeFacadeTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/menu/MenuFacadeTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/menu/MenuItemFacadeTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/order/OrderFacadeTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/CarDeliveryTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/CooksQueueTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/DeliveryQueueTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/EmployeeQueueFacadeTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/KitchenTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/OrdersQueueFacadeTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/OrdersQueueTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/QueueTestIT.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/WaiterDeliveryTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/WaiterQueueTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/restaurant-db.trace.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monolith/src/test/java/pl/jakubtworek/RestaurantManagementSystemApplicationTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monolith/src/test/java/pl/jakubtworek/employee/EmployeeControllerE2ETest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/auth/SqlSimpleUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/auth/SqlSimpleUser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/auth/SqlUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/auth/SqlUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/auth/UserConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/auth/UserConfiguration.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/employee/SqlEmployee.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/employee/SqlEmployee.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/employee/SqlSimpleEmployee.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/employee/SqlSimpleEmployee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/menu/MenuItemConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/menu/MenuItemConfiguration.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/menu/SqlMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/menu/SqlMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/menu/SqlMenuItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/menu/SqlMenuItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/menu/SqlSimpleMenuItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/menu/SqlSimpleMenuItem.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/SqlOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/SqlOrder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/SqlSimpleOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/SqlSimpleOrder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/adapters/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapters/src/main/resources/schema.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/JwtService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/UserFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/UserFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/dto/LoginRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/dto/LoginRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/dto/LoginResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/dto/LoginResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/dto/RegisterRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/dto/RegisterRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/dto/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/dto/UserDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/EmployeeFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/EmployeeFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/dto/EmployeeDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/dto/EmployeeDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/dto/EmployeeRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/dto/EmployeeRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/MenuFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/MenuFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/MenuItemFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/MenuItemFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/dto/MenuDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/dto/MenuDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/dto/MenuItemDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/dto/MenuItemDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/dto/MenuItemRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/dto/MenuItemRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/dto/MenuRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/dto/MenuRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderQueryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderQueryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/dto/OrderDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/dto/OrderDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/dto/OrderRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/dto/OrderRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/CarDelivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/CarDelivery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/Delivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/Delivery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/Kitchen.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/Kitchen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/OrdersQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/OrdersQueue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/WaiterDelivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/WaiterDelivery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/restaurant-db.mv.db" beforeDir="false" afterPath="$PROJECT_DIR$/database/restaurant-db.mv.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,6 +135,10 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Downloaded.Files.Path.Enabled": "false",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
     "RequestMappingsPanelWidth0": "75",
@@ -108,7 +149,7 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "jdk.selected.JAVA_MODULE": "openjdk-19",
-    "last_opened_file_path": "C:/Users/kubat/IdeaProjects/Restaurant-Management-System/adapters/src/main/resources/db/migration",
+    "last_opened_file_path": "C:/Users/kubat/IdeaProjects/Restaurant-Management-System/monolith/src/test/java/pl/jakubtworek",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
@@ -146,11 +187,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\kubat\IdeaProjects\Restaurant-Management-System\monolith\src\test\java\pl\jakubtworek" />
+      <recent name="C:\Users\kubat\IdeaProjects\Restaurant-Management-System\monolith\src\main\java\pl\jakubtworek" />
       <recent name="C:\Users\kubat\IdeaProjects\Restaurant-Management-System\adapters\src\main\resources\db\migration" />
       <recent name="C:\Users\kubat\IdeaProjects\Restaurant-Management-System\adapters\src\main\resources" />
       <recent name="C:\Users\kubat\IdeaProjects\Restaurant-Management-System\adapters\src\main\java\pl\jakubtworek" />
-      <recent name="C:\Users\kubat\IdeaProjects\Restaurant-Management-System\domain\src\main\java\pl\jakubtworek\auth" />
-      <recent name="$PROJECT_DIR$/database" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\kubat\IdeaProjects\Restaurant-Management-System\monolith\src\main\resources" />
@@ -163,17 +204,18 @@
       <recent name="" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="pl.jakubtworek" />
       <recent name="pl.jakubtworek.RestaurantManagementSystem" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
       <recent name="pl.jakubtworek.RestaurantManagementSystem.model.business" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="pl.jakubtworek" />
       <recent name="pl.jakubtworek.restaurant.auth" />
       <recent name="pl.jakubtworek.restaurant.employee.query" />
       <recent name="pl.jakubtworek.RestaurantManagementSystem.controller.user" />
       <recent name="pl.jakubtworek.RestaurantManagementSystem.model.entity" />
-      <recent name="pl.jakubtworek.RestaurantManagementSystem.unitTests.order" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -183,80 +225,93 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.RestaurantManagementSystemApplication">
-    <configuration name="All in Restaurant-Management-System" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Restaurant-Management-System" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="TEST_OBJECT" value="package" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="SecurityIT.ordersAdminGet_withValidJwtToken_returnsOk" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Restaurant-Management-System" />
+  <component name="RunManager" selected="JUnit.EmployeeControllerE2ETest.xd (1)">
+    <configuration name="EmployeeControllerE2ETest.xd (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="monolith" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller.*" />
+          <option name="PATTERN" value="pl.jakubtworek.employee.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller.SecurityIT" />
-      <option name="METHOD_NAME" value="ordersAdminGet_withValidJwtToken_returnsOk" />
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.employee" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.employee.EmployeeControllerE2ETest" />
+      <option name="METHOD_NAME" value="xd" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserControllerIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Restaurant-Management-System" />
+    <configuration name="EmployeeControllerE2ETest.xd" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="adapters" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller.*" />
+          <option name="PATTERN" value="pl.jakubtworek.employee.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.RestaurantManagementSystem.intTest.controller.UserControllerIT" />
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.employee" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.employee.EmployeeControllerE2ETest" />
+      <option name="METHOD_NAME" value="xd" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="QueueTestIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.jakubtworek.queue.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.queue" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.queue.QueueTestIT" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="pl.jakubtworek.RestaurantManagementSystem.unitTests.user in Restaurant-Management-System" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Restaurant-Management-System" />
+    <configuration name="QueueTestIT.shouldCookTheOtherCook_whenThereIsMoreThanOneOrderInQueue" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="app" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.RestaurantManagementSystem.unitTests.user.*" />
+          <option name="PATTERN" value="pl.jakubtworek.queue.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.RestaurantManagementSystem.unitTests.user" />
-      <option name="TEST_OBJECT" value="package" />
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.queue" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.queue.QueueTestIT" />
+      <option name="METHOD_NAME" value="shouldCookTheOtherCook_whenThereIsMoreThanOneOrderInQueue" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RestaurantManagementSystemApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="monolith" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="pl.jakubtworek.RestaurantManagementSystemApplication" />
+    <configuration name="QueueTestIT.xd1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="app" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.*" />
+          <option name="PATTERN" value="pl.jakubtworek.queue.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.queue" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.queue.QueueTestIT" />
+      <option name="METHOD_NAME" value="xd1" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Spring Boot.RestaurantManagementSystemApplication" />
-        <item itemvalue="JUnit.UserControllerIT" />
-        <item itemvalue="JUnit.pl.jakubtworek.RestaurantManagementSystem.unitTests.user in Restaurant-Management-System" />
-        <item itemvalue="JUnit.SecurityIT.ordersAdminGet_withValidJwtToken_returnsOk" />
-        <item itemvalue="JUnit.All in Restaurant-Management-System" />
+        <item itemvalue="JUnit.EmployeeControllerE2ETest.xd (1)" />
+        <item itemvalue="JUnit.EmployeeControllerE2ETest.xd" />
+        <item itemvalue="JUnit.QueueTestIT.shouldCookTheOtherCook_whenThereIsMoreThanOneOrderInQueue" />
+        <item itemvalue="JUnit.QueueTestIT.xd1" />
+        <item itemvalue="JUnit.QueueTestIT" />
       </list>
     </recent_temporary>
   </component>
@@ -298,6 +353,8 @@
       <workItem from="1696515222322" duration="375000" />
       <workItem from="1696538283252" duration="48195000" />
       <workItem from="1696874071815" duration="7176000" />
+      <workItem from="1697548145799" duration="16865000" />
+      <workItem from="1697790868031" duration="2118000" />
     </task>
     <task id="LOCAL-00001" summary="package organized by feature">
       <created>1696611505523</created>
@@ -362,7 +419,14 @@
       <option name="project" value="LOCAL" />
       <updated>1696873826282</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="implement flyway">
+      <created>1697245634332</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1697245634332</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -392,9 +456,39 @@
     <MESSAGE value="refactor queues" />
     <MESSAGE value="fix application to deploy" />
     <MESSAGE value="add necessary business logic" />
-    <option name="LAST_COMMIT_MESSAGE" value="add necessary business logic" />
+    <MESSAGE value="implement flyway" />
+    <option name="LAST_COMMIT_MESSAGE" value="implement flyway" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/CarDelivery.java</url>
+          <line>33</line>
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/WaiterDelivery.java</url>
+          <line>33</line>
+          <option name="timeStamp" value="35" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/Kitchen.java</url>
+          <line>33</line>
+          <option name="timeStamp" value="37" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/adapters/src/test/java/pl/jakubtworek/employee/EmployeeControllerE2ETest.java</url>
+          <line>31</line>
+          <option name="timeStamp" value="38" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/monolith/src/test/java/pl/jakubtworek/employee/EmployeeControllerE2ETest.java</url>
+          <line>31</line>
+          <option name="timeStamp" value="39" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="pl.jakubtworek.RestaurantManagementSystem.controller.employee.GetEmployeeDTO" memberName="links" />

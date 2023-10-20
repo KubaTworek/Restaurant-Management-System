@@ -7,5 +7,6 @@ spring:
     username: 'sa'
     password: 'pass'
   jpa:
+    show-sql: true
     hibernate:
       ddl-auto: validate
