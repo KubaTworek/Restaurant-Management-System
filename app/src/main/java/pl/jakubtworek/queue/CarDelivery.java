@@ -32,7 +32,7 @@ class CarDelivery extends Delivery implements Observer {
         SimpleEmployee employee = deliveryQueue.get();
         SimpleOrder order = ordersMadeDeliveryQueue.get();
         orderFacade.addEmployeeToOrder(order, employee);
-        startDeliveringOrder(employee, order, 5, deliveryQueue);
+        startDeliveringOrder(employee, order, 0, deliveryQueue);
     }
 
     @Override

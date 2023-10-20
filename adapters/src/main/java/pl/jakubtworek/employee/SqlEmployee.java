@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -31,7 +31,7 @@ class SqlEmployee {
     private Job job;
 
     @ManyToMany(mappedBy = "employees")
-    private List<SqlSimpleOrder> orders;
+    private Set<SqlSimpleOrder> orders;
 
     public SqlEmployee() {
     }
@@ -42,7 +42,7 @@ class SqlEmployee {
         result.firstName = source.getFirstName();
         result.lastName = source.getLastName();
         result.job = source.getJob();
-        result.orders = source.getOrders().stream().map(SqlSimpleOrder::fromOrder).collect(Collectors.toList());
+        result.orders = source.getOrders().stream().map(SqlSimpleOrder::fromOrder).collect(Collectors.toSet());
         return result;
     }
 

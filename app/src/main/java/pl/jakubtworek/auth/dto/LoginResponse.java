@@ -15,4 +15,16 @@ public class LoginResponse {
         this.token = token;
         this.tokenExpirationDate = tokenExpirationDate;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public Long getTokenExpirationDate() {
+        return tokenExpirationDate;
+    }
 }

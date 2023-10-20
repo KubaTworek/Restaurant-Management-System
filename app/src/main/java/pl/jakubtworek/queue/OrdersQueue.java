@@ -47,14 +47,14 @@ class OrdersQueue implements Subject {
     static class OrderComparator implements Comparator<SimpleOrder> {
         @Override
         public int compare(SimpleOrder o1, SimpleOrder o2) {
-            return Integer.compare(isOrderOnsite(o2), isOrderOnsite(o1));
+            return Integer.compare(isOrderOnsite(o1), isOrderOnsite(o2));
         }
 
         private int isOrderOnsite(SimpleOrder o1) {
             if (Objects.equals(o1.getTypeOfOrder(), TypeOfOrder.ON_SITE) || Objects.equals(o1.getTypeOfOrder(), TypeOfOrder.TAKE_AWAY))
-                return 1;
-            if (Objects.equals(o1.getTypeOfOrder(), TypeOfOrder.DELIVERY))
                 return -1;
+            if (Objects.equals(o1.getTypeOfOrder(), TypeOfOrder.DELIVERY))
+                return 1;
             return 0;
         }
     }

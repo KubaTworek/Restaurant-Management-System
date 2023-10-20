@@ -10,7 +10,12 @@ import java.util.Date;
 
 class JwtService {
 
-    static String buildJwt(String username, long expirationDate) {
+    private static SecretKey createSecretKey() {
+        byte[] keyBytes = SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    String buildJwt(String username, long expirationDate) {
         return Jwts.builder()
                 .setIssuer("Social Media")
                 .setSubject("JWT Token")
@@ -21,17 +26,12 @@ class JwtService {
                 .compact();
     }
 
-    static Claims parseJwtClaims(String jwt) {
+    Claims parseJwtClaims(String jwt) {
         String jwtWithoutBearer = jwt.replaceFirst("Bearer ", "");
         return Jwts.parserBuilder()
                 .setSigningKey(createSecretKey())
                 .build()
                 .parseClaimsJws(jwtWithoutBearer)
                 .getBody();
-    }
-
-    private static SecretKey createSecretKey() {
-        byte[] keyBytes = SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8);
-        return Keys.hmacShaKeyFor(keyBytes);
     }
 }

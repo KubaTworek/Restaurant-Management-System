@@ -3,12 +3,13 @@ package pl.jakubtworek.menu;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -22,8 +23,8 @@ class SqlMenu {
     @Column(name = "MENU_NAME")
     private String name;
 
-    @OneToMany(mappedBy = "menu", cascade = CascadeType.MERGE)
-    private List<SqlSimpleMenuItem> menuItems;
+    @OneToMany(mappedBy = "menu", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE})
+    private Set<SqlSimpleMenuItem> menuItems;
 
     public SqlMenu() {
     }
@@ -32,7 +33,7 @@ class SqlMenu {
         SqlMenu result = new SqlMenu();
         result.id = source.getId();
         result.name = source.getName();
-        result.menuItems = source.getMenuItems().stream().map(SqlSimpleMenuItem::fromMenuItem).collect(Collectors.toList());
+        result.menuItems = source.getMenuItems().stream().map(SqlSimpleMenuItem::fromMenuItem).collect(Collectors.toSet());
         return result;
     }
 

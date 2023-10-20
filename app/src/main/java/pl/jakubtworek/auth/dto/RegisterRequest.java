@@ -4,9 +4,14 @@ import javax.validation.constraints.NotNull;
 
 public class RegisterRequest {
     @NotNull(message = "First name cannot be null.")
-    private String username;
+    private final String username;
     @NotNull(message = "Last name cannot be null.")
-    private String password;
+    private final String password;
+
+    public RegisterRequest(final String username, final String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     public String getUsername() {
         return username;

@@ -32,7 +32,7 @@ class WaiterDelivery extends Delivery implements Observer {
         SimpleEmployee employee = waiterQueue.get();
         SimpleOrder order = ordersMadeOnsiteQueue.get();
         orderFacade.addEmployeeToOrder(order, employee);
-        startDeliveringOrder(employee, order, 2, waiterQueue);
+        startDeliveringOrder(employee, order, 0, waiterQueue);
     }
 
     @Override

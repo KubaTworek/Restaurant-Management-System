@@ -46,7 +46,7 @@ class Kitchen implements Observer {
     }
 
     private void preparing(SimpleEmployee employee, SimpleOrder order, int time) {
-        int timeToCook = time * 1000;
+        int timeToCook = time * 10000;
         try {
             Thread.sleep(timeToCook);
             cooksQueue.add(employee);

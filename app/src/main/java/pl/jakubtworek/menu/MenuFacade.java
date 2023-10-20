@@ -20,7 +20,7 @@ public class MenuFacade {
     }
 
     MenuDto save(MenuRequest toSave) {
-        Menu menu = new Menu();
+        final var menu = new Menu();
         menu.setName(toSave.getName());
         return toDto(menuRepository.save(menu));
     }

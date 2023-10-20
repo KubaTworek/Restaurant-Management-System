@@ -19,7 +19,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.ZonedDateTime;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "ORDERS")
@@ -51,7 +51,7 @@ public class SqlSimpleOrder {
             joinColumns = @JoinColumn(name = "ORDER_ID"),
             inverseJoinColumns = @JoinColumn(name = "EMPLOYEE_ID")
     )
-    private List<SqlSimpleEmployee> employees;
+    private Set<SqlSimpleEmployee> employees;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -59,7 +59,7 @@ public class SqlSimpleOrder {
             joinColumns = @JoinColumn(name = "ORDER_ID"),
             inverseJoinColumns = @JoinColumn(name = "MENU_ITEM_ID")
     )
-    private List<SqlSimpleMenuItem> menuItems;
+    private Set<SqlSimpleMenuItem> menuItems;
 
     public static SqlSimpleOrder fromOrder(SimpleOrder source) {
         SqlSimpleOrder result = new SqlSimpleOrder();

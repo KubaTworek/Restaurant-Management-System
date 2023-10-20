@@ -11,8 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -29,8 +29,8 @@ class SqlUser {
     @Column(name = "PASSWORD")
     private String password;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = {CascadeType.REMOVE, CascadeType.DETACH})
-    private List<SqlSimpleOrder> orders = new ArrayList<>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    private Set<SqlSimpleOrder> orders = new HashSet<>();
 
     public SqlUser() {
     }
@@ -40,7 +40,7 @@ class SqlUser {
         result.id = source.getId();
         result.username = source.getUsername();
         result.password = source.getPassword();
-        result.orders = source.getOrders().stream().map(SqlSimpleOrder::fromOrder).collect(Collectors.toList());
+        result.orders = source.getOrders().stream().map(SqlSimpleOrder::fromOrder).collect(Collectors.toSet());
         return result;
     }
 

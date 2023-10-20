@@ -10,13 +10,15 @@ public interface MenuItemDto {
     }
 
     Long getId();
+
     String getName();
+
     int getPrice();
 
     class DeserializationImpl implements MenuItemDto {
-        private Long id;
-        private String name;
-        private int price;
+        private final Long id;
+        private final String name;
+        private final int price;
 
         DeserializationImpl(final Long id, final String name, final int price) {
             this.id = id;

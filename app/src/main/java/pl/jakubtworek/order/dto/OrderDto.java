@@ -12,17 +12,21 @@ public interface OrderDto {
     }
 
     Long getId();
+
     int getPrice();
+
     ZonedDateTime getHourOrder();
+
     ZonedDateTime getHourAway();
+
     TypeOfOrder getTypeOfOrder();
 
     class DeserializationImpl implements OrderDto {
-        private Long id;
-        private int price;
-        private ZonedDateTime hourOrder;
-        private ZonedDateTime hourAway;
-        private TypeOfOrder typeOfOrder;
+        private final Long id;
+        private final int price;
+        private final ZonedDateTime hourOrder;
+        private final ZonedDateTime hourAway;
+        private final TypeOfOrder typeOfOrder;
 
         DeserializationImpl(final Long id, final int price, final ZonedDateTime hourOrder, final ZonedDateTime hourAway, final TypeOfOrder typeOfOrder) {
             this.id = id;

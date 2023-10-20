@@ -16,17 +16,14 @@ abstract class Delivery {
     abstract boolean isExistsEmployeeAndOrder();
 
     void delivering(SimpleEmployee employee, SimpleOrder order, int time, EmployeeQueue queue) {
-        int timeToDelivery = time * 1000;
         try {
-            Thread.sleep(timeToDelivery);
+            Thread.sleep(time);
             orderFacade.setAsDelivered(order);
             queue.add(employee);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
-
-    ;
 
     void startDeliveringOrder(SimpleEmployee employee, SimpleOrder order, int time, EmployeeQueue queue) {
         Runnable r = () -> delivering(employee, order, time, queue);

@@ -8,11 +8,17 @@ class UserConfiguration {
     @Bean
     UserFacade userFacade(
             UserRepository userRepository,
-            UserQueryRepository userQueryRepository
+            UserQueryRepository userQueryRepository,
+            JwtService jwtService
     ) {
         return new UserFacade(
                 userRepository,
-                userQueryRepository
-        );
+                userQueryRepository,
+                jwtService);
+    }
+
+    @Bean
+    JwtService jwtService() {
+        return new JwtService();
     }
 }

@@ -1,6 +1,5 @@
 package pl.jakubtworek.menu;
 
-import pl.jakubtworek.menu.dto.MenuDto;
 import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.menu.dto.MenuItemRequest;
 import pl.jakubtworek.menu.dto.SimpleMenuItem;
@@ -9,15 +8,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class MenuItemFacade {
-    private final MenuFacade menuFacade;
     private final MenuItemRepository menuItemRepository;
     private final MenuItemQueryRepository menuItemQueryRepository;
     private final MenuQueryRepository menuQueryRepository;
 
-    MenuItemFacade(final MenuFacade menuFacade, final MenuItemRepository menuItemRepository,
-                   final MenuItemQueryRepository menuItemQueryRepository,
+    MenuItemFacade(final MenuItemRepository menuItemRepository, final MenuItemQueryRepository menuItemQueryRepository,
                    final MenuQueryRepository menuQueryRepository) {
-        this.menuFacade = menuFacade;
         this.menuItemRepository = menuItemRepository;
         this.menuItemQueryRepository = menuItemQueryRepository;
         this.menuQueryRepository = menuQueryRepository;
@@ -33,14 +29,14 @@ public class MenuItemFacade {
     }
 
     MenuItemDto save(MenuItemRequest toSave) {
-        MenuDto menuDto = menuQueryRepository.findDtoByName(toSave.getMenu())
+        final var menuDto = menuQueryRepository.findDtoByName(toSave.getMenu())
                 .orElseThrow(() -> new IllegalStateException("There are no menu in restaurant with that name: " + toSave.getMenu()));
 
-        Menu menu = new Menu();
+        final var menu = new Menu();
         menu.setId(menuDto.getId());
         menu.setName(menuDto.getName());
 
-        MenuItem menuItem = new MenuItem();
+        final var menuItem = new MenuItem();
         menuItem.setName(toSave.getName());
         menuItem.setPrice(toSave.getPrice());
         menuItem.setMenu(menu);

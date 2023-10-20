@@ -3,15 +3,12 @@ package pl.jakubtworek.order;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import pl.jakubtworek.order.dto.OrderDto;
-import pl.jakubtworek.order.dto.SimpleOrder;
 
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
 public interface OrderQueryRepository {
-    Optional<SimpleOrder> findSimpleById(Long id);
-
     Optional<OrderDto> findDtoById(Long id);
 
     List<OrderDto> findByUserUsername(String username);

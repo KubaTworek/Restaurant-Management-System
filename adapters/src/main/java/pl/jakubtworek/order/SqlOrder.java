@@ -5,10 +5,8 @@ import pl.jakubtworek.employee.SqlSimpleEmployee;
 import pl.jakubtworek.menu.SqlSimpleMenuItem;
 import pl.jakubtworek.order.dto.TypeOfOrder;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.ZonedDateTime;
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -41,23 +39,23 @@ class SqlOrder {
     @Column(name = "TYPE_OF_ORDER")
     private TypeOfOrder typeOfOrder;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.DETACH})
+    @ManyToMany
     @JoinTable(
             name = "ORDERS__MENU_ITEMS",
             joinColumns = @JoinColumn(name = "ORDER_ID"),
             inverseJoinColumns = @JoinColumn(name = "MENU_ITEM_ID")
     )
-    private List<SqlSimpleMenuItem> menuItems;
+    private Set<SqlSimpleMenuItem> menuItems;
 
-    @ManyToMany(cascade = {CascadeType.DETACH})
+    @ManyToMany
     @JoinTable(
             name = "ORDERS__EMPLOYEE",
             joinColumns = @JoinColumn(name = "ORDER_ID"),
             inverseJoinColumns = @JoinColumn(name = "EMPLOYEE_ID")
     )
-    private List<SqlSimpleEmployee> employees;
+    private Set<SqlSimpleEmployee> employees;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "USER_ID")
     private SqlSimpleUser user;
 
@@ -71,8 +69,8 @@ class SqlOrder {
         result.hourOrder = source.getHourOrder();
         result.hourAway = source.getHourAway();
         result.typeOfOrder = source.getTypeOfOrder();
-        result.menuItems = source.getMenuItems().stream().map(SqlSimpleMenuItem::fromMenuItem).collect(Collectors.toList());
-        result.employees = source.getEmployees().stream().map(SqlSimpleEmployee::fromEmployee).collect(Collectors.toList());
+        result.menuItems = source.getMenuItems().stream().map(SqlSimpleMenuItem::fromMenuItem).collect(Collectors.toSet());
+        result.employees = source.getEmployees().stream().map(SqlSimpleEmployee::fromEmployee).collect(Collectors.toSet());
         result.user = SqlSimpleUser.fromUser(source.getUser());
         return result;
     }

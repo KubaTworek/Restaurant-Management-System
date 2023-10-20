@@ -27,8 +27,7 @@ public class EmployeeFacade {
     }
 
     EmployeeDto save(EmployeeRequest toSave) {
-
-        Employee employee = new Employee();
+        final var employee = new Employee();
         employee.setFirstName(toSave.getFirstName());
         employee.setLastName(toSave.getLastName());
         if (isJobExist(toSave.getJob())) {
@@ -36,8 +35,8 @@ public class EmployeeFacade {
         } else {
             throw new IllegalStateException("Job is not exist");
         }
-        EmployeeDto created = toDto(employeeRepository.save(employee));
-        SimpleEmployee employeeQueryDto = new SimpleEmployee(
+        final var created = toDto(employeeRepository.save(employee));
+        final var employeeQueryDto = new SimpleEmployee(
                 created.getId(),
                 created.getFirstName(),
                 created.getLastName(),
@@ -69,7 +68,7 @@ public class EmployeeFacade {
     }
 
     private boolean isJobExist(String jobName) {
-        for (Job job : Job.values()) {
+        for (var job : Job.values()) {
             if (job.name().equals(jobName)) {
                 return true;
             }

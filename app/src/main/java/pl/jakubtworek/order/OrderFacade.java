@@ -1,7 +1,6 @@
 package pl.jakubtworek.order;
 
 import pl.jakubtworek.auth.UserFacade;
-import pl.jakubtworek.auth.dto.SimpleUser;
 import pl.jakubtworek.employee.EmployeeFacade;
 import pl.jakubtworek.employee.dto.SimpleEmployee;
 import pl.jakubtworek.menu.MenuItemFacade;
@@ -47,7 +46,7 @@ public class OrderFacade {
     public void addEmployeeToOrder(SimpleOrder order, SimpleEmployee employee) {
         orderRepository.findById(order.getId())
                 .map(o -> {
-                    final SimpleEmployee employeeEntity = employeeFacade.getById(employee.getId());
+                    final var employeeEntity = employeeFacade.getById(employee.getId());
                     o.add(employeeEntity);
                     return orderRepository.save(o);
                 })
@@ -62,16 +61,16 @@ public class OrderFacade {
 
     OrderDto save(OrderRequest orderRequest, String jwt) {
 
-        SimpleUser user = userFacade.getUser(jwt);
+        final var user = userFacade.getUser(jwt);
 
-        Order order = new Order();
+        final var order = new Order();
         order.setPrice(calculatePrice(orderRequest.getMenuItems()));
         order.setHourOrder(ZonedDateTime.now());
         order.setTypeOfOrder(TypeOfOrder.valueOf(orderRequest.getTypeOfOrder()));
         order.setUser(user);
 
-        OrderDto created = toDto(orderRepository.save(order));
-        SimpleOrder orderQueryDto = new SimpleOrder(
+        final var created = toDto(orderRepository.save(order));
+        final var orderQueryDto = new SimpleOrder(
                 created.getId(),
                 created.getPrice(),
                 created.getHourOrder(),
@@ -83,7 +82,7 @@ public class OrderFacade {
     }
 
     List<OrderDto> findAll(String jwt) {
-        SimpleUser user = userFacade.getUser(jwt);
+        final var user = userFacade.getUser(jwt);
 
         return orderQueryRepository.findByUserUsername(user.getUsername());
     }

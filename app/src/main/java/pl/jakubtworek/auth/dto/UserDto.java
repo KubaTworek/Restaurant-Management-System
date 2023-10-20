@@ -10,13 +10,15 @@ public interface UserDto {
     }
 
     Long getId();
+
     String getUsername();
+
     String getPassword();
 
     class DeserializationImpl implements UserDto {
-        private Long id;
-        private String username;
-        private String password;
+        private final Long id;
+        private final String username;
+        private final String password;
 
         DeserializationImpl(final Long id, final String username, final String password) {
             this.id = id;

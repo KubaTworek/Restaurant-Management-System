@@ -7,13 +7,11 @@ import org.springframework.context.annotation.Configuration;
 class MenuItemConfiguration {
     @Bean
     MenuItemFacade menuItemFacade(
-            MenuFacade menuFacade,
             MenuItemRepository menuItemRepository,
             MenuItemQueryRepository menuItemQueryRepository,
             MenuQueryRepository menuQueryRepository
     ) {
         return new MenuItemFacade(
-                menuFacade,
                 menuItemRepository,
                 menuItemQueryRepository,
                 menuQueryRepository

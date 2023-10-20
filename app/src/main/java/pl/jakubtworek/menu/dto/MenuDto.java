@@ -18,9 +18,9 @@ public interface MenuDto {
     List<MenuItemDto> getMenuItems();
 
     class DeserializationImpl implements MenuDto {
-        private Long id;
-        private String name;
-        private List<MenuItemDto> menuItems;
+        private final Long id;
+        private final String name;
+        private final List<MenuItemDto> menuItems;
 
         DeserializationImpl(final Long id, final String name, final List<MenuItemDto> menuItems) {
             this.id = id;
