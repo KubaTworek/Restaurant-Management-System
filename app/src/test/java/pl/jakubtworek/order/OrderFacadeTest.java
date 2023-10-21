@@ -171,7 +171,7 @@ class OrderFacadeTest {
     void testFindById() {
         // given
         final var orderId = 1L;
-        final var orderDto = OrderDto.create(orderId, 220, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
+        final var orderDto = OrderDto.create(orderId, 220, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE, null);
         when(orderQueryRepository.findDtoById(orderId)).thenReturn(Optional.of(orderDto));
 
         // when
@@ -191,7 +191,7 @@ class OrderFacadeTest {
         when(orderQueryRepository.findFilteredOrders(any(), any(), any(), any(), any(), any())).thenReturn(createOrderDtos());
 
         // when
-        final List<OrderDto> result = orderFacade.findByParams(ZonedDateTime.now(), ZonedDateTime.now(), "ON_SITE", true, 1L, "john.doe");
+        final List<OrderDto> result = orderFacade.findByParams(ZonedDateTime.now().toString(), ZonedDateTime.now().toString(), "ON_SITE", true, 1L, "john.doe");
 
         // then
         assertEquals(2, result.size());
@@ -209,8 +209,8 @@ class OrderFacadeTest {
 
     private List<OrderDto> createOrderDtos() {
         List<OrderDto> orderDtos = new ArrayList<>();
-        orderDtos.add(OrderDto.create(1L, 220, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE));
-        orderDtos.add(OrderDto.create(2L, 250, ZonedDateTime.now(), null, TypeOfOrder.DELIVERY));
+        orderDtos.add(OrderDto.create(1L, 220, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE, null));
+        orderDtos.add(OrderDto.create(2L, 250, ZonedDateTime.now(), null, TypeOfOrder.DELIVERY, null));
         return orderDtos;
     }
 }

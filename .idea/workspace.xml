@@ -4,62 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6804a3ab-3eba-4f33-a440-5fed16101a6e" name="Changes" comment="implement flyway">
-      <change afterPath="$PROJECT_DIR$/adapters/src/test/java/pl/jakubtworek/employee/EmployeeControllerE2ETest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/auth/UserFacadeTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/employee/EmployeeFacadeTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/menu/MenuFacadeTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/menu/MenuItemFacadeTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/order/OrderFacadeTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/CarDeliveryTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/CooksQueueTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/DeliveryQueueTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/EmployeeQueueFacadeTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/KitchenTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/OrdersQueueFacadeTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/OrdersQueueTest.java" afterDir="false" />
+    <list default="true" id="6804a3ab-3eba-4f33-a440-5fed16101a6e" name="Changes" comment="prepare configuration">
       <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/QueueTestIT.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/WaiterDeliveryTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/WaiterQueueTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/restaurant-db.trace.db" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monolith/src/test/java/pl/jakubtworek/RestaurantManagementSystemApplicationTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monolith/src/test/java/pl/jakubtworek/auth/UserControllerE2ETest.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/monolith/src/test/java/pl/jakubtworek/employee/EmployeeControllerE2ETest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monolith/src/test/java/pl/jakubtworek/menu/MenuControllerE2ETest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monolith/src/test/java/pl/jakubtworek/menu/MenuItemControllerE2ETest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monolith/src/test/java/pl/jakubtworek/orders/OrderControllerE2ETest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monolith/src/test/java/pl/jakubtworek/queue/QueueControllerE2ETest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/auth/SqlUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/auth/SqlUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/auth/UserConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/auth/UserConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/employee/SqlEmployee.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/employee/SqlEmployee.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/menu/MenuItemConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/menu/MenuItemConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/menu/SqlMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/menu/SqlMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/menu/SqlMenuItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/menu/SqlMenuItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/SqlOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/SqlOrder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/SqlSimpleOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/SqlSimpleOrder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapters/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/JwtService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/UserFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/UserFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/dto/LoginRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/dto/LoginRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/dto/LoginResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/dto/LoginResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/dto/RegisterRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/dto/RegisterRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/dto/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/dto/UserDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/EmployeeFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/EmployeeFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/dto/EmployeeDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/dto/EmployeeDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/dto/EmployeeRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/dto/EmployeeRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/MenuFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/MenuFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/MenuItemFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/MenuItemFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/dto/MenuDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/dto/MenuDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/dto/MenuItemDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/dto/MenuItemDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/dto/MenuItemRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/dto/MenuItemRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/dto/MenuRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/dto/MenuRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderFacade.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderQueryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderQueryRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/dto/OrderDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/dto/OrderDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/dto/OrderRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/dto/OrderRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/CarDelivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/CarDelivery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/Delivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/Delivery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/Kitchen.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/Kitchen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/OrdersQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/OrdersQueue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/WaiterDelivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/WaiterDelivery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/order/OrderFacadeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/order/OrderFacadeTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/restaurant-db.mv.db" beforeDir="false" afterPath="$PROJECT_DIR$/database/restaurant-db.mv.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/restaurant-db.trace.db" beforeDir="false" afterPath="$PROJECT_DIR$/database/restaurant-db.trace.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monolith/src/test/java/pl/jakubtworek/RestaurantManagementSystemApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/monolith/src/test/java/pl/jakubtworek/RestaurantManagementSystemApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monolith/src/test/resources/application-test.yml" beforeDir="false" afterPath="$PROJECT_DIR$/monolith/src/test/resources/application-test.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -149,7 +114,7 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "jdk.selected.JAVA_MODULE": "openjdk-19",
-    "last_opened_file_path": "C:/Users/kubat/IdeaProjects/Restaurant-Management-System/monolith/src/test/java/pl/jakubtworek",
+    "last_opened_file_path": "C:/Users/kubat/IdeaProjects/Restaurant-Management-System/adapters/src/main/resources/db",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
@@ -187,11 +152,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\kubat\IdeaProjects\Restaurant-Management-System\adapters\src\main\resources\db" />
       <recent name="C:\Users\kubat\IdeaProjects\Restaurant-Management-System\monolith\src\test\java\pl\jakubtworek" />
       <recent name="C:\Users\kubat\IdeaProjects\Restaurant-Management-System\monolith\src\main\java\pl\jakubtworek" />
       <recent name="C:\Users\kubat\IdeaProjects\Restaurant-Management-System\adapters\src\main\resources\db\migration" />
       <recent name="C:\Users\kubat\IdeaProjects\Restaurant-Management-System\adapters\src\main\resources" />
-      <recent name="C:\Users\kubat\IdeaProjects\Restaurant-Management-System\adapters\src\main\java\pl\jakubtworek" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\kubat\IdeaProjects\Restaurant-Management-System\monolith\src\main\resources" />
@@ -225,93 +190,70 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.EmployeeControllerE2ETest.xd (1)">
-    <configuration name="EmployeeControllerE2ETest.xd (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.OrderControllerE2ETest.testGetOrderByParams">
+    <configuration name="OrderControllerE2ETest.testGetOrderByParams" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="monolith" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.employee.*" />
+          <option name="PATTERN" value="pl.jakubtworek.orders.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.employee" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.employee.EmployeeControllerE2ETest" />
-      <option name="METHOD_NAME" value="xd" />
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.orders" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.orders.OrderControllerE2ETest" />
+      <option name="METHOD_NAME" value="testGetOrderByParams" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="EmployeeControllerE2ETest.xd" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="adapters" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.employee.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.employee" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.employee.EmployeeControllerE2ETest" />
-      <option name="METHOD_NAME" value="xd" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="QueueTestIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="OrderFacadeTest.testFindByParams" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="app" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.queue.*" />
+          <option name="PATTERN" value="pl.jakubtworek.order.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.queue" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.queue.QueueTestIT" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="QueueTestIT.shouldCookTheOtherCook_whenThereIsMoreThanOneOrderInQueue" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="app" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.queue.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.queue" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.queue.QueueTestIT" />
-      <option name="METHOD_NAME" value="shouldCookTheOtherCook_whenThereIsMoreThanOneOrderInQueue" />
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.order" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.order.OrderFacadeTest" />
+      <option name="METHOD_NAME" value="testFindByParams" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="QueueTestIT.xd1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="jakubtworek in app" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="app" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.queue.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.queue" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.queue.QueueTestIT" />
-      <option name="METHOD_NAME" value="xd1" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="java in monolith" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="monolith" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/monolith/src/test/java" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="queue in monolith" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="monolith" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/monolith/src/test/java/pl/jakubtworek/queue" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.EmployeeControllerE2ETest.xd (1)" />
-        <item itemvalue="JUnit.EmployeeControllerE2ETest.xd" />
-        <item itemvalue="JUnit.QueueTestIT.shouldCookTheOtherCook_whenThereIsMoreThanOneOrderInQueue" />
-        <item itemvalue="JUnit.QueueTestIT.xd1" />
-        <item itemvalue="JUnit.QueueTestIT" />
+        <item itemvalue="JUnit.OrderControllerE2ETest.testGetOrderByParams" />
+        <item itemvalue="JUnit.OrderFacadeTest.testFindByParams" />
+        <item itemvalue="JUnit.queue in monolith" />
+        <item itemvalue="JUnit.jakubtworek in app" />
+        <item itemvalue="JUnit.java in monolith" />
       </list>
     </recent_temporary>
   </component>
@@ -354,7 +296,7 @@
       <workItem from="1696538283252" duration="48195000" />
       <workItem from="1696874071815" duration="7176000" />
       <workItem from="1697548145799" duration="16865000" />
-      <workItem from="1697790868031" duration="2118000" />
+      <workItem from="1697790868031" duration="22945000" />
     </task>
     <task id="LOCAL-00001" summary="package organized by feature">
       <created>1696611505523</created>
@@ -426,7 +368,28 @@
       <option name="project" value="LOCAL" />
       <updated>1697245634332</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="create unit tests">
+      <created>1697793281186</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1697793281187</updated>
+    </task>
+    <task id="LOCAL-00012" summary="update classes">
+      <created>1697793322655</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1697793322655</updated>
+    </task>
+    <task id="LOCAL-00013" summary="prepare configuration">
+      <created>1697793355608</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1697793355608</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -457,7 +420,10 @@
     <MESSAGE value="fix application to deploy" />
     <MESSAGE value="add necessary business logic" />
     <MESSAGE value="implement flyway" />
-    <option name="LAST_COMMIT_MESSAGE" value="implement flyway" />
+    <MESSAGE value="create unit tests" />
+    <MESSAGE value="update classes" />
+    <MESSAGE value="prepare configuration" />
+    <option name="LAST_COMMIT_MESSAGE" value="prepare configuration" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -468,24 +434,148 @@
           <option name="timeStamp" value="30" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/WaiterDelivery.java</url>
-          <line>33</line>
-          <option name="timeStamp" value="35" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/Kitchen.java</url>
-          <line>33</line>
-          <option name="timeStamp" value="37" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/adapters/src/test/java/pl/jakubtworek/employee/EmployeeControllerE2ETest.java</url>
-          <line>31</line>
+          <line>32</line>
           <option name="timeStamp" value="38" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/monolith/src/test/java/pl/jakubtworek/employee/EmployeeControllerE2ETest.java</url>
-          <line>31</line>
-          <option name="timeStamp" value="39" />
+          <line>148</line>
+          <option name="timeStamp" value="40" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderController.java</url>
+          <line>53</line>
+          <option name="timeStamp" value="121" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderController.java</url>
+          <line>52</line>
+          <option name="timeStamp" value="122" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderController.java</url>
+          <line>51</line>
+          <option name="timeStamp" value="123" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderController.java</url>
+          <line>49</line>
+          <option name="timeStamp" value="125" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderController.java</url>
+          <line>48</line>
+          <option name="timeStamp" value="126" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderController.java</url>
+          <line>47</line>
+          <option name="timeStamp" value="127" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderController.java</url>
+          <line>44</line>
+          <option name="timeStamp" value="128" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderController.java</url>
+          <line>43</line>
+          <option name="timeStamp" value="129" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderController.java</url>
+          <line>42</line>
+          <option name="timeStamp" value="130" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderController.java</url>
+          <line>46</line>
+          <option name="timeStamp" value="131" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderController.java</url>
+          <line>40</line>
+          <option name="timeStamp" value="134" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderController.java</url>
+          <line>41</line>
+          <option name="timeStamp" value="135" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderController.java</url>
+          <line>39</line>
+          <option name="timeStamp" value="136" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderController.java</url>
+          <line>38</line>
+          <option name="timeStamp" value="137" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderController.java</url>
+          <line>37</line>
+          <option name="timeStamp" value="139" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderController.java</url>
+          <line>35</line>
+          <option name="timeStamp" value="140" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderController.java</url>
+          <line>45</line>
+          <option name="timeStamp" value="141" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/monolith/src/test/java/pl/jakubtworek/orders/OrderControllerE2ETest.java</url>
+          <line>190</line>
+          <option name="timeStamp" value="142" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/monolith/src/test/java/pl/jakubtworek/orders/OrderControllerE2ETest.java</url>
+          <line>191</line>
+          <option name="timeStamp" value="143" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/monolith/src/test/java/pl/jakubtworek/orders/OrderControllerE2ETest.java</url>
+          <line>192</line>
+          <option name="timeStamp" value="144" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/monolith/src/test/java/pl/jakubtworek/orders/OrderControllerE2ETest.java</url>
+          <line>194</line>
+          <option name="timeStamp" value="145" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/monolith/src/test/java/pl/jakubtworek/orders/OrderControllerE2ETest.java</url>
+          <line>195</line>
+          <option name="timeStamp" value="146" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/monolith/src/test/java/pl/jakubtworek/orders/OrderControllerE2ETest.java</url>
+          <line>193</line>
+          <option name="timeStamp" value="147" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/monolith/src/test/java/pl/jakubtworek/orders/OrderControllerE2ETest.java</url>
+          <line>187</line>
+          <option name="timeStamp" value="148" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/monolith/src/test/java/pl/jakubtworek/orders/OrderControllerE2ETest.java</url>
+          <line>188</line>
+          <option name="timeStamp" value="149" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderController.java</url>
+          <line>36</line>
+          <properties class="pl.jakubtworek.order.OrderController" method="getOrderByParams">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="138" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

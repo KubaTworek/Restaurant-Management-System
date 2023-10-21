@@ -2,6 +2,7 @@ package pl.jakubtworek.order;
 
 import pl.jakubtworek.auth.UserFacade;
 import pl.jakubtworek.employee.EmployeeFacade;
+import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.employee.dto.SimpleEmployee;
 import pl.jakubtworek.menu.MenuItemFacade;
 import pl.jakubtworek.menu.dto.SimpleMenuItem;
@@ -14,6 +15,7 @@ import pl.jakubtworek.queue.OrdersQueueFacade;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class OrderFacade {
     private final UserFacade userFacade;
@@ -91,8 +93,23 @@ public class OrderFacade {
         return orderQueryRepository.findDtoById(id);
     }
 
-    List<OrderDto> findByParams(ZonedDateTime fromDate, ZonedDateTime toDate, String typeOfOrder, Boolean isReady, Long employeeId, String username) {
-        return orderQueryRepository.findFilteredOrders(fromDate, toDate, typeOfOrder, isReady, employeeId, username);
+    public List<OrderDto> findByParams(String fromDateStr, String toDateStr, String typeOfOrder, Boolean isReady, Long employeeId, String username) {
+        ZonedDateTime fromDate = null;
+        ZonedDateTime toDate = null;
+
+        if (fromDateStr != null) {
+            fromDate = ZonedDateTime.parse(fromDateStr);
+        }
+
+        if (toDateStr != null) {
+            toDate = ZonedDateTime.parse(toDateStr);
+        }
+
+        if (typeOfOrder != null) {
+            return orderQueryRepository.findFilteredOrders(fromDate, toDate, TypeOfOrder.valueOf(typeOfOrder), isReady, employeeId, username);
+        } else {
+            return orderQueryRepository.findFilteredOrders(fromDate, toDate, null, isReady, employeeId, username);
+        }
     }
 
     private int calculatePrice(List<String> names) {
@@ -103,6 +120,10 @@ public class OrderFacade {
     }
 
     private OrderDto toDto(Order order) {
-        return OrderDto.create(order.getId(), order.getPrice(), order.getHourOrder(), order.getHourAway(), order.getTypeOfOrder());
+        List<EmployeeDto> employeeDtos = order.getEmployees().stream()
+                .map(employee -> EmployeeDto.create(employee.getId(), employee.getFirstName(), employee.getLastName(), employee.getJob()))
+                .collect(Collectors.toList());
+
+        return OrderDto.create(order.getId(), order.getPrice(), order.getHourOrder(), order.getHourAway(), order.getTypeOfOrder(), employeeDtos);
     }
 }

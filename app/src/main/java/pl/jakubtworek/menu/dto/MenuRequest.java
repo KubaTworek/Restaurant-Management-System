@@ -4,7 +4,10 @@ import javax.validation.constraints.NotNull;
 
 public class MenuRequest {
     @NotNull(message = "Menu name cannot be null.")
-    private final String name;
+    private String name;
+
+    MenuRequest() {
+    }
 
     public MenuRequest(final String name) {
         this.name = name;

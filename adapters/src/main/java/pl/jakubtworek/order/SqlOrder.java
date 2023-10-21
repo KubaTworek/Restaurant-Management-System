@@ -7,6 +7,7 @@ import pl.jakubtworek.order.dto.TypeOfOrder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,7 +40,7 @@ class SqlOrder {
     @Column(name = "TYPE_OF_ORDER")
     private TypeOfOrder typeOfOrder;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "ORDERS__MENU_ITEMS",
             joinColumns = @JoinColumn(name = "ORDER_ID"),
@@ -47,7 +48,7 @@ class SqlOrder {
     )
     private Set<SqlSimpleMenuItem> menuItems;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "ORDERS__EMPLOYEE",
             joinColumns = @JoinColumn(name = "ORDER_ID"),

@@ -5,9 +5,12 @@ import java.util.List;
 
 public class OrderRequest {
     @NotNull(message = "Type of order cannot be null.")
-    private final String typeOfOrder;
+    private String typeOfOrder;
     @NotNull(message = "Menu items cannot be null.")
-    private final List<String> menuItems;
+    private List<String> menuItems;
+
+    OrderRequest() {
+    }
 
     public OrderRequest(final String typeOfOrder, final List<String> menuItems) {
         this.typeOfOrder = typeOfOrder;
