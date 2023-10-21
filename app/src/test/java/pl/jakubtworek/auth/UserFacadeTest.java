@@ -39,75 +39,77 @@ class UserFacadeTest {
     }
 
     @Test
-    void testGetUser() {
+    void shouldReturnUserByToken() {
         // given
         final var jwt = "sample_jwt";
         final var claims = mock(Claims.class);
+        final var expectedUser = new SimpleUser(1L, "john.doe");
+
         when(jwtService.parseJwtClaims(jwt)).thenReturn(claims);
         when(claims.get("username", String.class)).thenReturn("john.doe");
-
-        final var simpleUser = new SimpleUser(1L, "john.doe");
-        when(userQueryRepository.findSimpleByUsername("john.doe")).thenReturn(Optional.of(simpleUser));
+        when(userQueryRepository.findSimpleByUsername("john.doe")).thenReturn(Optional.of(expectedUser));
 
         // when
-        final SimpleUser result = userFacade.getUser(jwt);
+        final SimpleUser result = userFacade.getByToken(jwt);
 
         // then
-        assertEquals(simpleUser, result);
+        assertEquals(expectedUser, result);
     }
 
     @Test
-    void testRegister() {
+    void shouldRegisterUser() {
         // given
-        final var registerRequest = new RegisterRequest("john.doe", "password123");
-        final var user = createUser(registerRequest.getUsername(), registerRequest.getPassword());
-        when(userRepository.save(any())).thenReturn(user);
+        final var request = new RegisterRequest("john.doe", "password123");
+        final var expectedUser = createUser(request.getUsername(), request.getPassword());
+
+        when(userRepository.save(any())).thenReturn(expectedUser);
 
         // when
-        final UserDto result = userFacade.register(registerRequest);
+        final UserDto result = userFacade.register(request);
 
         // then
-        assertEquals(user.getId(), result.getId());
-        assertEquals(user.getUsername(), result.getUsername());
-        assertEquals(user.getPassword(), result.getPassword());
+        assertUserEquals(expectedUser, result);
     }
 
     @Test
-    void testLogin() {
+    void shouldLoginUser() {
         // given
-        final var loginRequest = new LoginRequest("john.doe", "password123");
-        final var userDto = UserDto.create(1L, "john.doe", "password123");
-        when(userQueryRepository.findDtoByUsername("john.doe")).thenReturn(Optional.of(userDto));
+        final var request = new LoginRequest("john.doe", "password123");
+        final var expectedUser = UserDto.create(1L, "john.doe", "password123");
+
+        when(userQueryRepository.findDtoByUsername("john.doe")).thenReturn(Optional.of(expectedUser));
         when(jwtService.buildJwt(eq("john.doe"), any(Long.class))).thenReturn("token");
 
         // when
-        final LoginResponse result = userFacade.login(loginRequest);
+        final LoginResponse result = userFacade.login(request);
 
         // then
-        assertEquals("john.doe", result.getUsername());
+        assertEquals(expectedUser.getUsername(), result.getUsername());
         assertEquals("token", result.getToken());
         assertTrue(result.getTokenExpirationDate() > Instant.now().toEpochMilli());
     }
 
     @Test
-    void testRegisterExistingUser() {
+    void shouldThrowException_whenRegisterUserWithSameUsername() {
         // given
-        final var registerRequest = new RegisterRequest("existing_user", "password123");
+        final var request = new RegisterRequest("existing_user", "password123");
+
         when(userQueryRepository.existsByUsername("existing_user")).thenReturn(true);
 
         // when & then
-        assertThrows(IllegalStateException.class, () -> userFacade.register(registerRequest));
+        assertThrows(IllegalStateException.class, () -> userFacade.register(request));
     }
 
     @Test
-    void testLoginInvalidPassword() {
+    void shouldThrowException_whenLoginWithWrongCredentials() {
         // given
-        final var loginRequest = new LoginRequest("john.doe", "password123");
-        final var userDto = UserDto.create(1L, "john.doe", "invalid_password");
-        when(userQueryRepository.findDtoByUsername("john.doe")).thenReturn(Optional.of(userDto));
+        final var request = new LoginRequest("john.doe", "password123");
+        final var expectedUser = UserDto.create(1L, "john.doe", "invalid_password");
+
+        when(userQueryRepository.findDtoByUsername("john.doe")).thenReturn(Optional.of(expectedUser));
 
         // when & then
-        assertThrows(IllegalStateException.class, () -> userFacade.login(loginRequest));
+        assertThrows(IllegalStateException.class, () -> userFacade.login(request));
     }
 
     private User createUser(String username, String password) {
@@ -115,5 +117,11 @@ class UserFacadeTest {
         user.setUsername(username);
         user.setPassword(password);
         return user;
+    }
+
+    private void assertUserEquals(User expected, UserDto actual) {
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getUsername(), actual.getUsername());
+        assertEquals(expected.getPassword(), actual.getPassword());
     }
 }

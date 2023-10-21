@@ -5,6 +5,8 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import pl.jakubtworek.employee.dto.EmployeeDto;
@@ -43,40 +45,41 @@ class EmployeeFacadeTest {
     }
 
     @Test
-    void testGetById() {
+    void shouldReturnEmployeeById() {
         // given
         final var employeeId = 1L;
-        final var simpleEmployee = new SimpleEmployee(employeeId, "John", "Doe", Job.COOK);
-        when(employeeQueryRepository.findSimpleById(employeeId)).thenReturn(Optional.of(simpleEmployee));
+        final var expectedEmployee = new SimpleEmployee(employeeId, "John", "Doe", Job.COOK);
+
+        when(employeeQueryRepository.findSimpleById(employeeId)).thenReturn(Optional.of(expectedEmployee));
 
         // when
         final SimpleEmployee result = employeeFacade.getById(employeeId);
 
         // then
-        assertEquals(simpleEmployee, result);
+        assertEquals(expectedEmployee, result);
     }
 
-    @Test
-    void testSave() {
+    @ParameterizedTest
+    @ValueSource(strings = {"COOK", "DELIVERY", "WAITER"})
+    void shouldSaveEmployeeAndAddToQueue(String jobName) {
         // given
-        final var employeeRequest = new EmployeeRequest("John", "Doe", "COOK");
-        final var simpleEmployee = new SimpleEmployee(1L, "John", "Doe", Job.COOK);
-        final var savedEmployee = createEmployee(1L, "John", "Doe", Job.COOK);
-        when(employeeRepository.save(any())).thenReturn(savedEmployee);
+        final var job = Job.valueOf(jobName);
+        final var request = new EmployeeRequest("John", "Doe", jobName);
+        final var expectedSimpleEmployee = new SimpleEmployee(1L, "John", "Doe", job);
+        final var expectedEmployee = createEmployee(1L, "John", "Doe", job);
+
+        when(employeeRepository.save(any())).thenReturn(expectedEmployee);
 
         // when
-        final EmployeeDto result = employeeFacade.save(employeeRequest);
+        final EmployeeDto result = employeeFacade.save(request);
 
         // then
-        assertEquals(savedEmployee.getId(), result.getId());
-        assertEquals(savedEmployee.getFirstName(), result.getFirstName());
-        assertEquals(savedEmployee.getLastName(), result.getLastName());
-        assertEquals(savedEmployee.getJob(), result.getJob());
-        verify(employeeQueueFacade).addEmployeeToProperQueue(argThat(simpleEmployeeMatcher(simpleEmployee)));
+        assertEmployeeEquals(expectedEmployee, result);
+        verify(employeeQueueFacade).addEmployeeToProperQueue(argThat(simpleEmployeeMatcher(expectedSimpleEmployee)));
     }
 
     @Test
-    void testDeleteById() {
+    void shouldDeleteEmployee() {
         // given
         final var employeeId = 1L;
 
@@ -88,55 +91,57 @@ class EmployeeFacadeTest {
     }
 
     @Test
-    void testFindAll() {
+    void shouldFindAllEmployees() {
         // given
-        final Set<EmployeeDto> employeeList = new HashSet<>();
-        when(employeeQueryRepository.findBy(EmployeeDto.class)).thenReturn(employeeList);
+        final Set<EmployeeDto> expectedEmployees = new HashSet<>();
+
+        when(employeeQueryRepository.findBy(EmployeeDto.class)).thenReturn(expectedEmployees);
 
         // when
         final Set<EmployeeDto> result = new HashSet<>(employeeFacade.findAll());
 
         // then
-        assertEquals(employeeList, result);
+        assertEquals(expectedEmployees, result);
     }
 
     @Test
-    void testFindById() {
+    void shouldFindEmployeeById() {
         // given
         final var employeeId = 1L;
-        final var employeeDto = EmployeeDto.create(1L, "John", "Doe", Job.COOK);
-        when(employeeQueryRepository.findDtoById(employeeId)).thenReturn(Optional.of(employeeDto));
+        final var expectedEmployee = EmployeeDto.create(1L, "John", "Doe", Job.COOK);
+
+        when(employeeQueryRepository.findDtoById(employeeId)).thenReturn(Optional.of(expectedEmployee));
 
         // when
         final Optional<EmployeeDto> result = employeeFacade.findById(employeeId);
 
         // then
-        assertEquals(Optional.of(employeeDto), result);
+        assertEquals(Optional.of(expectedEmployee), result);
     }
 
-    @Test
-    void testFindByJobWhenJobExists() {
+    @ParameterizedTest
+    @ValueSource(strings = {"COOK", "DELIVERY", "WAITER"})
+    void shouldFindEmployeeByJob(String jobName) {
         // given
-        final var jobName = "COOK";
-        final var job = Job.COOK;
-        final List<EmployeeDto> employeeList = new ArrayList<>();
-        when(employeeQueryRepository.findByJob(job)).thenReturn(employeeList);
+        final var job = Job.valueOf(jobName);
+        final List<EmployeeDto> expectedEmployees = new ArrayList<>();
+
+        when(employeeQueryRepository.findByJob(job)).thenReturn(expectedEmployees);
 
         // when
-        final List<EmployeeDto> result = employeeFacade.findByJob(jobName);
+        List<EmployeeDto> result = employeeFacade.findByJob(jobName);
 
         // then
-        assertEquals(employeeList, result);
+        assertEquals(expectedEmployees, result);
     }
 
     @Test
-    void testFindByJobWhenJobDoesNotExist() {
+    void shouldThrowException_whenJobIsNotExist() {
         // given
         final var jobName = "INVALID_JOB";
 
         // when
-        assertThrows(IllegalStateException.class,
-                () -> employeeFacade.findByJob(jobName));
+        assertThrows(IllegalStateException.class, () -> employeeFacade.findByJob(jobName));
     }
 
     private Employee createEmployee(Long id, String firstName, String lastName, Job job) {
@@ -146,6 +151,13 @@ class EmployeeFacadeTest {
         employee.setLastName(lastName);
         employee.setJob(job);
         return employee;
+    }
+
+    private void assertEmployeeEquals(Employee expected, EmployeeDto actual) {
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getFirstName(), actual.getFirstName());
+        assertEquals(expected.getLastName(), actual.getLastName());
+        assertEquals(expected.getJob(), actual.getJob());
     }
 
     private Matcher<SimpleEmployee> simpleEmployeeMatcher(SimpleEmployee expected) {

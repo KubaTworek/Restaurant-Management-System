@@ -37,7 +37,7 @@ public class MenuFacade {
         return menuQueryRepository.findDtoById(id);
     }
 
-    MenuDto toDto(Menu menu) {
+    private MenuDto toDto(Menu menu) {
         return MenuDto.create(menu.getId(), menu.getName(), menu.getMenuItems().stream().map(this::toDto).collect(Collectors.toList()));
     }
 

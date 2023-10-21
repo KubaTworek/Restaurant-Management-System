@@ -24,6 +24,7 @@ public class OrderFacade {
     private final OrderRepository orderRepository;
     private final OrderQueryRepository orderQueryRepository;
     private final OrdersQueueFacade ordersQueueFacade;
+    private static final String ORDER_NOT_FOUND_ERROR = "Order with that id doesn't exist";
 
     OrderFacade(final UserFacade userFacade, final EmployeeFacade employeeFacade, final MenuItemFacade menuItemFacade,
                 final OrderRepository orderRepository, final OrderQueryRepository orderQueryRepository,
@@ -37,38 +38,31 @@ public class OrderFacade {
     }
 
     public void setAsDelivered(SimpleOrder toUpdate) {
-        orderRepository.findById(toUpdate.getId())
-                .map(o -> {
-                    o.setHourAway(ZonedDateTime.now());
-                    return orderRepository.save(o);
-                })
-                .orElseThrow(() -> new IllegalStateException("Order with that id doesn't exist"));
+        Order order = getOrderById(toUpdate.getId());
+        order.setHourAway(ZonedDateTime.now());
+        orderRepository.save(order);
     }
 
-    public void addEmployeeToOrder(SimpleOrder order, SimpleEmployee employee) {
-        orderRepository.findById(order.getId())
-                .map(o -> {
-                    final var employeeEntity = employeeFacade.getById(employee.getId());
-                    o.add(employeeEntity);
-                    return orderRepository.save(o);
-                })
-                .orElseThrow(() -> new IllegalStateException("Order with that id doesn't exist"));
+    public void addEmployeeToOrder(SimpleOrder orderToAdd, SimpleEmployee employeeToAdd) {
+        final var order = getOrderById(orderToAdd.getId());
+        final var employee = employeeFacade.getById(employeeToAdd.getId());
+        order.add(employee);
+        orderRepository.save(order);
     }
 
     public int getNumberOfMenuItems(SimpleOrder order) {
-        return orderRepository.findById(order.getId())
-                .map(o -> o.getMenuItems().size())
-                .orElseThrow(() -> new IllegalStateException("Order with that id doesn't exist"));
+        return getOrderById(order.getId())
+                .getMenuItems()
+                .size();
     }
 
-    OrderDto save(OrderRequest orderRequest, String jwt) {
-
-        final var user = userFacade.getUser(jwt);
+    OrderDto save(OrderRequest toSave, String jwt) {
+        final var user = userFacade.getByToken(jwt);
 
         final var order = new Order();
-        order.setPrice(calculatePrice(orderRequest.getMenuItems()));
+        order.setPrice(calculatePrice(toSave.getMenuItems()));
         order.setHourOrder(ZonedDateTime.now());
-        order.setTypeOfOrder(TypeOfOrder.valueOf(orderRequest.getTypeOfOrder()));
+        order.setTypeOfOrder(TypeOfOrder.valueOf(toSave.getTypeOfOrder()));
         order.setUser(user);
 
         final var created = toDto(orderRepository.save(order));
@@ -80,12 +74,12 @@ public class OrderFacade {
                 created.getTypeOfOrder()
         );
         ordersQueueFacade.addToQueue(orderQueryDto);
+
         return created;
     }
 
     List<OrderDto> findAll(String jwt) {
-        final var user = userFacade.getUser(jwt);
-
+        final var user = userFacade.getByToken(jwt);
         return orderQueryRepository.findByUserUsername(user.getUsername());
     }
 
@@ -94,22 +88,10 @@ public class OrderFacade {
     }
 
     public List<OrderDto> findByParams(String fromDateStr, String toDateStr, String typeOfOrder, Boolean isReady, Long employeeId, String username) {
-        ZonedDateTime fromDate = null;
-        ZonedDateTime toDate = null;
-
-        if (fromDateStr != null) {
-            fromDate = ZonedDateTime.parse(fromDateStr);
-        }
-
-        if (toDateStr != null) {
-            toDate = ZonedDateTime.parse(toDateStr);
-        }
-
-        if (typeOfOrder != null) {
-            return orderQueryRepository.findFilteredOrders(fromDate, toDate, TypeOfOrder.valueOf(typeOfOrder), isReady, employeeId, username);
-        } else {
-            return orderQueryRepository.findFilteredOrders(fromDate, toDate, null, isReady, employeeId, username);
-        }
+        final var fromDate = parseDate(fromDateStr);
+        final var toDate = parseDate(toDateStr);
+        final var orderType = parseOrderType(typeOfOrder);
+        return orderQueryRepository.findFilteredOrders(fromDate, toDate, orderType, isReady, employeeId, username);
     }
 
     private int calculatePrice(List<String> names) {
@@ -120,10 +102,23 @@ public class OrderFacade {
     }
 
     private OrderDto toDto(Order order) {
-        List<EmployeeDto> employeeDtos = order.getEmployees().stream()
+        final var employeeDtos = order.getEmployees().stream()
                 .map(employee -> EmployeeDto.create(employee.getId(), employee.getFirstName(), employee.getLastName(), employee.getJob()))
                 .collect(Collectors.toList());
 
         return OrderDto.create(order.getId(), order.getPrice(), order.getHourOrder(), order.getHourAway(), order.getTypeOfOrder(), employeeDtos);
+    }
+
+    private Order getOrderById(Long orderId) {
+        return orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalStateException(ORDER_NOT_FOUND_ERROR));
+    }
+
+    private ZonedDateTime parseDate(String dateStr) {
+        return dateStr != null ? ZonedDateTime.parse(dateStr) : null;
+    }
+
+    private TypeOfOrder parseOrderType(String typeStr) {
+        return typeStr != null ? TypeOfOrder.valueOf(typeStr) : null;
     }
 }

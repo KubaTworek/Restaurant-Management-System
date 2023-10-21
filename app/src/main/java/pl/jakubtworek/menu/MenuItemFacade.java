@@ -11,6 +11,8 @@ public class MenuItemFacade {
     private final MenuItemRepository menuItemRepository;
     private final MenuItemQueryRepository menuItemQueryRepository;
     private final MenuQueryRepository menuQueryRepository;
+    private static final String MENU_ITEM_NOT_FOUND_ERROR = "Menu item with that name doesn't exist";
+    private static final String MENU_NOT_FOUND_ERROR = "Menu with that name doesn't exist";
 
     MenuItemFacade(final MenuItemRepository menuItemRepository, final MenuItemQueryRepository menuItemQueryRepository,
                    final MenuQueryRepository menuQueryRepository) {
@@ -21,16 +23,12 @@ public class MenuItemFacade {
 
     public SimpleMenuItem getByName(String name) {
         return menuItemQueryRepository.findSimpleByName(name)
-                .orElseThrow(() -> new IllegalStateException("There are no menu item in restaurant with that name: " + name));
-    }
-
-    Optional<MenuItemDto> findById(Long theId) {
-        return menuItemQueryRepository.findDtoById(theId);
+                .orElseThrow(() -> new IllegalStateException(MENU_ITEM_NOT_FOUND_ERROR));
     }
 
     MenuItemDto save(MenuItemRequest toSave) {
         final var menuDto = menuQueryRepository.findDtoByName(toSave.getMenu())
-                .orElseThrow(() -> new IllegalStateException("There are no menu in restaurant with that name: " + toSave.getMenu()));
+                .orElseThrow(() -> new IllegalStateException(MENU_NOT_FOUND_ERROR));
 
         final var menu = new Menu();
         menu.setId(menuDto.getId());
@@ -46,6 +44,10 @@ public class MenuItemFacade {
 
     void deleteById(Long id) {
         menuItemRepository.deleteById(id);
+    }
+
+    Optional<MenuItemDto> findById(Long theId) {
+        return menuItemQueryRepository.findDtoById(theId);
     }
 
     List<MenuItemDto> findByMenu(String menuName) {

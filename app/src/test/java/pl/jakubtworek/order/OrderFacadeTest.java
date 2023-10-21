@@ -1,5 +1,8 @@
 package pl.jakubtworek.order;
 
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -20,6 +23,7 @@ import pl.jakubtworek.queue.OrdersQueueFacade;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.hamcrest.MockitoHamcrest.argThat;
 
 class OrderFacadeTest {
     @Mock
@@ -51,26 +56,28 @@ class OrderFacadeTest {
     }
 
     @Test
-    void testSetAsDelivered() {
-        // given
-        final var orderId = 1L;
-        final var simpleOrder = new SimpleOrder(orderId, 200, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
-        final var order = createOrder(orderId, 200, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
-        when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
-        when(orderRepository.save(order)).thenReturn(order);
-
-        // when
-        orderFacade.setAsDelivered(simpleOrder);
-
-        // then
-        verify(orderRepository).save(order);
-    }
-
-    @Test
-    void testSetAsDeliveredOrderNotFound() {
+    void shouldSetOrderAsDelivered() {
         // given
         final var orderId = 1L;
         final var order = new SimpleOrder(orderId, 200, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
+        final var expectedOrder = createOrder(orderId, 200, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
+
+        when(orderRepository.findById(orderId)).thenReturn(Optional.of(expectedOrder));
+        when(orderRepository.save(expectedOrder)).thenReturn(expectedOrder);
+
+        // when
+        orderFacade.setAsDelivered(order);
+
+        // then
+        verify(orderRepository).save(expectedOrder);
+    }
+
+    @Test
+    void shouldThrowException_whenOrderToDeliveredIsNotFound() {
+        // given
+        final var orderId = 1L;
+        final var order = new SimpleOrder(orderId, 200, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
+
         when(orderRepository.findById(orderId)).thenReturn(Optional.empty());
 
         // when and then
@@ -78,31 +85,33 @@ class OrderFacadeTest {
     }
 
     @Test
-    void testAddEmployeeToOrder() {
-        // given
-        final var orderId = 1L;
-        final var employeeId = 1L;
-        final var simpleOrder = new SimpleOrder(orderId, 200, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
-        final var order = createOrder(orderId, 200, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
-        final var employee = new SimpleEmployee(employeeId, "John", "Doe", Job.COOK);
-        when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
-        when(orderRepository.save(order)).thenReturn(order);
-        when(employeeFacade.getById(employeeId)).thenReturn(employee);
-
-        // when
-        orderFacade.addEmployeeToOrder(simpleOrder, employee);
-
-        // then
-        verify(orderRepository).save(order);
-    }
-
-    @Test
-    void testAddEmployeeToOrderOrderNotFound() {
+    void shouldAddEmployeeToOrder() {
         // given
         final var orderId = 1L;
         final var employeeId = 1L;
         final var order = new SimpleOrder(orderId, 200, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
         final var employee = new SimpleEmployee(employeeId, "John", "Doe", Job.COOK);
+        final var expectedOrder = createOrder(orderId, 200, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
+
+        when(orderRepository.findById(orderId)).thenReturn(Optional.of(expectedOrder));
+        when(orderRepository.save(expectedOrder)).thenReturn(expectedOrder);
+        when(employeeFacade.getById(employeeId)).thenReturn(employee);
+
+        // when
+        orderFacade.addEmployeeToOrder(order, employee);
+
+        // then
+        verify(orderRepository).save(expectedOrder);
+    }
+
+    @Test
+    void shouldThrowException_whenOrderToAddEmployeeIsNotFound() {
+        // given
+        final var orderId = 1L;
+        final var employeeId = 1L;
+        final var order = new SimpleOrder(orderId, 200, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
+        final var employee = new SimpleEmployee(employeeId, "John", "Doe", Job.COOK);
+
         when(orderRepository.findById(orderId)).thenReturn(Optional.empty());
 
         // when and then
@@ -110,13 +119,16 @@ class OrderFacadeTest {
     }
 
     @Test
-    void testGetNumberOfMenuItems() {
+    void shouldReturnNumberOfMenuItems() {
         // given
         final var orderId = 1L;
         final var simpleOrder = new SimpleOrder(orderId, 200, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
         final var order = createOrder(orderId, 200, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
-        order.getMenuItems().add(new SimpleMenuItem(1L, "Pizza", 120));
-        order.getMenuItems().add(new SimpleMenuItem(2L, "Spaghetti", 100));
+        final var pizza = new SimpleMenuItem(1L, "Pizza", 120);
+        final var spaghetti = new SimpleMenuItem(2L, "Spaghetti", 100);
+        order.getMenuItems().add(pizza);
+        order.getMenuItems().add(spaghetti);
+
         when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
 
         // when
@@ -127,10 +139,11 @@ class OrderFacadeTest {
     }
 
     @Test
-    void testGetNumberOfMenuItemsOrderNotFound() {
+    void shouldThrowException_whenOrderToGetMenuItemsIsNotFound() {
         // given
         final var orderId = 1L;
         final var order = new SimpleOrder(orderId, 200, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
+
         when(orderRepository.findById(orderId)).thenReturn(Optional.empty());
 
         // when & then
@@ -138,27 +151,37 @@ class OrderFacadeTest {
     }
 
     @Test
-    void testSave() {
+    void shouldSaveOrderAndAddToQueue() {
         // given
-        final var orderRequest = new OrderRequest("ON_SITE", List.of("Pizza", "Spaghetti"));
-        when(userFacade.getUser("jwt-token")).thenReturn(new SimpleUser(1L, "john.doe"));
-        when(menuItemFacade.getByName("Pizza")).thenReturn(new SimpleMenuItem(1L, "Pizza", 120));
-        when(menuItemFacade.getByName("Spaghetti")).thenReturn(new SimpleMenuItem(2L, "Spaghetti", 100));
-        when(orderRepository.save(any())).thenReturn(createOrder(1L, 220, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE));
+        final var request = new OrderRequest("ON_SITE", List.of("Pizza", "Spaghetti"));
+        final var expectedUser = new SimpleUser(1L, "john.doe");
+        final var expectedSimpleOrder = new SimpleOrder(1L, 220, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
+        final var expectedOrder = createOrder(1L, 220, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
+        final var pizza = new SimpleMenuItem(1L, "Pizza", 120);
+        final var spaghetti = new SimpleMenuItem(2L, "Spaghetti", 100);
+
+        when(userFacade.getByToken("jwt-token")).thenReturn(expectedUser);
+        when(menuItemFacade.getByName("Pizza")).thenReturn(pizza);
+        when(menuItemFacade.getByName("Spaghetti")).thenReturn(spaghetti);
+        when(orderRepository.save(any())).thenReturn(expectedOrder);
 
         // when
-        final OrderDto result = orderFacade.save(orderRequest, "jwt-token");
+        final OrderDto result = orderFacade.save(request, "jwt-token");
 
         // then
-        assertEquals(1L, result.getId());
-        assertEquals(220, result.getPrice());
+        assertEquals(expectedOrder.getId(), result.getId());
+        assertEquals(expectedOrder.getPrice(), result.getPrice());
+        verify(ordersQueueFacade).addToQueue(argThat(simpleOrderMatcher(expectedSimpleOrder)));
     }
 
     @Test
-    void testFindAll() {
+    void shouldFindAllOrdersForUser() {
         // given
-        when(userFacade.getUser("jwt-token")).thenReturn(new SimpleUser(1L, "john.doe"));
-        when(orderQueryRepository.findByUserUsername("john.doe")).thenReturn(createOrderDtos());
+        final var expectedUser = new SimpleUser(1L, "john.doe");
+        final var expectedOrders = createOrderDtos();
+
+        when(userFacade.getByToken("jwt-token")).thenReturn(expectedUser);
+        when(orderQueryRepository.findByUserUsername("john.doe")).thenReturn(expectedOrders);
 
         // when
         final List<OrderDto> result = orderFacade.findAll("jwt-token");
@@ -168,27 +191,30 @@ class OrderFacadeTest {
     }
 
     @Test
-    void testFindById() {
+    void shouldFindOrderById() {
         // given
         final var orderId = 1L;
-        final var orderDto = OrderDto.create(orderId, 220, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE, null);
-        when(orderQueryRepository.findDtoById(orderId)).thenReturn(Optional.of(orderDto));
+        final var expectedOrder = OrderDto.create(orderId, 220, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE, null);
+
+        when(orderQueryRepository.findDtoById(orderId)).thenReturn(Optional.of(expectedOrder));
 
         // when
         final Optional<OrderDto> result = orderFacade.findById(orderId);
 
         // then
-        assertEquals(orderDto.getId(), result.get().getId());
-        assertEquals(orderDto.getTypeOfOrder(), result.get().getTypeOfOrder());
-        assertEquals(orderDto.getPrice(), result.get().getPrice());
-        assertEquals(orderDto.getHourOrder(), result.get().getHourOrder());
-        assertEquals(orderDto.getHourAway(), result.get().getHourAway());
+        assertEquals(expectedOrder.getId(), result.get().getId());
+        assertEquals(expectedOrder.getTypeOfOrder(), result.get().getTypeOfOrder());
+        assertEquals(expectedOrder.getPrice(), result.get().getPrice());
+        assertEquals(expectedOrder.getHourOrder(), result.get().getHourOrder());
+        assertEquals(expectedOrder.getHourAway(), result.get().getHourAway());
     }
 
     @Test
-    void testFindByParams() {
+    void shouldFindOrdersByParams() {
         // given
-        when(orderQueryRepository.findFilteredOrders(any(), any(), any(), any(), any(), any())).thenReturn(createOrderDtos());
+        final var expectedOrders = createOrderDtos();
+
+        when(orderQueryRepository.findFilteredOrders(any(), any(), any(), any(), any(), any())).thenReturn(expectedOrders);
 
         // when
         final List<OrderDto> result = orderFacade.findByParams(ZonedDateTime.now().toString(), ZonedDateTime.now().toString(), "ON_SITE", true, 1L, "john.doe");
@@ -212,5 +238,25 @@ class OrderFacadeTest {
         orderDtos.add(OrderDto.create(1L, 220, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE, null));
         orderDtos.add(OrderDto.create(2L, 250, ZonedDateTime.now(), null, TypeOfOrder.DELIVERY, null));
         return orderDtos;
+    }
+
+    private Matcher<SimpleOrder> simpleOrderMatcher(SimpleOrder expected) {
+        return new TypeSafeMatcher<>() {
+            @Override
+            protected boolean matchesSafely(SimpleOrder actual) {
+                boolean idMatches = Objects.equals(expected.getId(), actual.getId());
+                boolean priceMatches = Objects.equals(expected.getPrice(), actual.getPrice());
+                boolean hourOrderMatches = Objects.equals(expected.getHourOrder(), actual.getHourOrder());
+                boolean hourAwayMatches = Objects.equals(expected.getHourAway(), actual.getHourAway());
+                boolean typeOfOrderMatches = expected.getTypeOfOrder() == actual.getTypeOfOrder();
+
+                return idMatches && priceMatches && hourOrderMatches && hourAwayMatches && typeOfOrderMatches;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("expected SimpleOrder fields should match");
+            }
+        };
     }
 }

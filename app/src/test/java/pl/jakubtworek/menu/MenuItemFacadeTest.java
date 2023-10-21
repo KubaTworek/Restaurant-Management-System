@@ -35,53 +35,39 @@ class MenuItemFacadeTest {
     }
 
     @Test
-    void testGetByName() {
+    void shouldReturnMenuItemByName() {
         // given
         final var itemName = "Spaghetti";
-        final var simpleMenuItem = new SimpleMenuItem(1L, itemName, 100);
-        when(menuItemQueryRepository.findSimpleByName(itemName)).thenReturn(Optional.of(simpleMenuItem));
+        final var expectedMenuItem = new SimpleMenuItem(1L, itemName, 100);
+
+        when(menuItemQueryRepository.findSimpleByName(itemName)).thenReturn(Optional.of(expectedMenuItem));
 
         // when
         final SimpleMenuItem result = menuItemFacade.getByName(itemName);
 
         // then
-        assertEquals(simpleMenuItem, result);
+        assertEquals(expectedMenuItem, result);
     }
 
     @Test
-    void testFindById() {
+    void shouldSaveMenuItem() {
         // given
-        final var itemId = 1L;
-        final var menuItemDto = MenuItemDto.create(itemId, "Pizza", 120);
-        when(menuItemQueryRepository.findDtoById(itemId)).thenReturn(Optional.of(menuItemDto));
+        final var request = new MenuItemRequest("Lasagna", 140, "Dinner Menu");
+        final var expectedMenu = MenuDto.create(1L, "Dinner Menu", null);
+        final var expectedMenuItem = createMenuItem(1L, "Lasagna", 140, expectedMenu);
+
+        when(menuQueryRepository.findDtoByName(request.getMenu())).thenReturn(Optional.of(expectedMenu));
+        when(menuItemRepository.save(any())).thenReturn(expectedMenuItem);
 
         // when
-        final Optional<MenuItemDto> result = menuItemFacade.findById(itemId);
+        final MenuItemDto result = menuItemFacade.save(request);
 
         // then
-        assertEquals(Optional.of(menuItemDto), result);
+        assertMenuItemEquals(expectedMenuItem, result);
     }
 
     @Test
-    void testSave() {
-        // given
-        final var menuItemRequest = new MenuItemRequest("Lasagna", 140, "Dinner Menu");
-        final var menuDto = MenuDto.create(1L, "Dinner Menu", null);
-        when(menuQueryRepository.findDtoByName(menuItemRequest.getMenu())).thenReturn(Optional.of(menuDto));
-        final var menuItem = createMenuItem(1L, "Lasagna", 140, menuDto);
-        when(menuItemRepository.save(any())).thenReturn(menuItem);
-
-        // when
-        final MenuItemDto result = menuItemFacade.save(menuItemRequest);
-
-        // then
-        assertEquals(menuItem.getId(), result.getId());
-        assertEquals(menuItem.getName(), result.getName());
-        assertEquals(menuItem.getPrice(), result.getPrice());
-    }
-
-    @Test
-    void testDeleteById() {
+    void shouldDeleteMenuItem() {
         // given
         final var itemId = 1L;
 
@@ -93,10 +79,26 @@ class MenuItemFacadeTest {
     }
 
     @Test
-    void testFindByMenu() {
+    void shouldFindMenuItemById() {
+        // given
+        final var itemId = 1L;
+        final var expectedMenuItem = MenuItemDto.create(itemId, "Pizza", 120);
+
+        when(menuItemQueryRepository.findDtoById(itemId)).thenReturn(Optional.of(expectedMenuItem));
+
+        // when
+        final Optional<MenuItemDto> result = menuItemFacade.findById(itemId);
+
+        // then
+        assertEquals(Optional.of(expectedMenuItem), result);
+    }
+
+    @Test
+    void shouldFindMenuByName() {
         // given
         final var menuName = "Lunch Menu";
         final List<MenuItemDto> menuItems = createMenuItemDtos();
+
         when(menuItemQueryRepository.findByMenuName(menuName)).thenReturn(menuItems);
 
         // when
@@ -128,5 +130,11 @@ class MenuItemFacadeTest {
         menu.setId(menuDto.getId());
         menu.setName(menuDto.getName());
         return menu;
+    }
+
+    private void assertMenuItemEquals(final MenuItem expected, final MenuItemDto actual) {
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getName(), actual.getName());
+        assertEquals(expected.getPrice(), actual.getPrice());
     }
 }

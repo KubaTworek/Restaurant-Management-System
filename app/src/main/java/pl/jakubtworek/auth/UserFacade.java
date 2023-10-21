@@ -12,6 +12,10 @@ public class UserFacade {
     private final UserRepository userRepository;
     private final UserQueryRepository userQueryRepository;
     private final JwtService jwtService;
+    private static final String USER_NOT_FOUND_ERROR = "No user registered with this username!";
+    private static final String USER_ALREADY_EXISTS_ERROR = "User with this username already exists!";
+    private static final String INVALID_PASSWORD_ERROR = "Invalid password!";
+    private static final Long TOKEN_EXPIRATION_TIME = 180000L;
 
     UserFacade(final UserRepository userRepository, final UserQueryRepository userQueryRepository, final JwtService jwtService) {
         this.userRepository = userRepository;
@@ -19,31 +23,28 @@ public class UserFacade {
         this.jwtService = jwtService;
     }
 
-    public SimpleUser getUser(String jwt) {
+    public SimpleUser getByToken(String jwt) {
         final var claims = jwtService.parseJwtClaims(jwt);
         final var username = claims.get("username", String.class);
 
         return userQueryRepository.findSimpleByUsername(username).
-                orElseThrow(() -> new IllegalStateException("No user registered with this username!"));
+                orElseThrow(() -> new IllegalStateException(USER_NOT_FOUND_ERROR));
     }
 
     UserDto register(RegisterRequest registerRequest) {
-        final var user = new User();
-        user.setUsername(registerRequest.getUsername());
-        user.setPassword(registerRequest.getPassword());
-
         validateUserWithThatUsernameDoesNotExist(registerRequest.getUsername());
+
+        final var user = createUserFromRequest(registerRequest);
 
         return toDto(userRepository.save(user));
     }
 
     LoginResponse login(LoginRequest loginRequest) {
-
         final var user = userQueryRepository.findDtoByUsername(loginRequest.getUsername())
-                .orElseThrow(() -> new IllegalStateException("No user registered with this username!"));
+                .orElseThrow(() -> new IllegalStateException(USER_NOT_FOUND_ERROR));
         validPasswords(loginRequest.getPassword(), user.getPassword());
 
-        final var expirationDate = Instant.now().toEpochMilli() + 180000;
+        final var expirationDate = Instant.now().toEpochMilli() + TOKEN_EXPIRATION_TIME;
         final var token = jwtService.buildJwt(user.getUsername(), expirationDate);
 
         return new LoginResponse(
@@ -53,15 +54,22 @@ public class UserFacade {
         );
     }
 
+    private User createUserFromRequest(RegisterRequest registerRequest) {
+        User user = new User();
+        user.setUsername(registerRequest.getUsername());
+        user.setPassword(registerRequest.getPassword());
+        return user;
+    }
+
     private void validateUserWithThatUsernameDoesNotExist(String username) {
         if (userQueryRepository.existsByUsername(username)) {
-            throw new IllegalStateException("User with this username already exists!");
+            throw new IllegalStateException(USER_ALREADY_EXISTS_ERROR);
         }
     }
 
     private void validPasswords(String passwordProvided, String passwordRegistered) {
         if (!passwordProvided.equals(passwordRegistered)) {
-            throw new IllegalStateException("Invalid password!");
+            throw new IllegalStateException(INVALID_PASSWORD_ERROR);
         }
     }
 
