@@ -1,13 +1,11 @@
 package pl.jakubtworek.queue;
 
-import org.springframework.stereotype.Component;
 import pl.jakubtworek.order.dto.SimpleOrder;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-@Component
 class OrdersMadeOnsiteQueue implements Subject {
     private final Queue<SimpleOrder> ordersMadeOnsite = new LinkedList<>();
     private final ArrayList<Observer> observerList;
@@ -36,7 +34,7 @@ class OrdersMadeOnsiteQueue implements Subject {
 
     @Override
     public void notifyObservers() {
-        for (Observer o : observerList) {
+        for (var o : observerList) {
             o.update();
         }
     }

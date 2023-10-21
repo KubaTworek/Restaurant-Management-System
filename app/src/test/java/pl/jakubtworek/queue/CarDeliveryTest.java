@@ -34,7 +34,7 @@ class CarDeliveryTest {
     }
 
     @Test
-    void testUpdate_StartDeliveringWhenEmployeeAndOrderExist() {
+    void shouldStartDeliveringWhenEmployeeAndOrderExist() {
         // given
         when(ordersMadeDeliveryQueue.size()).thenReturn(1);
         when(deliveryQueue.size()).thenReturn(1);
@@ -49,7 +49,7 @@ class CarDeliveryTest {
     }
 
     @Test
-    void testUpdate_DoNotStartDeliveringWhenEmployeeOrOrderIsMissing() {
+    void shouldNotStartDeliveringWhenEmployeeOrOrderIsMissing() {
         // given
         when(ordersMadeDeliveryQueue.size()).thenReturn(0);
         when(deliveryQueue.size()).thenReturn(1);
@@ -64,10 +64,11 @@ class CarDeliveryTest {
     }
 
     @Test
-    void testStartDelivering() {
+    void shouldStartDelivering() {
         // given
-        SimpleEmployee employee = new SimpleEmployee(1L, "John", "Doe", Job.DELIVERY);
-        SimpleOrder order = new SimpleOrder(1L, 120, ZonedDateTime.now(), ZonedDateTime.now().plusHours(1), TypeOfOrder.DELIVERY);
+        final var employee = new SimpleEmployee(1L, "John", "Doe", Job.DELIVERY);
+        final var order = new SimpleOrder(1L, 120, ZonedDateTime.now(), ZonedDateTime.now().plusHours(1), TypeOfOrder.DELIVERY);
+
         when(deliveryQueue.get()).thenReturn(employee);
         when(ordersMadeDeliveryQueue.get()).thenReturn(order);
 

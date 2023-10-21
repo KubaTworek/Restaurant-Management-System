@@ -27,16 +27,16 @@ class EmployeeQueueFacadeTest {
     }
 
     @Test
-    void testAddEmployeeToProperQueue() {
+    void shouldAddEmployeeToProperQueue() {
         // given
-        SimpleEmployee cook = new SimpleEmployee(1L, "John", "Doe", Job.COOK);
-        SimpleEmployee waiter = new SimpleEmployee(2L, "Alice", "Patel",  Job.WAITER);
-        SimpleEmployee deliveryPerson = new SimpleEmployee(3L, "Bob", "Burton", Job.DELIVERY);
+        final var cook = new SimpleEmployee(1L, "John", "Doe", Job.COOK);
+        final var waiter = new SimpleEmployee(2L, "Alice", "Patel",  Job.WAITER);
+        final var deliveryPerson = new SimpleEmployee(3L, "Bob", "Burton", Job.DELIVERY);
 
         // when
-        employeeQueueFacade.addEmployeeToProperQueue(cook);
-        employeeQueueFacade.addEmployeeToProperQueue(waiter);
-        employeeQueueFacade.addEmployeeToProperQueue(deliveryPerson);
+        employeeQueueFacade.addToQueue(cook);
+        employeeQueueFacade.addToQueue(waiter);
+        employeeQueueFacade.addToQueue(deliveryPerson);
 
         // then
         verify(cooksQueue, times(1)).add(cook);

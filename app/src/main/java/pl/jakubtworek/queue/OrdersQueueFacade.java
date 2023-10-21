@@ -1,12 +1,8 @@
 package pl.jakubtworek.queue;
 
-import org.springframework.stereotype.Component;
 import pl.jakubtworek.order.dto.SimpleOrder;
 import pl.jakubtworek.order.dto.TypeOfOrder;
 
-import java.util.Objects;
-
-@Component
 public class OrdersQueueFacade {
     private final OrdersQueue ordersQueue;
     private final OrdersMadeOnsiteQueue ordersMadeOnsiteQueue;
@@ -22,10 +18,14 @@ public class OrdersQueueFacade {
         ordersQueue.add(order);
     }
 
-    public void addMadeOrderToQueue(SimpleOrder order) {
-        if (Objects.equals(order.getTypeOfOrder(), TypeOfOrder.ON_SITE) || Objects.equals(order.getTypeOfOrder(), TypeOfOrder.TAKE_AWAY))
+    public void addReadyToQueue(SimpleOrder order) {
+        final var orderType = order.getTypeOfOrder();
+
+        if (orderType == TypeOfOrder.ON_SITE || orderType == TypeOfOrder.TAKE_AWAY) {
             ordersMadeOnsiteQueue.add(order);
-        if (Objects.equals(order.getTypeOfOrder(), TypeOfOrder.DELIVERY)) ordersMadeDeliveryQueue.add(order);
+        } else if (orderType == TypeOfOrder.DELIVERY) {
+            ordersMadeDeliveryQueue.add(order);
+        }
     }
 }
 

@@ -34,7 +34,7 @@ class WaiterDeliveryTest {
     }
 
     @Test
-    void testUpdate_StartDeliveringWhenWaiterAndOrderExist() {
+    void shouldStartDeliveringWhenWaiterAndOrderExist() {
         // given
         when(ordersMadeOnsiteQueue.size()).thenReturn(1);
         when(waiterQueue.size()).thenReturn(1);
@@ -49,7 +49,7 @@ class WaiterDeliveryTest {
     }
 
     @Test
-    void testUpdate_DoNotStartDeliveringWhenWaiterOrOrderIsMissing() {
+    void shouldNotStartDeliveringWhenWaiterOrOrderIsMissing() {
         // given
         when(ordersMadeOnsiteQueue.size()).thenReturn(0);
         when(waiterQueue.size()).thenReturn(1);
@@ -64,10 +64,10 @@ class WaiterDeliveryTest {
     }
 
     @Test
-    void testStartDelivering() {
+    void shouldStartDelivering() {
         // given
-        SimpleEmployee waiter = new SimpleEmployee(1L, "John", "Doe", Job.WAITER);
-        SimpleOrder order = new SimpleOrder(1L, 120, ZonedDateTime.now(), ZonedDateTime.now().plusHours(1), TypeOfOrder.ON_SITE);
+        final var waiter = new SimpleEmployee(1L, "John", "Doe", Job.WAITER);
+        final var order = new SimpleOrder(1L, 120, ZonedDateTime.now(), ZonedDateTime.now().plusHours(1), TypeOfOrder.ON_SITE);
 
         when(ordersMadeOnsiteQueue.get()).thenReturn(order);
         when(waiterQueue.get()).thenReturn(waiter);

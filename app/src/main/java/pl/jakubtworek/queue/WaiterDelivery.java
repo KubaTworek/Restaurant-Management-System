@@ -1,20 +1,13 @@
 package pl.jakubtworek.queue;
 
-import org.springframework.stereotype.Service;
-import pl.jakubtworek.employee.dto.SimpleEmployee;
 import pl.jakubtworek.order.OrderFacade;
-import pl.jakubtworek.order.dto.SimpleOrder;
 
-@Service
 class WaiterDelivery extends Delivery implements Observer {
 
-    private final WaiterQueue waiterQueue;
     private final OrdersMadeOnsiteQueue ordersMadeOnsiteQueue;
 
-    WaiterDelivery(final OrderFacade orderFacade, final WaiterQueue waiterQueue,
-                   final OrdersMadeOnsiteQueue ordersMadeOnsiteQueue) {
-        super(orderFacade);
-        this.waiterQueue = waiterQueue;
+    WaiterDelivery(final OrderFacade orderFacade, final WaiterQueue waiterQueue, final OrdersMadeOnsiteQueue ordersMadeOnsiteQueue) {
+        super(orderFacade, waiterQueue);
         this.ordersMadeOnsiteQueue = ordersMadeOnsiteQueue;
         waiterQueue.registerObserver(this);
         ordersMadeOnsiteQueue.registerObserver(this);
@@ -28,15 +21,15 @@ class WaiterDelivery extends Delivery implements Observer {
     }
 
     @Override
-    void startDelivering() {
-        SimpleEmployee employee = waiterQueue.get();
-        SimpleOrder order = ordersMadeOnsiteQueue.get();
+    public void startDelivering() {
+        final var employee = employeeQueue.get();
+        final var order = ordersMadeOnsiteQueue.get();
         orderFacade.addEmployeeToOrder(order, employee);
-        startDeliveringOrder(employee, order, 0, waiterQueue);
+        delivering(employee, order, 0);
     }
 
     @Override
-    boolean isExistsEmployeeAndOrder() {
-        return ordersMadeOnsiteQueue.size() > 0 && waiterQueue.size() > 0;
+    public boolean isExistsEmployeeAndOrder() {
+        return ordersMadeOnsiteQueue.size() > 0 && employeeQueue.size() > 0;
     }
 }

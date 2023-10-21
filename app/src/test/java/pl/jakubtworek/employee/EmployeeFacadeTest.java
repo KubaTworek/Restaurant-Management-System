@@ -75,7 +75,7 @@ class EmployeeFacadeTest {
 
         // then
         assertEmployeeEquals(expectedEmployee, result);
-        verify(employeeQueueFacade).addEmployeeToProperQueue(argThat(simpleEmployeeMatcher(expectedSimpleEmployee)));
+        verify(employeeQueueFacade).addToQueue(argThat(simpleEmployeeMatcher(expectedSimpleEmployee)));
     }
 
     @Test

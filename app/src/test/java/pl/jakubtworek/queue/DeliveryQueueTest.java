@@ -11,26 +11,25 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 class DeliveryQueueTest {
-
     private DeliveryQueue deliveryQueue;
-    private SimpleEmployee deliveryPerson1;
-    private SimpleEmployee deliveryPerson2;
+    private SimpleEmployee delivery1;
+    private SimpleEmployee delivery2;
 
     @BeforeEach
     void setUp() {
         deliveryQueue = new DeliveryQueue();
-        deliveryPerson1 = new SimpleEmployee(1L, "John", "Doe", Job.DELIVERY);
-        deliveryPerson2 = new SimpleEmployee(2L, "Bob", "Burton", Job.DELIVERY);
+        delivery1 = new SimpleEmployee(1L, "John", "Doe", Job.DELIVERY);
+        delivery2 = new SimpleEmployee(2L, "Bob", "Burton", Job.DELIVERY);
     }
 
     @Test
-    void testAdd_AddDeliveryPersonToQueue() {
+    void shouldAddDeliveryToQueue() {
         // given
-        Observer observer = mock(Observer.class);
+        final var observer = mock(Observer.class);
         deliveryQueue.registerObserver(observer);
 
         // when
-        deliveryQueue.add(deliveryPerson1);
+        deliveryQueue.add(delivery1);
 
         // then
         verify(observer, times(1)).update();
@@ -38,27 +37,27 @@ class DeliveryQueueTest {
     }
 
     @Test
-    void testGet_GetDeliveryPersonFromQueue() {
+    void shouldGetDeliveryFromQueue() {
         // given
-        deliveryQueue.add(deliveryPerson1);
-        deliveryQueue.add(deliveryPerson2);
+        deliveryQueue.add(delivery1);
+        deliveryQueue.add(delivery2);
 
         // when
-        SimpleEmployee removedDeliveryPerson = deliveryQueue.get();
+        final SimpleEmployee removedDeliveryPerson = deliveryQueue.get();
 
         // then
-        assertEquals(deliveryPerson1, removedDeliveryPerson);
+        assertEquals(delivery1, removedDeliveryPerson);
         assertEquals(1, deliveryQueue.size());
     }
 
     @Test
-    void testSize_ReturnQueueSize() {
+    void shouldReturnQueueSize() {
         // given
-        deliveryQueue.add(deliveryPerson1);
-        deliveryQueue.add(deliveryPerson2);
+        deliveryQueue.add(delivery1);
+        deliveryQueue.add(delivery2);
 
         // when
-        int queueSize = deliveryQueue.size();
+        final int queueSize = deliveryQueue.size();
 
         // then
         assertEquals(2, queueSize);

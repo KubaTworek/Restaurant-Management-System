@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import pl.jakubtworek.employee.dto.Job;
@@ -37,23 +36,21 @@ class QueueTestIT {
     @Test
     void shouldCookOnsiteOrderBeforeDelivery() throws InterruptedException {
         // given
-        TestSetup testSetup = new TestSetup(orderFacade);
-        EmployeeQueueFacade employeeQueueFacade = testSetup.getEmployeeQueueFacade();
-        OrdersQueueFacade ordersQueueFacade = testSetup.getOrdersQueueFacade();
-        InOrder inOrder = inOrder(orderFacade);
+        final var testSetup = new TestSetup(orderFacade);
+        final var employeeQueueFacade = testSetup.getEmployeeQueueFacade();
+        final var ordersQueueFacade = testSetup.getOrdersQueueFacade();
+        final var inOrder = inOrder(orderFacade);
 
-        SimpleEmployee cook = new SimpleEmployee(1L, "John", "Doe", Job.COOK);
-        SimpleEmployee waiter = new SimpleEmployee(2L, "Bob", "Burton", Job.WAITER);
-        SimpleEmployee delivery = new SimpleEmployee(3L, "Alice", "Patel", Job.DELIVERY);
-        SimpleOrder deliveryOrder = new SimpleOrder(1L, 120, ZonedDateTime.now(), null, TypeOfOrder.DELIVERY);
-        SimpleOrder onsiteOrder = new SimpleOrder(2L, 300, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
+        final var cook = new SimpleEmployee(1L, "John", "Doe", Job.COOK);
+        final var waiter = new SimpleEmployee(2L, "Bob", "Burton", Job.WAITER);
+        final var delivery = new SimpleEmployee(3L, "Alice", "Patel", Job.DELIVERY);
+        final var deliveryOrder = new SimpleOrder(1L, 120, ZonedDateTime.now(), null, TypeOfOrder.DELIVERY);
+        final var onsiteOrder = new SimpleOrder(2L, 300, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
 
         // when
         ordersQueueFacade.addToQueue(deliveryOrder);
         ordersQueueFacade.addToQueue(onsiteOrder);
-        employeeQueueFacade.addEmployeeToProperQueue(cook);
-        employeeQueueFacade.addEmployeeToProperQueue(waiter);
-        employeeQueueFacade.addEmployeeToProperQueue(delivery);
+        addEmployeesToProperQueues(employeeQueueFacade, cook, waiter, delivery);
 
         // then
         Thread.sleep(5);
@@ -64,21 +61,19 @@ class QueueTestIT {
     @Test
     void everyOrderShouldBeMadeBySpecificEmployee() {
         // given
-        TestSetup testSetup = new TestSetup(orderFacade);
-        EmployeeQueueFacade employeeQueueFacade = testSetup.getEmployeeQueueFacade();
-        OrdersQueueFacade ordersQueueFacade = testSetup.getOrdersQueueFacade();
-        InOrder inOrder = inOrder(orderFacade);
+        final var testSetup = new TestSetup(orderFacade);
+        final var employeeQueueFacade = testSetup.getEmployeeQueueFacade();
+        final var ordersQueueFacade = testSetup.getOrdersQueueFacade();
+        final var inOrder = inOrder(orderFacade);
 
-        SimpleEmployee cook = new SimpleEmployee(1L, "John", "Doe", Job.COOK);
-        SimpleEmployee waiter = new SimpleEmployee(2L, "Bob", "Burton", Job.WAITER);
-        SimpleEmployee delivery = new SimpleEmployee(3L, "Alice", "Patel", Job.DELIVERY);
-        SimpleOrder deliveryOrder = new SimpleOrder(1L, 120, ZonedDateTime.now(), null, TypeOfOrder.DELIVERY);
-        SimpleOrder onsiteOrder = new SimpleOrder(2L, 300, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
+        final var cook = new SimpleEmployee(1L, "John", "Doe", Job.COOK);
+        final var waiter = new SimpleEmployee(2L, "Bob", "Burton", Job.WAITER);
+        final var delivery = new SimpleEmployee(3L, "Alice", "Patel", Job.DELIVERY);
+        final var deliveryOrder = new SimpleOrder(1L, 120, ZonedDateTime.now(), null, TypeOfOrder.DELIVERY);
+        final var onsiteOrder = new SimpleOrder(2L, 300, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
 
         // when
-        employeeQueueFacade.addEmployeeToProperQueue(cook);
-        employeeQueueFacade.addEmployeeToProperQueue(waiter);
-        employeeQueueFacade.addEmployeeToProperQueue(delivery);
+        addEmployeesToProperQueues(employeeQueueFacade, cook, waiter, delivery);
 
         // then
         ordersQueueFacade.addToQueue(onsiteOrder);
@@ -95,23 +90,20 @@ class QueueTestIT {
     @Test
     void shouldCookTheOtherCook_whenThereIsMoreThanOneOrderInQueue() {
         // given
-        TestSetup testSetup = new TestSetup(orderFacade);
-        EmployeeQueueFacade employeeQueueFacade = testSetup.getEmployeeQueueFacade();
-        OrdersQueueFacade ordersQueueFacade = testSetup.getOrdersQueueFacade();
-        InOrder inOrder = inOrder(orderFacade);
+        final var testSetup = new TestSetup(orderFacade);
+        final var employeeQueueFacade = testSetup.getEmployeeQueueFacade();
+        final var ordersQueueFacade = testSetup.getOrdersQueueFacade();
+        final var inOrder = inOrder(orderFacade);
 
-        SimpleEmployee cook1 = new SimpleEmployee(1L, "John", "Doe", Job.COOK);
-        SimpleEmployee cook2 = new SimpleEmployee(2L, "James", "Moore", Job.COOK);
-        SimpleEmployee waiter = new SimpleEmployee(3L, "Bob", "Burton", Job.WAITER);
-        SimpleEmployee delivery = new SimpleEmployee(4L, "Alice", "Patel", Job.DELIVERY);
-        SimpleOrder deliveryOrder = new SimpleOrder(1L, 120, ZonedDateTime.now(), null, TypeOfOrder.DELIVERY);
-        SimpleOrder onsiteOrder = new SimpleOrder(2L, 300, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
+        final var cook1 = new SimpleEmployee(1L, "John", "Doe", Job.COOK);
+        final var cook2 = new SimpleEmployee(2L, "James", "Moore", Job.COOK);
+        final var waiter = new SimpleEmployee(3L, "Bob", "Burton", Job.WAITER);
+        final var delivery = new SimpleEmployee(4L, "Alice", "Patel", Job.DELIVERY);
+        final var deliveryOrder = new SimpleOrder(1L, 120, ZonedDateTime.now(), null, TypeOfOrder.DELIVERY);
+        final var onsiteOrder = new SimpleOrder(2L, 300, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
 
         // when
-        employeeQueueFacade.addEmployeeToProperQueue(cook1);
-        employeeQueueFacade.addEmployeeToProperQueue(cook2);
-        employeeQueueFacade.addEmployeeToProperQueue(waiter);
-        employeeQueueFacade.addEmployeeToProperQueue(delivery);
+        addEmployeesToProperQueues(employeeQueueFacade, cook1, cook2, waiter, delivery);
 
         // then
         ordersQueueFacade.addToQueue(onsiteOrder);
@@ -123,36 +115,39 @@ class QueueTestIT {
     @Test
     void shouldCookTheSameCook_whenThereIsOnlyOneOrderInQueue() throws InterruptedException {
         // given
-        TestSetup testSetup = new TestSetup(orderFacade);
-        EmployeeQueueFacade employeeQueueFacade = testSetup.getEmployeeQueueFacade();
-        OrdersQueueFacade ordersQueueFacade = testSetup.getOrdersQueueFacade();
+        final var testSetup = new TestSetup(orderFacade);
+        final var employeeQueueFacade = testSetup.getEmployeeQueueFacade();
+        final var ordersQueueFacade = testSetup.getOrdersQueueFacade();
 
-        SimpleEmployee cook1 = new SimpleEmployee(1L, "John", "Doe", Job.COOK);
-        SimpleEmployee cook2 = new SimpleEmployee(2L, "James", "Moore", Job.COOK);
-        SimpleEmployee waiter = new SimpleEmployee(3L, "Bob", "Burton", Job.WAITER);
-        SimpleEmployee delivery = new SimpleEmployee(4L, "Alice", "Patel", Job.DELIVERY);
-        SimpleOrder deliveryOrder = new SimpleOrder(1L, 120, ZonedDateTime.now(), null, TypeOfOrder.DELIVERY);
-        SimpleOrder onsiteOrder = new SimpleOrder(2L, 300, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
+        final var cook1 = new SimpleEmployee(1L, "John", "Doe", Job.COOK);
+        final var cook2 = new SimpleEmployee(2L, "James", "Moore", Job.COOK);
+        final var waiter = new SimpleEmployee(3L, "Bob", "Burton", Job.WAITER);
+        final var delivery = new SimpleEmployee(4L, "Alice", "Patel", Job.DELIVERY);
+        final var deliveryOrder = new SimpleOrder(1L, 120, ZonedDateTime.now(), null, TypeOfOrder.DELIVERY);
+        final var onsiteOrder = new SimpleOrder(2L, 300, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
 
         // when
-        employeeQueueFacade.addEmployeeToProperQueue(cook1);
-        employeeQueueFacade.addEmployeeToProperQueue(cook2);
-        employeeQueueFacade.addEmployeeToProperQueue(waiter);
-        employeeQueueFacade.addEmployeeToProperQueue(delivery);
+        addEmployeesToProperQueues(employeeQueueFacade, cook1, cook2, waiter, delivery);
 
         // then
         ordersQueueFacade.addToQueue(onsiteOrder);
         verify(orderFacade, times(2)).addEmployeeToOrder(orderCaptor.capture(), employeeCaptor.capture());
-        SimpleEmployee cookCapture1 = employeeCaptor.getAllValues().get(0);
+        final var cookCapture1 = employeeCaptor.getAllValues().get(0);
 
         Thread.sleep(5);
 
         ordersQueueFacade.addToQueue(deliveryOrder);
         verify(orderFacade, times(4)).addEmployeeToOrder(orderCaptor.capture(), employeeCaptor.capture());
-        SimpleEmployee cookCapture2 = employeeCaptor.getAllValues().get(2);
+        final var cookCapture2 = employeeCaptor.getAllValues().get(2);
 
         assertEquals(cookCapture1.getId(), cookCapture2.getId());
         assertEquals(cookCapture1.getJob(), cookCapture2.getJob());
+    }
+
+    private void addEmployeesToProperQueues(EmployeeQueueFacade employeeQueueFacade, SimpleEmployee... employees) {
+        for (var employee : employees) {
+            employeeQueueFacade.addToQueue(employee);
+        }
     }
 
     private static class TestSetup {

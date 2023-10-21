@@ -1,6 +1,5 @@
 package pl.jakubtworek.queue;
 
-import org.springframework.stereotype.Component;
 import pl.jakubtworek.order.dto.SimpleOrder;
 import pl.jakubtworek.order.dto.TypeOfOrder;
 
@@ -10,7 +9,6 @@ import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-@Component
 class OrdersQueue implements Subject {
     private final Queue<SimpleOrder> orders = new PriorityQueue<>(new OrderComparator());
     private final ArrayList<Observer> observerList;
@@ -39,12 +37,12 @@ class OrdersQueue implements Subject {
 
     @Override
     public void notifyObservers() {
-        for (Observer o : observerList) {
+        for (var o : observerList) {
             o.update();
         }
     }
 
-    static class OrderComparator implements Comparator<SimpleOrder> {
+    private static class OrderComparator implements Comparator<SimpleOrder> {
         @Override
         public int compare(SimpleOrder o1, SimpleOrder o2) {
             return Integer.compare(isOrderOnsite(o1), isOrderOnsite(o2));

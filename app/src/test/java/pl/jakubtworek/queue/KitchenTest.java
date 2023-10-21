@@ -36,7 +36,7 @@ class KitchenTest {
     }
 
     @Test
-    void testUpdate_StartCookingWhenCookAndOrderExist() {
+    void shouldStartCookingWhenCookAndOrderExist() {
         // given
         when(ordersQueue.size()).thenReturn(1);
         when(cooksQueue.size()).thenReturn(1);
@@ -50,7 +50,7 @@ class KitchenTest {
     }
 
     @Test
-    void testUpdate_DoNotStartCookingWhenCookOrOrderIsMissing() {
+    void shouldNotStartCookingWhenCookOrOrderIsMissing() {
         // given
         when(ordersQueue.size()).thenReturn(0);
         when(cooksQueue.size()).thenReturn(1);
@@ -64,10 +64,10 @@ class KitchenTest {
     }
 
     @Test
-    void testStartCooking() {
+    void shouldStartCooking() {
         // given
-        SimpleEmployee cook = new SimpleEmployee(1L, "John", "Doe", Job.COOK);
-        SimpleOrder order = new SimpleOrder(1L, 120, ZonedDateTime.now(), ZonedDateTime.now().plusHours(1), TypeOfOrder.DELIVERY);
+        final var cook = new SimpleEmployee(1L, "John", "Doe", Job.COOK);
+        final var order = new SimpleOrder(1L, 120, ZonedDateTime.now(), ZonedDateTime.now().plusHours(1), TypeOfOrder.DELIVERY);
 
         when(ordersQueue.size()).thenReturn(1);
         when(cooksQueue.size()).thenReturn(1);

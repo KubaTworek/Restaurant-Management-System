@@ -2,70 +2,64 @@ package pl.jakubtworek.queue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import pl.jakubtworek.employee.dto.Job;
 import pl.jakubtworek.employee.dto.SimpleEmployee;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 class WaiterQueueTest {
-    @Mock
-    private Observer observer;
-
     private WaiterQueue waiterQueue;
+    private SimpleEmployee waiter1;
+    private SimpleEmployee waiter2;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
         waiterQueue = new WaiterQueue();
-        waiterQueue.registerObserver(observer);
+        waiter1 = new SimpleEmployee(1L, "John", "Doe", Job.WAITER);
+        waiter2 = new SimpleEmployee(2L, "Bob", "Burton", Job.WAITER);
     }
 
     @Test
-    void testAdd_AddWaiterToQueue() {
+    void shouldAddWaiterToQueue() {
         // given
-        SimpleEmployee waiter = new SimpleEmployee(1L, "John", "Doe", Job.WAITER);
+        final var observer = mock(Observer.class);
+        waiterQueue.registerObserver(observer);
 
         // when
-        waiterQueue.add(waiter);
+        waiterQueue.add(waiter1);
 
         // then
         verify(observer, times(1)).update();
+        assertEquals(1, waiterQueue.size());
     }
 
     @Test
-    void testGet_GetWaiterFromQueue() {
+    void shouldGetWaiterFromQueue() {
         // given
-        SimpleEmployee waiter1 = new SimpleEmployee(1L, "John", "Doe", Job.WAITER);
-        SimpleEmployee waiter2 = new SimpleEmployee(1L, "Bob", "Burton", Job.WAITER);
-
-        // when
         waiterQueue.add(waiter1);
         waiterQueue.add(waiter2);
-        SimpleEmployee removedWaiter = waiterQueue.get();
+
+        // when
+        final SimpleEmployee removedDeliveryPerson = waiterQueue.get();
 
         // then
-        verify(observer, times(2)).update();
-        assertEquals(waiter1, removedWaiter);
+        assertEquals(waiter1, removedDeliveryPerson);
+        assertEquals(1, waiterQueue.size());
     }
 
     @Test
-    void testSize_ReturnQueueSize() {
+    void shouldReturnQueueSize() {
         // given
-        SimpleEmployee waiter1 = new SimpleEmployee(1L, "John", "Doe", Job.WAITER);
-        SimpleEmployee waiter2 = new SimpleEmployee(1L, "Bob", "Burton", Job.WAITER);
-
         waiterQueue.add(waiter1);
         waiterQueue.add(waiter2);
 
         // when
-        int queueSize = waiterQueue.size();
+        final int queueSize = waiterQueue.size();
 
         // then
         assertEquals(2, queueSize);
     }
 }
-

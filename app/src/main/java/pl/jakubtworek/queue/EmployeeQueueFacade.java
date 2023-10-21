@@ -1,12 +1,7 @@
 package pl.jakubtworek.queue;
 
-import org.springframework.stereotype.Component;
-import pl.jakubtworek.employee.dto.Job;
 import pl.jakubtworek.employee.dto.SimpleEmployee;
 
-import java.util.Objects;
-
-@Component
 public class EmployeeQueueFacade {
     private final CooksQueue cooksQueue;
     private final WaiterQueue waiterQueue;
@@ -18,9 +13,21 @@ public class EmployeeQueueFacade {
         this.deliveryQueue = deliveryQueue;
     }
 
-    public void addEmployeeToProperQueue(SimpleEmployee employee) {
-        if (Objects.equals(employee.getJob(), Job.COOK)) cooksQueue.add(employee);
-        if (Objects.equals(employee.getJob(), Job.WAITER)) waiterQueue.add(employee);
-        if (Objects.equals(employee.getJob(), Job.DELIVERY)) deliveryQueue.add(employee);
+    public void addToQueue(SimpleEmployee employee) {
+        final var job = employee.getJob();
+
+        switch (job) {
+            case COOK:
+                cooksQueue.add(employee);
+                break;
+            case WAITER:
+                waiterQueue.add(employee);
+                break;
+            case DELIVERY:
+                deliveryQueue.add(employee);
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported job: " + job);
+        }
     }
 }

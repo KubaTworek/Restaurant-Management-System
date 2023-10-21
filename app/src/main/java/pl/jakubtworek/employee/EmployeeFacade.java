@@ -43,7 +43,7 @@ public class EmployeeFacade {
                 created.getLastName(),
                 created.getJob()
         );
-        employeeQueueFacade.addEmployeeToProperQueue(employeeQueryDto);
+        employeeQueueFacade.addToQueue(employeeQueryDto);
 
         return created;
     }

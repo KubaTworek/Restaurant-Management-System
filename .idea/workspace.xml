@@ -4,18 +4,36 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6804a3ab-3eba-4f33-a440-5fed16101a6e" name="Changes" comment="update and fix some logic">
+    <list default="true" id="6804a3ab-3eba-4f33-a440-5fed16101a6e" name="Changes" comment="refactor tests and facades">
+      <change afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/queue/QueueConfiguration.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/UserFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/auth/UserFacade.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/EmployeeFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/EmployeeFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/MenuFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/MenuFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/MenuItemFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/MenuItemFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/auth/UserFacadeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/auth/UserFacadeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/CarDelivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/CarDelivery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/CooksQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/CooksQueue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/Delivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/Delivery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/DeliveryQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/DeliveryQueue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/EmployeeQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/EmployeeQueue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/EmployeeQueueFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/EmployeeQueueFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/Kitchen.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/Kitchen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/OrdersMadeDeliveryQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/OrdersMadeDeliveryQueue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/OrdersMadeOnsiteQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/OrdersMadeOnsiteQueue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/OrdersQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/OrdersQueue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/OrdersQueueFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/OrdersQueueFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/WaiterDelivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/WaiterDelivery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/WaiterQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/WaiterQueue.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/employee/EmployeeFacadeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/employee/EmployeeFacadeTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/menu/MenuFacadeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/menu/MenuFacadeTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/menu/MenuItemFacadeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/menu/MenuItemFacadeTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/order/OrderFacadeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/order/OrderFacadeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/CarDeliveryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/CarDeliveryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/CooksQueueTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/CooksQueueTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/DeliveryQueueTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/DeliveryQueueTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/EmployeeQueueFacadeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/EmployeeQueueFacadeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/KitchenTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/KitchenTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/OrdersQueueFacadeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/OrdersQueueFacadeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/OrdersQueueTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/OrdersQueueTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/QueueTestIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/QueueTestIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/WaiterDeliveryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/WaiterDeliveryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/WaiterQueueTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/WaiterQueueTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/restaurant-db.mv.db" beforeDir="false" afterPath="$PROJECT_DIR$/database/restaurant-db.mv.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/restaurant-db.trace.db" beforeDir="false" afterPath="$PROJECT_DIR$/database/restaurant-db.trace.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,7 +132,7 @@
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.46967897",
     "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.toDoOptions",
+    "settings.editor.selected.configurable": "preferences.packagesearch.PackageSearchGeneralConfigurable",
     "spring.configuration.checksum": "99646cec183778b4bbd4fac886d48c63",
     "vue.rearranger.settings.migration": "true"
   },
@@ -181,58 +199,49 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.jakubtworek in monolith">
-    <configuration name="EmployeeFacadeTest.shouldFindEmployeeByJob" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="app" />
+  <component name="RunManager" selected="JUnit.queue in app">
+    <configuration name="QueueControllerE2ETest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="monolith" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.employee.*" />
+          <option name="PATTERN" value="pl.jakubtworek.queue.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.employee" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.employee.EmployeeFacadeTest" />
-      <option name="METHOD_NAME" value="shouldFindEmployeeByJob(java.lang.String)" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="EmployeeFacadeTest.shouldSaveEmployeeAndAddToQueue" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="app" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.employee.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.employee" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.employee.EmployeeFacadeTest" />
-      <option name="METHOD_NAME" value="shouldSaveEmployeeAndAddToQueue(java.lang.String)" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="OrderFacadeTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="app" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.order.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.order" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.order.OrderFacadeTest" />
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.queue" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.queue.QueueControllerE2ETest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="jakubtworek in app" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="QueueTestIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="app" />
-      <option name="TEST_OBJECT" value="directory" />
-      <dir value="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.jakubtworek.queue.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.queue" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.queue.QueueTestIT" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="QueueTestIT.shouldCookTheSameCook_whenThereIsOnlyOneOrderInQueue" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.jakubtworek.queue.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.queue" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.queue.QueueTestIT" />
+      <option name="METHOD_NAME" value="shouldCookTheSameCook_whenThereIsOnlyOneOrderInQueue" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -245,13 +254,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="queue in app" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="app" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.queue in app" />
+        <item itemvalue="JUnit.QueueTestIT.shouldCookTheSameCook_whenThereIsOnlyOneOrderInQueue" />
         <item itemvalue="JUnit.jakubtworek in monolith" />
-        <item itemvalue="JUnit.jakubtworek in app" />
-        <item itemvalue="JUnit.OrderFacadeTest" />
-        <item itemvalue="JUnit.EmployeeFacadeTest.shouldSaveEmployeeAndAddToQueue" />
-        <item itemvalue="JUnit.EmployeeFacadeTest.shouldFindEmployeeByJob" />
+        <item itemvalue="JUnit.QueueTestIT" />
+        <item itemvalue="JUnit.QueueControllerE2ETest" />
       </list>
     </recent_temporary>
   </component>
@@ -442,11 +459,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/CarDelivery.java</url>
-          <line>33</line>
-          <option name="timeStamp" value="30" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/adapters/src/test/java/pl/jakubtworek/employee/EmployeeControllerE2ETest.java</url>
           <line>32</line>

@@ -1,11 +1,9 @@
 package pl.jakubtworek.queue;
 
-import org.springframework.stereotype.Service;
 import pl.jakubtworek.employee.dto.SimpleEmployee;
 import pl.jakubtworek.order.OrderFacade;
 import pl.jakubtworek.order.dto.SimpleOrder;
 
-@Service
 class Kitchen implements Observer {
     private final OrdersQueueFacade ordersQueueFacade;
     private final CooksQueue cooksQueue;
@@ -29,30 +27,36 @@ class Kitchen implements Observer {
     }
 
     private void startCooking() {
-        SimpleEmployee employee = cooksQueue.get();
-        SimpleOrder order = ordersQueue.get();
-        orderFacade.addEmployeeToOrder(order, employee);
-        int numberOfMenuItems = orderFacade.getNumberOfMenuItems(order);
-        startPreparingOrder(employee, order, numberOfMenuItems);
+        final var cook = cooksQueue.get();
+        final var order = ordersQueue.get();
+        orderFacade.addEmployeeToOrder(order, cook);
+        final int numberOfMenuItems = orderFacade.getNumberOfMenuItems(order);
+        final int timeToCook = calculateCookingTime(numberOfMenuItems);
+        startPreparingOrder(cook, order, timeToCook);
+    }
+
+    private int calculateCookingTime(int numberOfMenuItems) {
+        return numberOfMenuItems * 10000;
     }
 
     private void startPreparingOrder(SimpleEmployee employee, SimpleOrder order, int time) {
-        Runnable r = () -> preparing(employee, order, time);
-        new Thread(r).start();
+        final var thread = new Thread(() -> {
+            try {
+                Thread.sleep(time);
+                finishPreparingOrder(employee, order);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        thread.start();
+    }
+
+    private void finishPreparingOrder(SimpleEmployee employee, SimpleOrder order) {
+        cooksQueue.add(employee);
+        ordersQueueFacade.addReadyToQueue(order);
     }
 
     private boolean isExistsCookAndOrder() {
         return ordersQueue.size() > 0 && cooksQueue.size() > 0;
-    }
-
-    private void preparing(SimpleEmployee employee, SimpleOrder order, int time) {
-        int timeToCook = time * 10000;
-        try {
-            Thread.sleep(timeToCook);
-            cooksQueue.add(employee);
-            ordersQueueFacade.addMadeOrderToQueue(order);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }

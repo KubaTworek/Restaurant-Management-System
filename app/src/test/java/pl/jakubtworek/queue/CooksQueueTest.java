@@ -11,7 +11,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 class CooksQueueTest {
-
     private CooksQueue cooksQueue;
     private SimpleEmployee cook1;
     private SimpleEmployee cook2;
@@ -24,9 +23,9 @@ class CooksQueueTest {
     }
 
     @Test
-    void testAdd_AddCookToQueue() {
+    void shouldAddCookToQueue() {
         // given
-        Observer observer = mock(Observer.class);
+        final var observer = mock(Observer.class);
         cooksQueue.registerObserver(observer);
 
         // when
@@ -38,13 +37,13 @@ class CooksQueueTest {
     }
 
     @Test
-    void testGet_GetCookFromQueue() {
+    void shouldGetCookFromQueue() {
         // given
         cooksQueue.add(cook1);
         cooksQueue.add(cook2);
 
         // when
-        SimpleEmployee removedCook = cooksQueue.get();
+        final SimpleEmployee removedCook = cooksQueue.get();
 
         // then
         assertEquals(cook1, removedCook);
@@ -52,13 +51,13 @@ class CooksQueueTest {
     }
 
     @Test
-    void testSize_ReturnQueueSize() {
+    void shouldReturnQueueSize() {
         // given
         cooksQueue.add(cook1);
         cooksQueue.add(cook2);
 
         // when
-        int queueSize = cooksQueue.size();
+        final int queueSize = cooksQueue.size();
 
         // then
         assertEquals(2, queueSize);

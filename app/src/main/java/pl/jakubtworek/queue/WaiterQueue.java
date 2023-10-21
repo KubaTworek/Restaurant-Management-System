@@ -1,13 +1,11 @@
 package pl.jakubtworek.queue;
 
-import org.springframework.stereotype.Component;
 import pl.jakubtworek.employee.dto.SimpleEmployee;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-@Component
 class WaiterQueue implements Subject, EmployeeQueue {
     private final Queue<SimpleEmployee> waiters = new LinkedList<>();
     private final ArrayList<Observer> observerList;
@@ -16,11 +14,13 @@ class WaiterQueue implements Subject, EmployeeQueue {
         this.observerList = new ArrayList<>();
     }
 
-    SimpleEmployee get() {
+    @Override
+    public SimpleEmployee get() {
         return waiters.poll();
     }
 
-    int size() {
+    @Override
+    public int size() {
         return waiters.size();
     }
 
@@ -37,7 +37,7 @@ class WaiterQueue implements Subject, EmployeeQueue {
 
     @Override
     public void notifyObservers() {
-        for (Observer o : observerList) {
+        for (var o : observerList) {
             o.update();
         }
     }

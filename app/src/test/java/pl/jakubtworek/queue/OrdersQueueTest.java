@@ -13,7 +13,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 class OrdersQueueTest {
-
     private OrdersQueue ordersQueue;
     private SimpleOrder onSiteOrder;
     private SimpleOrder deliveryOrder;
@@ -28,9 +27,9 @@ class OrdersQueueTest {
     }
 
     @Test
-    void testAdd_AddOrderToQueue() {
+    void shouldAddOrderToQueue() {
         // given
-        Observer observer = mock(Observer.class);
+        final var observer = mock(Observer.class);
         ordersQueue.registerObserver(observer);
 
         // when
@@ -42,13 +41,13 @@ class OrdersQueueTest {
     }
 
     @Test
-    void testGet_GetOrderFromQueue() {
+    void shouldGetOrderFromQueue() {
         // given
         ordersQueue.add(onSiteOrder);
         ordersQueue.add(deliveryOrder);
 
         // when
-        SimpleOrder removedOrder = ordersQueue.get();
+        final SimpleOrder removedOrder = ordersQueue.get();
 
         // then
         assertEquals(onSiteOrder, removedOrder);
@@ -56,52 +55,15 @@ class OrdersQueueTest {
     }
 
     @Test
-    void testSize_ReturnQueueSize() {
+    void shouldReturnQueueSize() {
         // given
         ordersQueue.add(onSiteOrder);
         ordersQueue.add(deliveryOrder);
 
         // when
-        int queueSize = ordersQueue.size();
+        final int queueSize = ordersQueue.size();
 
         // then
         assertEquals(2, queueSize);
     }
-
-    @Test
-    void testOrderComparator_OnSiteBeforeDelivery() {
-        // given
-        OrdersQueue.OrderComparator comparator = new OrdersQueue.OrderComparator();
-
-        // when
-        int comparisonResult = comparator.compare(onSiteOrder, deliveryOrder);
-
-        // then
-        assertEquals(-1, comparisonResult);
-    }
-
-    @Test
-    void testOrderComparator_DeliveryBeforeOnSite() {
-        // given
-        OrdersQueue.OrderComparator comparator = new OrdersQueue.OrderComparator();
-
-        // when
-        int comparisonResult = comparator.compare(deliveryOrder, onSiteOrder);
-
-        // then
-        assertEquals(1, comparisonResult);
-    }
-
-    @Test
-    void testOrderComparator_TakeAwayBeforeOnSite() {
-        // given
-        OrdersQueue.OrderComparator comparator = new OrdersQueue.OrderComparator();
-
-        // when
-        int comparisonResult = comparator.compare(takeAwayOrder, onSiteOrder);
-
-        // then
-        assertEquals(0, comparisonResult);
-    }
 }
-

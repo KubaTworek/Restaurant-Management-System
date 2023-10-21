@@ -6,27 +6,23 @@ import pl.jakubtworek.order.dto.SimpleOrder;
 
 abstract class Delivery {
     final OrderFacade orderFacade;
+    final EmployeeQueue employeeQueue;
 
-    Delivery(final OrderFacade orderFacade) {
+    Delivery(OrderFacade orderFacade, EmployeeQueue employeeQueue) {
         this.orderFacade = orderFacade;
+        this.employeeQueue = employeeQueue;
     }
 
     abstract void startDelivering();
-
     abstract boolean isExistsEmployeeAndOrder();
 
-    void delivering(SimpleEmployee employee, SimpleOrder order, int time, EmployeeQueue queue) {
+    void delivering(SimpleEmployee employee, SimpleOrder order, int time) {
         try {
             Thread.sleep(time);
             orderFacade.setAsDelivered(order);
-            queue.add(employee);
+            employeeQueue.add(employee);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    void startDeliveringOrder(SimpleEmployee employee, SimpleOrder order, int time, EmployeeQueue queue) {
-        Runnable r = () -> delivering(employee, order, time, queue);
-        new Thread(r).start();
     }
 }

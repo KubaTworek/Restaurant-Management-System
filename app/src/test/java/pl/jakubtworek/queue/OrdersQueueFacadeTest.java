@@ -30,7 +30,7 @@ class OrdersQueueFacadeTest {
     }
 
     @Test
-    void testAddToQueue() {
+    void shouldAddNotReadyOrderToProperQueue() {
         // given
         SimpleOrder order = new SimpleOrder(1L, 120, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
 
@@ -42,16 +42,16 @@ class OrdersQueueFacadeTest {
     }
 
     @Test
-    void testAddMadeOrderToQueue() {
+    void shouldAddReadyOrderToProperQueue() {
         // given
-        SimpleOrder onSiteOrder = new SimpleOrder(1L, 120, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
-        SimpleOrder deliveryOrder = new SimpleOrder(2L, 300, ZonedDateTime.now(), null, TypeOfOrder.DELIVERY);
-        SimpleOrder takeawayOrder = new SimpleOrder(3L, 220, ZonedDateTime.now(), null, TypeOfOrder.TAKE_AWAY);
+        final var onSiteOrder = new SimpleOrder(1L, 120, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
+        final var deliveryOrder = new SimpleOrder(2L, 300, ZonedDateTime.now(), null, TypeOfOrder.DELIVERY);
+        final var takeawayOrder = new SimpleOrder(3L, 220, ZonedDateTime.now(), null, TypeOfOrder.TAKE_AWAY);
 
         // when
-        ordersQueueFacade.addMadeOrderToQueue(onSiteOrder);
-        ordersQueueFacade.addMadeOrderToQueue(deliveryOrder);
-        ordersQueueFacade.addMadeOrderToQueue(takeawayOrder);
+        ordersQueueFacade.addReadyToQueue(onSiteOrder);
+        ordersQueueFacade.addReadyToQueue(deliveryOrder);
+        ordersQueueFacade.addReadyToQueue(takeawayOrder);
 
         // then
         verify(ordersMadeOnsiteQueue, times(1)).add(onSiteOrder);
