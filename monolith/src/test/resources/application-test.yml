@@ -3,7 +3,7 @@ spring:
     enabled: true
     path: '/console'
   datasource:
-    url: 'jdbc:h2:mem:test-db'
+    url: 'jdbc:h2:mem:test-db;DB_CLOSE_DELAY=-1'
     username: 'sa'
     password: 'pass'
   jpa:
