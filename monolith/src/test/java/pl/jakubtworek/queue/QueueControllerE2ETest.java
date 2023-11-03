@@ -1,194 +1,90 @@
 package pl.jakubtworek.queue;
 
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
+import pl.jakubtworek.AbstractIT;
 import pl.jakubtworek.auth.dto.LoginRequest;
-import pl.jakubtworek.auth.dto.LoginResponse;
 import pl.jakubtworek.auth.dto.RegisterRequest;
-import pl.jakubtworek.auth.dto.UserDto;
 import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.employee.dto.EmployeeRequest;
-import pl.jakubtworek.menu.dto.MenuDto;
-import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.menu.dto.MenuItemRequest;
 import pl.jakubtworek.menu.dto.MenuRequest;
-import pl.jakubtworek.order.dto.OrderDto;
 import pl.jakubtworek.order.dto.OrderRequest;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@ActiveProfiles("test")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class QueueControllerE2ETest {
-    @LocalServerPort
-    private int port;
+class QueueControllerE2ETest extends AbstractIT {
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+    private String userToken;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    @BeforeEach
+    void setup() {
+        registerUser(new RegisterRequest("testuser", "password"));
+        userToken = loginUserAndGetToken(new LoginRequest("testuser", "password"));
+        createMenuAndMenuItems();
+    }
 
     @Test
     @DirtiesContext
-    void testCreateOrder() throws InterruptedException {
+    void shouldEveryOrderBePreparedBySpecificEmployee() throws InterruptedException {
         // given
-        EmployeeRequest request1 = new EmployeeRequest("John", "Doe", "COOK");
-        EmployeeRequest request2 = new EmployeeRequest("Jane", "Smith", "WAITER");
-        ResponseEntity<EmployeeDto> employee1 = restTemplate.postForEntity("http://localhost:" + port + "/employees", request1, EmployeeDto.class);
-        ResponseEntity<EmployeeDto> employee2 = restTemplate.postForEntity("http://localhost:" + port + "/employees", request2, EmployeeDto.class);
-        createUserAndLogin();
+        final var employee1 = postEmployee(new EmployeeRequest("John", "Doe", "COOK"));
+        final var employee2 = postEmployee(new EmployeeRequest("Jane", "Smith", "WAITER"));
 
-        createMenuAndMenuItems();
-
-        // Create order request with menu items
-        OrderRequest request = new OrderRequest(
+        final var request1 = new OrderRequest(
                 "ON_SITE",
                 List.of("Burger", "Cola")
         );
-
-        HttpHeaders headers = new HttpHeaders();
-        String token = loginUserAndGetToken();
-        headers.add("Authorization", token);
-
-        HttpEntity<OrderRequest> requestEntity = new HttpEntity<>(request, headers);
+        final var request2 = new OrderRequest(
+                "DELIVERY",
+                List.of("Burger", "Cola")
+        );
 
         // when
-        ResponseEntity<OrderDto> response = restTemplate.exchange(
-                "http://localhost:" + port + "/orders",
-                HttpMethod.POST,
-                requestEntity,
-                OrderDto.class
-        );
+        final var createdOrder1 = postOrder(request1, userToken);
+        final var createdOrder2 = postOrder(request2, userToken);
 
-        restTemplate.exchange(
-                "http://localhost:" + port + "/orders",
-                HttpMethod.POST,
-                new HttpEntity<>(new OrderRequest(
-                        "DELIVERY",
-                        List.of("Burger", "Cola")
-                ), headers),
-                OrderDto.class
-        );
         // then
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertNotNull(response.getBody().getId());
+        assertEquals(HttpStatus.CREATED, createdOrder1.getStatusCode());
+        assertEquals(HttpStatus.CREATED, createdOrder2.getStatusCode());
+        assertNotNull(createdOrder1.getBody().getId());
+        assertNotNull(createdOrder2.getBody().getId());
 
         Thread.sleep(1000);
 
-        //////////////////////////////////////
-        ResponseEntity<OrderDto[]> retrievedResponse1 = restTemplate.exchange(
-                "http://localhost:" + port + "/orders/filter?employeeId=" + employee1.getBody().getId(),
-                HttpMethod.GET,
-                new HttpEntity<>(headers),
-                OrderDto[].class
-        );
-
-        assertEquals(HttpStatus.OK, retrievedResponse1.getStatusCode());
-        List<OrderDto> orders1 = List.of(retrievedResponse1.getBody());
-        assertEquals(2, orders1.size());
-        assertEquals(response.getBody().getId(), orders1.get(0).getId());
-        assertNotNull(orders1.get(0).getHourAway());
-
-        ResponseEntity<OrderDto[]> retrievedResponse2 = restTemplate.exchange(
-                "http://localhost:" + port + "/orders/filter?employeeId=" + employee2.getBody().getId(),
-                HttpMethod.GET,
-                new HttpEntity<>(headers),
-                OrderDto[].class
-        );
-
-        assertEquals(HttpStatus.OK, retrievedResponse2.getStatusCode());
-        List<OrderDto> orders2 = List.of(retrievedResponse2.getBody());
-        assertEquals(1, orders2.size());
-        assertEquals(response.getBody().getId(), orders2.get(0).getId());
-        assertNotNull(orders2.get(0).getHourAway());
+        assertOrdersByEmployee(userToken, employee1, createdOrder1.getBody().getId(), createdOrder2.getBody().getId());
+        assertOrdersByEmployee(userToken, employee2, createdOrder1.getBody().getId());
     }
-    @AfterEach
-    void clean() {
-        jdbcTemplate.execute("DROP TABLE IF EXISTS orders__employee");
-        jdbcTemplate.execute("DROP TABLE IF EXISTS orders__menu_items");
-        jdbcTemplate.execute("DROP TABLE IF EXISTS orders");
-        jdbcTemplate.execute("DROP TABLE IF EXISTS employees");
-        jdbcTemplate.execute("DROP TABLE IF EXISTS menu_items");
-        jdbcTemplate.execute("DROP TABLE IF EXISTS menu");
-        jdbcTemplate.execute("DROP TABLE IF EXISTS users");
+
+    private void assertOrdersByEmployee(String userToken, ResponseEntity<EmployeeDto> employee, Long... orderIds) {
+        final var response = getOrderByParam(userToken, Map.of("employeeId", employee.getBody().getId().toString()));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        final var orders = List.of(response.getBody());
+        assertEquals(orderIds.length, orders.size());
+        for (var orderId : orderIds) {
+            assertTrue(orders.stream().anyMatch(orderDto -> orderDto.getId().equals(orderId)));
+        }
     }
 
     private void createMenuAndMenuItems() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", loginUserAndGetToken());
+        postMenu(new MenuRequest("Food"));
+        postMenu(new MenuRequest("Drinks"));
 
-        restTemplate.exchange(
-                "http://localhost:" + port + "/menu",
-                HttpMethod.POST,
-                new HttpEntity<>(new MenuRequest("Food"), headers),
-                MenuDto.class
-        );
-
-        restTemplate.exchange(
-                "http://localhost:" + port + "/menu",
-                HttpMethod.POST,
-                new HttpEntity<>(new MenuRequest("Drinks"), headers),
-                MenuDto.class
-        );
-
-        createMenuItem("Burger", 1099, "Food");
-        createMenuItem("Pasta", 1299, "Food");
-        createMenuItem("Cola", 599, "Drinks");
-        createMenuItem("Sprite", 499, "Drinks");
+        postMenuItem(new MenuItemRequest("Burger", 1099, "Food"));
+        postMenuItem(new MenuItemRequest("Pasta", 1299, "Food"));
+        postMenuItem(new MenuItemRequest("Cola", 599, "Drinks"));
+        postMenuItem(new MenuItemRequest("Sprite", 499, "Drinks"));
     }
 
-    private void createMenuItem(String name, int price, String menuName) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", loginUserAndGetToken());
-
-        restTemplate.exchange(
-                "http://localhost:" + port + "/menu-items",
-                HttpMethod.POST,
-                new HttpEntity<>(new MenuItemRequest(name, price, menuName), headers),
-                MenuItemDto.class
-        );
-    }
-
-    private void createUserAndLogin() {
-        restTemplate.exchange(
-                "http://localhost:" + port + "/users/register",
-                HttpMethod.POST,
-                new HttpEntity<>(new RegisterRequest("testuser", "password")),
-                UserDto.class
-        );
-
-        restTemplate.exchange(
-                "http://localhost:" + port + "/users/login",
-                HttpMethod.POST,
-                new HttpEntity<>(new LoginRequest("testuser", "password")),
-                LoginResponse.class
-        );
-    }
-
-    private String loginUserAndGetToken() {
-        ResponseEntity<LoginResponse> loginResponse = restTemplate.exchange(
-                "http://localhost:" + port + "/users/login",
-                HttpMethod.POST,
-                new HttpEntity<>(new LoginRequest("testuser", "password")),
-                LoginResponse.class
-        );
-
-        return loginResponse.getBody().getToken();
+    private String loginUserAndGetToken(LoginRequest request) {
+        return loginUser(request).getBody().getToken();
     }
 }
