@@ -36,8 +36,8 @@ class Kitchen implements Observer {
     }
 
     private int calculateCookingTime(int numberOfMenuItems) {
-        return numberOfMenuItems * 10000;
-    }
+        return numberOfMenuItems * 1;
+    } // 10 000
 
     private void startPreparingOrder(SimpleEmployee employee, SimpleOrder order, int time) {
         final var thread = new Thread(() -> {

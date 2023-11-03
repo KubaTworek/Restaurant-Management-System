@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.jakubtworek.AbstractIT;
+import pl.jakubtworek.menu.dto.MenuItemRequest;
 import pl.jakubtworek.menu.dto.MenuRequest;
 
 import java.util.List;
@@ -17,7 +18,7 @@ class MenuControllerE2ETest extends AbstractIT {
     @DirtiesContext
     void shouldCreateMenu() {
         // given
-        final var request = new MenuRequest("Dinner Menu");
+        final var request = new MenuRequest("Lunch");
 
         // when
         final var response = postMenu(request);
@@ -30,10 +31,6 @@ class MenuControllerE2ETest extends AbstractIT {
     @Test
     @DirtiesContext
     void shouldGetMenus() {
-        // given
-        postMenu(new MenuRequest("Dinner Menu"));
-        postMenu(new MenuRequest("Lunch Menu"));
-
         // when
         final var response = getMenus();
 
@@ -48,7 +45,10 @@ class MenuControllerE2ETest extends AbstractIT {
     void shouldDeleteMenuById() {
         // given
         final var createdId = postMenu(
-                new MenuRequest("Dinner Menu")
+                new MenuRequest("Lunch")
+        ).getBody().getId();
+        final var createdMenuItemId = postMenuItem(
+                new MenuItemRequest("Burger", 1099, "Lunch")
         ).getBody().getId();
 
         // when
@@ -56,6 +56,8 @@ class MenuControllerE2ETest extends AbstractIT {
 
         // then
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        final var menuItemResponse = getMenuItemById(createdMenuItemId);
+        assertEquals(HttpStatus.NOT_FOUND, menuItemResponse.getStatusCode());
     }
 
     @Test
@@ -63,7 +65,7 @@ class MenuControllerE2ETest extends AbstractIT {
     void shouldGetMenuById() {
         // given
         final var createdId = postMenu(
-                new MenuRequest("Dinner Menu")
+                new MenuRequest("Lunch")
         ).getBody().getId();
 
         // when
@@ -71,6 +73,6 @@ class MenuControllerE2ETest extends AbstractIT {
 
         // then
         assertEquals(HttpStatus.OK, retrievedResponse.getStatusCode());
-        assertEquals("Dinner Menu", retrievedResponse.getBody().getName());
+        assertEquals("Lunch", retrievedResponse.getBody().getName());
     }
 }

@@ -86,7 +86,7 @@ class Order {
         this.user = user;
     }
 
-    void add(SimpleEmployee employee) {
+    void addEmployee(SimpleEmployee employee) {
         if (employee != null) {
             employees.add(employee);
         }

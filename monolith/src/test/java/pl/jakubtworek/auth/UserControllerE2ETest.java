@@ -16,7 +16,7 @@ class UserControllerE2ETest extends AbstractIT {
     @DirtiesContext
     void shouldRegisterUser() {
         // given
-        final var request = new RegisterRequest("testuser", "password");
+        final var request = new RegisterRequest("user", "password");
 
         // when
         final var response = registerUser(request);
@@ -24,17 +24,13 @@ class UserControllerE2ETest extends AbstractIT {
         // then
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody().getId());
-        assertEquals("testuser", response.getBody().getUsername());
+        assertEquals("user", response.getBody().getUsername());
     }
 
     @Test
     @DirtiesContext
     void shouldLoginUser() {
         // given
-        registerUser(
-                new RegisterRequest("testuser", "password")
-        );
-
         final var request = new LoginRequest("testuser", "password");
 
         // when

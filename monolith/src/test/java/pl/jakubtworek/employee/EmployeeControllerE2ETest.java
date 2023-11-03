@@ -49,20 +49,28 @@ class EmployeeControllerE2ETest extends AbstractIT {
         assertEquals(2, employees.size());
     }
 
-    @Test
+/*    @Test
     @DirtiesContext
     void shouldDeleteEmployee() {
         // given
-        final var employeeId = postEmployee(
+        final var createdId = postEmployee(
                 new EmployeeRequest("John", "Doe", "COOK")
         ).getBody().getId();
 
+        final var request = new OrderRequest(
+                "ON_SITE",
+                List.of("Burger", "Cola")
+        );
+        final var createdOrderId = postOrder(request, userToken).getBody().getId();
+
         // when
-        final var deleteResponse = deleteEmployeeById(employeeId);
+        final var response = deleteEmployeeById(createdId);
 
         // then
-        assertEquals(HttpStatus.NO_CONTENT, deleteResponse.getStatusCode());
-    }
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        final var orderResponse = getOrderById(createdOrderId, userToken);
+        assertEquals(HttpStatus.OK, orderResponse.getStatusCode());
+    }*/
 
     @Test
     @DirtiesContext

@@ -1,6 +1,7 @@
 package pl.jakubtworek;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -40,6 +41,15 @@ public class AbstractIT {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    public String userToken;
+
+    @BeforeEach
+    void setup() {
+        registerUser(new RegisterRequest("testuser", "password"));
+        userToken = loginUserAndGetToken(new LoginRequest("testuser", "password"));
+        createMenuAndMenuItems();
+    }
+
     @AfterEach
     void clean() {
         jdbcTemplate.execute("DROP TABLE IF EXISTS orders__employee");
@@ -49,6 +59,20 @@ public class AbstractIT {
         jdbcTemplate.execute("DROP TABLE IF EXISTS menu_items");
         jdbcTemplate.execute("DROP TABLE IF EXISTS menu");
         jdbcTemplate.execute("DROP TABLE IF EXISTS users");
+    }
+
+    private void createMenuAndMenuItems() {
+        postMenu(new MenuRequest("Food"));
+        postMenu(new MenuRequest("Drinks"));
+
+        postMenuItem(new MenuItemRequest("Burger", 1099, "Food"));
+        postMenuItem(new MenuItemRequest("Pasta", 1299, "Food"));
+        postMenuItem(new MenuItemRequest("Cola", 599, "Drinks"));
+        postMenuItem(new MenuItemRequest("Sprite", 499, "Drinks"));
+    }
+
+    private String loginUserAndGetToken(LoginRequest request) {
+        return loginUser(request).getBody().getToken();
     }
 
     // EMPLOYEE

@@ -194,7 +194,7 @@ class OrderFacadeTest {
     void shouldFindOrderById() {
         // given
         final var orderId = 1L;
-        final var expectedOrder = OrderDto.create(orderId, 220, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE, null);
+        final var expectedOrder = OrderDto.create(orderId, 220, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE, null, null);
 
         when(orderQueryRepository.findDtoById(orderId)).thenReturn(Optional.of(expectedOrder));
 
@@ -235,8 +235,8 @@ class OrderFacadeTest {
 
     private List<OrderDto> createOrderDtos() {
         List<OrderDto> orderDtos = new ArrayList<>();
-        orderDtos.add(OrderDto.create(1L, 220, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE, null));
-        orderDtos.add(OrderDto.create(2L, 250, ZonedDateTime.now(), null, TypeOfOrder.DELIVERY, null));
+        orderDtos.add(OrderDto.create(1L, 220, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE, null, null));
+        orderDtos.add(OrderDto.create(2L, 250, ZonedDateTime.now(), null, TypeOfOrder.DELIVERY, null, null));
         return orderDtos;
     }
 

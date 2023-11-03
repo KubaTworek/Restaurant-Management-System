@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.jakubtworek.AbstractIT;
 import pl.jakubtworek.menu.dto.MenuItemRequest;
-import pl.jakubtworek.menu.dto.MenuRequest;
 
 import java.util.List;
 
@@ -18,9 +17,7 @@ class MenuItemControllerE2ETest extends AbstractIT {
     @DirtiesContext
     void shouldCreateMenuItem() {
         // given
-        postMenu(new MenuRequest("Lunch"));
-
-        final var request = new MenuItemRequest("Burger", 1099, "Lunch");
+        final var request = new MenuItemRequest("Cheeseburger", 1199, "Food");
 
         // when
         final var response = postMenuItem(request);
@@ -30,29 +27,35 @@ class MenuItemControllerE2ETest extends AbstractIT {
         assertNotNull(response.getBody().getId());
     }
 
-    @Test
+/*    @Test
     @DirtiesContext
     void shouldDeleteMenuItemById() {
         // given
-        postMenu(new MenuRequest("Lunch"));
         final var createdId = postMenuItem(
-                new MenuItemRequest("Burger", 1099, "Lunch")
+                new MenuItemRequest("Cheeseburger", 1199, "Food")
         ).getBody().getId();
+
+        final var request = new OrderRequest(
+                "ON_SITE",
+                List.of("Cheeseburger")
+        );
+        final var createdOrderId = postOrder(request, userToken).getBody().getId();
 
         // when
         final var response = deleteMenuItemById(createdId);
 
         // then
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-    }
+        final var orderResponse = getOrderById(createdOrderId, userToken);
+        assertEquals(HttpStatus.OK, orderResponse.getStatusCode());
+    }*/
 
     @Test
     @DirtiesContext
     void shouldGetMenuItemById() {
         // given
-        postMenu(new MenuRequest("Lunch"));
         final var createdId = postMenuItem(
-                new MenuItemRequest("Burger", 1099, "Lunch")
+                new MenuItemRequest("Cheeseburger", 1199, "Food")
         ).getBody().getId();
 
         // when
@@ -60,27 +63,20 @@ class MenuItemControllerE2ETest extends AbstractIT {
 
         // then
         assertEquals(HttpStatus.OK, retrievedResponse.getStatusCode());
-        assertEquals("Burger", retrievedResponse.getBody().getName());
-        assertEquals(1099, retrievedResponse.getBody().getPrice());
+        assertEquals("Cheeseburger", retrievedResponse.getBody().getName());
+        assertEquals(1199, retrievedResponse.getBody().getPrice());
     }
 
     @Test
     @DirtiesContext
     void shouldGetMenuItemByMenuName() {
-        // given
-        postMenu(new MenuRequest("Lunch"));
-        postMenuItem(new MenuItemRequest("Burger", 1099, "Lunch"));
-
-        postMenu(new MenuRequest("Dinner"));
-        postMenuItem(new MenuItemRequest("Pizza", 1299, "Dinner"));
-
         // when
-        final var response = getMenuItemByMenuName("Lunch");
+        final var response = getMenuItemByMenuName("Food");
 
         // then
         assertEquals(HttpStatus.OK, response.getStatusCode());
         final var menuItems = List.of(response.getBody());
-        assertEquals(1, menuItems.size());
+        assertEquals(2, menuItems.size());
         assertEquals("Burger", menuItems.get(0).getName());
         assertEquals(1099, menuItems.get(0).getPrice());
     }

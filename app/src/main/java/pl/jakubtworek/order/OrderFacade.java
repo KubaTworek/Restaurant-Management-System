@@ -5,6 +5,7 @@ import pl.jakubtworek.employee.EmployeeFacade;
 import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.employee.dto.SimpleEmployee;
 import pl.jakubtworek.menu.MenuItemFacade;
+import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.menu.dto.SimpleMenuItem;
 import pl.jakubtworek.order.dto.OrderDto;
 import pl.jakubtworek.order.dto.OrderRequest;
@@ -46,7 +47,7 @@ public class OrderFacade {
     public void addEmployeeToOrder(SimpleOrder orderToAdd, SimpleEmployee employeeToAdd) {
         final var order = getOrderById(orderToAdd.getId());
         final var employee = employeeFacade.getById(employeeToAdd.getId());
-        order.add(employee);
+        order.addEmployee(employee);
         orderRepository.save(order);
     }
 
@@ -63,6 +64,7 @@ public class OrderFacade {
         order.setPrice(calculatePrice(toSave.getMenuItems()));
         order.setHourOrder(ZonedDateTime.now());
         order.setTypeOfOrder(TypeOfOrder.valueOf(toSave.getTypeOfOrder()));
+        order.setMenuItems(getMenuItems(toSave.getMenuItems()));
         order.setUser(user);
 
         final var created = toDto(orderRepository.save(order));
@@ -95,10 +97,15 @@ public class OrderFacade {
     }
 
     private int calculatePrice(List<String> names) {
-        return names.stream()
-                .map(menuItemFacade::getByName)
+        return getMenuItems(names).stream()
                 .mapToInt(SimpleMenuItem::getPrice)
                 .sum();
+    }
+
+    private List<SimpleMenuItem> getMenuItems(List<String> names) {
+        return names.stream()
+                .map(menuItemFacade::getByName)
+                .collect(Collectors.toList());
     }
 
     private OrderDto toDto(Order order) {
@@ -106,7 +113,11 @@ public class OrderFacade {
                 .map(employee -> EmployeeDto.create(employee.getId(), employee.getFirstName(), employee.getLastName(), employee.getJob()))
                 .collect(Collectors.toList());
 
-        return OrderDto.create(order.getId(), order.getPrice(), order.getHourOrder(), order.getHourAway(), order.getTypeOfOrder(), employeeDtos);
+        final var menuItemDtos = order.getMenuItems().stream()
+                .map(menuItem -> MenuItemDto.create(menuItem.getId(), menuItem.getName(), menuItem.getPrice()))
+                .collect(Collectors.toList());
+
+        return OrderDto.create(order.getId(), order.getPrice(), order.getHourOrder(), order.getHourAway(), order.getTypeOfOrder(), employeeDtos, menuItemDtos);
     }
 
     private Order getOrderById(Long orderId) {
