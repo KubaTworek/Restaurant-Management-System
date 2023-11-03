@@ -3,6 +3,7 @@ package pl.jakubtworek.order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,8 +21,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/orders")
 class OrderController {
-    private final OrderFacade orderFacade;
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
+    private final OrderFacade orderFacade;
 
     OrderController(final OrderFacade orderFacade) {
         this.orderFacade = orderFacade;
@@ -29,7 +30,9 @@ class OrderController {
 
     @PostMapping
     ResponseEntity<OrderDto> create(@RequestBody OrderRequest orderRequest, @RequestHeader("Authorization") String jwt) {
+        logger.info("Received a request to create a new order.");
         OrderDto result = orderFacade.save(orderRequest, jwt);
+        logger.info("Order {} created successfully.", result.getId());
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
@@ -43,10 +46,10 @@ class OrderController {
     ) {
         logger.info("Received a request for filtering orders:");
         logger.info("fromDate: {}", fromDate);
-        logger.info("employeeId: {}", employeeId);
         logger.info("toDate: {}", toDate);
         logger.info("typeOfOrder: {}", typeOfOrder);
         logger.info("isReady: {}", isReady);
+        logger.info("employeeId: {}", employeeId);
         logger.info("username: {}", username);
 
         List<OrderDto> orders = orderFacade.findByParams(fromDate, toDate, typeOfOrder, isReady, employeeId, username);
@@ -56,13 +59,27 @@ class OrderController {
 
     @GetMapping
     List<OrderDto> get(@RequestHeader("Authorization") String jwt) {
+        logger.info("Received a request to get the list of all orders.");
         return orderFacade.findAll(jwt);
     }
 
     @GetMapping("/{id}")
     ResponseEntity<OrderDto> getById(@PathVariable Long id) {
+        logger.info("Received a request to get order details for ID: {}", id);
         return orderFacade.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .map(order -> {
+                    logger.info("Found order with ID {}: {}", id, order.getId());
+                    return ResponseEntity.ok(order);
+                })
+                .orElseGet(() -> {
+                    logger.warn("Order with ID {} not found.", id);
+                    return ResponseEntity.notFound().build();
+                });
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    ResponseEntity<String> handleClientError(IllegalStateException e) {
+        logger.error("An error occurred: {}", e.getMessage());
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 }

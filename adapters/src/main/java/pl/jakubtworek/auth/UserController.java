@@ -1,5 +1,7 @@
 package pl.jakubtworek.auth;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +18,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("/users")
 class UserController {
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserFacade userFacade;
 
     UserController(final UserFacade userFacade) {
@@ -24,18 +27,23 @@ class UserController {
 
     @PostMapping("/register")
     ResponseEntity<UserDto> register(@RequestBody RegisterRequest registerRequest) {
+        logger.info("Received a registration request for user: {}", registerRequest.getUsername());
         UserDto result = userFacade.register(registerRequest);
+        logger.info("User {} registered successfully.", result.getUsername());
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
     @PostMapping("/login")
     ResponseEntity<LoginResponse> register(@RequestBody LoginRequest loginRequest) {
+        logger.info("Received a login request for user: {}", loginRequest.getUsername());
         LoginResponse result = userFacade.login(loginRequest);
+        logger.info("User {} logged in successfully.", result.getUsername());
         return ResponseEntity.ok().body(result);
     }
 
     @ExceptionHandler(IllegalStateException.class)
     ResponseEntity<String> handleClientError(IllegalStateException e) {
+        logger.error("An error occurred: {}", e.getMessage());
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 }
