@@ -10,6 +10,7 @@ import pl.jakubtworek.menu.dto.MenuItemRequest;
 import pl.jakubtworek.menu.dto.SimpleMenuItem;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -109,12 +110,9 @@ class MenuItemFacadeTest {
     }
 
     private MenuItem createMenuItem(Long id, String name, Integer price, MenuDto menuDto) {
-        final var menuItem = new MenuItem();
-        menuItem.setId(id);
-        menuItem.setName(name);
-        menuItem.setPrice(price);
-        menuItem.setMenu(createMenu(menuDto));
-        return menuItem;
+        return MenuItem.restore(new MenuItemSnapshot(
+                id, name, price, createMenu(menuDto).getSnapshot(), new HashSet<>()
+        ));
     }
 
     private List<MenuItemDto> createMenuItemDtos() {
@@ -126,15 +124,14 @@ class MenuItemFacadeTest {
     }
 
     private Menu createMenu(MenuDto menuDto) {
-        final var menu = new Menu();
-        menu.setId(menuDto.getId());
-        menu.setName(menuDto.getName());
-        return menu;
+        return Menu.restore(new MenuSnapshot(
+                menuDto.getId(), menuDto.getName(), new HashSet<>()
+        ));
     }
 
     private void assertMenuItemEquals(final MenuItem expected, final MenuItemDto actual) {
-        assertEquals(expected.getId(), actual.getId());
-        assertEquals(expected.getName(), actual.getName());
-        assertEquals(expected.getPrice(), actual.getPrice());
+        assertEquals(expected.getSnapshot().getId(), actual.getId());
+        assertEquals(expected.getSnapshot().getName(), actual.getName());
+        assertEquals(expected.getSnapshot().getPrice(), actual.getPrice());
     }
 }

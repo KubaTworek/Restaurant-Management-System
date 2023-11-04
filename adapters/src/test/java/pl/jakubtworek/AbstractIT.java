@@ -52,13 +52,7 @@ public class AbstractIT {
 
     @AfterEach
     void clean() {
-        jdbcTemplate.execute("DROP TABLE IF EXISTS orders__employee");
-        jdbcTemplate.execute("DROP TABLE IF EXISTS orders__menu_items");
-        jdbcTemplate.execute("DROP TABLE IF EXISTS orders");
-        jdbcTemplate.execute("DROP TABLE IF EXISTS employees");
-        jdbcTemplate.execute("DROP TABLE IF EXISTS menu_items");
-        jdbcTemplate.execute("DROP TABLE IF EXISTS menu");
-        jdbcTemplate.execute("DROP TABLE IF EXISTS users");
+        jdbcTemplate.execute("DROP ALL OBJECTS DELETE FILES");
     }
 
     private void createMenuAndMenuItems() {

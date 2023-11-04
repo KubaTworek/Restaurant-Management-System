@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm
+   http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+                 version="1.0">
+
+    <description>XML Mapping file</description>
+
+    <entity class="pl.jakubtworek.auth.UserSnapshot" access="FIELD">
+        <table name="USERS"/>
+        <attributes>
+            <id name="id">
+                <column name="USER_ID"/>
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="username">
+                <column name="USERNAME" nullable="false"/>
+            </basic>
+            <basic name="password">
+                <column name="PASSWORD" nullable="false"/>
+            </basic>
+            <one-to-many name="orders" fetch="LAZY">
+                <join-column name="USER_ID"/>
+            </one-to-many>
+        </attributes>
+    </entity>
+
+    <entity class="pl.jakubtworek.employee.EmployeeSnapshot" access="FIELD">
+        <table name="EMPLOYEES"/>
+        <attributes>
+            <id name="id">
+                <column name="EMPLOYEE_ID"/>
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="firstName">
+                <column name="FIRST_NAME" nullable="false"/>
+            </basic>
+            <basic name="lastName">
+                <column name="LAST_NAME" nullable="false"/>
+            </basic>
+            <basic name="job">
+                <column name="JOB" nullable="false"/>
+            </basic>
+            <many-to-many name="orders" fetch="LAZY">
+                <join-table name="EMPLOYEE_ORDERS">
+                    <join-column name="EMPLOYEE_ID"/>
+                    <inverse-join-column name="ORDER_ID"/>
+                </join-table>
+            </many-to-many>
+        </attributes>
+    </entity>
+
+    <entity class="pl.jakubtworek.menu.MenuSnapshot" access="FIELD">
+        <table name="MENU"/>
+        <attributes>
+            <id name="id">
+                <column name="MENU_ID"/>
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="name">
+                <column name="MENU_NAME" nullable="false"/>
+            </basic>
+            <one-to-many name="menuItems" fetch="LAZY">
+                <join-column name="MENU_ID"/>
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </one-to-many>
+        </attributes>
+    </entity>
+
+    <entity class="pl.jakubtworek.menu.MenuItemSnapshot" access="FIELD">
+        <table name="MENU_ITEMS"/>
+        <attributes>
+            <id name="id">
+                <column name="MENU_ITEM_ID"/>
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="name">
+                <column name="MENU_ITEM_NAME" nullable="false"/>
+            </basic>
+            <basic name="price">
+                <column name="PRICE" nullable="false"/>
+            </basic>
+            <many-to-one name="menu" fetch="EAGER">
+                <join-column name="MENU_ID"/>
+            </many-to-one>
+            <many-to-many name="orders" fetch="LAZY">
+                <join-table name="MENU_ITEM_ORDERS">
+                    <join-column name="MENU_ITEM_ID"/>
+                    <inverse-join-column name="ORDER_ID"/>
+                </join-table>
+            </many-to-many>
+        </attributes>
+    </entity>
+
+    <entity class="pl.jakubtworek.order.OrderSnapshot" access="FIELD">
+        <table name="ORDERS"/>
+        <attributes>
+            <id name="id">
+                <column name="ORDER_ID"/>
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="price">
+                <column name="PRICE" nullable="false"/>
+            </basic>
+            <basic name="hourOrder">
+                <column name="HOUR_ORDER" nullable="false"/>
+            </basic>
+            <basic name="hourAway">
+                <column name="HOUR_AWAY"/>
+            </basic>
+            <basic name="typeOfOrder">
+                <column name="TYPE_OF_ORDER" nullable="false"/>
+            </basic>
+            <many-to-one name="user" fetch="EAGER">
+                <join-column name="USER_ID"/>
+            </many-to-one>
+            <many-to-many name="menuItems" fetch="EAGER">
+                <join-table name="ORDERS_MENU_ITEMS">
+                    <join-column name="ORDER_ID"/>
+                    <inverse-join-column name="MENU_ITEM_ID"/>
+                </join-table>
+            </many-to-many>
+            <many-to-many name="employees" fetch="EAGER">
+                <join-table name="ORDERS_EMPLOYEE">
+                    <join-column name="ORDER_ID"/>
+                    <inverse-join-column name="EMPLOYEE_ID"/>
+                </join-table>
+            </many-to-many>
+        </attributes>
+    </entity>
+
+    <entity class="pl.jakubtworek.auth.dto.SimpleUserSnapshot" access="FIELD">
+        <table name="USERS"/>
+        <attributes>
+            <id name="id">
+                <column name="USER_ID"/>
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="username">
+                <column name="USERNAME" nullable="false"/>
+            </basic>
+        </attributes>
+    </entity>
+
+    <entity class="pl.jakubtworek.employee.dto.SimpleEmployeeSnapshot" access="FIELD">
+        <table name="EMPLOYEES"/>
+        <attributes>
+            <id name="id">
+                <column name="EMPLOYEE_ID"/>
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="firstName">
+                <column name="FIRST_NAME" nullable="false"/>
+            </basic>
+            <basic name="lastName">
+                <column name="LAST_NAME" nullable="false"/>
+            </basic>
+            <basic name="job">
+                <column name="JOB" nullable="false"/>
+            </basic>
+        </attributes>
+    </entity>
+
+    <entity class="pl.jakubtworek.menu.dto.SimpleMenuItemSnapshot" access="FIELD">
+        <table name="MENU_ITEMS"/>
+        <attributes>
+            <id name="id">
+                <column name="MENU_ITEM_ID"/>
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="name">
+                <column name="MENU_ITEM_NAME" nullable="false"/>
+            </basic>
+            <basic name="price">
+                <column name="PRICE" nullable="false"/>
+            </basic>
+        </attributes>
+    </entity>
+
+    <entity class="pl.jakubtworek.order.dto.SimpleOrderSnapshot" access="FIELD">
+        <table name="ORDERS"/>
+        <attributes>
+            <id name="id">
+                <column name="ORDER_ID"/>
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="price">
+                <column name="PRICE" nullable="false"/>
+            </basic>
+            <basic name="hourOrder">
+                <column name="HOUR_ORDER" nullable="false"/>
+            </basic>
+            <basic name="hourAway">
+                <column name="HOUR_AWAY"/>
+            </basic>
+            <basic name="typeOfOrder">
+                <column name="TYPE_OF_ORDER" nullable="false"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

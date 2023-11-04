@@ -15,7 +15,6 @@ public class EmployeeFacade {
     private final EmployeeQueryRepository employeeQueryRepository;
     private final EmployeeQueueFacade employeeQueueFacade;
     private static final String EMPLOYEE_NOT_FOUND_ERROR = "Employee with that id doesn't exist";
-    private static final String INVALID_JOB_ERROR = "Invalid job type!!";
 
     EmployeeFacade(final EmployeeRepository employeeRepository, final EmployeeQueryRepository employeeQueryRepository, final EmployeeQueueFacade employeeQueueFacade) {
         this.employeeRepository = employeeRepository;
@@ -29,12 +28,12 @@ public class EmployeeFacade {
     }
 
     EmployeeDto save(EmployeeRequest toSave) {
-        validateJob(toSave.getJob());
-
         final var employee = new Employee();
-        employee.setFirstName(toSave.getFirstName());
-        employee.setLastName(toSave.getLastName());
-        employee.setJob(Job.valueOf(toSave.getJob()));
+        employee.updateInfo(
+                toSave.getFirstName(),
+                toSave.getLastName(),
+                toSave.getJob()
+        );
 
         final var created = toDto(employeeRepository.save(employee));
         final var employeeQueryDto = new SimpleEmployee(
@@ -61,19 +60,11 @@ public class EmployeeFacade {
     }
 
     public List<EmployeeDto> findByJob(String jobName) {
-        validateJob(jobName);
         return employeeQueryRepository.findByJob(Job.valueOf(jobName));
     }
 
-    private void validateJob(String jobName) {
-        try {
-            Job.valueOf(jobName);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalStateException(INVALID_JOB_ERROR);
-        }
-    }
-
     private EmployeeDto toDto(Employee employee) {
-        return EmployeeDto.create(employee.getId(), employee.getFirstName(), employee.getLastName(), employee.getJob());
+        var snap = employee.getSnapshot();
+        return EmployeeDto.create(snap.getId(), snap.getFirstName(), snap.getLastName(), snap.getJob());
     }
 }

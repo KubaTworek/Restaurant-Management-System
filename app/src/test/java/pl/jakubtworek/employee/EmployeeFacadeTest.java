@@ -22,7 +22,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -135,29 +134,17 @@ class EmployeeFacadeTest {
         assertEquals(expectedEmployees, result);
     }
 
-    @Test
-    void shouldThrowException_whenJobIsNotExist() {
-        // given
-        final var jobName = "INVALID_JOB";
-
-        // when
-        assertThrows(IllegalStateException.class, () -> employeeFacade.findByJob(jobName));
-    }
-
     private Employee createEmployee(Long id, String firstName, String lastName, Job job) {
-        final var employee = new Employee();
-        employee.setId(id);
-        employee.setFirstName(firstName);
-        employee.setLastName(lastName);
-        employee.setJob(job);
-        return employee;
+        return Employee.restore(new EmployeeSnapshot(
+                id, firstName, lastName, job, new HashSet<>()
+        ));
     }
 
     private void assertEmployeeEquals(Employee expected, EmployeeDto actual) {
-        assertEquals(expected.getId(), actual.getId());
-        assertEquals(expected.getFirstName(), actual.getFirstName());
-        assertEquals(expected.getLastName(), actual.getLastName());
-        assertEquals(expected.getJob(), actual.getJob());
+        assertEquals(expected.getSnapshot().getId(), actual.getId());
+        assertEquals(expected.getSnapshot().getFirstName(), actual.getFirstName());
+        assertEquals(expected.getSnapshot().getLastName(), actual.getLastName());
+        assertEquals(expected.getSnapshot().getJob(), actual.getJob());
     }
 
     private Matcher<SimpleEmployee> simpleEmployeeMatcher(SimpleEmployee expected) {

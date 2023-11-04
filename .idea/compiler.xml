@@ -8,12 +8,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="app" />
-        <module name="monolith" />
         <module name="adapters" />
         <module name="domain" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="monolith" target="11" />
       <module name="PasswordManager" target="16" />
     </bytecodeTargetLevel>
   </component>

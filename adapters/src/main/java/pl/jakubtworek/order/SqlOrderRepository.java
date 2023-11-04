@@ -5,13 +5,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-interface SqlOrderRepository extends JpaRepository<SqlOrder, Long> {
-    Optional<SqlOrder> findById(Long id);
+interface SqlOrderRepository extends JpaRepository<OrderSnapshot, Long> {
+    Optional<OrderSnapshot> findById(Long id);
 
-    <S extends SqlOrder> S save(S entity);
+    <S extends OrderSnapshot> S save(S entity);
 }
 
-interface SqlOrderQueryRepository extends OrderQueryRepository, JpaRepository<SqlOrder, Long> {
+interface SqlOrderQueryRepository extends OrderQueryRepository, JpaRepository<OrderSnapshot, Long> {
 }
 
 @Repository
@@ -25,11 +25,11 @@ class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public Optional<Order> findById(final Long id) {
-        return repository.findById(id).map(SqlOrder::toOrder);
+        return repository.findById(id).map(Order::restore);
     }
 
     @Override
     public Order save(final Order entity) {
-        return repository.save(SqlOrder.fromOrder(entity)).toOrder();
+        return Order.restore(repository.save(entity.getSnapshot()));
     }
 }

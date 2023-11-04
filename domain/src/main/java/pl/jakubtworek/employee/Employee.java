@@ -5,8 +5,19 @@ import pl.jakubtworek.order.dto.SimpleOrder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class Employee {
+    static Employee restore(EmployeeSnapshot snapshot) {
+        return new Employee(
+                snapshot.getId(),
+                snapshot.getFirstName(),
+                snapshot.getLastName(),
+                snapshot.getJob(),
+                snapshot.getOrders().stream().map(SimpleOrder::restore).collect(Collectors.toList())
+        );
+    }
+
     private Long id;
     private String firstName;
     private String lastName;
@@ -16,49 +27,35 @@ class Employee {
     public Employee() {
     }
 
-    Long getId() {
-        return id;
-    }
-
-    void setId(final Long id) {
+    private Employee(final Long id, final String firstName, final String lastName, final Job job, final List<SimpleOrder> orders) {
         this.id = id;
-    }
-
-    String getFirstName() {
-        return firstName;
-    }
-
-    void setFirstName(final String firstName) {
         this.firstName = firstName;
-    }
-
-    String getLastName() {
-        return lastName;
-    }
-
-    void setLastName(final String lastName) {
         this.lastName = lastName;
-    }
-
-    Job getJob() {
-        return job;
-    }
-
-    void setJob(final Job job) {
         this.job = job;
-    }
-
-    List<SimpleOrder> getOrders() {
-        return orders;
-    }
-
-    void setOrders(final List<SimpleOrder> orders) {
         this.orders = orders;
     }
 
-    void add(SimpleOrder order) {
-        if (order != null) {
-            orders.add(order);
+    EmployeeSnapshot getSnapshot() {
+        return new EmployeeSnapshot(
+                id,
+                firstName,
+                lastName,
+                job,
+                orders.stream().map(SimpleOrder::getSnapshot).collect(Collectors.toSet())
+        );
+    }
+
+    void updateInfo(String firstName, String lastName, String jobName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.job = getAndValidateJob(jobName);
+    }
+
+    private Job getAndValidateJob(String jobName) {
+        try {
+            return Job.valueOf(jobName);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalStateException("Invalid job type!!");
         }
     }
 }

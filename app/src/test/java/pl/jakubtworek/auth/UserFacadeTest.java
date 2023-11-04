@@ -12,6 +12,7 @@ import pl.jakubtworek.auth.dto.SimpleUser;
 import pl.jakubtworek.auth.dto.UserDto;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -113,15 +114,14 @@ class UserFacadeTest {
     }
 
     private User createUser(String username, String password) {
-        final var user = new User();
-        user.setUsername(username);
-        user.setPassword(password);
-        return user;
+        return User.restore(new UserSnapshot(
+                1L, username, password, new HashSet<>()
+        ));
     }
 
     private void assertUserEquals(User expected, UserDto actual) {
-        assertEquals(expected.getId(), actual.getId());
-        assertEquals(expected.getUsername(), actual.getUsername());
-        assertEquals(expected.getPassword(), actual.getPassword());
+        assertEquals(expected.getSnapshot().getId(), actual.getId());
+        assertEquals(expected.getSnapshot().getUsername(), actual.getUsername());
+        assertEquals(expected.getSnapshot().getPassword(), actual.getPassword());
     }
 }

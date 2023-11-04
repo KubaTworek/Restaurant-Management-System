@@ -5,14 +5,14 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-interface SqlMenuItemRepository extends JpaRepository<SqlMenuItem, Long> {
+interface SqlMenuItemRepository extends JpaRepository<MenuItemSnapshot, Long> {
 
-    <S extends SqlMenuItem> S save(S entity);
+    <S extends MenuItemSnapshot> S save(S entity);
 
     void deleteById(Long id);
 }
 
-interface SqlMenuItemQueryRepository extends MenuItemQueryRepository, JpaRepository<SqlMenuItem, Long> {
+interface SqlMenuItemQueryRepository extends MenuItemQueryRepository, JpaRepository<MenuItemSnapshot, Long> {
 }
 
 @Repository
@@ -26,12 +26,12 @@ class MenuItemRepositoryImpl implements MenuItemRepository {
 
     @Override
     public Optional<MenuItem> findById(final Long id) {
-        return repository.findById(id).map(SqlMenuItem::toMenuItem);
+        return repository.findById(id).map(MenuItem::restore);
     }
 
     @Override
     public MenuItem save(final MenuItem entity) {
-        return repository.save(SqlMenuItem.fromMenuItem(entity)).toMenuItem();
+        return MenuItem.restore(repository.save(entity.getSnapshot()));
     }
 
     @Override

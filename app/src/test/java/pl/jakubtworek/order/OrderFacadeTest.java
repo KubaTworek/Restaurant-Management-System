@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import pl.jakubtworek.auth.UserFacade;
 import pl.jakubtworek.auth.dto.SimpleUser;
+import pl.jakubtworek.auth.dto.SimpleUserSnapshot;
 import pl.jakubtworek.employee.EmployeeFacade;
 import pl.jakubtworek.employee.dto.Job;
 import pl.jakubtworek.employee.dto.SimpleEmployee;
@@ -22,6 +23,7 @@ import pl.jakubtworek.queue.OrdersQueueFacade;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -126,8 +128,8 @@ class OrderFacadeTest {
         final var order = createOrder(orderId, 200, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
         final var pizza = new SimpleMenuItem(1L, "Pizza", 120);
         final var spaghetti = new SimpleMenuItem(2L, "Spaghetti", 100);
-        order.getMenuItems().add(pizza);
-        order.getMenuItems().add(spaghetti);
+        order.addMenuItem(pizza);
+        order.addMenuItem(spaghetti);
 
         when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
 
@@ -169,8 +171,8 @@ class OrderFacadeTest {
         final OrderDto result = orderFacade.save(request, "jwt-token");
 
         // then
-        assertEquals(expectedOrder.getId(), result.getId());
-        assertEquals(expectedOrder.getPrice(), result.getPrice());
+        assertEquals(expectedOrder.getSnapshot().getId(), result.getId());
+        assertEquals(expectedOrder.getSnapshot().getPrice(), result.getPrice());
         verify(ordersQueueFacade).addToQueue(argThat(simpleOrderMatcher(expectedSimpleOrder)));
     }
 
@@ -224,13 +226,10 @@ class OrderFacadeTest {
     }
 
     private Order createOrder(Long id, Integer price, ZonedDateTime hourOrder, ZonedDateTime hourAway, TypeOfOrder typeOfOrder) {
-        final var order = new Order();
-        order.setId(id);
-        order.setPrice(price);
-        order.setHourOrder(hourOrder);
-        order.setHourAway(hourAway);
-        order.setTypeOfOrder(typeOfOrder);
-        return order;
+        return Order.restore(new OrderSnapshot(
+                id, price, hourOrder, hourAway, typeOfOrder,
+                new HashSet<>(), new HashSet<>(), new SimpleUserSnapshot()
+        ));
     }
 
     private List<OrderDto> createOrderDtos() {

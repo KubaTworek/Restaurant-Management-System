@@ -4,8 +4,17 @@ import pl.jakubtworek.menu.dto.SimpleMenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class Menu {
+    static Menu restore(MenuSnapshot snapshot) {
+        return new Menu(
+                snapshot.getId(),
+                snapshot.getName(),
+                snapshot.getMenuItems().stream().map(SimpleMenuItem::restore).collect(Collectors.toList())
+        );
+    }
+
     private Long id;
     private String name;
     private List<SimpleMenuItem> menuItems = new ArrayList<>();
@@ -13,27 +22,26 @@ class Menu {
     public Menu() {
     }
 
-    Long getId() {
-        return id;
-    }
-
-    void setId(final Long id) {
+    private Menu(final Long id, final String name, final List<SimpleMenuItem> menuItems) {
         this.id = id;
+        this.name = name;
+        this.menuItems = menuItems;
     }
 
-    String getName() {
-        return name;
+    MenuSnapshot getSnapshot() {
+        return new MenuSnapshot(
+                id,
+                name,
+                menuItems.stream().map(SimpleMenuItem::getSnapshot).collect(Collectors.toSet())
+        );
     }
 
-    void setName(final String name) {
+    void updateInfo(Long id, String name) {
+        this.id = id;
         this.name = name;
     }
 
-    List<SimpleMenuItem> getMenuItems() {
-        return menuItems;
-    }
-
-    void setMenuItems(final List<SimpleMenuItem> menuItems) {
-        this.menuItems = menuItems;
+    void updateName(String name) {
+        this.name = name;
     }
 }

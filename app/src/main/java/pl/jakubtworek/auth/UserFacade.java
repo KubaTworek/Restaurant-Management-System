@@ -55,9 +55,11 @@ public class UserFacade {
     }
 
     private User createUserFromRequest(RegisterRequest registerRequest) {
-        User user = new User();
-        user.setUsername(registerRequest.getUsername());
-        user.setPassword(registerRequest.getPassword());
+        final var user = new User();
+        user.updateInfo(
+                registerRequest.getUsername(),
+                registerRequest.getPassword()
+        );
         return user;
     }
 
@@ -74,6 +76,7 @@ public class UserFacade {
     }
 
     private UserDto toDto(User user) {
-        return UserDto.create(user.getId(), user.getUsername(), user.getPassword());
+        var snap = user.getSnapshot();
+        return UserDto.create(snap.getId(), snap.getUsername(), snap.getPassword());
     }
 }

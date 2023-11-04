@@ -31,13 +31,17 @@ public class MenuItemFacade {
                 .orElseThrow(() -> new IllegalStateException(MENU_NOT_FOUND_ERROR));
 
         final var menu = new Menu();
-        menu.setId(menuDto.getId());
-        menu.setName(menuDto.getName());
+        menu.updateInfo(
+                menuDto.getId(),
+                menuDto.getName()
+        );
 
         final var menuItem = new MenuItem();
-        menuItem.setName(toSave.getName());
-        menuItem.setPrice(toSave.getPrice());
-        menuItem.setMenu(menu);
+        menuItem.updateInfo(
+                toSave.getName(),
+                toSave.getPrice(),
+                menu
+        );
 
         return toDto(menuItemRepository.save(menuItem));
     }
@@ -55,6 +59,7 @@ public class MenuItemFacade {
     }
 
     private MenuItemDto toDto(MenuItem menuItem) {
-        return MenuItemDto.create(menuItem.getId(), menuItem.getName(), menuItem.getPrice());
+        var snap = menuItem.getSnapshot();
+        return MenuItemDto.create(snap.getId(), snap.getName(), snap.getPrice());
     }
 }

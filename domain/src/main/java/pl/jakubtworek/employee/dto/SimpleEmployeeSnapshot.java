@@ -1,24 +1,19 @@
 package pl.jakubtworek.employee.dto;
 
-public class SimpleEmployee {
-    public static SimpleEmployee restore(final SimpleEmployeeSnapshot snapshot) {
-        return new SimpleEmployee(snapshot.getId(), snapshot.getFirstName(), snapshot.getLastName(), snapshot.getJob());
-    }
-
+public class SimpleEmployeeSnapshot {
     private Long id;
     private String firstName;
     private String lastName;
     private Job job;
 
-    public SimpleEmployee(final Long id, final String firstName, final String lastName, final Job job) {
+    public SimpleEmployeeSnapshot() {
+    }
+
+    public SimpleEmployeeSnapshot(final Long id, final String firstName, final String lastName, final Job job) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.job = job;
-    }
-
-    public SimpleEmployeeSnapshot getSnapshot() {
-        return new SimpleEmployeeSnapshot(id, firstName, lastName, job);
     }
 
     public Long getId() {

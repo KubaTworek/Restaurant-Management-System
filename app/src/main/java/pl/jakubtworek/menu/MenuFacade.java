@@ -3,7 +3,7 @@ package pl.jakubtworek.menu;
 import pl.jakubtworek.menu.dto.MenuDto;
 import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.menu.dto.MenuRequest;
-import pl.jakubtworek.menu.dto.SimpleMenuItem;
+import pl.jakubtworek.menu.dto.SimpleMenuItemSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,9 @@ public class MenuFacade {
 
     MenuDto save(MenuRequest toSave) {
         final var menu = new Menu();
-        menu.setName(toSave.getName());
+        menu.updateName(
+                toSave.getName()
+        );
         return toDto(menuRepository.save(menu));
     }
 
@@ -38,10 +40,11 @@ public class MenuFacade {
     }
 
     private MenuDto toDto(Menu menu) {
-        return MenuDto.create(menu.getId(), menu.getName(), menu.getMenuItems().stream().map(this::toDto).collect(Collectors.toList()));
+        var snap = menu.getSnapshot();
+        return MenuDto.create(snap.getId(), snap.getName(), snap.getMenuItems().stream().map(this::toDto).collect(Collectors.toList()));
     }
 
-    MenuItemDto toDto(SimpleMenuItem menuItem) {
+    MenuItemDto toDto(SimpleMenuItemSnapshot menuItem) {
         return MenuItemDto.create(menuItem.getId(), menuItem.getName(), menuItem.getPrice());
     }
 }

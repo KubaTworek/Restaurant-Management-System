@@ -4,8 +4,19 @@ import pl.jakubtworek.order.dto.SimpleOrder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class MenuItem {
+    static MenuItem restore(MenuItemSnapshot snapshot) {
+        return new MenuItem(
+                snapshot.getId(),
+                snapshot.getName(),
+                snapshot.getPrice(),
+                Menu.restore(snapshot.getMenu()),
+                snapshot.getOrders().stream().map(SimpleOrder::restore).collect(Collectors.toList())
+        );
+    }
+
     private Long id;
     private String name;
     private int price;
@@ -15,43 +26,27 @@ class MenuItem {
     public MenuItem() {
     }
 
-    Long getId() {
-        return id;
-    }
-
-    void setId(final Long id) {
+    private MenuItem(final Long id, final String name, final int price, final Menu menu, final List<SimpleOrder> orders) {
         this.id = id;
-    }
-
-    String getName() {
-        return name;
-    }
-
-    void setName(final String name) {
         this.name = name;
-    }
-
-    int getPrice() {
-        return price;
-    }
-
-    void setPrice(final int price) {
         this.price = price;
-    }
-
-    Menu getMenu() {
-        return menu;
-    }
-
-    void setMenu(final Menu menu) {
         this.menu = menu;
-    }
-
-    List<SimpleOrder> getOrders() {
-        return orders;
-    }
-
-    void setOrders(final List<SimpleOrder> orders) {
         this.orders = orders;
+    }
+
+    MenuItemSnapshot getSnapshot() {
+        return new MenuItemSnapshot(
+                id,
+                name,
+                price,
+                menu.getSnapshot(),
+                orders.stream().map(SimpleOrder::getSnapshot).collect(Collectors.toSet())
+        );
+    }
+
+    void updateInfo(String name, int price, Menu menu) {
+        this.name = name;
+        this.price = price;
+        this.menu = menu;
     }
 }

@@ -42,8 +42,8 @@ class MenuFacadeTest {
         final MenuDto result = menuFacade.save(request);
 
         // then
-        assertEquals(expectedMenu.getId(), result.getId());
-        assertEquals(expectedMenu.getName(), result.getName());
+        assertEquals(expectedMenu.getSnapshot().getId(), result.getId());
+        assertEquals(expectedMenu.getSnapshot().getName(), result.getName());
     }
 
     @Test
@@ -89,8 +89,7 @@ class MenuFacadeTest {
 
     private Menu createMenu(Long id, String name) {
         final var menu = new Menu();
-        menu.setId(id);
-        menu.setName(name);
+        menu.updateInfo(id, name);
         return menu;
     }
 }

@@ -14,7 +14,7 @@ public interface OrderQueryRepository {
 
     List<OrderDto> findByUserUsername(String username);
 
-    @Query("SELECT o FROM SqlOrder o " +
+    @Query("SELECT o FROM OrderSnapshot o " +
             "LEFT JOIN o.employees e " +
             "WHERE " +
             "(:fromDate IS NULL OR o.hourOrder >= :fromDate) " +
