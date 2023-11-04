@@ -15,16 +15,34 @@ class MenuItemControllerE2ETest extends AbstractIT {
 
     @Test
     @DirtiesContext
-    void shouldCreateMenuItem() {
+    void shouldCreateMenuItem_whenMenuIsExist() {
         // given
         final var request = new MenuItemRequest("Cheeseburger", 1199, "Food");
 
         // when
-        final var response = postMenuItem(request);
+        final var responseMenuItem = postMenuItem(request);
+        final var responseMenu = getMenus();
 
         // then
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertNotNull(response.getBody().getId());
+        assertEquals(HttpStatus.CREATED, responseMenuItem.getStatusCode());
+        assertNotNull(responseMenuItem.getBody().getId());
+        assertEquals(2, responseMenu.getBody().length);
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldCreateMenuItem_whenMenuIsNotExist() {
+        // given
+        final var request = new MenuItemRequest("Cheeseburger", 1199, "Fast-Foods");
+
+        // when
+        final var responseMenuItem = postMenuItem(request);
+        final var responseMenu = getMenus();
+
+        // then
+        assertEquals(HttpStatus.CREATED, responseMenuItem.getStatusCode());
+        assertNotNull(responseMenuItem.getBody().getId());
+        assertEquals(3, responseMenu.getBody().length);
     }
 
 /*    @Test
@@ -49,6 +67,18 @@ class MenuItemControllerE2ETest extends AbstractIT {
         final var orderResponse = getOrderById(createdOrderId, userToken);
         assertEquals(HttpStatus.OK, orderResponse.getStatusCode());
     }*/
+
+    @Test
+    @DirtiesContext
+    void shouldGetMenus() {
+        // when
+        final var response = getMenus();
+
+        // then
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        final var menus = List.of(response.getBody());
+        assertEquals(2, menus.size());
+    }
 
     @Test
     @DirtiesContext

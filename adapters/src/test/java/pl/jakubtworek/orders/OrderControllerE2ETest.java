@@ -1,6 +1,5 @@
 package pl.jakubtworek.orders;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -8,10 +7,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.jakubtworek.AbstractIT;
-import pl.jakubtworek.auth.dto.LoginRequest;
-import pl.jakubtworek.auth.dto.RegisterRequest;
-import pl.jakubtworek.menu.dto.MenuItemRequest;
-import pl.jakubtworek.menu.dto.MenuRequest;
 import pl.jakubtworek.order.dto.OrderRequest;
 import pl.jakubtworek.order.dto.TypeOfOrder;
 
@@ -25,15 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class OrderControllerE2ETest extends AbstractIT {
-
-    private String userToken;
-
-    @BeforeEach
-    void setup() {
-        registerUser(new RegisterRequest("testuser", "password"));
-        userToken = loginUserAndGetToken(new LoginRequest("testuser", "password"));
-        createMenuAndMenuItems();
-    }
 
     @Test
     @DirtiesContext
@@ -138,19 +124,5 @@ class OrderControllerE2ETest extends AbstractIT {
     private static String createFromDateStr() {
         final var fromDate = ZonedDateTime.now().minusHours(2);
         return DateTimeFormatter.ISO_INSTANT.format(fromDate);
-    }
-
-    private void createMenuAndMenuItems() {
-        postMenu(new MenuRequest("Food"));
-        postMenu(new MenuRequest("Drinks"));
-
-        postMenuItem(new MenuItemRequest("Burger", 1099, "Food"));
-        postMenuItem(new MenuItemRequest("Pasta", 1299, "Food"));
-        postMenuItem(new MenuItemRequest("Cola", 599, "Drinks"));
-        postMenuItem(new MenuItemRequest("Sprite", 499, "Drinks"));
-    }
-
-    private String loginUserAndGetToken(LoginRequest request) {
-        return loginUser(request).getBody().getToken();
     }
 }

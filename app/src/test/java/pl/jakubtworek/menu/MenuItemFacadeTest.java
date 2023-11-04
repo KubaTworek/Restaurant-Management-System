@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.any;
@@ -51,14 +52,33 @@ class MenuItemFacadeTest {
     }
 
     @Test
-    void shouldSaveMenuItem() {
+    void shouldSaveMenuItemWithExistingMenu() {
         // given
         final var request = new MenuItemRequest("Lasagna", 140, "Dinner Menu");
         final var expectedMenu = MenuDto.create(1L, "Dinner Menu", null);
         final var expectedMenuItem = createMenuItem(1L, "Lasagna", 140, expectedMenu);
 
         when(menuQueryRepository.findDtoByName(request.getMenu())).thenReturn(Optional.of(expectedMenu));
-        when(menuItemRepository.save(any())).thenReturn(expectedMenuItem);
+        when(menuItemRepository.save(any(MenuItem.class))).thenReturn(expectedMenuItem);
+
+        // when
+        final MenuItemDto result = menuItemFacade.save(request);
+
+        // then
+        assertMenuItemEquals(expectedMenuItem, result);
+    }
+
+    @Test
+    void shouldSaveMenuItemWithNotExistingMenu() {
+        // given
+        final var request = new MenuItemRequest("Lasagna", 140, "Dinner Menu");
+        final var expectedMenu = createMenu(1L, "Dinner Menu");
+        final var expectedMenuDto = MenuDto.create(1L, "Dinner Menu", null);
+        final var expectedMenuItem = createMenuItem(1L, "Lasagna", 140, expectedMenuDto);
+
+        when(menuQueryRepository.findDtoByName(request.getMenu())).thenReturn(Optional.empty());
+        when(menuItemRepository.save(any(MenuItem.Menu.class))).thenReturn(expectedMenu);
+        when(menuItemRepository.save(any(MenuItem.class))).thenReturn(expectedMenuItem);
 
         // when
         final MenuItemDto result = menuItemFacade.save(request);
@@ -77,6 +97,20 @@ class MenuItemFacadeTest {
 
         // then
         verify(menuItemRepository).deleteById(itemId);
+    }
+
+    @Test
+    void shouldFindAllMenu() {
+        // given
+        final Set<MenuDto> expectedMenuList = new HashSet<>();
+
+        when(menuQueryRepository.findBy(MenuDto.class)).thenReturn(expectedMenuList);
+
+        // when
+        final Set<MenuDto> result = new HashSet<>(menuItemFacade.findAll());
+
+        // then
+        assertEquals(expectedMenuList, result);
     }
 
     @Test
@@ -115,6 +149,12 @@ class MenuItemFacadeTest {
         ));
     }
 
+    private MenuItem.Menu createMenu(Long id, String name) {
+        return MenuItem.Menu.restore(new MenuSnapshot(
+                id, name, new HashSet<>()
+        ));
+    }
+
     private List<MenuItemDto> createMenuItemDtos() {
         final List<MenuItemDto> menuItems = new ArrayList<>();
         menuItems.add(MenuItemDto.create(1L, "Spaghetti", 100));
@@ -123,8 +163,8 @@ class MenuItemFacadeTest {
         return menuItems;
     }
 
-    private Menu createMenu(MenuDto menuDto) {
-        return Menu.restore(new MenuSnapshot(
+    private MenuItem.Menu createMenu(MenuDto menuDto) {
+        return MenuItem.Menu.restore(new MenuSnapshot(
                 menuDto.getId(), menuDto.getName(), new HashSet<>()
         ));
     }

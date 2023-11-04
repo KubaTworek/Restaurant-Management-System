@@ -22,7 +22,6 @@ import pl.jakubtworek.employee.dto.EmployeeRequest;
 import pl.jakubtworek.menu.dto.MenuDto;
 import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.menu.dto.MenuItemRequest;
-import pl.jakubtworek.menu.dto.MenuRequest;
 import pl.jakubtworek.order.dto.OrderDto;
 import pl.jakubtworek.order.dto.OrderRequest;
 
@@ -47,7 +46,7 @@ public class AbstractIT {
     void setup() {
         registerUser(new RegisterRequest("testuser", "password"));
         userToken = loginUserAndGetToken(new LoginRequest("testuser", "password"));
-        createMenuAndMenuItems();
+        createMenuItems();
     }
 
     @AfterEach
@@ -55,10 +54,7 @@ public class AbstractIT {
         jdbcTemplate.execute("DROP ALL OBJECTS DELETE FILES");
     }
 
-    private void createMenuAndMenuItems() {
-        postMenu(new MenuRequest("Food"));
-        postMenu(new MenuRequest("Drinks"));
-
+    private void createMenuItems() {
         postMenuItem(new MenuItemRequest("Burger", 1099, "Food"));
         postMenuItem(new MenuItemRequest("Pasta", 1299, "Food"));
         postMenuItem(new MenuItemRequest("Cola", 599, "Drinks"));
@@ -126,39 +122,6 @@ public class AbstractIT {
         );
     }
 
-    // MENU
-
-    public ResponseEntity<MenuDto> postMenu(MenuRequest request) {
-        return restTemplate.postForEntity(
-                "http://localhost:" + port + "/menu",
-                request,
-                MenuDto.class
-        );
-    }
-
-    public ResponseEntity<MenuDto[]> getMenus() {
-        return restTemplate.getForEntity(
-                "http://localhost:" + port + "/menu",
-                MenuDto[].class
-        );
-    }
-
-    public ResponseEntity<Void> deleteMenuById(Long menuId) {
-        return restTemplate.exchange(
-                "http://localhost:" + port + "/menu/" + menuId,
-                HttpMethod.DELETE,
-                null,
-                Void.class
-        );
-    }
-
-    public ResponseEntity<MenuDto> getMenuById(Long menuId) {
-        return restTemplate.getForEntity(
-                "http://localhost:" + port + "/menu/" + menuId,
-                MenuDto.class
-        );
-    }
-
     // MENU ITEM
 
     public ResponseEntity<MenuItemDto> postMenuItem(MenuItemRequest request) {
@@ -166,6 +129,13 @@ public class AbstractIT {
                 "http://localhost:" + port + "/menu-items",
                 request,
                 MenuItemDto.class
+        );
+    }
+
+    public ResponseEntity<MenuDto[]> getMenus() {
+        return restTemplate.getForEntity(
+                "http://localhost:" + port + "/menu-items",
+                MenuDto[].class
         );
     }
 

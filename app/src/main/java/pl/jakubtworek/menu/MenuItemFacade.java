@@ -1,9 +1,11 @@
 package pl.jakubtworek.menu;
 
+import pl.jakubtworek.menu.dto.MenuDto;
 import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.menu.dto.MenuItemRequest;
 import pl.jakubtworek.menu.dto.SimpleMenuItem;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,23 +29,13 @@ public class MenuItemFacade {
     }
 
     MenuItemDto save(MenuItemRequest toSave) {
-        final var menuDto = menuQueryRepository.findDtoByName(toSave.getMenu())
-                .orElseThrow(() -> new IllegalStateException(MENU_NOT_FOUND_ERROR));
+        return menuQueryRepository.findDtoByName(toSave.getMenu())
+                .map(menu -> createAndSaveMenuItemWithExistingMenu(toSave, menu))
+                .orElseGet(() -> createAndSaveMenuItemWithNewMenu(toSave));
+        }
 
-        final var menu = new Menu();
-        menu.updateInfo(
-                menuDto.getId(),
-                menuDto.getName()
-        );
-
-        final var menuItem = new MenuItem();
-        menuItem.updateInfo(
-                toSave.getName(),
-                toSave.getPrice(),
-                menu
-        );
-
-        return toDto(menuItemRepository.save(menuItem));
+    List<MenuDto> findAll() {
+        return new ArrayList<>(menuQueryRepository.findBy(MenuDto.class));
     }
 
     void deleteById(Long id) {
@@ -61,5 +53,29 @@ public class MenuItemFacade {
     private MenuItemDto toDto(MenuItem menuItem) {
         var snap = menuItem.getSnapshot();
         return MenuItemDto.create(snap.getId(), snap.getName(), snap.getPrice());
+    }
+
+    private MenuItemDto createAndSaveMenuItemWithExistingMenu(MenuItemRequest toSave, MenuDto menuDto) {
+        final var menuItem = new MenuItem();
+        menuItem.createWithMenu(
+                toSave.getName(),
+                toSave.getPrice(),
+                menuDto.getId(),
+                menuDto.getName()
+        );
+        return toDto(menuItemRepository.save(menuItem));
+    }
+
+    private MenuItemDto createAndSaveMenuItemWithNewMenu(MenuItemRequest toSave) {
+        final var menuItem = new MenuItem();
+        final var menu = menuItem.createNewMenu(toSave.getMenu());
+        final var savedMenu = menuItemRepository.save(menu);
+        menuItem.createWithMenu(
+                toSave.getName(),
+                toSave.getPrice(),
+                savedMenu.getSnapshot().getId(),
+                savedMenu.getSnapshot().getName()
+        );
+        return toDto(menuItemRepository.save(menuItem));
     }
 }

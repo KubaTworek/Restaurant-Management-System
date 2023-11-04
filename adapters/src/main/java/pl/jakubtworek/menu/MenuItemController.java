@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.jakubtworek.menu.dto.MenuDto;
 import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.menu.dto.MenuItemRequest;
 
@@ -33,6 +34,12 @@ class MenuItemController {
         MenuItemDto result = menuItemFacade.save(menuItemRequest);
         logger.info("Menu item {} saved successfully.", result.getName());
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
+    }
+
+    @GetMapping
+    List<MenuDto> get() {
+        logger.info("Received a request to get the list of all menus.");
+        return menuItemFacade.findAll();
     }
 
     @DeleteMapping("/{id}")

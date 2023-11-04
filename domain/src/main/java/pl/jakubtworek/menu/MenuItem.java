@@ -1,5 +1,6 @@
 package pl.jakubtworek.menu;
 
+import pl.jakubtworek.menu.dto.SimpleMenuItem;
 import pl.jakubtworek.order.dto.SimpleOrder;
 
 import java.util.ArrayList;
@@ -44,9 +45,57 @@ class MenuItem {
         );
     }
 
-    void updateInfo(String name, int price, Menu menu) {
+    void createWithMenu(String name, int price, Long menuId, String menuName) {
         this.name = name;
         this.price = price;
+        final var menu = new Menu();
+        menu.updateInfo(menuId, menuName);
         this.menu = menu;
+    }
+
+    Menu createNewMenu(final String menuName) {
+        final var menu = new Menu();
+        menu.updateName(menuName);
+        return menu;
+    }
+
+    static class Menu {
+        static Menu restore(MenuSnapshot snapshot) {
+            return new Menu(
+                    snapshot.getId(),
+                    snapshot.getName(),
+                    snapshot.getMenuItems().stream().map(SimpleMenuItem::restore).collect(Collectors.toList())
+            );
+        }
+
+        private Long id;
+        private String name;
+        private List<SimpleMenuItem> menuItems = new ArrayList<>();
+
+        Menu() {
+        }
+
+        private Menu(final Long id, final String name, final List<SimpleMenuItem> menuItems) {
+            this.id = id;
+            this.name = name;
+            this.menuItems = menuItems;
+        }
+
+        MenuSnapshot getSnapshot() {
+            return new MenuSnapshot(
+                    id,
+                    name,
+                    menuItems.stream().map(SimpleMenuItem::getSnapshot).collect(Collectors.toSet())
+            );
+        }
+
+        void updateInfo(Long id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        void updateName(String name) {
+            this.name = name;
+        }
     }
 }
