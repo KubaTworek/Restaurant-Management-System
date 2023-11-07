@@ -4,80 +4,85 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.employee.dto.Job;
-import pl.jakubtworek.employee.dto.SimpleEmployee;
-import pl.jakubtworek.order.OrderFacade;
-import pl.jakubtworek.order.dto.SimpleOrder;
+import pl.jakubtworek.employee.vo.EmployeeEvent;
 import pl.jakubtworek.order.dto.TypeOfOrder;
-
-import java.time.ZonedDateTime;
+import pl.jakubtworek.order.vo.OrderEvent;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 class WaiterDeliveryTest {
     @Mock
-    private WaiterQueue waiterQueue;
-    @Mock
-    private OrdersMadeOnsiteQueue ordersMadeOnsiteQueue;
-    @Mock
-    private OrderFacade orderFacade;
+    private DomainEventPublisher publisher;
 
     private WaiterDelivery waiterDelivery;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        waiterDelivery = new WaiterDelivery(orderFacade, waiterQueue, ordersMadeOnsiteQueue);
+        waiterDelivery = new WaiterDelivery(publisher);
     }
 
     @Test
-    void shouldStartDeliveringWhenWaiterAndOrderExist() {
+    void shouldHandleEvents() throws InterruptedException {
         // given
-        when(ordersMadeOnsiteQueue.size()).thenReturn(1);
-        when(waiterQueue.size()).thenReturn(1);
+        final var orderEvent = new OrderEvent(
+                1L,
+                TypeOfOrder.ON_SITE,
+                4,
+                OrderEvent.State.READY
+        );
+        final var employeeEvent = new EmployeeEvent(
+                1L,
+                null,
+                Job.WAITER
+        );
 
         // when
-        waiterDelivery.update();
+        waiterDelivery.handle(orderEvent);
+        waiterDelivery.handle(employeeEvent);
 
         // then
-        verify(orderFacade, times(1)).addEmployeeToOrder(any(), any());
-        verify(waiterQueue, times(1)).get();
-        verify(ordersMadeOnsiteQueue, times(1)).get();
+        Thread.sleep(10);
+        verify(publisher, times(1)).publish(any(OrderEvent.class));
+        verify(publisher, times(1)).publish(any(EmployeeEvent.class));
     }
 
     @Test
-    void shouldNotStartDeliveringWhenWaiterOrOrderIsMissing() {
+    void shouldNotHandleEmployeeEvent() throws InterruptedException {
         // given
-        when(ordersMadeOnsiteQueue.size()).thenReturn(0);
-        when(waiterQueue.size()).thenReturn(1);
+        final var employeeEvent = new EmployeeEvent(
+                1L,
+                null,
+                Job.WAITER
+        );
 
         // when
-        waiterDelivery.update();
+        waiterDelivery.handle(employeeEvent);
 
         // then
-        verify(orderFacade, times(0)).addEmployeeToOrder(any(), any());
-        verify(waiterQueue, times(0)).get();
-        verify(ordersMadeOnsiteQueue, times(0)).get();
+        Thread.sleep(10);
+        verify(publisher, times(0)).publish(any());
     }
 
     @Test
-    void shouldStartDelivering() {
+    void shouldNotHandleOrderEvent() throws InterruptedException {
         // given
-        final var waiter = new SimpleEmployee(1L, "John", "Doe", Job.WAITER);
-        final var order = new SimpleOrder(1L, 120, ZonedDateTime.now(), ZonedDateTime.now().plusHours(1), TypeOfOrder.ON_SITE);
-
-        when(ordersMadeOnsiteQueue.get()).thenReturn(order);
-        when(waiterQueue.get()).thenReturn(waiter);
+        final var orderEvent = new OrderEvent(
+                1L,
+                TypeOfOrder.ON_SITE,
+                4,
+                OrderEvent.State.READY
+        );
 
         // when
-        waiterDelivery.startDelivering();
+        waiterDelivery.handle(orderEvent);
 
         // then
-        verify(orderFacade, times(1)).addEmployeeToOrder(order, waiter);
-        verify(waiterQueue, times(1)).get();
-        verify(ordersMadeOnsiteQueue, times(1)).get();
+        Thread.sleep(10);
+        verify(publisher, times(0)).publish(any());
     }
 }

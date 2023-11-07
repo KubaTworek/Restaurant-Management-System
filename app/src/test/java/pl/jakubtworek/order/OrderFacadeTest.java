@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.auth.UserFacade;
 import pl.jakubtworek.auth.dto.SimpleUser;
 import pl.jakubtworek.auth.dto.SimpleUserSnapshot;
@@ -19,7 +20,6 @@ import pl.jakubtworek.order.dto.OrderDto;
 import pl.jakubtworek.order.dto.OrderRequest;
 import pl.jakubtworek.order.dto.SimpleOrder;
 import pl.jakubtworek.order.dto.TypeOfOrder;
-import pl.jakubtworek.queue.OrdersQueueFacade;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -33,7 +33,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.hamcrest.MockitoHamcrest.argThat;
 
 class OrderFacadeTest {
     @Mock
@@ -47,28 +46,27 @@ class OrderFacadeTest {
     @Mock
     private OrderQueryRepository orderQueryRepository;
     @Mock
-    private OrdersQueueFacade ordersQueueFacade;
+    private DomainEventPublisher publisher;
 
     private OrderFacade orderFacade;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        orderFacade = new OrderFacade(userFacade, employeeFacade, menuItemFacade, orderRepository, orderQueryRepository, ordersQueueFacade);
+        orderFacade = new OrderFacade(userFacade, employeeFacade, menuItemFacade, orderRepository, orderQueryRepository, publisher);
     }
 
     @Test
     void shouldSetOrderAsDelivered() {
         // given
         final var orderId = 1L;
-        final var order = new SimpleOrder(orderId, 200, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
         final var expectedOrder = createOrder(orderId, 200, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
 
         when(orderRepository.findById(orderId)).thenReturn(Optional.of(expectedOrder));
         when(orderRepository.save(expectedOrder)).thenReturn(expectedOrder);
 
         // when
-        orderFacade.setAsDelivered(order);
+        orderFacade.setAsDelivered(orderId);
 
         // then
         verify(orderRepository).save(expectedOrder);
@@ -83,7 +81,7 @@ class OrderFacadeTest {
         when(orderRepository.findById(orderId)).thenReturn(Optional.empty());
 
         // when and then
-        assertThrows(IllegalStateException.class, () -> orderFacade.setAsDelivered(order));
+        assertThrows(IllegalStateException.class, () -> orderFacade.setAsDelivered(orderId));
     }
 
     @Test
@@ -91,7 +89,6 @@ class OrderFacadeTest {
         // given
         final var orderId = 1L;
         final var employeeId = 1L;
-        final var order = new SimpleOrder(orderId, 200, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
         final var employee = new SimpleEmployee(employeeId, "John", "Doe", Job.COOK);
         final var expectedOrder = createOrder(orderId, 200, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
 
@@ -100,7 +97,7 @@ class OrderFacadeTest {
         when(employeeFacade.getById(employeeId)).thenReturn(employee);
 
         // when
-        orderFacade.addEmployeeToOrder(order, employee);
+        orderFacade.addEmployeeToOrder(orderId, employeeId);
 
         // then
         verify(orderRepository).save(expectedOrder);
@@ -111,13 +108,11 @@ class OrderFacadeTest {
         // given
         final var orderId = 1L;
         final var employeeId = 1L;
-        final var order = new SimpleOrder(orderId, 200, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
-        final var employee = new SimpleEmployee(employeeId, "John", "Doe", Job.COOK);
 
         when(orderRepository.findById(orderId)).thenReturn(Optional.empty());
 
         // when and then
-        assertThrows(IllegalStateException.class, () -> orderFacade.addEmployeeToOrder(order, employee));
+        assertThrows(IllegalStateException.class, () -> orderFacade.addEmployeeToOrder(orderId, employeeId));
     }
 
     @Test
@@ -173,7 +168,6 @@ class OrderFacadeTest {
         // then
         assertEquals(expectedOrder.getSnapshot().getId(), result.getId());
         assertEquals(expectedOrder.getSnapshot().getPrice(), result.getPrice());
-        verify(ordersQueueFacade).addToQueue(argThat(simpleOrderMatcher(expectedSimpleOrder)));
     }
 
     @Test

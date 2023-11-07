@@ -1,19 +1,16 @@
 package pl.jakubtworek.employee;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.employee.dto.EmployeeRequest;
 import pl.jakubtworek.employee.dto.Job;
 import pl.jakubtworek.employee.dto.SimpleEmployee;
-import pl.jakubtworek.queue.EmployeeQueueFacade;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.hamcrest.MockitoHamcrest.argThat;
 
 class EmployeeFacadeTest {
     @Mock
@@ -33,14 +29,15 @@ class EmployeeFacadeTest {
     @Mock
     private EmployeeQueryRepository employeeQueryRepository;
     @Mock
-    private EmployeeQueueFacade employeeQueueFacade;
+    private DomainEventPublisher publisher;
+
 
     private EmployeeFacade employeeFacade;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        employeeFacade = new EmployeeFacade(employeeRepository, employeeQueryRepository, employeeQueueFacade);
+        employeeFacade = new EmployeeFacade(employeeRepository, employeeQueryRepository, publisher);
     }
 
     @Test
@@ -64,7 +61,6 @@ class EmployeeFacadeTest {
         // given
         final var job = Job.valueOf(jobName);
         final var request = new EmployeeRequest("John", "Doe", jobName);
-        final var expectedSimpleEmployee = new SimpleEmployee(1L, "John", "Doe", job);
         final var expectedEmployee = createEmployee(1L, "John", "Doe", job);
 
         when(employeeRepository.save(any())).thenReturn(expectedEmployee);
@@ -74,7 +70,7 @@ class EmployeeFacadeTest {
 
         // then
         assertEmployeeEquals(expectedEmployee, result);
-        verify(employeeQueueFacade).addToQueue(argThat(simpleEmployeeMatcher(expectedSimpleEmployee)));
+        verify(publisher).publish(any());
     }
 
     @Test
@@ -145,22 +141,5 @@ class EmployeeFacadeTest {
         assertEquals(expected.getSnapshot().getFirstName(), actual.getFirstName());
         assertEquals(expected.getSnapshot().getLastName(), actual.getLastName());
         assertEquals(expected.getSnapshot().getJob(), actual.getJob());
-    }
-
-    private Matcher<SimpleEmployee> simpleEmployeeMatcher(SimpleEmployee expected) {
-        return new TypeSafeMatcher<>() {
-            @Override
-            protected boolean matchesSafely(SimpleEmployee item) {
-                return item.getId().equals(expected.getId()) &&
-                        item.getFirstName().equals(expected.getFirstName()) &&
-                        item.getLastName().equals(expected.getLastName()) &&
-                        item.getJob() == expected.getJob();
-            }
-
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("expected SimpleEmployee fields should match");
-            }
-        };
     }
 }

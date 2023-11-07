@@ -4,82 +4,85 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.employee.dto.Job;
-import pl.jakubtworek.employee.dto.SimpleEmployee;
-import pl.jakubtworek.order.OrderFacade;
-import pl.jakubtworek.order.dto.SimpleOrder;
+import pl.jakubtworek.employee.vo.EmployeeEvent;
 import pl.jakubtworek.order.dto.TypeOfOrder;
-
-import java.time.ZonedDateTime;
+import pl.jakubtworek.order.vo.OrderEvent;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 class KitchenTest {
     @Mock
-    private OrdersQueueFacade ordersQueueFacade;
-    @Mock
-    private OrdersQueue ordersQueue;
-    @Mock
-    private CooksQueue cooksQueue;
-    @Mock
-    private OrderFacade orderFacade;
+    private DomainEventPublisher publisher;
 
     private Kitchen kitchen;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        kitchen = new Kitchen(ordersQueueFacade, ordersQueue, cooksQueue, orderFacade);
+        kitchen = new Kitchen(publisher);
     }
 
     @Test
-    void shouldStartCookingWhenCookAndOrderExist() {
+    void shouldHandleEvents() throws InterruptedException {
         // given
-        when(ordersQueue.size()).thenReturn(1);
-        when(cooksQueue.size()).thenReturn(1);
+        final var orderEvent = new OrderEvent(
+                1L,
+                TypeOfOrder.ON_SITE,
+                4,
+                OrderEvent.State.TODO
+        );
+        final var employeeEvent = new EmployeeEvent(
+                1L,
+                null,
+                Job.COOK
+        );
 
         // when
-        kitchen.update();
+        kitchen.handle(orderEvent);
+        kitchen.handle(employeeEvent);
 
         // then
-        verify(orderFacade, times(1)).addEmployeeToOrder(any(), any());
-        verify(orderFacade, times(1)).getNumberOfMenuItems(any());
+        Thread.sleep(20);
+        verify(publisher, times(1)).publish(any(OrderEvent.class));
+        verify(publisher, times(1)).publish(any(EmployeeEvent.class));
     }
 
     @Test
-    void shouldNotStartCookingWhenCookOrOrderIsMissing() {
+    void shouldNotHandleEmployeeEvent() throws InterruptedException {
         // given
-        when(ordersQueue.size()).thenReturn(0);
-        when(cooksQueue.size()).thenReturn(1);
+        final var employeeEvent = new EmployeeEvent(
+                1L,
+                null,
+                Job.COOK
+        );
 
         // when
-        kitchen.update();
+        kitchen.handle(employeeEvent);
 
         // then
-        verify(orderFacade, times(0)).addEmployeeToOrder(any(), any());
-        verify(orderFacade, times(0)).getNumberOfMenuItems(any());
+        Thread.sleep(20);
+        verify(publisher, times(0)).publish(any());
     }
 
     @Test
-    void shouldStartCooking() {
+    void shouldNotHandleOrderEvent() throws InterruptedException {
         // given
-        final var cook = new SimpleEmployee(1L, "John", "Doe", Job.COOK);
-        final var order = new SimpleOrder(1L, 120, ZonedDateTime.now(), ZonedDateTime.now().plusHours(1), TypeOfOrder.DELIVERY);
-
-        when(ordersQueue.size()).thenReturn(1);
-        when(cooksQueue.size()).thenReturn(1);
-        when(ordersQueue.get()).thenReturn(order);
-        when(cooksQueue.get()).thenReturn(cook);
-        when(orderFacade.getNumberOfMenuItems(order)).thenReturn(3);
+        final var orderEvent = new OrderEvent(
+                1L,
+                TypeOfOrder.ON_SITE,
+                4,
+                OrderEvent.State.TODO
+        );
 
         // when
-        kitchen.update();
+        kitchen.handle(orderEvent);
 
         // then
-        verify(orderFacade, times(1)).addEmployeeToOrder(order, cook);
-        verify(orderFacade, times(1)).getNumberOfMenuItems(order);
+        Thread.sleep(20);
+        verify(publisher, times(0)).publish(any());
     }
 }
