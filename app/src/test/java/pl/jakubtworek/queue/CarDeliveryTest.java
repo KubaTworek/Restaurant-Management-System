@@ -4,80 +4,85 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.employee.dto.Job;
-import pl.jakubtworek.employee.dto.SimpleEmployee;
-import pl.jakubtworek.order.OrderFacade;
-import pl.jakubtworek.order.dto.SimpleOrder;
+import pl.jakubtworek.employee.vo.EmployeeEvent;
 import pl.jakubtworek.order.dto.TypeOfOrder;
-
-import java.time.ZonedDateTime;
+import pl.jakubtworek.order.vo.OrderEvent;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 class CarDeliveryTest {
     @Mock
-    private DeliveryQueue deliveryQueue;
-    @Mock
-    private OrdersMadeDeliveryQueue ordersMadeDeliveryQueue;
-    @Mock
-    private OrderFacade orderFacade;
+    private DomainEventPublisher publisher;
 
     private CarDelivery carDelivery;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        carDelivery = new CarDelivery(orderFacade, deliveryQueue, ordersMadeDeliveryQueue);
+        carDelivery = new CarDelivery(publisher);
     }
 
     @Test
-    void shouldStartDeliveringWhenEmployeeAndOrderExist() {
+    void shouldHandleEvents() throws InterruptedException {
         // given
-        when(ordersMadeDeliveryQueue.size()).thenReturn(1);
-        when(deliveryQueue.size()).thenReturn(1);
+        final var orderEvent = new OrderEvent(
+                1L,
+                TypeOfOrder.DELIVERY,
+                4,
+                OrderEvent.State.READY
+        );
+        final var employeeEvent = new EmployeeEvent(
+                1L,
+                null,
+                Job.DELIVERY
+        );
 
         // when
-        carDelivery.update();
+        carDelivery.handle(orderEvent);
+        carDelivery.handle(employeeEvent);
 
         // then
-        verify(orderFacade, times(1)).addEmployeeToOrder(any(), any());
-        verify(deliveryQueue, times(1)).get();
-        verify(ordersMadeDeliveryQueue, times(1)).get();
+        Thread.sleep(10);
+        verify(publisher, times(1)).publish(any(OrderEvent.class));
+        verify(publisher, times(1)).publish(any(EmployeeEvent.class));
     }
 
     @Test
-    void shouldNotStartDeliveringWhenEmployeeOrOrderIsMissing() {
+    void shouldNotHandleEmployeeEvent() throws InterruptedException {
         // given
-        when(ordersMadeDeliveryQueue.size()).thenReturn(0);
-        when(deliveryQueue.size()).thenReturn(1);
+        final var employeeEvent = new EmployeeEvent(
+                1L,
+                null,
+                Job.DELIVERY
+        );
 
         // when
-        carDelivery.update();
+        carDelivery.handle(employeeEvent);
 
         // then
-        verify(orderFacade, times(0)).addEmployeeToOrder(any(), any());
-        verify(deliveryQueue, times(0)).get();
-        verify(ordersMadeDeliveryQueue, times(0)).get();
+        Thread.sleep(10);
+        verify(publisher, times(0)).publish(any());
     }
 
     @Test
-    void shouldStartDelivering() {
+    void shouldNotHandleOrderEvent() throws InterruptedException {
         // given
-        final var employee = new SimpleEmployee(1L, "John", "Doe", Job.DELIVERY);
-        final var order = new SimpleOrder(1L, 120, ZonedDateTime.now(), ZonedDateTime.now().plusHours(1), TypeOfOrder.DELIVERY);
-
-        when(deliveryQueue.get()).thenReturn(employee);
-        when(ordersMadeDeliveryQueue.get()).thenReturn(order);
+        final var orderEvent = new OrderEvent(
+                1L,
+                TypeOfOrder.DELIVERY,
+                4,
+                OrderEvent.State.READY
+        );
 
         // when
-        carDelivery.startDelivering();
+        carDelivery.handle(orderEvent);
 
         // then
-        verify(orderFacade, times(1)).addEmployeeToOrder(order, employee);
-        verify(deliveryQueue, times(1)).get();
-        verify(ordersMadeDeliveryQueue, times(1)).get();
+        Thread.sleep(10);
+        verify(publisher, times(0)).publish(any());
     }
 }

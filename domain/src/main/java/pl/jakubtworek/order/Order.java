@@ -1,9 +1,11 @@
 package pl.jakubtworek.order;
 
+import pl.jakubtworek.DomainEvent;
 import pl.jakubtworek.auth.dto.SimpleUser;
 import pl.jakubtworek.employee.dto.SimpleEmployee;
 import pl.jakubtworek.menu.dto.SimpleMenuItem;
 import pl.jakubtworek.order.dto.TypeOfOrder;
+import pl.jakubtworek.order.vo.OrderEvent;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -92,5 +94,14 @@ class Order {
         return menuItems.stream()
                 .mapToInt(SimpleMenuItem::getPrice)
                 .sum();
+    }
+
+    DomainEvent sendToKitchen() {
+        return new OrderEvent(
+                this.id,
+                typeOfOrder,
+                this.menuItems.size(),
+                OrderEvent.State.TODO
+        );
     }
 }

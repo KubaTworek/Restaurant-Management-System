@@ -1,37 +1,45 @@
 package pl.jakubtworek.queue;
 
-import pl.jakubtworek.employee.dto.SimpleEmployee;
-import pl.jakubtworek.order.OrderFacade;
-import pl.jakubtworek.order.dto.SimpleOrder;
+import pl.jakubtworek.DomainEventPublisher;
+import pl.jakubtworek.employee.vo.EmployeeEvent;
+import pl.jakubtworek.order.dto.TypeOfOrder;
+import pl.jakubtworek.order.vo.OrderEvent;
 
-class Kitchen implements Observer {
-    private final OrdersQueueFacade ordersQueueFacade;
-    private final CooksQueue cooksQueue;
-    private final OrdersQueue ordersQueue;
-    private final OrderFacade orderFacade;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.Objects;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
-    Kitchen(final OrdersQueueFacade ordersQueueFacade, final OrdersQueue ordersQueue, final CooksQueue cooksQueue, final OrderFacade orderFacade) {
-        this.ordersQueueFacade = ordersQueueFacade;
-        this.ordersQueue = ordersQueue;
-        this.cooksQueue = cooksQueue;
-        this.orderFacade = orderFacade;
-        ordersQueue.registerObserver(this);
-        cooksQueue.registerObserver(this);
+class Kitchen {
+    private final Queue<OrderDto> ordersQueue = new PriorityQueue<>(new OrderComparator());
+    private final Queue<EmployeeDto> cooksQueue = new LinkedList<>();
+    private final DomainEventPublisher publisher;
+
+    Kitchen(final DomainEventPublisher publisher) {
+        this.publisher = publisher;
     }
 
-    @Override
-    public void update() {
-        if (isExistsCookAndOrder()) {
+    void handle(final OrderEvent event) {
+        ordersQueue.add(new OrderDto(event.getOrderId(), event.getOrderType(), event.getAmountOfMenuItems()));
+        processCooking();
+    }
+
+    void handle(final EmployeeEvent event) {
+        cooksQueue.add(new EmployeeDto(event.getEmployeeId(), event.getJob()));
+        processCooking();
+    }
+
+    private void processCooking() {
+        while (isExistsCookAndOrder()) {
             startCooking();
         }
     }
 
     private void startCooking() {
-        final var cook = cooksQueue.get();
-        final var order = ordersQueue.get();
-        orderFacade.addEmployeeToOrder(order, cook);
-        final int numberOfMenuItems = orderFacade.getNumberOfMenuItems(order);
-        final int timeToCook = calculateCookingTime(numberOfMenuItems);
+        final var cook = cooksQueue.poll();
+        final var order = ordersQueue.poll();
+        final int timeToCook = calculateCookingTime(order.getAmountOfMenuItems());
         startPreparingOrder(cook, order, timeToCook);
     }
 
@@ -39,11 +47,21 @@ class Kitchen implements Observer {
         return numberOfMenuItems * 1;
     } // 10 000
 
-    private void startPreparingOrder(SimpleEmployee employee, SimpleOrder order, int time) {
+    private void startPreparingOrder(EmployeeDto cook, OrderDto order, int time) {
         final var thread = new Thread(() -> {
             try {
                 Thread.sleep(time);
-                finishPreparingOrder(employee, order);
+                publisher.publish(new OrderEvent(
+                        order.getOrderId(),
+                        order.getOrderType(),
+                        order.getAmountOfMenuItems(),
+                        OrderEvent.State.READY
+                ));
+                publisher.publish(new EmployeeEvent(
+                        cook.getEmployeeId(),
+                        order.getOrderId(),
+                        cook.getJob()
+                ));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -51,12 +69,22 @@ class Kitchen implements Observer {
         thread.start();
     }
 
-    private void finishPreparingOrder(SimpleEmployee employee, SimpleOrder order) {
-        cooksQueue.add(employee);
-        ordersQueueFacade.addReadyToQueue(order);
+    private boolean isExistsCookAndOrder() {
+        return !ordersQueue.isEmpty() && !cooksQueue.isEmpty();
     }
 
-    private boolean isExistsCookAndOrder() {
-        return ordersQueue.size() > 0 && cooksQueue.size() > 0;
+    private static class OrderComparator implements Comparator<OrderDto> {
+        @Override
+        public int compare(OrderDto o1, OrderDto o2) {
+            return Integer.compare(isOrderOnsite(o1), isOrderOnsite(o2));
+        }
+
+        private int isOrderOnsite(OrderDto o1) {
+            if (Objects.equals(o1.getOrderType(), TypeOfOrder.ON_SITE) || Objects.equals(o1.getOrderType(), TypeOfOrder.TAKE_AWAY))
+                return -1;
+            if (Objects.equals(o1.getOrderType(), TypeOfOrder.DELIVERY))
+                return 1;
+            return 0;
+        }
     }
 }

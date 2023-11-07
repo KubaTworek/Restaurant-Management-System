@@ -2,104 +2,34 @@ package pl.jakubtworek.queue;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pl.jakubtworek.order.OrderFacade;
+import pl.jakubtworek.SpringDomainEventPublisher;
 
 @Configuration
 class QueueConfiguration {
     @Bean
     CarDelivery carDelivery(
-            OrderFacade orderFacade,
-            DeliveryQueue deliveryQueue,
-            OrdersMadeDeliveryQueue ordersMadeDeliveryQueue
-            ) {
+            SpringDomainEventPublisher publisher
+    ) {
         return new CarDelivery(
-                orderFacade,
-                deliveryQueue,
-                ordersMadeDeliveryQueue
+                publisher
         );
     }
 
     @Bean
     WaiterDelivery waiterDelivery(
-            OrderFacade orderFacade,
-            WaiterQueue waiterQueue,
-            OrdersMadeOnsiteQueue ordersMadeOnsiteQueue
-            ) {
+            SpringDomainEventPublisher publisher
+    ) {
         return new WaiterDelivery(
-                orderFacade,
-                waiterQueue,
-                ordersMadeOnsiteQueue
+                publisher
         );
     }
 
     @Bean
     Kitchen kitchen(
-            OrdersQueueFacade ordersQueueFacade,
-            OrdersQueue ordersQueue,
-            CooksQueue cooksQueue,
-            OrderFacade orderFacade
+            SpringDomainEventPublisher publisher
     ) {
         return new Kitchen(
-                ordersQueueFacade,
-                ordersQueue,
-                cooksQueue,
-                orderFacade
+                publisher
         );
-    }
-
-    @Bean
-    OrdersQueueFacade ordersQueueFacade(
-            OrdersQueue ordersQueue,
-            OrdersMadeOnsiteQueue ordersMadeOnsiteQueue,
-            OrdersMadeDeliveryQueue ordersMadeDeliveryQueue
-    ) {
-        return new OrdersQueueFacade(
-                ordersQueue,
-                ordersMadeOnsiteQueue,
-                ordersMadeDeliveryQueue
-        );
-    }
-
-    @Bean
-    EmployeeQueueFacade employeeQueueFacade(
-            CooksQueue cooksQueue,
-            WaiterQueue waiterQueue,
-            DeliveryQueue deliveryQueue
-    ) {
-        return new EmployeeQueueFacade(
-                cooksQueue,
-                waiterQueue,
-                deliveryQueue
-        );
-    }
-
-    @Bean
-    WaiterQueue waiterQueue() {
-        return new WaiterQueue();
-    }
-
-    @Bean
-    DeliveryQueue deliveryQueue() {
-        return new DeliveryQueue();
-    }
-
-    @Bean
-    CooksQueue cooksQueue() {
-        return new CooksQueue();
-    }
-
-    @Bean
-    OrdersQueue ordersQueue() {
-        return new OrdersQueue();
-    }
-
-    @Bean
-    OrdersMadeDeliveryQueue ordersMadeDeliveryQueue() {
-        return new OrdersMadeDeliveryQueue();
-    }
-
-    @Bean
-    OrdersMadeOnsiteQueue ordersMadeOnsiteQueue() {
-        return new OrdersMadeOnsiteQueue();
     }
 }

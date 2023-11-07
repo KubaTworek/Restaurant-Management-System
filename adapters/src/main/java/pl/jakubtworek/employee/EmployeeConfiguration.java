@@ -2,7 +2,7 @@ package pl.jakubtworek.employee;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pl.jakubtworek.queue.EmployeeQueueFacade;
+import pl.jakubtworek.SpringDomainEventPublisher;
 
 @Configuration
 class EmployeeConfiguration {
@@ -10,12 +10,12 @@ class EmployeeConfiguration {
     EmployeeFacade employeeFacade(
             EmployeeRepository employeeRepository,
             EmployeeQueryRepository employeeQueryRepository,
-            EmployeeQueueFacade employeeQueueFacade
+            SpringDomainEventPublisher publisher
     ) {
         return new EmployeeFacade(
                 employeeRepository,
                 employeeQueryRepository,
-                employeeQueueFacade
+                publisher
         );
     }
 }

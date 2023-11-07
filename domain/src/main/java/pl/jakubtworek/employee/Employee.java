@@ -1,6 +1,8 @@
 package pl.jakubtworek.employee;
 
+import pl.jakubtworek.DomainEvent;
 import pl.jakubtworek.employee.dto.Job;
+import pl.jakubtworek.employee.vo.EmployeeEvent;
 import pl.jakubtworek.order.dto.SimpleOrder;
 
 import java.util.ArrayList;
@@ -57,5 +59,13 @@ class Employee {
         } catch (IllegalArgumentException e) {
             throw new IllegalStateException("Invalid job type!!");
         }
+    }
+
+    DomainEvent sendToDelivery() {
+        return new EmployeeEvent(
+                this.id,
+                null,
+                this.job
+        );
     }
 }

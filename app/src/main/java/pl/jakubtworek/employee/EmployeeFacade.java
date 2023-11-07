@@ -1,10 +1,10 @@
 package pl.jakubtworek.employee;
 
+import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.employee.dto.EmployeeRequest;
 import pl.jakubtworek.employee.dto.Job;
 import pl.jakubtworek.employee.dto.SimpleEmployee;
-import pl.jakubtworek.queue.EmployeeQueueFacade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +13,14 @@ import java.util.Optional;
 public class EmployeeFacade {
     private final EmployeeRepository employeeRepository;
     private final EmployeeQueryRepository employeeQueryRepository;
-    private final EmployeeQueueFacade employeeQueueFacade;
+    private final DomainEventPublisher publisher;
+
     private static final String EMPLOYEE_NOT_FOUND_ERROR = "Employee with that id doesn't exist";
 
-    EmployeeFacade(final EmployeeRepository employeeRepository, final EmployeeQueryRepository employeeQueryRepository, final EmployeeQueueFacade employeeQueueFacade) {
+    EmployeeFacade(final EmployeeRepository employeeRepository, final EmployeeQueryRepository employeeQueryRepository, final DomainEventPublisher publisher) {
         this.employeeRepository = employeeRepository;
         this.employeeQueryRepository = employeeQueryRepository;
-        this.employeeQueueFacade = employeeQueueFacade;
+        this.publisher = publisher;
     }
 
     public SimpleEmployee getById(Long id) {
@@ -35,16 +36,11 @@ public class EmployeeFacade {
                 toSave.getJob()
         );
 
-        final var created = toDto(employeeRepository.save(employee));
-        final var employeeQueryDto = new SimpleEmployee(
-                created.getId(),
-                created.getFirstName(),
-                created.getLastName(),
-                created.getJob()
-        );
-        employeeQueueFacade.addToQueue(employeeQueryDto);
+        final var created = employeeRepository.save(employee);
 
-        return created;
+        publisher.publish(created.sendToDelivery());
+
+        return toDto(created);
     }
 
     void deleteById(Long id) {
