@@ -27,13 +27,13 @@ class EmployeeEventListener {
         switch (event.getJob()) {
             case WAITER:
                 waiterDelivery.handle(event);
-            break;
+                break;
             case DELIVERY:
                 carDelivery.handle(event);
-            break;
+                break;
             case COOK:
                 kitchen.handle(event);
-            break;
+                break;
         }
     }
 }

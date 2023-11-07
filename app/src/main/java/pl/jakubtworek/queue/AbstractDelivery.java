@@ -12,16 +12,16 @@ abstract class AbstractDelivery {
     private final Queue<EmployeeDto> employeeQueue = new LinkedList<>();
     private final DomainEventPublisher publisher;
 
-    public AbstractDelivery(final DomainEventPublisher publisher) {
+    AbstractDelivery(final DomainEventPublisher publisher) {
         this.publisher = publisher;
     }
 
-    public void handle(final OrderEvent event) {
+    void handle(final OrderEvent event) {
         ordersQueue.add(new OrderDto(event.getOrderId(), event.getOrderType(), event.getAmountOfMenuItems()));
         processDeliveries();
     }
 
-    public void handle(final EmployeeEvent event) {
+    void handle(final EmployeeEvent event) {
         employeeQueue.add(new EmployeeDto(event.getEmployeeId(), event.getJob()));
         processDeliveries();
     }
@@ -38,7 +38,7 @@ abstract class AbstractDelivery {
         delivering(employee, order, 0); // fixme: specific time
     }
 
-    private  void delivering(EmployeeDto employee, OrderDto order, int time) {
+    private void delivering(EmployeeDto employee, OrderDto order, int time) {
         final var thread = new Thread(() -> {
             try {
                 Thread.sleep(time);

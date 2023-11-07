@@ -4,54 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6804a3ab-3eba-4f33-a440-5fed16101a6e" name="Changes" comment="fix some things">
-      <change afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/SpringDomainEventPublisher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/queue/EmployeeEventListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/queue/OrderEventListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/AbstractDelivery.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/EmployeeDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/OrderDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/DomainEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/DomainEventPublisher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/employee/vo/EmployeeEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/vo/OrderEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/employee/EmployeeConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/employee/EmployeeConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/queue/QueueConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/queue/QueueConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapters/src/test/java/pl/jakubtworek/queue/QueueControllerE2ETest.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/test/java/pl/jakubtworek/queue/QueueControllerE2ETest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/EmployeeFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/EmployeeFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/CarDelivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/CarDelivery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/CooksQueue.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/Delivery.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/DeliveryQueue.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/EmployeeQueue.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/EmployeeQueueFacade.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/Kitchen.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/Kitchen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/Observer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/OrdersMadeDeliveryQueue.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/OrdersMadeOnsiteQueue.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/OrdersQueue.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/OrdersQueueFacade.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/Subject.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/WaiterDelivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/WaiterDelivery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/queue/WaiterQueue.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/employee/EmployeeFacadeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/employee/EmployeeFacadeTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/order/OrderFacadeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/order/OrderFacadeTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/CarDeliveryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/CarDeliveryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/CooksQueueTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/DeliveryQueueTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/EmployeeQueueFacadeTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/KitchenTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/KitchenTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/OrdersQueueFacadeTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/OrdersQueueTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/QueueTestIT.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/WaiterDeliveryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/WaiterDeliveryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/queue/WaiterQueueTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/employee/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/employee/Employee.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/Order.java" afterDir="false" />
-    </list>
+    <list default="true" id="6804a3ab-3eba-4f33-a440-5fed16101a6e" name="Changes" comment="provide event storming" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -491,7 +444,21 @@
       <option name="project" value="LOCAL" />
       <updated>1699033936352</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="update tests">
+      <created>1699379724884</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1699379724884</updated>
+    </task>
+    <task id="LOCAL-00021" summary="provide event storming">
+      <created>1699379744004</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1699379744004</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -531,7 +498,9 @@
     <MESSAGE value="add logger" />
     <MESSAGE value="refactor e2e tests" />
     <MESSAGE value="fix some things" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix some things" />
+    <MESSAGE value="update tests" />
+    <MESSAGE value="provide event storming" />
+    <option name="LAST_COMMIT_MESSAGE" value="provide event storming" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

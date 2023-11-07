@@ -10,16 +10,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 class Employee {
-    static Employee restore(EmployeeSnapshot snapshot) {
-        return new Employee(
-                snapshot.getId(),
-                snapshot.getFirstName(),
-                snapshot.getLastName(),
-                snapshot.getJob(),
-                snapshot.getOrders().stream().map(SimpleOrder::restore).collect(Collectors.toList())
-        );
-    }
-
     private Long id;
     private String firstName;
     private String lastName;
@@ -35,6 +25,16 @@ class Employee {
         this.lastName = lastName;
         this.job = job;
         this.orders = orders;
+    }
+
+    static Employee restore(EmployeeSnapshot snapshot) {
+        return new Employee(
+                snapshot.getId(),
+                snapshot.getFirstName(),
+                snapshot.getLastName(),
+                snapshot.getJob(),
+                snapshot.getOrders().stream().map(SimpleOrder::restore).collect(Collectors.toList())
+        );
     }
 
     EmployeeSnapshot getSnapshot() {

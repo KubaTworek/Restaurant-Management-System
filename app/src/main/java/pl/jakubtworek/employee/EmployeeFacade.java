@@ -11,11 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class EmployeeFacade {
+    private static final String EMPLOYEE_NOT_FOUND_ERROR = "Employee with that id doesn't exist";
     private final EmployeeRepository employeeRepository;
     private final EmployeeQueryRepository employeeQueryRepository;
     private final DomainEventPublisher publisher;
-
-    private static final String EMPLOYEE_NOT_FOUND_ERROR = "Employee with that id doesn't exist";
 
     EmployeeFacade(final EmployeeRepository employeeRepository, final EmployeeQueryRepository employeeQueryRepository, final DomainEventPublisher publisher) {
         this.employeeRepository = employeeRepository;

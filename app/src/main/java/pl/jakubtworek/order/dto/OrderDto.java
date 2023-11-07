@@ -25,6 +25,7 @@ public interface OrderDto {
     TypeOfOrder getTypeOfOrder();
 
     List<EmployeeDto> getEmployees();
+
     List<MenuItemDto> getMenuItems();
 
     class DeserializationImpl implements OrderDto {

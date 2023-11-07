@@ -10,11 +10,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class MenuItemFacade {
+    private static final String MENU_ITEM_NOT_FOUND_ERROR = "Menu item with that name doesn't exist";
     private final MenuItemRepository menuItemRepository;
     private final MenuItemQueryRepository menuItemQueryRepository;
     private final MenuQueryRepository menuQueryRepository;
-    private static final String MENU_ITEM_NOT_FOUND_ERROR = "Menu item with that name doesn't exist";
-    private static final String MENU_NOT_FOUND_ERROR = "Menu with that name doesn't exist";
 
     MenuItemFacade(final MenuItemRepository menuItemRepository, final MenuItemQueryRepository menuItemQueryRepository,
                    final MenuQueryRepository menuQueryRepository) {
@@ -32,7 +31,7 @@ public class MenuItemFacade {
         return menuQueryRepository.findDtoByName(toSave.getMenu())
                 .map(menu -> createAndSaveMenuItemWithExistingMenu(toSave, menu))
                 .orElseGet(() -> createAndSaveMenuItemWithNewMenu(toSave));
-        }
+    }
 
     List<MenuDto> findAll() {
         return new ArrayList<>(menuQueryRepository.findBy(MenuDto.class));

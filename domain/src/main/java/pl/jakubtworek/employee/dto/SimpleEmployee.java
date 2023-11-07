@@ -1,10 +1,6 @@
 package pl.jakubtworek.employee.dto;
 
 public class SimpleEmployee {
-    public static SimpleEmployee restore(final SimpleEmployeeSnapshot snapshot) {
-        return new SimpleEmployee(snapshot.getId(), snapshot.getFirstName(), snapshot.getLastName(), snapshot.getJob());
-    }
-
     private Long id;
     private String firstName;
     private String lastName;
@@ -15,6 +11,10 @@ public class SimpleEmployee {
         this.firstName = firstName;
         this.lastName = lastName;
         this.job = job;
+    }
+
+    public static SimpleEmployee restore(final SimpleEmployeeSnapshot snapshot) {
+        return new SimpleEmployee(snapshot.getId(), snapshot.getFirstName(), snapshot.getLastName(), snapshot.getJob());
     }
 
     public SimpleEmployeeSnapshot getSnapshot() {

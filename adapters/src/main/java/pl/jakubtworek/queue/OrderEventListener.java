@@ -23,8 +23,9 @@ class OrderEventListener {
     @EventListener
     public void on(OrderEvent event) {
         switch (event.getState()) {
-            case TODO: kitchen.handle(event);
-            break;
+            case TODO:
+                kitchen.handle(event);
+                break;
             case READY: {
                 switch (event.getOrderType()) {
                     case ON_SITE:
@@ -38,7 +39,7 @@ class OrderEventListener {
             }
             case DELIVERED:
                 orderFacade.setAsDelivered(event.getOrderId());
-            break;
+                break;
         }
     }
 }

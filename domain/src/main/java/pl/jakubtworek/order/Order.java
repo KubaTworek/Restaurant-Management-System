@@ -13,19 +13,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 class Order {
-    static Order restore(OrderSnapshot snapshot) {
-        return new Order(
-                snapshot.getId(),
-                snapshot.getPrice(),
-                snapshot.getHourOrder(),
-                snapshot.getHourAway(),
-                snapshot.getTypeOfOrder(),
-                snapshot.getMenuItems().stream().map(SimpleMenuItem::restore).collect(Collectors.toList()),
-                snapshot.getEmployees().stream().map(SimpleEmployee::restore).collect(Collectors.toList()),
-                SimpleUser.restore(snapshot.getUser())
-        );
-    }
-
     private Long id;
     private int price;
     private ZonedDateTime hourOrder;
@@ -47,6 +34,19 @@ class Order {
         this.menuItems = menuItems;
         this.employees = employees;
         this.user = user;
+    }
+
+    static Order restore(OrderSnapshot snapshot) {
+        return new Order(
+                snapshot.getId(),
+                snapshot.getPrice(),
+                snapshot.getHourOrder(),
+                snapshot.getHourAway(),
+                snapshot.getTypeOfOrder(),
+                snapshot.getMenuItems().stream().map(SimpleMenuItem::restore).collect(Collectors.toList()),
+                snapshot.getEmployees().stream().map(SimpleEmployee::restore).collect(Collectors.toList()),
+                SimpleUser.restore(snapshot.getUser())
+        );
     }
 
     OrderSnapshot getSnapshot() {

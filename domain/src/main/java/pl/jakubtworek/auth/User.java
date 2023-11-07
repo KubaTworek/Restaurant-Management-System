@@ -7,15 +7,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 class User {
-    static User restore(UserSnapshot snapshot) {
-        return new User(
-                snapshot.getId(),
-                snapshot.getUsername(),
-                snapshot.getPassword(),
-                snapshot.getOrders().stream().map(SimpleOrder::restore).collect(Collectors.toList())
-        );
-    }
-
     private Long id;
     private String username;
     private String password;
@@ -29,6 +20,15 @@ class User {
         this.username = username;
         this.password = password;
         this.orders = orders;
+    }
+
+    static User restore(UserSnapshot snapshot) {
+        return new User(
+                snapshot.getId(),
+                snapshot.getUsername(),
+                snapshot.getPassword(),
+                snapshot.getOrders().stream().map(SimpleOrder::restore).collect(Collectors.toList())
+        );
     }
 
     UserSnapshot getSnapshot() {

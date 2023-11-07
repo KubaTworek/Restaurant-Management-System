@@ -9,13 +9,13 @@ import pl.jakubtworek.auth.dto.UserDto;
 import java.time.Instant;
 
 public class UserFacade {
-    private final UserRepository userRepository;
-    private final UserQueryRepository userQueryRepository;
-    private final JwtService jwtService;
     private static final String USER_NOT_FOUND_ERROR = "No user registered with this username!";
     private static final String USER_ALREADY_EXISTS_ERROR = "User with this username already exists!";
     private static final String INVALID_PASSWORD_ERROR = "Invalid password!";
     private static final Long TOKEN_EXPIRATION_TIME = 180000L;
+    private final UserRepository userRepository;
+    private final UserQueryRepository userQueryRepository;
+    private final JwtService jwtService;
 
     UserFacade(final UserRepository userRepository, final UserQueryRepository userQueryRepository, final JwtService jwtService) {
         this.userRepository = userRepository;

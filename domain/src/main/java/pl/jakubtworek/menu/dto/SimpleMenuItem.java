@@ -1,10 +1,6 @@
 package pl.jakubtworek.menu.dto;
 
 public class SimpleMenuItem {
-    public static SimpleMenuItem restore(final SimpleMenuItemSnapshot snapshot) {
-        return new SimpleMenuItem(snapshot.getId(), snapshot.getName(), snapshot.getPrice());
-    }
-
     private Long id;
     private String name;
     private int price;
@@ -13,6 +9,10 @@ public class SimpleMenuItem {
         this.id = id;
         this.name = name;
         this.price = price;
+    }
+
+    public static SimpleMenuItem restore(final SimpleMenuItemSnapshot snapshot) {
+        return new SimpleMenuItem(snapshot.getId(), snapshot.getName(), snapshot.getPrice());
     }
 
     public SimpleMenuItemSnapshot getSnapshot() {

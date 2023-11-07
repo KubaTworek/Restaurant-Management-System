@@ -8,16 +8,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 class MenuItem {
-    static MenuItem restore(MenuItemSnapshot snapshot) {
-        return new MenuItem(
-                snapshot.getId(),
-                snapshot.getName(),
-                snapshot.getPrice(),
-                Menu.restore(snapshot.getMenu()),
-                snapshot.getOrders().stream().map(SimpleOrder::restore).collect(Collectors.toList())
-        );
-    }
-
     private Long id;
     private String name;
     private int price;
@@ -33,6 +23,16 @@ class MenuItem {
         this.price = price;
         this.menu = menu;
         this.orders = orders;
+    }
+
+    static MenuItem restore(MenuItemSnapshot snapshot) {
+        return new MenuItem(
+                snapshot.getId(),
+                snapshot.getName(),
+                snapshot.getPrice(),
+                Menu.restore(snapshot.getMenu()),
+                snapshot.getOrders().stream().map(SimpleOrder::restore).collect(Collectors.toList())
+        );
     }
 
     MenuItemSnapshot getSnapshot() {
@@ -60,14 +60,6 @@ class MenuItem {
     }
 
     static class Menu {
-        static Menu restore(MenuSnapshot snapshot) {
-            return new Menu(
-                    snapshot.getId(),
-                    snapshot.getName(),
-                    snapshot.getMenuItems().stream().map(SimpleMenuItem::restore).collect(Collectors.toList())
-            );
-        }
-
         private Long id;
         private String name;
         private List<SimpleMenuItem> menuItems = new ArrayList<>();
@@ -79,6 +71,14 @@ class MenuItem {
             this.id = id;
             this.name = name;
             this.menuItems = menuItems;
+        }
+
+        static Menu restore(MenuSnapshot snapshot) {
+            return new Menu(
+                    snapshot.getId(),
+                    snapshot.getName(),
+                    snapshot.getMenuItems().stream().map(SimpleMenuItem::restore).collect(Collectors.toList())
+            );
         }
 
         MenuSnapshot getSnapshot() {

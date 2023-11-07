@@ -3,10 +3,6 @@ package pl.jakubtworek.order.dto;
 import java.time.ZonedDateTime;
 
 public class SimpleOrder {
-    public static SimpleOrder restore(final SimpleOrderSnapshot snapshot) {
-        return new SimpleOrder(snapshot.getId(), snapshot.getPrice(), snapshot.getHourOrder(), snapshot.getHourAway(), snapshot.getTypeOfOrder());
-    }
-
     private Long id;
     private int price;
     private ZonedDateTime hourOrder;
@@ -19,6 +15,10 @@ public class SimpleOrder {
         this.hourOrder = hourOrder;
         this.hourAway = hourAway;
         this.typeOfOrder = typeOfOrder;
+    }
+
+    public static SimpleOrder restore(final SimpleOrderSnapshot snapshot) {
+        return new SimpleOrder(snapshot.getId(), snapshot.getPrice(), snapshot.getHourOrder(), snapshot.getHourAway(), snapshot.getTypeOfOrder());
     }
 
     public SimpleOrderSnapshot getSnapshot() {

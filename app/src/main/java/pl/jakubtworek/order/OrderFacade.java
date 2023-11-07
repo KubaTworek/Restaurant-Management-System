@@ -18,13 +18,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class OrderFacade {
+    private static final String ORDER_NOT_FOUND_ERROR = "Order with that id doesn't exist";
     private final UserFacade userFacade;
     private final EmployeeFacade employeeFacade;
     private final MenuItemFacade menuItemFacade;
     private final OrderRepository orderRepository;
     private final OrderQueryRepository orderQueryRepository;
     private final DomainEventPublisher publisher;
-    private static final String ORDER_NOT_FOUND_ERROR = "Order with that id doesn't exist";
 
     OrderFacade(final UserFacade userFacade, final EmployeeFacade employeeFacade, final MenuItemFacade menuItemFacade,
                 final OrderRepository orderRepository, final OrderQueryRepository orderQueryRepository,
