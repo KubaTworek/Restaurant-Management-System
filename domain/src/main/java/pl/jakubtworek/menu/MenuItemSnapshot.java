@@ -1,6 +1,6 @@
 package pl.jakubtworek.menu;
 
-import pl.jakubtworek.order.dto.SimpleOrderSnapshot;
+import pl.jakubtworek.order.vo.OrderId;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,12 +10,12 @@ class MenuItemSnapshot {
     private String name;
     private int price;
     private MenuSnapshot menu;
-    private Set<SimpleOrderSnapshot> orders = new HashSet<>();
+    private Set<OrderId> orders = new HashSet<>();
 
     public MenuItemSnapshot() {
     }
 
-    MenuItemSnapshot(final Long id, final String name, final int price, final MenuSnapshot menu, final Set<SimpleOrderSnapshot> orders) {
+    MenuItemSnapshot(final Long id, final String name, final int price, final MenuSnapshot menu, final Set<OrderId> orders) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -39,7 +39,7 @@ class MenuItemSnapshot {
         return menu;
     }
 
-    Set<SimpleOrderSnapshot> getOrders() {
+    Set<OrderId> getOrders() {
         return orders;
     }
 }

@@ -1,19 +1,17 @@
 package pl.jakubtworek.menu;
 
-import pl.jakubtworek.menu.dto.SimpleMenuItemSnapshot;
-
 import java.util.HashSet;
 import java.util.Set;
 
 class MenuSnapshot {
     private Long id;
     private String name;
-    private Set<SimpleMenuItemSnapshot> menuItems = new HashSet<>();
+    private Set<MenuItemSnapshot> menuItems = new HashSet<>();
 
     public MenuSnapshot() {
     }
 
-    MenuSnapshot(final Long id, final String name, final Set<SimpleMenuItemSnapshot> menuItems) {
+    MenuSnapshot(final Long id, final String name, final Set<MenuItemSnapshot> menuItems) {
         this.id = id;
         this.name = name;
         this.menuItems = menuItems;
@@ -27,7 +25,7 @@ class MenuSnapshot {
         return name;
     }
 
-    Set<SimpleMenuItemSnapshot> getMenuItems() {
+    Set<MenuItemSnapshot> getMenuItems() {
         return menuItems;
     }
 }

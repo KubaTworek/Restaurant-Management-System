@@ -3,7 +3,6 @@ package pl.jakubtworek.menu;
 import pl.jakubtworek.menu.dto.MenuDto;
 import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.menu.dto.MenuItemRequest;
-import pl.jakubtworek.menu.dto.SimpleMenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +21,13 @@ public class MenuItemFacade {
         this.menuQueryRepository = menuQueryRepository;
     }
 
-    public SimpleMenuItem getByName(String name) {
-        return menuItemQueryRepository.findSimpleByName(name)
+    public MenuItemDto getByName(String name) {
+        return menuItemQueryRepository.findDtoByName(name)
+                .orElseThrow(() -> new IllegalStateException(MENU_ITEM_NOT_FOUND_ERROR));
+    }
+
+    public MenuItemDto getById(Long id) {
+        return menuItemQueryRepository.findDtoById(id)
                 .orElseThrow(() -> new IllegalStateException(MENU_ITEM_NOT_FOUND_ERROR));
     }
 

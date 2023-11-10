@@ -1,6 +1,6 @@
 package pl.jakubtworek.auth;
 
-import pl.jakubtworek.order.dto.SimpleOrderSnapshot;
+import pl.jakubtworek.order.vo.OrderId;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,12 +9,12 @@ class UserSnapshot {
     private Long id;
     private String username;
     private String password;
-    private Set<SimpleOrderSnapshot> orders = new HashSet<>();
+    private Set<OrderId> orders = new HashSet<>();
 
     public UserSnapshot() {
     }
 
-    UserSnapshot(final Long id, final String username, final String password, final Set<SimpleOrderSnapshot> orders) {
+    UserSnapshot(final Long id, final String username, final String password, final Set<OrderId> orders) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -33,7 +33,7 @@ class UserSnapshot {
         return password;
     }
 
-    Set<SimpleOrderSnapshot> getOrders() {
+    Set<OrderId> getOrders() {
         return orders;
     }
 }

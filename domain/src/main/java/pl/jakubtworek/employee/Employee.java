@@ -3,23 +3,22 @@ package pl.jakubtworek.employee;
 import pl.jakubtworek.DomainEvent;
 import pl.jakubtworek.employee.dto.Job;
 import pl.jakubtworek.employee.vo.EmployeeEvent;
-import pl.jakubtworek.order.dto.SimpleOrder;
+import pl.jakubtworek.order.vo.OrderId;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Set;
 
 class Employee {
     private Long id;
     private String firstName;
     private String lastName;
     private Job job;
-    private List<SimpleOrder> orders = new ArrayList<>();
+    private Set<OrderId> orders = new HashSet<>();
 
     public Employee() {
     }
 
-    private Employee(final Long id, final String firstName, final String lastName, final Job job, final List<SimpleOrder> orders) {
+    private Employee(final Long id, final String firstName, final String lastName, final Job job, final Set<OrderId> orders) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -33,7 +32,7 @@ class Employee {
                 snapshot.getFirstName(),
                 snapshot.getLastName(),
                 snapshot.getJob(),
-                snapshot.getOrders().stream().map(SimpleOrder::restore).collect(Collectors.toList())
+                snapshot.getOrders()
         );
     }
 
@@ -43,7 +42,7 @@ class Employee {
                 firstName,
                 lastName,
                 job,
-                orders.stream().map(SimpleOrder::getSnapshot).collect(Collectors.toSet())
+                orders
         );
     }
 

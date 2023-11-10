@@ -1,10 +1,9 @@
 package pl.jakubtworek.menu;
 
-import pl.jakubtworek.menu.dto.SimpleMenuItem;
-import pl.jakubtworek.order.dto.SimpleOrder;
+import pl.jakubtworek.order.vo.OrderId;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 class MenuItem {
@@ -12,12 +11,12 @@ class MenuItem {
     private String name;
     private int price;
     private Menu menu;
-    private List<SimpleOrder> orders = new ArrayList<>();
+    private Set<OrderId> orders = new HashSet<>();
 
     public MenuItem() {
     }
 
-    private MenuItem(final Long id, final String name, final int price, final Menu menu, final List<SimpleOrder> orders) {
+    private MenuItem(final Long id, final String name, final int price, final Menu menu, final Set<OrderId> orders) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -31,7 +30,7 @@ class MenuItem {
                 snapshot.getName(),
                 snapshot.getPrice(),
                 Menu.restore(snapshot.getMenu()),
-                snapshot.getOrders().stream().map(SimpleOrder::restore).collect(Collectors.toList())
+                snapshot.getOrders()
         );
     }
 
@@ -41,7 +40,7 @@ class MenuItem {
                 name,
                 price,
                 menu.getSnapshot(),
-                orders.stream().map(SimpleOrder::getSnapshot).collect(Collectors.toSet())
+                orders
         );
     }
 
@@ -62,12 +61,12 @@ class MenuItem {
     static class Menu {
         private Long id;
         private String name;
-        private List<SimpleMenuItem> menuItems = new ArrayList<>();
+        private Set<MenuItem> menuItems = new HashSet<>();
 
         Menu() {
         }
 
-        private Menu(final Long id, final String name, final List<SimpleMenuItem> menuItems) {
+        private Menu(final Long id, final String name, final Set<MenuItem> menuItems) {
             this.id = id;
             this.name = name;
             this.menuItems = menuItems;
@@ -77,7 +76,7 @@ class MenuItem {
             return new Menu(
                     snapshot.getId(),
                     snapshot.getName(),
-                    snapshot.getMenuItems().stream().map(SimpleMenuItem::restore).collect(Collectors.toList())
+                    snapshot.getMenuItems().stream().map(MenuItem::restore).collect(Collectors.toSet())
             );
         }
 
@@ -85,7 +84,7 @@ class MenuItem {
             return new MenuSnapshot(
                     id,
                     name,
-                    menuItems.stream().map(SimpleMenuItem::getSnapshot).collect(Collectors.toSet())
+                    menuItems.stream().map(MenuItem::getSnapshot).collect(Collectors.toSet())
             );
         }
 

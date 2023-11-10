@@ -4,7 +4,6 @@ import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.employee.dto.EmployeeRequest;
 import pl.jakubtworek.employee.dto.Job;
-import pl.jakubtworek.employee.dto.SimpleEmployee;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +21,8 @@ public class EmployeeFacade {
         this.publisher = publisher;
     }
 
-    public SimpleEmployee getById(Long id) {
-        return employeeQueryRepository.findSimpleById(id)
+    public EmployeeDto getById(Long id) {
+        return employeeQueryRepository.findDtoById(id)
                 .orElseThrow(() -> new IllegalStateException(EMPLOYEE_NOT_FOUND_ERROR));
     }
 

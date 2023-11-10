@@ -1,16 +1,15 @@
 package pl.jakubtworek.order;
 
 import pl.jakubtworek.DomainEvent;
-import pl.jakubtworek.auth.dto.SimpleUser;
-import pl.jakubtworek.employee.dto.SimpleEmployee;
-import pl.jakubtworek.menu.dto.SimpleMenuItem;
+import pl.jakubtworek.auth.vo.UserId;
+import pl.jakubtworek.employee.vo.EmployeeId;
+import pl.jakubtworek.menu.vo.MenuItemId;
 import pl.jakubtworek.order.dto.TypeOfOrder;
 import pl.jakubtworek.order.vo.OrderEvent;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Set;
 
 class Order {
     private Long id;
@@ -18,14 +17,14 @@ class Order {
     private ZonedDateTime hourOrder;
     private ZonedDateTime hourAway;
     private TypeOfOrder typeOfOrder;
-    private List<SimpleMenuItem> menuItems = new ArrayList<>();
-    private List<SimpleEmployee> employees = new ArrayList<>();
-    private SimpleUser user;
+    private Set<MenuItemId> menuItems = new HashSet<>();
+    private Set<EmployeeId> employees = new HashSet<>();
+    private UserId user;
 
     public Order() {
     }
 
-    private Order(final Long id, final int price, final ZonedDateTime hourOrder, final ZonedDateTime hourAway, final TypeOfOrder typeOfOrder, final List<SimpleMenuItem> menuItems, final List<SimpleEmployee> employees, final SimpleUser user) {
+    private Order(final Long id, final int price, final ZonedDateTime hourOrder, final ZonedDateTime hourAway, final TypeOfOrder typeOfOrder, final Set<MenuItemId> menuItems, final Set<EmployeeId> employees, final UserId user) {
         this.id = id;
         this.price = price;
         this.hourOrder = hourOrder;
@@ -43,9 +42,9 @@ class Order {
                 snapshot.getHourOrder(),
                 snapshot.getHourAway(),
                 snapshot.getTypeOfOrder(),
-                snapshot.getMenuItems().stream().map(SimpleMenuItem::restore).collect(Collectors.toList()),
-                snapshot.getEmployees().stream().map(SimpleEmployee::restore).collect(Collectors.toList()),
-                SimpleUser.restore(snapshot.getUser())
+                snapshot.getMenuItems(),
+                snapshot.getEmployees(),
+                snapshot.getUser()
         );
     }
 
@@ -56,25 +55,15 @@ class Order {
                 hourOrder,
                 hourAway,
                 typeOfOrder,
-                menuItems.stream().map(SimpleMenuItem::getSnapshot).collect(Collectors.toSet()),
-                employees.stream().map(SimpleEmployee::getSnapshot).collect(Collectors.toSet()),
-                user.getSnapshot()
+                menuItems,
+                employees,
+                user
         );
     }
 
-    int getAmountOfMenuItems() {
-        return menuItems.size();
-    }
-
-    void addEmployee(SimpleEmployee employee) {
+    void addEmployee(EmployeeId employee) {
         if (employee != null) {
             employees.add(employee);
-        }
-    }
-
-    void addMenuItem(SimpleMenuItem menuItem) {
-        if (menuItem != null) {
-            menuItems.add(menuItem);
         }
     }
 
@@ -82,18 +71,12 @@ class Order {
         this.hourAway = ZonedDateTime.now();
     }
 
-    void updateInfo(List<SimpleMenuItem> menuItems, String typeOfOrderName, SimpleUser user) {
+    void updateInfo(Set<MenuItemId> menuItems, int price, String typeOfOrderName, UserId user) {
         this.menuItems = menuItems;
-        this.price = calculatePrice(menuItems);
+        this.price = price;
         this.hourOrder = ZonedDateTime.now();
         this.typeOfOrder = TypeOfOrder.valueOf(typeOfOrderName);
         this.user = user;
-    }
-
-    private int calculatePrice(final List<SimpleMenuItem> menuItems) {
-        return menuItems.stream()
-                .mapToInt(SimpleMenuItem::getPrice)
-                .sum();
     }
 
     DomainEvent sendToKitchen() {

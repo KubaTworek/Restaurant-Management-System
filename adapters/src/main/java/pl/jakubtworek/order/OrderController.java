@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.jakubtworek.order.dto.OrderDto;
 import pl.jakubtworek.order.dto.OrderRequest;
+import pl.jakubtworek.order.dto.OrderResponse;
 
 import java.net.URI;
 import java.util.List;
@@ -29,9 +30,9 @@ class OrderController {
     }
 
     @PostMapping
-    ResponseEntity<OrderDto> create(@RequestBody OrderRequest orderRequest, @RequestHeader("Authorization") String jwt) {
+    ResponseEntity<OrderResponse> create(@RequestBody OrderRequest orderRequest, @RequestHeader("Authorization") String jwt) {
         logger.info("Received a request to create a new order.");
-        OrderDto result = orderFacade.save(orderRequest, jwt);
+        final var result = orderFacade.save(orderRequest, jwt);
         logger.info("Order {} created successfully.", result.getId());
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
@@ -42,7 +43,7 @@ class OrderController {
                                     @RequestParam(required = false) String typeOfOrder,
                                     @RequestParam(required = false) Boolean isReady,
                                     @RequestParam(required = false) Long employeeId,
-                                    @RequestParam(required = false) String username
+                                    @RequestParam(required = false) Long userId
     ) {
         logger.info("Received a request for filtering orders:");
         logger.info("fromDate: {}", fromDate);
@@ -50,9 +51,9 @@ class OrderController {
         logger.info("typeOfOrder: {}", typeOfOrder);
         logger.info("isReady: {}", isReady);
         logger.info("employeeId: {}", employeeId);
-        logger.info("username: {}", username);
+        logger.info("userId: {}", userId);
 
-        List<OrderDto> orders = orderFacade.findByParams(fromDate, toDate, typeOfOrder, isReady, employeeId, username);
+        final var orders = orderFacade.findByParams(fromDate, toDate, typeOfOrder, isReady, employeeId, userId);
         logger.info("Returned {} orders in the response.", orders.size());
         return orders;
     }
@@ -64,7 +65,7 @@ class OrderController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<OrderDto> getById(@PathVariable Long id) {
+    ResponseEntity<OrderResponse> getById(@PathVariable Long id) {
         logger.info("Received a request to get order details for ID: {}", id);
         return orderFacade.findById(id)
                 .map(order -> {

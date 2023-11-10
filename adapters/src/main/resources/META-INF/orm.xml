@@ -132,39 +132,27 @@
         </attributes>
     </entity>
 
-    <entity class="pl.jakubtworek.auth.dto.SimpleUserSnapshot" access="FIELD">
+    <entity class="pl.jakubtworek.auth.vo.UserId" access="FIELD">
         <table name="USERS"/>
         <attributes>
             <id name="id">
                 <column name="USER_ID"/>
                 <generated-value strategy="IDENTITY"/>
             </id>
-            <basic name="username">
-                <column name="USERNAME" nullable="false"/>
-            </basic>
         </attributes>
     </entity>
 
-    <entity class="pl.jakubtworek.employee.dto.SimpleEmployeeSnapshot" access="FIELD">
+    <entity class="pl.jakubtworek.employee.vo.EmployeeId" access="FIELD">
         <table name="EMPLOYEES"/>
         <attributes>
             <id name="id">
                 <column name="EMPLOYEE_ID"/>
                 <generated-value strategy="IDENTITY"/>
             </id>
-            <basic name="firstName">
-                <column name="FIRST_NAME" nullable="false"/>
-            </basic>
-            <basic name="lastName">
-                <column name="LAST_NAME" nullable="false"/>
-            </basic>
-            <basic name="job">
-                <column name="JOB" nullable="false"/>
-            </basic>
         </attributes>
     </entity>
 
-    <entity class="pl.jakubtworek.menu.dto.SimpleMenuItemSnapshot" access="FIELD">
+    <entity class="pl.jakubtworek.menu.vo.MenuItemId" access="FIELD">
         <table name="MENU_ITEMS"/>
         <attributes>
             <id name="id">
@@ -180,25 +168,13 @@
         </attributes>
     </entity>
 
-    <entity class="pl.jakubtworek.order.dto.SimpleOrderSnapshot" access="FIELD">
+    <entity class="pl.jakubtworek.order.vo.OrderId" access="FIELD">
         <table name="ORDERS"/>
         <attributes>
             <id name="id">
                 <column name="ORDER_ID"/>
                 <generated-value strategy="IDENTITY"/>
             </id>
-            <basic name="price">
-                <column name="PRICE" nullable="false"/>
-            </basic>
-            <basic name="hourOrder">
-                <column name="HOUR_ORDER" nullable="false"/>
-            </basic>
-            <basic name="hourAway">
-                <column name="HOUR_AWAY"/>
-            </basic>
-            <basic name="typeOfOrder">
-                <column name="TYPE_OF_ORDER" nullable="false"/>
-            </basic>
         </attributes>
     </entity>
 </entity-mappings>

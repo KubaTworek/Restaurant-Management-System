@@ -1,7 +1,7 @@
 package pl.jakubtworek.employee;
 
 import pl.jakubtworek.employee.dto.Job;
-import pl.jakubtworek.order.dto.SimpleOrderSnapshot;
+import pl.jakubtworek.order.vo.OrderId;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,12 +11,12 @@ class EmployeeSnapshot {
     private String firstName;
     private String lastName;
     private Job job;
-    private Set<SimpleOrderSnapshot> orders = new HashSet<>();
+    private Set<OrderId> orders = new HashSet<>();
 
     public EmployeeSnapshot() {
     }
 
-    EmployeeSnapshot(final Long id, final String firstName, final String lastName, final Job job, final Set<SimpleOrderSnapshot> orders) {
+    EmployeeSnapshot(final Long id, final String firstName, final String lastName, final Job job, final Set<OrderId> orders) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -40,7 +40,7 @@ class EmployeeSnapshot {
         return job;
     }
 
-    Set<SimpleOrderSnapshot> getOrders() {
+    Set<OrderId> getOrders() {
         return orders;
     }
 }

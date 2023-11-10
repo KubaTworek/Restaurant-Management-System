@@ -7,12 +7,9 @@ import pl.jakubtworek.order.dto.TypeOfOrder;
 
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Optional;
 
 public interface OrderQueryRepository {
-    Optional<OrderDto> findDtoById(Long id);
-
-    List<OrderDto> findByUserUsername(String username);
+    List<OrderDto> findByUserId(Long userId);
 
     @Query("SELECT o FROM OrderSnapshot o " +
             "LEFT JOIN o.employees e " +
@@ -24,12 +21,12 @@ public interface OrderQueryRepository {
             "    (:isReady = true AND o.hourAway IS NOT NULL) OR " +
             "    (:isReady = false AND o.hourAway IS NULL)) " +
             "AND (:employeeId IS NULL OR e.id = :employeeId) " +
-            "AND (:username IS NULL OR o.user.username = :username)")
+            "AND (:userId IS NULL OR o.user.id = :userId)")
     List<OrderDto> findFilteredOrders(
             @Param("fromDate") ZonedDateTime fromDate,
             @Param("toDate") ZonedDateTime toDate,
             @Param("typeOfOrder") TypeOfOrder typeOfOrder,
             @Param("isReady") Boolean isReady,
             @Param("employeeId") Long employeeId,
-            @Param("username") String username);
+            @Param("userId") Long userId);
 }

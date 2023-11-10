@@ -2,19 +2,22 @@ package pl.jakubtworek.order;
 
 import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.auth.UserFacade;
+import pl.jakubtworek.auth.vo.UserId;
 import pl.jakubtworek.employee.EmployeeFacade;
 import pl.jakubtworek.employee.dto.EmployeeDto;
+import pl.jakubtworek.employee.vo.EmployeeId;
 import pl.jakubtworek.menu.MenuItemFacade;
 import pl.jakubtworek.menu.dto.MenuItemDto;
-import pl.jakubtworek.menu.dto.SimpleMenuItem;
+import pl.jakubtworek.menu.vo.MenuItemId;
 import pl.jakubtworek.order.dto.OrderDto;
 import pl.jakubtworek.order.dto.OrderRequest;
-import pl.jakubtworek.order.dto.SimpleOrder;
+import pl.jakubtworek.order.dto.OrderResponse;
 import pl.jakubtworek.order.dto.TypeOfOrder;
 
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class OrderFacade {
@@ -46,67 +49,71 @@ public class OrderFacade {
     public void addEmployeeToOrder(Long orderId, Long employeeId) {
         final var order = getOrderById(orderId);
         final var employee = employeeFacade.getById(employeeId);
-        order.addEmployee(employee);
+        order.addEmployee(new EmployeeId(employee.getId()));
         orderRepository.save(order);
     }
 
-    public int getNumberOfMenuItems(SimpleOrder order) {
-        return getOrderById(order.getId())
-                .getAmountOfMenuItems();
-    }
-
-    OrderDto save(OrderRequest toSave, String jwt) {
+    OrderResponse save(OrderRequest toSave, String jwt) {
         final var user = userFacade.getByToken(jwt);
         final var menuItems = getMenuItems(toSave.getMenuItems());
 
         final var order = new Order();
         order.updateInfo(
-                menuItems,
+                menuItems.stream().map(MenuItemDto::getId).map(MenuItemId::new).collect(Collectors.toSet()),
+                calculatePrice(menuItems),
                 toSave.getTypeOfOrder(),
-                user
+                new UserId(user.getId())
         );
 
         final var created = orderRepository.save(order);
 
         publisher.publish(created.sendToKitchen());
 
-        return toDto(created);
+        return toResponse(created);
+    }
+
+    private int calculatePrice(Set<MenuItemDto> menuItems) {
+        return menuItems.stream()
+                .mapToInt(MenuItemDto::getPrice)
+                .sum();
     }
 
     List<OrderDto> findAll(String jwt) {
         final var user = userFacade.getByToken(jwt);
-        return orderQueryRepository.findByUserUsername(user.getUsername());
+        return orderQueryRepository.findByUserId(user.getId());
     }
 
-    Optional<OrderDto> findById(Long id) {
-        return orderQueryRepository.findDtoById(id);
+    Optional<OrderResponse> findById(Long id) {
+        return orderRepository.findById(id).map(this::toResponse);
     }
 
-    public List<OrderDto> findByParams(String fromDateStr, String toDateStr, String typeOfOrder, Boolean isReady, Long employeeId, String username) {
+    public List<OrderDto> findByParams(String fromDateStr, String toDateStr, String typeOfOrder, Boolean isReady, Long employeeId, Long userId) {
         final var fromDate = parseDate(fromDateStr);
         final var toDate = parseDate(toDateStr);
         final var orderType = parseOrderType(typeOfOrder);
-        return orderQueryRepository.findFilteredOrders(fromDate, toDate, orderType, isReady, employeeId, username);
+        return orderQueryRepository.findFilteredOrders(fromDate, toDate, orderType, isReady, employeeId, userId);
     }
 
-    private List<SimpleMenuItem> getMenuItems(List<String> names) {
+    private Set<MenuItemDto> getMenuItems(List<String> names) {
         return names.stream()
                 .map(menuItemFacade::getByName)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
-    private OrderDto toDto(Order order) {
+    private OrderResponse toResponse(Order order) {
         var snap = order.getSnapshot();
 
-        final var employeeDtos = snap.getEmployees().stream()
-                .map(employee -> EmployeeDto.create(employee.getId(), employee.getFirstName(), employee.getLastName(), employee.getJob()))
-                .collect(Collectors.toList());
-
         final var menuItemDtos = snap.getMenuItems().stream()
+                .map(mi -> menuItemFacade.getById(mi.getId()))
                 .map(menuItem -> MenuItemDto.create(menuItem.getId(), menuItem.getName(), menuItem.getPrice()))
                 .collect(Collectors.toList());
 
-        return OrderDto.create(snap.getId(), snap.getPrice(), snap.getHourOrder(), snap.getHourAway(), snap.getTypeOfOrder(), employeeDtos, menuItemDtos);
+        final var employeeDtos = snap.getEmployees().stream()
+                .map(mi -> employeeFacade.getById(mi.getId()))
+                .map(employee -> EmployeeDto.create(employee.getId(), employee.getFirstName(), employee.getLastName(), employee.getJob()))
+                .collect(Collectors.toList());
+
+        return new OrderResponse(snap.getId(), snap.getPrice(), snap.getHourOrder(), snap.getHourAway(), snap.getTypeOfOrder(), menuItemDtos, employeeDtos);
     }
 
     private Order getOrderById(Long orderId) {

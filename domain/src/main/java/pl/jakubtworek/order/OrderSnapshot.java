@@ -1,8 +1,8 @@
 package pl.jakubtworek.order;
 
-import pl.jakubtworek.auth.dto.SimpleUserSnapshot;
-import pl.jakubtworek.employee.dto.SimpleEmployeeSnapshot;
-import pl.jakubtworek.menu.dto.SimpleMenuItemSnapshot;
+import pl.jakubtworek.auth.vo.UserId;
+import pl.jakubtworek.employee.vo.EmployeeId;
+import pl.jakubtworek.menu.vo.MenuItemId;
 import pl.jakubtworek.order.dto.TypeOfOrder;
 
 import java.time.ZonedDateTime;
@@ -15,14 +15,14 @@ class OrderSnapshot {
     private ZonedDateTime hourOrder;
     private ZonedDateTime hourAway;
     private TypeOfOrder typeOfOrder;
-    private Set<SimpleMenuItemSnapshot> menuItems = new HashSet<>();
-    private Set<SimpleEmployeeSnapshot> employees = new HashSet<>();
-    private SimpleUserSnapshot user;
+    private Set<MenuItemId> menuItems = new HashSet<>();
+    private Set<EmployeeId> employees = new HashSet<>();
+    private UserId user;
 
     public OrderSnapshot() {
     }
 
-    OrderSnapshot(final Long id, final int price, final ZonedDateTime hourOrder, final ZonedDateTime hourAway, final TypeOfOrder typeOfOrder, final Set<SimpleMenuItemSnapshot> menuItems, final Set<SimpleEmployeeSnapshot> employees, final SimpleUserSnapshot user) {
+    OrderSnapshot(final Long id, final int price, final ZonedDateTime hourOrder, final ZonedDateTime hourAway, final TypeOfOrder typeOfOrder, final Set<MenuItemId> menuItems, final Set<EmployeeId> employees, final UserId user) {
         this.id = id;
         this.price = price;
         this.hourOrder = hourOrder;
@@ -53,15 +53,15 @@ class OrderSnapshot {
         return typeOfOrder;
     }
 
-    Set<SimpleMenuItemSnapshot> getMenuItems() {
+    Set<MenuItemId> getMenuItems() {
         return menuItems;
     }
 
-    Set<SimpleEmployeeSnapshot> getEmployees() {
+    Set<EmployeeId> getEmployees() {
         return employees;
     }
 
-    SimpleUserSnapshot getUser() {
+    UserId getUser() {
         return user;
     }
 }

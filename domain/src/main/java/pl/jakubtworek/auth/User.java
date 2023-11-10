@@ -1,21 +1,20 @@
 package pl.jakubtworek.auth;
 
-import pl.jakubtworek.order.dto.SimpleOrder;
+import pl.jakubtworek.order.vo.OrderId;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Set;
 
 class User {
     private Long id;
     private String username;
     private String password;
-    private List<SimpleOrder> orders = new ArrayList<>();
+    private Set<OrderId> orders = new HashSet<>();
 
     public User() {
     }
 
-    private User(final Long id, final String username, final String password, final List<SimpleOrder> orders) {
+    private User(final Long id, final String username, final String password, final Set<OrderId> orders) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -27,7 +26,7 @@ class User {
                 snapshot.getId(),
                 snapshot.getUsername(),
                 snapshot.getPassword(),
-                snapshot.getOrders().stream().map(SimpleOrder::restore).collect(Collectors.toList())
+                snapshot.getOrders()
         );
     }
 
@@ -36,7 +35,7 @@ class User {
                 id,
                 username,
                 password,
-                orders.stream().map(SimpleOrder::getSnapshot).collect(Collectors.toSet())
+                orders
         );
     }
 

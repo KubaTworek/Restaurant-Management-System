@@ -3,7 +3,6 @@ package pl.jakubtworek.auth;
 import pl.jakubtworek.auth.dto.LoginRequest;
 import pl.jakubtworek.auth.dto.LoginResponse;
 import pl.jakubtworek.auth.dto.RegisterRequest;
-import pl.jakubtworek.auth.dto.SimpleUser;
 import pl.jakubtworek.auth.dto.UserDto;
 
 import java.time.Instant;
@@ -23,11 +22,11 @@ public class UserFacade {
         this.jwtService = jwtService;
     }
 
-    public SimpleUser getByToken(String jwt) {
+    public UserDto getByToken(String jwt) {
         final var claims = jwtService.parseJwtClaims(jwt);
         final var username = claims.get("username", String.class);
 
-        return userQueryRepository.findSimpleByUsername(username).
+        return userQueryRepository.findDtoByUsername(username).
                 orElseThrow(() -> new IllegalStateException(USER_NOT_FOUND_ERROR));
     }
 
