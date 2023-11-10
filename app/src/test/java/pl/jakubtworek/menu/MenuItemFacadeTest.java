@@ -1,4 +1,3 @@
-/*
 package pl.jakubtworek.menu;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -40,12 +39,12 @@ class MenuItemFacadeTest {
     void shouldReturnMenuItemByName() {
         // given
         final var itemName = "Spaghetti";
-        final var expectedMenuItem = new SimpleMenuItem(1L, itemName, 100);
+        final var expectedMenuItem = MenuItemDto.create(1L, itemName, 100);
 
-        when(menuItemQueryRepository.findSimpleByName(itemName)).thenReturn(Optional.of(expectedMenuItem));
+        when(menuItemQueryRepository.findDtoByName(itemName)).thenReturn(Optional.of(expectedMenuItem));
 
         // when
-        final SimpleMenuItem result = menuItemFacade.getByName(itemName);
+        final var result = menuItemFacade.getByName(itemName);
 
         // then
         assertEquals(expectedMenuItem, result);
@@ -175,4 +174,3 @@ class MenuItemFacadeTest {
         assertEquals(expected.getSnapshot().getPrice(), actual.getPrice());
     }
 }
-*/

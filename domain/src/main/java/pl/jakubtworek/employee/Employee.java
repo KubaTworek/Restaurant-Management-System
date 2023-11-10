@@ -2,7 +2,7 @@ package pl.jakubtworek.employee;
 
 import pl.jakubtworek.DomainEvent;
 import pl.jakubtworek.employee.dto.Job;
-import pl.jakubtworek.employee.vo.EmployeeEvent;
+import pl.jakubtworek.order.vo.OrderEvent;
 import pl.jakubtworek.order.vo.OrderId;
 
 import java.util.HashSet;
@@ -60,11 +60,13 @@ class Employee {
         }
     }
 
-    DomainEvent sendToDelivery() {
-        return new EmployeeEvent(
+    DomainEvent deliveredOrderWithId(final OrderId order) {
+        return new OrderEvent(
+                order.getId(),
                 this.id,
                 null,
-                this.job
+                null,
+                OrderEvent.State.DELIVERED
         );
     }
 }

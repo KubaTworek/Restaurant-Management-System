@@ -10,7 +10,7 @@ public class OrderId {
         this.id = id;
     }
 
-    Long getId() {
+    public Long getId() {
         return id;
     }
 }

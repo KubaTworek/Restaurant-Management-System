@@ -67,6 +67,12 @@ class Order {
         }
     }
 
+    void addMenuItem(MenuItemId menuItem) {
+        if (menuItem != null) {
+            menuItems.add(menuItem);
+        }
+    }
+
     void delivery() {
         this.hourAway = ZonedDateTime.now();
     }
@@ -79,12 +85,17 @@ class Order {
         this.user = user;
     }
 
-    DomainEvent sendToKitchen() {
+    DomainEvent wasCookedBy(EmployeeId employeeId) {
         return new OrderEvent(
                 this.id,
+                employeeId.getId(),
                 typeOfOrder,
                 this.menuItems.size(),
-                OrderEvent.State.TODO
+                OrderEvent.State.READY
         );
     }
+
+    int calculateCookingTime() {
+        return this.menuItems.size() * 1;
+    } // 10 000
 }

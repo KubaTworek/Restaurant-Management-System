@@ -16,7 +16,7 @@ class OrderConfiguration {
             MenuItemFacade menuItemFacade,
             OrderRepository orderRepository,
             OrderQueryRepository orderQueryRepository,
-            SpringDomainEventPublisher publisher
+            Kitchen kitchen
     ) {
         return new OrderFacade(
                 userFacade,
@@ -24,6 +24,15 @@ class OrderConfiguration {
                 menuItemFacade,
                 orderRepository,
                 orderQueryRepository,
+                kitchen
+        );
+    }
+
+    @Bean
+    Kitchen kitchen(
+            SpringDomainEventPublisher publisher
+    ) {
+        return new Kitchen(
                 publisher
         );
     }

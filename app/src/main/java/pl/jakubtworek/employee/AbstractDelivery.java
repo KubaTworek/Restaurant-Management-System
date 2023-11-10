@@ -1,28 +1,28 @@
-package pl.jakubtworek.queue;
+package pl.jakubtworek.employee;
 
 import pl.jakubtworek.DomainEventPublisher;
-import pl.jakubtworek.employee.vo.EmployeeEvent;
 import pl.jakubtworek.order.vo.OrderEvent;
+import pl.jakubtworek.order.vo.OrderId;
 
 import java.util.LinkedList;
 import java.util.Queue;
 
 abstract class AbstractDelivery {
-    private final Queue<OrderDto> ordersQueue = new LinkedList<>();
-    private final Queue<EmployeeDto> employeeQueue = new LinkedList<>();
+    private final Queue<OrderId> ordersQueue = new LinkedList<>();
+    private final Queue<Employee> employeeQueue = new LinkedList<>();
     private final DomainEventPublisher publisher;
 
     AbstractDelivery(final DomainEventPublisher publisher) {
         this.publisher = publisher;
     }
 
-    void handle(final OrderEvent event) {
-        ordersQueue.add(new OrderDto(event.getOrderId(), event.getOrderType(), event.getAmountOfMenuItems()));
+    void handle(final Employee employee) {
+        employeeQueue.add(employee);
         processDeliveries();
     }
 
-    void handle(final EmployeeEvent event) {
-        employeeQueue.add(new EmployeeDto(event.getEmployeeId(), event.getJob()));
+    void handle(final OrderEvent event) {
+        ordersQueue.add(new OrderId(event.getOrderId()));
         processDeliveries();
     }
 
@@ -38,21 +38,12 @@ abstract class AbstractDelivery {
         delivering(employee, order, 0); // fixme: specific time
     }
 
-    private void delivering(EmployeeDto employee, OrderDto order, int time) {
+    private void delivering(Employee employee, OrderId order, int time) {
         final var thread = new Thread(() -> {
             try {
                 Thread.sleep(time);
-                publisher.publish(new OrderEvent(
-                        order.getOrderId(),
-                        order.getOrderType(),
-                        order.getAmountOfMenuItems(),
-                        OrderEvent.State.DELIVERED
-                ));
-                publisher.publish(new EmployeeEvent(
-                        employee.getEmployeeId(),
-                        order.getOrderId(),
-                        employee.getJob()
-                ));
+                publisher.publish(employee.deliveredOrderWithId(order));
+                handle(employee);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

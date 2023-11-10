@@ -7,19 +7,16 @@ import java.time.Instant;
 
 public class OrderEvent implements DomainEvent {
 
-    public enum State {
-        TODO, READY, DELIVERED
-    }
-
     private final Instant occurredOn;
     private final Long orderId;
+    private final Long employeeId;
     private final TypeOfOrder orderType;
     private final Integer amountOfMenuItems;
     private final State state;
-
-    public OrderEvent(final Long orderId, final TypeOfOrder orderType, final Integer amountOfMenuItems, final State state) {
+    public OrderEvent(final Long orderId, final Long employeeId, final TypeOfOrder orderType, final Integer amountOfMenuItems, final State state) {
         this.occurredOn = Instant.now();
         this.orderId = orderId;
+        this.employeeId = employeeId;
         this.orderType = orderType;
         this.amountOfMenuItems = amountOfMenuItems;
         this.state = state;
@@ -34,6 +31,10 @@ public class OrderEvent implements DomainEvent {
         return orderId;
     }
 
+    public Long getEmployeeId() {
+        return employeeId;
+    }
+
     public TypeOfOrder getOrderType() {
         return orderType;
     }
@@ -44,5 +45,9 @@ public class OrderEvent implements DomainEvent {
 
     public State getState() {
         return state;
+    }
+
+    public enum State {
+        TODO, READY, DELIVERED
     }
 }

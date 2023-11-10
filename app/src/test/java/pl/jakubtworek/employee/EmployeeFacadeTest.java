@@ -1,4 +1,3 @@
-/*
 package pl.jakubtworek.employee;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +10,7 @@ import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.employee.dto.EmployeeRequest;
 import pl.jakubtworek.employee.dto.Job;
+import pl.jakubtworek.employee.vo.EmployeeEvent;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,6 +29,10 @@ class EmployeeFacadeTest {
     @Mock
     private EmployeeQueryRepository employeeQueryRepository;
     @Mock
+    private WaiterDelivery waiterDelivery;
+    @Mock
+    private CarDelivery carDelivery;
+    @Mock
     private DomainEventPublisher publisher;
 
 
@@ -37,19 +41,19 @@ class EmployeeFacadeTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        employeeFacade = new EmployeeFacade(employeeRepository, employeeQueryRepository, publisher);
+        employeeFacade = new EmployeeFacade(employeeRepository, employeeQueryRepository, waiterDelivery, carDelivery, publisher);
     }
 
     @Test
     void shouldReturnEmployeeById() {
         // given
         final var employeeId = 1L;
-        final var expectedEmployee = new SimpleEmployee(employeeId, "John", "Doe", Job.COOK);
+        final var expectedEmployee = EmployeeDto.create(employeeId, "John", "Doe", Job.COOK);
 
-        when(employeeQueryRepository.findSimpleById(employeeId)).thenReturn(Optional.of(expectedEmployee));
+        when(employeeQueryRepository.findDtoById(employeeId)).thenReturn(Optional.of(expectedEmployee));
 
         // when
-        final SimpleEmployee result = employeeFacade.getById(employeeId);
+        final var result = employeeFacade.getById(employeeId);
 
         // then
         assertEquals(expectedEmployee, result);
@@ -70,7 +74,9 @@ class EmployeeFacadeTest {
 
         // then
         assertEmployeeEquals(expectedEmployee, result);
-        verify(publisher).publish(any());
+        if ("COOK".equals(jobName)) verify(publisher).publish(any(EmployeeEvent.class));
+        if ("DELIVERY".equals(jobName)) verify(carDelivery).handle(any(Employee.class));
+        if ("WAITER".equals(jobName)) verify(waiterDelivery).handle(any(Employee.class));
     }
 
     @Test
@@ -143,4 +149,3 @@ class EmployeeFacadeTest {
         assertEquals(expected.getSnapshot().getJob(), actual.getJob());
     }
 }
-*/

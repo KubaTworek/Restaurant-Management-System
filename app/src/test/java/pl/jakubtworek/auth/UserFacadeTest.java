@@ -1,4 +1,3 @@
-/*
 package pl.jakubtworek.auth;
 
 import io.jsonwebtoken.Claims;
@@ -44,14 +43,14 @@ class UserFacadeTest {
         // given
         final var jwt = "sample_jwt";
         final var claims = mock(Claims.class);
-        final var expectedUser = new SimpleUser(1L, "john.doe");
+        final var expectedUser = UserDto.create(1L, "john.doe", "password");
 
         when(jwtService.parseJwtClaims(jwt)).thenReturn(claims);
         when(claims.get("username", String.class)).thenReturn("john.doe");
-        when(userQueryRepository.findSimpleByUsername("john.doe")).thenReturn(Optional.of(expectedUser));
+        when(userQueryRepository.findDtoByUsername("john.doe")).thenReturn(Optional.of(expectedUser));
 
         // when
-        final SimpleUser result = userFacade.getByToken(jwt);
+        final var result = userFacade.getByToken(jwt);
 
         // then
         assertEquals(expectedUser, result);
@@ -125,4 +124,3 @@ class UserFacadeTest {
         assertEquals(expected.getSnapshot().getPassword(), actual.getPassword());
     }
 }
-*/

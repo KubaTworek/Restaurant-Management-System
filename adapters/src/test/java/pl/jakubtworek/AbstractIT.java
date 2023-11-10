@@ -37,11 +37,9 @@ public class AbstractIT {
 
     @Autowired
     public TestRestTemplate restTemplate;
-
+    public String userToken;
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    public String userToken;
 
     @BeforeEach
     void setup() {

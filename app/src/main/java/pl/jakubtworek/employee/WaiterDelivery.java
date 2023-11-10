@@ -1,4 +1,4 @@
-package pl.jakubtworek.queue;
+package pl.jakubtworek.employee;
 
 import pl.jakubtworek.DomainEventPublisher;
 

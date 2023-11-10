@@ -1,6 +1,5 @@
 package pl.jakubtworek.order;
 
-import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.auth.UserFacade;
 import pl.jakubtworek.auth.vo.UserId;
 import pl.jakubtworek.employee.EmployeeFacade;
@@ -27,17 +26,17 @@ public class OrderFacade {
     private final MenuItemFacade menuItemFacade;
     private final OrderRepository orderRepository;
     private final OrderQueryRepository orderQueryRepository;
-    private final DomainEventPublisher publisher;
+    private final Kitchen kitchen;
 
     OrderFacade(final UserFacade userFacade, final EmployeeFacade employeeFacade, final MenuItemFacade menuItemFacade,
                 final OrderRepository orderRepository, final OrderQueryRepository orderQueryRepository,
-                final DomainEventPublisher publisher) {
+                final Kitchen kitchen) {
         this.userFacade = userFacade;
         this.employeeFacade = employeeFacade;
         this.menuItemFacade = menuItemFacade;
         this.orderRepository = orderRepository;
         this.orderQueryRepository = orderQueryRepository;
-        this.publisher = publisher;
+        this.kitchen = kitchen;
     }
 
     public void setAsDelivered(Long orderId) {
@@ -67,7 +66,7 @@ public class OrderFacade {
 
         final var created = orderRepository.save(order);
 
-        publisher.publish(created.sendToKitchen());
+        kitchen.handle(created);
 
         return toResponse(created);
     }
@@ -109,7 +108,7 @@ public class OrderFacade {
                 .collect(Collectors.toList());
 
         final var employeeDtos = snap.getEmployees().stream()
-                .map(mi -> employeeFacade.getById(mi.getId()))
+                .map(e -> employeeFacade.getById(e.getId()))
                 .map(employee -> EmployeeDto.create(employee.getId(), employee.getFirstName(), employee.getLastName(), employee.getJob()))
                 .collect(Collectors.toList());
 
