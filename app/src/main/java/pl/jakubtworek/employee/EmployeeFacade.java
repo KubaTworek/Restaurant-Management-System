@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static pl.jakubtworek.employee.dto.Job.COOK;
-import static pl.jakubtworek.employee.dto.Job.DELIVERY;
-import static pl.jakubtworek.employee.dto.Job.WAITER;
 
 public class EmployeeFacade {
     private static final String EMPLOYEE_NOT_FOUND_ERROR = "Employee with that id doesn't exist";
@@ -45,7 +43,7 @@ public class EmployeeFacade {
 
         final var created = employeeRepository.save(employee);
 
-        handleDeliveryAndCookJobs(toSave, created);
+        handleDeliveryAndCookJobs(created, Job.valueOf(toSave.getJob()));
 
         return toDto(created);
     }
@@ -62,19 +60,21 @@ public class EmployeeFacade {
         return employeeQueryRepository.findDtoById(id);
     }
 
-    public List<EmployeeDto> findByJob(String jobName) {
+    List<EmployeeDto> findByJob(String jobName) {
         return employeeQueryRepository.findByJob(Job.valueOf(jobName));
     }
 
-    private void handleDeliveryAndCookJobs(EmployeeRequest toSave, Employee created) {
-        if (WAITER.name().equals(toSave.getJob())) {
-            waiterDelivery.handle(created);
-        }
-        if (DELIVERY.name().equals(toSave.getJob())) {
-            carDelivery.handle(created);
-        }
-        if (COOK.name().equals(toSave.getJob())) {
-            publisher.publish(new EmployeeEvent(created.getSnapshot().getId(), null, COOK));
+    private void handleDeliveryAndCookJobs(Employee created, Job job) {
+        switch (job) {
+            case WAITER:
+                waiterDelivery.handle(created);
+                break;
+            case DELIVERY:
+                carDelivery.handle(created);
+                break;
+            case COOK:
+                publisher.publish(new EmployeeEvent(created.getSnapshot().getId(), null, COOK));
+                break;
         }
     }
 

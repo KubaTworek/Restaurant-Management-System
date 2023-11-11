@@ -67,12 +67,6 @@ class Order {
         }
     }
 
-    void addMenuItem(MenuItemId menuItem) {
-        if (menuItem != null) {
-            menuItems.add(menuItem);
-        }
-    }
-
     void delivery() {
         this.hourAway = ZonedDateTime.now();
     }
@@ -85,10 +79,10 @@ class Order {
         this.user = user;
     }
 
-    DomainEvent wasCookedBy(EmployeeId employeeId) {
+    DomainEvent wasCookedBy(Cook cook) {
         return new OrderEvent(
                 this.id,
-                employeeId.getId(),
+                cook.getCookId(),
                 typeOfOrder,
                 this.menuItems.size(),
                 OrderEvent.State.READY

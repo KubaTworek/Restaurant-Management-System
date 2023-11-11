@@ -60,12 +60,12 @@ class Employee {
         }
     }
 
-    DomainEvent deliveredOrderWithId(final OrderId order) {
+    DomainEvent deliveredOrderWithId(final Order order) {
         return new OrderEvent(
-                order.getId(),
+                order.getOrderId(),
                 this.id,
-                null,
-                null,
+                order.getOrderType(),
+                order.getAmountOfMenuItems(),
                 OrderEvent.State.DELIVERED
         );
     }

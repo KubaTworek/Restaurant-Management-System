@@ -86,7 +86,7 @@ public class OrderFacade {
         return orderRepository.findById(id).map(this::toResponse);
     }
 
-    public List<OrderDto> findByParams(String fromDateStr, String toDateStr, String typeOfOrder, Boolean isReady, Long employeeId, Long userId) {
+    List<OrderDto> findByParams(String fromDateStr, String toDateStr, String typeOfOrder, Boolean isReady, Long employeeId, Long userId) {
         final var fromDate = parseDate(fromDateStr);
         final var toDate = parseDate(toDateStr);
         final var orderType = parseOrderType(typeOfOrder);

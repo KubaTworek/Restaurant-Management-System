@@ -7,7 +7,6 @@ import org.mockito.MockitoAnnotations;
 import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.employee.dto.Job;
 import pl.jakubtworek.employee.vo.EmployeeEvent;
-import pl.jakubtworek.employee.vo.EmployeeId;
 import pl.jakubtworek.menu.vo.MenuItemId;
 import pl.jakubtworek.order.vo.OrderEvent;
 
@@ -33,7 +32,7 @@ class KitchenTest {
     void shouldNotHandleOrder() throws InterruptedException {
         // given
         final var order = new Order();
-        order.updateInfo(null, 0, "ON_SITE", null);
+        order.updateInfo(Set.of(new MenuItemId(1L)), 1000, "ON_SITE", null);
 
         // when
         kitchen.handle(order);
@@ -59,10 +58,10 @@ class KitchenTest {
     @Test
     void shouldNotHandleEmployeeId() throws InterruptedException {
         // given
-        final var employeeId = new EmployeeId(1L);
+        final var cook = new Cook(1L);
 
         // when
-        kitchen.handle(employeeId);
+        kitchen.handle(cook);
 
         // then
         Thread.sleep(20);
@@ -91,13 +90,13 @@ class KitchenTest {
         final var order = new Order();
         order.updateInfo(Set.of(new MenuItemId(1L)), 1000, "ON_SITE", null);
         final var employeeEvent = new EmployeeEvent(1L, null, Job.COOK);
-        final var employeeId = new EmployeeId(1L);
+        final var cook = new Cook(1L);
 
 
         // when
         kitchen.handle(employeeEvent);
         kitchen.handle(order);
-        kitchen.handle(employeeId);
+        kitchen.handle(cook);
         kitchen.handle(order);
 
         // then
