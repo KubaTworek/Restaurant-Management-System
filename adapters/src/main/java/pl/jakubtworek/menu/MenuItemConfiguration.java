@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 class MenuItemConfiguration {
+
     @Bean
     MenuItemFacade menuItemFacade(
             MenuItemRepository menuItemRepository,

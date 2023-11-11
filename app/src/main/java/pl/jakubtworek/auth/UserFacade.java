@@ -75,7 +75,7 @@ public class UserFacade {
     }
 
     private UserDto toDto(User user) {
-        var snap = user.getSnapshot();
+        final var snap = user.getSnapshot();
         return UserDto.create(snap.getId(), snap.getUsername(), snap.getPassword());
     }
 }

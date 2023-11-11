@@ -14,6 +14,7 @@ class OrderConfiguration {
             UserFacade userFacade,
             EmployeeFacade employeeFacade,
             MenuItemFacade menuItemFacade,
+            OrderFactory orderFactory,
             OrderRepository orderRepository,
             OrderQueryRepository orderQueryRepository,
             Kitchen kitchen
@@ -22,9 +23,23 @@ class OrderConfiguration {
                 userFacade,
                 employeeFacade,
                 menuItemFacade,
+                orderFactory,
                 orderRepository,
                 orderQueryRepository,
                 kitchen
+        );
+    }
+
+    @Bean
+    OrderFactory orderFactory(
+            UserFacade userFacade,
+            MenuItemFacade menuItemFacade,
+            OrderRepository orderRepository
+    ) {
+        return new OrderFactory(
+                userFacade,
+                menuItemFacade,
+                orderRepository
         );
     }
 

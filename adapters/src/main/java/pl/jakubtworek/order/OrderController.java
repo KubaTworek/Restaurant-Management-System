@@ -61,7 +61,7 @@ class OrderController {
     @GetMapping
     List<OrderDto> get(@RequestHeader("Authorization") String jwt) {
         logger.info("Received a request to get the list of all orders.");
-        return orderFacade.findAll(jwt);
+        return orderFacade.findAllByToken(jwt);
     }
 
     @GetMapping("/{id}")

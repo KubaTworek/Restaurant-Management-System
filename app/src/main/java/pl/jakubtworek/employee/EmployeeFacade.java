@@ -20,7 +20,12 @@ public class EmployeeFacade {
     private final CarDelivery carDelivery;
     private final DomainEventPublisher publisher;
 
-    EmployeeFacade(final EmployeeRepository employeeRepository, final EmployeeQueryRepository employeeQueryRepository, final WaiterDelivery waiterDelivery, final CarDelivery carDelivery, final DomainEventPublisher publisher) {
+    EmployeeFacade(final EmployeeRepository employeeRepository,
+                   final EmployeeQueryRepository employeeQueryRepository,
+                   final WaiterDelivery waiterDelivery,
+                   final CarDelivery carDelivery,
+                   final DomainEventPublisher publisher
+    ) {
         this.employeeRepository = employeeRepository;
         this.employeeQueryRepository = employeeQueryRepository;
         this.waiterDelivery = waiterDelivery;
@@ -34,8 +39,7 @@ public class EmployeeFacade {
     }
 
     EmployeeDto save(EmployeeRequest toSave) {
-        final var employee = new Employee();
-        employee.updateInfo(
+        final var employee = EmployeeFactory.createEmployee(
                 toSave.getFirstName(),
                 toSave.getLastName(),
                 toSave.getJob()
@@ -79,7 +83,7 @@ public class EmployeeFacade {
     }
 
     private EmployeeDto toDto(Employee employee) {
-        var snap = employee.getSnapshot();
+        final var snap = employee.getSnapshot();
         return EmployeeDto.create(snap.getId(), snap.getFirstName(), snap.getLastName(), snap.getJob());
     }
 }

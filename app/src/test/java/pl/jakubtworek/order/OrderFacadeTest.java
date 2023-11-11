@@ -11,7 +11,6 @@ import pl.jakubtworek.employee.EmployeeFacade;
 import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.employee.dto.Job;
 import pl.jakubtworek.menu.MenuItemFacade;
-import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.order.dto.OrderDto;
 import pl.jakubtworek.order.dto.OrderRequest;
 import pl.jakubtworek.order.dto.TypeOfOrder;
@@ -36,6 +35,8 @@ class OrderFacadeTest {
     @Mock
     private MenuItemFacade menuItemFacade;
     @Mock
+    private OrderFactory orderFactory;
+    @Mock
     private OrderRepository orderRepository;
     @Mock
     private OrderQueryRepository orderQueryRepository;
@@ -47,7 +48,7 @@ class OrderFacadeTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        orderFacade = new OrderFacade(userFacade, employeeFacade, menuItemFacade, orderRepository, orderQueryRepository, kitchen);
+        orderFacade = new OrderFacade(userFacade, employeeFacade, menuItemFacade, orderFactory, orderRepository, orderQueryRepository, kitchen);
     }
 
     @Test
@@ -112,21 +113,15 @@ class OrderFacadeTest {
     void shouldSaveOrderAndAddToQueue() {
         // given
         final var request = new OrderRequest("ON_SITE", List.of("Pizza", "Spaghetti"));
-        final var expectedUser = UserDto.create(1L, "john.doe", "password");
-        final var expectedSimpleOrder = OrderDto.create(1L, 220, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
         final var expectedOrder = createOrder(1L, 220, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
-        final var pizza = MenuItemDto.create(1L, "Pizza", 120);
-        final var spaghetti = MenuItemDto.create(2L, "Spaghetti", 100);
 
-        when(userFacade.getByToken("jwt-token")).thenReturn(expectedUser);
-        when(menuItemFacade.getByName("Pizza")).thenReturn(pizza);
-        when(menuItemFacade.getByName("Spaghetti")).thenReturn(spaghetti);
-        when(orderRepository.save(any())).thenReturn(expectedOrder);
+        when(orderFactory.createOrder(request, "jwt-token")).thenReturn(expectedOrder);
 
         // when
         final var result = orderFacade.save(request, "jwt-token");
 
         // then
+        verify(kitchen).handle(expectedOrder);
         assertEquals(expectedOrder.getSnapshot().getId(), result.getId());
         assertEquals(expectedOrder.getSnapshot().getPrice(), result.getPrice());
     }
@@ -141,7 +136,7 @@ class OrderFacadeTest {
         when(orderQueryRepository.findByUserId(1L)).thenReturn(expectedOrders);
 
         // when
-        final List<OrderDto> result = orderFacade.findAll("jwt-token");
+        final List<OrderDto> result = orderFacade.findAllByToken("jwt-token");
 
         // then
         assertEquals(2, result.size());
