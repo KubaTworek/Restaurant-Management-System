@@ -1,6 +1,9 @@
-package pl.jakubtworek.employee;
+package pl.jakubtworek.delivery;
 
 import pl.jakubtworek.DomainEventPublisher;
+import pl.jakubtworek.delivery.dto.EmployeeDelivery;
+import pl.jakubtworek.delivery.dto.OrderDelivery;
+import pl.jakubtworek.employee.vo.EmployeeEvent;
 import pl.jakubtworek.order.vo.OrderEvent;
 
 abstract class AbstractDelivery {
@@ -12,13 +15,13 @@ abstract class AbstractDelivery {
         this.publisher = publisher;
     }
 
-    void handle(final Employee employee) {
-        queues.add(employee);
+    void handle(final EmployeeEvent event) {
+        queues.add(new EmployeeDelivery(event.getEmployeeId(), event.getJob()));
         processDeliveries();
     }
 
     void handle(final OrderEvent event) {
-        queues.add(new Order(event.getOrderId(), event.getOrderType(), event.getAmountOfMenuItems()));
+        queues.add(new OrderDelivery(event.getOrderId(), event.getOrderType(), event.getAmountOfMenuItems()));
         processDeliveries();
     }
 
@@ -34,12 +37,22 @@ abstract class AbstractDelivery {
         delivering(employee, order, 0); // fixme: specific time
     }
 
-    private void delivering(Employee employee, Order order, int time) {
+    private void delivering(EmployeeDelivery employee, OrderDelivery order, int time) {
         final var thread = new Thread(() -> {
             try {
                 Thread.sleep(time);
-                publisher.publish(employee.deliveredOrderWithId(order));
-                handle(employee);
+                publisher.publish(new OrderEvent(
+                        order.getOrderId(),
+                        employee.getEmployeeId(),
+                        order.getOrderType(),
+                        order.getAmountOfMenuItems(),
+                        OrderEvent.State.DELIVERED
+                ));
+                publisher.publish(new EmployeeEvent(
+                        employee.getEmployeeId(),
+                        order.getOrderId(),
+                        employee.getJob()
+                ));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -1,5 +1,7 @@
-package pl.jakubtworek.order;
+package pl.jakubtworek.delivery;
 
+import pl.jakubtworek.delivery.dto.EmployeeDelivery;
+import pl.jakubtworek.delivery.dto.OrderDelivery;
 import pl.jakubtworek.order.dto.TypeOfOrder;
 
 import java.util.LinkedList;
@@ -9,27 +11,27 @@ import java.util.Queue;
 import static java.util.Comparator.comparingInt;
 
 class KitchenQueues {
-    private final Queue<Order> orderQueue;
-    private final Queue<Cook> cookQueue;
+    private final Queue<OrderDelivery> orderQueue;
+    private final Queue<EmployeeDelivery> cookQueue;
 
     KitchenQueues() {
         this.orderQueue = new PriorityQueue<>(comparingInt(this::orderPriority));
         this.cookQueue = new LinkedList<>();
     }
 
-    void add(final Order order) {
+    void add(final OrderDelivery order) {
         orderQueue.add(order);
     }
 
-    void add(final Cook cook) {
+    void add(final EmployeeDelivery cook) {
         cookQueue.add(cook);
     }
 
-    Order getFirstOrder() {
+    OrderDelivery getFirstOrder() {
         return orderQueue.poll();
     }
 
-    Cook getFirstCook() {
+    EmployeeDelivery getFirstCook() {
         return cookQueue.poll();
     }
 
@@ -37,8 +39,8 @@ class KitchenQueues {
         return !orderQueue.isEmpty() && !cookQueue.isEmpty();
     }
 
-    private int orderPriority(Order order) {
-        final var orderType = order.getSnapshot().getTypeOfOrder();
+    private int orderPriority(OrderDelivery order) {
+        final var orderType = order.getOrderType();
         if (orderType == TypeOfOrder.ON_SITE || orderType == TypeOfOrder.TAKE_AWAY) {
             return -1;
         } else if (orderType == TypeOfOrder.DELIVERY) {

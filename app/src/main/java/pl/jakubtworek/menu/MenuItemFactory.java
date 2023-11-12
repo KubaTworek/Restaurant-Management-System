@@ -5,7 +5,7 @@ import pl.jakubtworek.menu.dto.MenuItemRequest;
 
 class MenuItemFactory {
 
-    public static MenuItem createMenuItem(MenuItemRequest toSave, MenuDto menuDto) {
+    static MenuItem createMenuItem(MenuItemRequest toSave, MenuDto menuDto) {
         MenuItem menuItem = new MenuItem();
         menuItem.createWithMenu(
                 toSave.getName(),
@@ -16,7 +16,7 @@ class MenuItemFactory {
         return menuItem;
     }
 
-    public static MenuItem.Menu createMenu(String newMenuName) {
+    static MenuItem.Menu createMenu(String newMenuName) {
         final var menu = new MenuItem.Menu();
         menu.updateName(newMenuName);
         return menu;

@@ -1,11 +1,9 @@
 package pl.jakubtworek.order;
 
-import pl.jakubtworek.DomainEvent;
 import pl.jakubtworek.auth.vo.UserId;
 import pl.jakubtworek.employee.vo.EmployeeId;
 import pl.jakubtworek.menu.vo.MenuItemId;
 import pl.jakubtworek.order.dto.TypeOfOrder;
-import pl.jakubtworek.order.vo.OrderEvent;
 
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -79,17 +77,7 @@ class Order {
         this.user = user;
     }
 
-    DomainEvent wasCookedBy(Cook cook) {
-        return new OrderEvent(
-                this.id,
-                cook.getCookId(),
-                typeOfOrder,
-                this.menuItems.size(),
-                OrderEvent.State.READY
-        );
+    int getAmountOfMenuItems() {
+        return this.menuItems.size();
     }
-
-    int calculateCookingTime() {
-        return this.menuItems.size() * 1;
-    } // 10 000
 }

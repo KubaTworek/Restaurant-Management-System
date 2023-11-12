@@ -1,4 +1,4 @@
-package pl.jakubtworek.employee;
+package pl.jakubtworek.delivery;
 
 import pl.jakubtworek.DomainEventPublisher;
 

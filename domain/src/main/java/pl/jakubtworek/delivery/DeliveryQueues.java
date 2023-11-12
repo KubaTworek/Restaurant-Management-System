@@ -1,30 +1,33 @@
-package pl.jakubtworek.employee;
+package pl.jakubtworek.delivery;
+
+import pl.jakubtworek.delivery.dto.EmployeeDelivery;
+import pl.jakubtworek.delivery.dto.OrderDelivery;
 
 import java.util.LinkedList;
 import java.util.Queue;
 
 class DeliveryQueues {
-    private final Queue<Order> orderQueue;
-    private final Queue<Employee> employeeQueue;
+    private final Queue<OrderDelivery> orderQueue;
+    private final Queue<EmployeeDelivery> employeeQueue;
 
     DeliveryQueues() {
         this.orderQueue = new LinkedList<>();
         this.employeeQueue = new LinkedList<>();
     }
 
-    void add(final Order order) {
+    void add(final OrderDelivery order) {
         orderQueue.add(order);
     }
 
-    void add(final Employee cook) {
+    void add(final EmployeeDelivery cook) {
         employeeQueue.add(cook);
     }
 
-    Order getFirstOrder() {
+    OrderDelivery getFirstOrder() {
         return orderQueue.poll();
     }
 
-    Employee getFirstEmployee() {
+    EmployeeDelivery getFirstEmployee() {
         return employeeQueue.poll();
     }
 

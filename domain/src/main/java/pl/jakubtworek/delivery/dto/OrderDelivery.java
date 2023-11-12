@@ -1,27 +1,27 @@
-package pl.jakubtworek.employee;
+package pl.jakubtworek.delivery.dto;
 
 import pl.jakubtworek.order.dto.TypeOfOrder;
 
-class Order {
+public class OrderDelivery {
     private final Long orderId;
     private final TypeOfOrder orderType;
     private final Integer amountOfMenuItems;
 
-    Order(final Long orderId, final TypeOfOrder orderType, final Integer amountOfMenuItems) {
+    public OrderDelivery(final Long orderId, final TypeOfOrder orderType, final Integer amountOfMenuItems) {
         this.orderId = orderId;
         this.orderType = orderType;
         this.amountOfMenuItems = amountOfMenuItems;
     }
 
-    Long getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
-    TypeOfOrder getOrderType() {
+    public TypeOfOrder getOrderType() {
         return orderType;
     }
 
-    Integer getAmountOfMenuItems() {
+    public Integer getAmountOfMenuItems() {
         return amountOfMenuItems;
     }
 }

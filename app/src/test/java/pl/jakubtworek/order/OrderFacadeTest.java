@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.auth.UserFacade;
 import pl.jakubtworek.auth.dto.UserDto;
 import pl.jakubtworek.auth.vo.UserId;
@@ -14,6 +15,7 @@ import pl.jakubtworek.menu.MenuItemFacade;
 import pl.jakubtworek.order.dto.OrderDto;
 import pl.jakubtworek.order.dto.OrderRequest;
 import pl.jakubtworek.order.dto.TypeOfOrder;
+import pl.jakubtworek.order.vo.OrderEvent;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -41,14 +43,14 @@ class OrderFacadeTest {
     @Mock
     private OrderQueryRepository orderQueryRepository;
     @Mock
-    private Kitchen kitchen;
+    private DomainEventPublisher publisher;
 
     private OrderFacade orderFacade;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        orderFacade = new OrderFacade(userFacade, employeeFacade, menuItemFacade, orderFactory, orderRepository, orderQueryRepository, kitchen);
+        orderFacade = new OrderFacade(userFacade, employeeFacade, menuItemFacade, orderFactory, orderRepository, orderQueryRepository, publisher);
     }
 
     @Test
@@ -116,12 +118,13 @@ class OrderFacadeTest {
         final var expectedOrder = createOrder(1L, 220, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
 
         when(orderFactory.createOrder(request, "jwt-token")).thenReturn(expectedOrder);
+        when(orderRepository.save(expectedOrder)).thenReturn(expectedOrder);
 
         // when
         final var result = orderFacade.save(request, "jwt-token");
 
         // then
-        verify(kitchen).handle(expectedOrder);
+        verify(publisher).publish(any(OrderEvent.class));
         assertEquals(expectedOrder.getSnapshot().getId(), result.getId());
         assertEquals(expectedOrder.getSnapshot().getPrice(), result.getPrice());
     }

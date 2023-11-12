@@ -10,26 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static pl.jakubtworek.employee.dto.Job.COOK;
-
 public class EmployeeFacade {
     private static final String EMPLOYEE_NOT_FOUND_ERROR = "Employee with that id doesn't exist";
     private final EmployeeRepository employeeRepository;
     private final EmployeeQueryRepository employeeQueryRepository;
-    private final WaiterDelivery waiterDelivery;
-    private final CarDelivery carDelivery;
     private final DomainEventPublisher publisher;
 
     EmployeeFacade(final EmployeeRepository employeeRepository,
                    final EmployeeQueryRepository employeeQueryRepository,
-                   final WaiterDelivery waiterDelivery,
-                   final CarDelivery carDelivery,
                    final DomainEventPublisher publisher
     ) {
         this.employeeRepository = employeeRepository;
         this.employeeQueryRepository = employeeQueryRepository;
-        this.waiterDelivery = waiterDelivery;
-        this.carDelivery = carDelivery;
         this.publisher = publisher;
     }
 
@@ -39,16 +31,8 @@ public class EmployeeFacade {
     }
 
     EmployeeDto save(EmployeeRequest toSave) {
-        final var employee = EmployeeFactory.createEmployee(
-                toSave.getFirstName(),
-                toSave.getLastName(),
-                toSave.getJob()
-        );
-
-        final var created = employeeRepository.save(employee);
-
-        handleDeliveryAndCookJobs(created, Job.valueOf(toSave.getJob()));
-
+        final var created = saveEmployee(toSave);
+        publishEmployeeEvent(created.getSnapshot());
         return toDto(created);
     }
 
@@ -68,18 +52,19 @@ public class EmployeeFacade {
         return employeeQueryRepository.findByJob(Job.valueOf(jobName));
     }
 
-    private void handleDeliveryAndCookJobs(Employee created, Job job) {
-        switch (job) {
-            case WAITER:
-                waiterDelivery.handle(created);
-                break;
-            case DELIVERY:
-                carDelivery.handle(created);
-                break;
-            case COOK:
-                publisher.publish(new EmployeeEvent(created.getSnapshot().getId(), null, COOK));
-                break;
-        }
+    private Employee saveEmployee(EmployeeRequest toSave) {
+        final var created = EmployeeFactory.createEmployee(
+                toSave.getFirstName(),
+                toSave.getLastName(),
+                toSave.getJob()
+        );
+        return employeeRepository.save(created);
+    }
+
+    private void publishEmployeeEvent(EmployeeSnapshot employee) {
+        publisher.publish(
+                new EmployeeEvent(employee.getId(), null, employee.getJob())
+        );
     }
 
     private EmployeeDto toDto(Employee employee) {

@@ -14,15 +14,13 @@ import java.util.stream.Collectors;
 class OrderFactory {
     private final UserFacade userFacade;
     private final MenuItemFacade menuItemFacade;
-    private final OrderRepository orderRepository;
 
-    public OrderFactory(UserFacade userFacade, final MenuItemFacade menuItemFacade, OrderRepository orderRepository) {
+    OrderFactory(UserFacade userFacade, final MenuItemFacade menuItemFacade) {
         this.userFacade = userFacade;
         this.menuItemFacade = menuItemFacade;
-        this.orderRepository = orderRepository;
     }
 
-    public Order createOrder(OrderRequest toSave, String jwt) {
+    Order createOrder(OrderRequest toSave, String jwt) {
         final var user = userFacade.getByToken(jwt);
         final var menuItems = getMenuItems(toSave.getMenuItems());
 
@@ -34,7 +32,7 @@ class OrderFactory {
                 new UserId(user.getId())
         );
 
-        return orderRepository.save(order);
+        return order;
     }
 
 

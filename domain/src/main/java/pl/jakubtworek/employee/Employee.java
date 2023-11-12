@@ -1,8 +1,6 @@
 package pl.jakubtworek.employee;
 
-import pl.jakubtworek.DomainEvent;
 import pl.jakubtworek.employee.dto.Job;
-import pl.jakubtworek.order.vo.OrderEvent;
 import pl.jakubtworek.order.vo.OrderId;
 
 import java.util.HashSet;
@@ -58,15 +56,5 @@ class Employee {
         } catch (IllegalArgumentException e) {
             throw new IllegalStateException("Invalid job type!!");
         }
-    }
-
-    DomainEvent deliveredOrderWithId(final Order order) {
-        return new OrderEvent(
-                order.getOrderId(),
-                this.id,
-                order.getOrderType(),
-                order.getAmountOfMenuItems(),
-                OrderEvent.State.DELIVERED
-        );
     }
 }

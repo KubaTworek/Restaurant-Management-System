@@ -1,5 +1,6 @@
 package pl.jakubtworek.order;
 
+import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.auth.UserFacade;
 import pl.jakubtworek.employee.EmployeeFacade;
 import pl.jakubtworek.employee.dto.EmployeeDto;
@@ -10,10 +11,12 @@ import pl.jakubtworek.order.dto.OrderDto;
 import pl.jakubtworek.order.dto.OrderRequest;
 import pl.jakubtworek.order.dto.OrderResponse;
 import pl.jakubtworek.order.dto.TypeOfOrder;
+import pl.jakubtworek.order.vo.OrderEvent;
 
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class OrderFacade {
@@ -24,7 +27,8 @@ public class OrderFacade {
     private final OrderFactory orderFactory;
     private final OrderRepository orderRepository;
     private final OrderQueryRepository orderQueryRepository;
-    private final Kitchen kitchen;
+    private final DomainEventPublisher publisher;
+
 
     OrderFacade(final UserFacade userFacade,
                 final EmployeeFacade employeeFacade,
@@ -32,35 +36,30 @@ public class OrderFacade {
                 final OrderFactory orderFactory,
                 final OrderRepository orderRepository,
                 final OrderQueryRepository orderQueryRepository,
-                final Kitchen kitchen
-    ) {
+                final DomainEventPublisher publisher) {
         this.userFacade = userFacade;
         this.employeeFacade = employeeFacade;
         this.menuItemFacade = menuItemFacade;
         this.orderFactory = orderFactory;
         this.orderRepository = orderRepository;
         this.orderQueryRepository = orderQueryRepository;
-        this.kitchen = kitchen;
+        this.publisher = publisher;
     }
 
     public void setAsDelivered(Long orderId) {
-        final var order = getOrderById(orderId);
-        order.delivery();
-        orderRepository.save(order);
+        performOrderOperation(orderId, Order::delivery);
     }
 
     public void addEmployeeToOrder(Long orderId, Long employeeId) {
-        final var order = getOrderById(orderId);
-        final var employee = employeeFacade.getById(employeeId);
-        order.addEmployee(
-                new EmployeeId(employee.getId())
-        );
-        orderRepository.save(order);
+        performOrderOperation(orderId, order -> {
+            final var employee = employeeFacade.getById(employeeId);
+            order.addEmployee(new EmployeeId(employee.getId()));
+        });
     }
 
     OrderResponse save(OrderRequest toSave, String jwt) {
-        final var created = orderFactory.createOrder(toSave, jwt);
-        kitchen.handle(created);
+        final var created = saveOrder(toSave, jwt);
+        publishOrderEvent(created, OrderEvent.State.TODO);
         return toResponse(created);
     }
 
@@ -87,6 +86,26 @@ public class OrderFacade {
                 isReady,
                 employeeId,
                 userId
+        );
+    }
+
+    private void performOrderOperation(Long orderId, Consumer<Order> operation) {
+        final var order = getOrderById(orderId);
+        operation.accept(order);
+        orderRepository.save(order);
+    }
+
+    private Order saveOrder(OrderRequest toSave, String jwt) {
+        final var created = orderFactory.createOrder(
+                toSave,
+                jwt
+        );
+        return orderRepository.save(created);
+    }
+
+    private void publishOrderEvent(Order created, OrderEvent.State state) {
+        publisher.publish(
+                new OrderEvent(created.getSnapshot().getId(), null, created.getSnapshot().getTypeOfOrder(), created.getAmountOfMenuItems(), state)
         );
     }
 

@@ -29,10 +29,6 @@ class EmployeeFacadeTest {
     @Mock
     private EmployeeQueryRepository employeeQueryRepository;
     @Mock
-    private WaiterDelivery waiterDelivery;
-    @Mock
-    private CarDelivery carDelivery;
-    @Mock
     private DomainEventPublisher publisher;
 
 
@@ -41,7 +37,7 @@ class EmployeeFacadeTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        employeeFacade = new EmployeeFacade(employeeRepository, employeeQueryRepository, waiterDelivery, carDelivery, publisher);
+        employeeFacade = new EmployeeFacade(employeeRepository, employeeQueryRepository, publisher);
     }
 
     @Test
@@ -74,9 +70,7 @@ class EmployeeFacadeTest {
 
         // then
         assertEmployeeEquals(expectedEmployee, result);
-        if ("COOK".equals(jobName)) verify(publisher).publish(any(EmployeeEvent.class));
-        if ("DELIVERY".equals(jobName)) verify(carDelivery).handle(any(Employee.class));
-        if ("WAITER".equals(jobName)) verify(waiterDelivery).handle(any(Employee.class));
+        verify(publisher).publish(any(EmployeeEvent.class));
     }
 
     @Test
