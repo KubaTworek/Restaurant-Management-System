@@ -1,4 +1,4 @@
-package pl.jakubtworek.delivery.dto;
+package pl.jakubtworek.order.delivery.dto;
 
 import pl.jakubtworek.employee.dto.Job;
 

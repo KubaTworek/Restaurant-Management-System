@@ -4,7 +4,6 @@ import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.auth.UserFacade;
 import pl.jakubtworek.employee.EmployeeFacade;
 import pl.jakubtworek.employee.dto.EmployeeDto;
-import pl.jakubtworek.employee.vo.EmployeeId;
 import pl.jakubtworek.menu.MenuItemFacade;
 import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.order.dto.OrderDto;
@@ -16,7 +15,6 @@ import pl.jakubtworek.order.vo.OrderEvent;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class OrderFacade {
@@ -46,15 +44,9 @@ public class OrderFacade {
         this.publisher = publisher;
     }
 
-    public void setAsDelivered(Long orderId) {
-        performOrderOperation(orderId, Order::delivery);
-    }
-
-    public void addEmployeeToOrder(Long orderId, Long employeeId) {
-        performOrderOperation(orderId, order -> {
-            final var employee = employeeFacade.getById(employeeId);
-            order.addEmployee(new EmployeeId(employee.getId()));
-        });
+    public Order getById(Long id) {
+        return orderRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException(ORDER_NOT_FOUND_ERROR));
     }
 
     OrderResponse save(OrderRequest toSave, String jwt) {
@@ -87,12 +79,6 @@ public class OrderFacade {
                 employeeId,
                 userId
         );
-    }
-
-    private void performOrderOperation(Long orderId, Consumer<Order> operation) {
-        final var order = getOrderById(orderId);
-        operation.accept(order);
-        orderRepository.save(order);
     }
 
     private Order saveOrder(OrderRequest toSave, String jwt) {
@@ -129,11 +115,6 @@ public class OrderFacade {
         return new OrderResponse(
                 snap.getId(), snap.getPrice(), snap.getHourOrder(), snap.getHourAway(), snap.getTypeOfOrder(), menuItems, employees
         );
-    }
-
-    private Order getOrderById(Long orderId) {
-        return orderRepository.findById(orderId)
-                .orElseThrow(() -> new IllegalStateException(ORDER_NOT_FOUND_ERROR));
     }
 
     private ZonedDateTime parseDate(String dateStr) {

@@ -1,23 +1,27 @@
-package pl.jakubtworek.delivery;
+package pl.jakubtworek.order.delivery;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
-import pl.jakubtworek.order.OrderFacade;
+import pl.jakubtworek.common.CommandBus;
 import pl.jakubtworek.order.dto.TypeOfOrder;
 import pl.jakubtworek.order.vo.OrderEvent;
 
 @Service
 class OrderEventListener {
-    private final OrderFacade orderFacade;
     private final Kitchen kitchen;
     private final CarDelivery carDelivery;
     private final WaiterDelivery waiterDelivery;
+    private final CommandBus commandBus;
 
-    OrderEventListener(final OrderFacade orderFacade, final Kitchen kitchen, final CarDelivery carDelivery, final WaiterDelivery waiterDelivery) {
-        this.orderFacade = orderFacade;
+    OrderEventListener(final Kitchen kitchen,
+                       final CarDelivery carDelivery,
+                       final WaiterDelivery waiterDelivery,
+                       final CommandBus commandBus
+    ) {
         this.kitchen = kitchen;
         this.carDelivery = carDelivery;
         this.waiterDelivery = waiterDelivery;
+        this.commandBus = commandBus;
     }
 
     @EventListener
@@ -26,11 +30,11 @@ class OrderEventListener {
             case TODO:
                 handleTodo(event);
                 break;
-            case DELIVERED:
-                handleDelivered(event);
-                break;
             case READY:
                 handleReady(event.getOrderType(), event);
+                break;
+            case DELIVERED:
+                handleDelivered(event);
                 break;
         }
 
@@ -44,11 +48,11 @@ class OrderEventListener {
     }
 
     private void handleDelivered(OrderEvent event) {
-        orderFacade.setAsDelivered(event.getOrderId());
+        commandBus.dispatch(new DeliverOrderCommand(event.getOrderId()));
     }
 
     private void handleEmployee(OrderEvent event) {
-        orderFacade.addEmployeeToOrder(event.getOrderId(), event.getEmployeeId());
+        commandBus.dispatch(new AddEmployeeToOrderCommand(event.getOrderId(), event.getEmployeeId()));
     }
 
     private void handleReady(TypeOfOrder orderType, OrderEvent event) {

@@ -2,7 +2,7 @@ package pl.jakubtworek.employee;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pl.jakubtworek.SpringDomainEventPublisher;
+import pl.jakubtworek.common.SpringDomainEventPublisher;
 
 @Configuration
 class EmployeeConfiguration {

@@ -4,37 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6804a3ab-3eba-4f33-a440-5fed16101a6e" name="Changes" comment="add factories">
-      <change afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/delivery/DeliveryConfiguration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/delivery/dto/EmployeeDelivery.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/delivery/dto/OrderDelivery.java" afterDir="false" />
+    <list default="true" id="6804a3ab-3eba-4f33-a440-5fed16101a6e" name="Changes" comment="move delivery to domain">
+      <change afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/common/CommandBus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/common/Command.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/common/CommandHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/AddEmployeeToOrderCommandHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/DeliverOrderCommandHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/delivery/AddEmployeeToOrderCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/delivery/DeliverOrderCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/SpringDomainEventPublisher.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/common/SpringDomainEventPublisher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/delivery/DeliveryConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/delivery/DeliveryConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/delivery/EmployeeEventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/delivery/EmployeeEventListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/delivery/OrderEventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/delivery/OrderEventListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/employee/EmployeeConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/employee/EmployeeConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/employee/OrderInEmployeeEventListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/EmployeeEventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/delivery/EmployeeEventListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderEventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/delivery/OrderEventListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/AbstractDelivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/delivery/AbstractDelivery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/CarDelivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/delivery/CarDelivery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/EmployeeFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/EmployeeFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/EmployeeFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/EmployeeFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/WaiterDelivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/delivery/WaiterDelivery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/MenuItemFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/menu/MenuItemFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/Kitchen.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/delivery/Kitchen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/employee/CarDeliveryTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/employee/EmployeeFacadeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/employee/EmployeeFacadeTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/employee/WaiterDeliveryTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/order/KitchenTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderQueryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderQueryRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/order/OrderFacadeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/order/OrderFacadeTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/restaurant-db.trace.db" beforeDir="false" afterPath="$PROJECT_DIR$/database/restaurant-db.trace.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/employee/DeliveryQueues.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/delivery/DeliveryQueues.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/employee/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/employee/Employee.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/employee/Order.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/Cook.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/KitchenQueues.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/delivery/KitchenQueues.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/delivery/AbstractDelivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/delivery/AbstractDelivery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/delivery/CarDelivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/delivery/CarDelivery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/delivery/DeliveryQueues.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/delivery/DeliveryQueues.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/delivery/Kitchen.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/delivery/Kitchen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/delivery/KitchenQueues.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/delivery/KitchenQueues.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/delivery/WaiterDelivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/delivery/WaiterDelivery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/delivery/dto/EmployeeDelivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/delivery/dto/EmployeeDelivery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/delivery/dto/OrderDelivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/delivery/dto/OrderDelivery.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,8 +175,8 @@
       <recent name="" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="pl.jakubtworek.delivery" />
       <recent name="pl.jakubtworek.order" />
+      <recent name="pl.jakubtworek.delivery" />
       <recent name="pl.jakubtworek.employee" />
       <recent name="pl.jakubtworek.queue" />
       <recent name="pl.jakubtworek" />
@@ -190,11 +185,11 @@
       <recent name="pl.jakubtworek.RestaurantManagementSystem.model.business" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="pl.jakubtworek.common" />
       <recent name="pl.jakubtworek.delivery" />
       <recent name="pl.jakubtworek.employee" />
       <recent name="pl.jakubtworek.order" />
       <recent name="pl.jakubtworek.queue" />
-      <recent name="pl.jakubtworek" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -209,7 +204,7 @@
       <module name="app" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.delivery.*" />
+          <option name="PATTERN" value="pl.jakubtworek.order.delivery.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -224,7 +219,7 @@
       <module name="app" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.delivery.*" />
+          <option name="PATTERN" value="pl.jakubtworek.order.delivery.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -240,7 +235,7 @@
       <module name="app" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.delivery.*" />
+          <option name="PATTERN" value="pl.jakubtworek.order.delivery.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -255,7 +250,7 @@
       <module name="app" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.delivery.*" />
+          <option name="PATTERN" value="pl.jakubtworek.order.delivery.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -270,7 +265,7 @@
       <module name="app" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.order.*" />
+          <option name="PATTERN" value="pl.jakubtworek.common.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -507,7 +502,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699734055029</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="move delivery to domain">
+      <created>1699749871881</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1699749871881</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -526,7 +528,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="create a facade for every feature package" />
     <MESSAGE value="provide CQRS" />
     <MESSAGE value="fix builder" />
     <MESSAGE value="create multiple macen modules" />
@@ -551,7 +552,8 @@
     <MESSAGE value="fix tests and little refactor" />
     <MESSAGE value="extract queues to doamin" />
     <MESSAGE value="add factories" />
-    <option name="LAST_COMMIT_MESSAGE" value="add factories" />
+    <MESSAGE value="move delivery to domain" />
+    <option name="LAST_COMMIT_MESSAGE" value="move delivery to domain" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

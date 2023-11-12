@@ -1,8 +1,8 @@
-package pl.jakubtworek.delivery;
+package pl.jakubtworek.order.delivery;
 
 import pl.jakubtworek.DomainEventPublisher;
-import pl.jakubtworek.delivery.dto.EmployeeDelivery;
-import pl.jakubtworek.delivery.dto.OrderDelivery;
+import pl.jakubtworek.order.delivery.dto.EmployeeDelivery;
+import pl.jakubtworek.order.delivery.dto.OrderDelivery;
 import pl.jakubtworek.employee.vo.EmployeeEvent;
 import pl.jakubtworek.order.vo.OrderEvent;
 

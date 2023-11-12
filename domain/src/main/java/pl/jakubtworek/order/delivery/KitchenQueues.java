@@ -1,7 +1,7 @@
-package pl.jakubtworek.delivery;
+package pl.jakubtworek.order.delivery;
 
-import pl.jakubtworek.delivery.dto.EmployeeDelivery;
-import pl.jakubtworek.delivery.dto.OrderDelivery;
+import pl.jakubtworek.order.delivery.dto.EmployeeDelivery;
+import pl.jakubtworek.order.delivery.dto.OrderDelivery;
 import pl.jakubtworek.order.dto.TypeOfOrder;
 
 import java.util.LinkedList;

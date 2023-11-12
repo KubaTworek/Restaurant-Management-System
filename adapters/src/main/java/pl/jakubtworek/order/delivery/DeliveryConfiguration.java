@@ -1,8 +1,8 @@
-package pl.jakubtworek.delivery;
+package pl.jakubtworek.order.delivery;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pl.jakubtworek.SpringDomainEventPublisher;
+import pl.jakubtworek.common.SpringDomainEventPublisher;
 
 @Configuration
 class DeliveryConfiguration {

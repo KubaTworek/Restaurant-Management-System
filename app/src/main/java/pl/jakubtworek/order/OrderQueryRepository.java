@@ -7,8 +7,10 @@ import pl.jakubtworek.order.dto.TypeOfOrder;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderQueryRepository {
+    Optional<OrderDto> findDtoById(Long orderId);
     List<OrderDto> findByUserId(Long userId);
 
     @Query("SELECT o FROM OrderSnapshot o " +

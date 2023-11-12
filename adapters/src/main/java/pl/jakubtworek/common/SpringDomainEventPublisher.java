@@ -1,7 +1,9 @@
-package pl.jakubtworek;
+package pl.jakubtworek.common;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import pl.jakubtworek.DomainEvent;
+import pl.jakubtworek.DomainEventPublisher;
 
 @Service
 public class SpringDomainEventPublisher implements DomainEventPublisher {
