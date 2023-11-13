@@ -1,4 +1,4 @@
-package pl.jakubtworek.order;
+package pl.jakubtworek.order.delivery;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

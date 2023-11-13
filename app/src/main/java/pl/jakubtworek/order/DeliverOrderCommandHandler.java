@@ -1,6 +1,7 @@
 package pl.jakubtworek.order;
 
 import pl.jakubtworek.common.CommandHandler;
+import pl.jakubtworek.order.command.DeliverOrderCommand;
 
 class DeliverOrderCommandHandler implements CommandHandler<DeliverOrderCommand> {
     private final OrderFacade orderFacade;

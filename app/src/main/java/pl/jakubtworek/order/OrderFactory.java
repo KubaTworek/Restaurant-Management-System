@@ -26,7 +26,9 @@ class OrderFactory {
 
         final var order = new Order();
         order.updateInfo(
-                menuItems.stream().map(MenuItemDto::getId).map(MenuItemId::new).collect(Collectors.toSet()),
+                menuItems.stream().map(mi -> new OrderMenuItemSnapshot(
+                        null, null, new MenuItemId(mi.getId())
+                )).collect(Collectors.toSet()),
                 calculatePrice(menuItems),
                 toSave.getTypeOfOrder(),
                 new UserId(user.getId())

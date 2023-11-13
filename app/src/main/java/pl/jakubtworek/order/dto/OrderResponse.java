@@ -4,7 +4,7 @@ import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.menu.dto.MenuItemDto;
 
 import java.time.ZonedDateTime;
-import java.util.List;
+import java.util.Set;
 
 public class OrderResponse {
     private final Long id;
@@ -12,16 +12,16 @@ public class OrderResponse {
     private final ZonedDateTime hourOrder;
     private final ZonedDateTime hourAway;
     private final TypeOfOrder typeOfOrder;
-    private final List<MenuItemDto> menuItems;
-    private final List<EmployeeDto> employees;
+    private final Set<MenuItemDto> menuItems;
+    private final Set<EmployeeDto> employees;
 
     public OrderResponse(final Long id,
                          final int price,
                          final ZonedDateTime hourOrder,
                          final ZonedDateTime hourAway,
                          final TypeOfOrder typeOfOrder,
-                         final List<MenuItemDto> menuItems,
-                         final List<EmployeeDto> employees) {
+                         final Set<MenuItemDto> menuItems,
+                         final Set<EmployeeDto> employees) {
         this.id = id;
         this.price = price;
         this.hourOrder = hourOrder;
@@ -51,11 +51,11 @@ public class OrderResponse {
         return typeOfOrder;
     }
 
-    public List<MenuItemDto> getMenuItems() {
+    public Set<MenuItemDto> getMenuItems() {
         return menuItems;
     }
 
-    public List<EmployeeDto> getEmployees() {
+    public Set<EmployeeDto> getEmployees() {
         return employees;
     }
 }

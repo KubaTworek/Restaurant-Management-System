@@ -1,10 +1,10 @@
-package pl.jakubtworek.order;
+package pl.jakubtworek.order.delivery;
 
 import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.employee.dto.Job;
 import pl.jakubtworek.employee.vo.EmployeeEvent;
-import pl.jakubtworek.order.dto.EmployeeDelivery;
-import pl.jakubtworek.order.dto.OrderDelivery;
+import pl.jakubtworek.order.delivery.dto.EmployeeDelivery;
+import pl.jakubtworek.order.delivery.dto.OrderDelivery;
 import pl.jakubtworek.order.vo.OrderEvent;
 
 class Kitchen {

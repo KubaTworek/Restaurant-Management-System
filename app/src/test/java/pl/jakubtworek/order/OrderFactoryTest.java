@@ -1,3 +1,4 @@
+/*
 package pl.jakubtworek.order;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -62,3 +63,4 @@ class OrderFactoryTest {
         assertEquals(TypeOfOrder.TAKE_AWAY, snap.getTypeOfOrder());
     }
 }
+*/

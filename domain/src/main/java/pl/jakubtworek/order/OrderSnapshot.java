@@ -2,7 +2,6 @@ package pl.jakubtworek.order;
 
 import pl.jakubtworek.auth.vo.UserId;
 import pl.jakubtworek.employee.vo.EmployeeId;
-import pl.jakubtworek.menu.vo.MenuItemId;
 import pl.jakubtworek.order.dto.TypeOfOrder;
 
 import java.time.ZonedDateTime;
@@ -15,7 +14,7 @@ class OrderSnapshot {
     private ZonedDateTime hourOrder;
     private ZonedDateTime hourAway;
     private TypeOfOrder typeOfOrder;
-    private Set<MenuItemId> menuItems = new HashSet<>();
+    private Set<OrderMenuItemSnapshot> menuItems = new HashSet<>();
     private Set<EmployeeId> employees = new HashSet<>();
     private UserId user;
 
@@ -26,7 +25,7 @@ class OrderSnapshot {
                   final ZonedDateTime hourOrder,
                   final ZonedDateTime hourAway,
                   final TypeOfOrder typeOfOrder,
-                  final Set<MenuItemId> menuItems,
+                  final Set<OrderMenuItemSnapshot> menuItems,
                   final Set<EmployeeId> employees,
                   final UserId user
     ) {
@@ -60,7 +59,7 @@ class OrderSnapshot {
         return typeOfOrder;
     }
 
-    Set<MenuItemId> getMenuItems() {
+    Set<OrderMenuItemSnapshot> getMenuItems() {
         return menuItems;
     }
 

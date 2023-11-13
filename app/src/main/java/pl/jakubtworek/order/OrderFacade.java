@@ -99,18 +99,18 @@ public class OrderFacade {
         final var snap = order.getSnapshot();
 
         final var menuItems = snap.getMenuItems().stream()
-                .map(mi -> menuItemFacade.getById(mi.getId()))
+                .map(mi -> menuItemFacade.getById(mi.getMenuItemId().getId()))
                 .map(menuItem -> MenuItemDto.create(
                         menuItem.getId(), menuItem.getName(), menuItem.getPrice())
                 )
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
 
         final var employees = snap.getEmployees().stream()
                 .map(e -> employeeFacade.getById(e.getId()))
                 .map(employee -> EmployeeDto.create(
                         employee.getId(), employee.getFirstName(), employee.getLastName(), employee.getJob())
                 )
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
 
         return new OrderResponse(
                 snap.getId(), snap.getPrice(), snap.getHourOrder(), snap.getHourAway(), snap.getTypeOfOrder(), menuItems, employees

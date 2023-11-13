@@ -86,12 +86,12 @@
             <many-to-one name="menu" fetch="EAGER">
                 <join-column name="MENU_ID"/>
             </many-to-one>
-            <many-to-many name="orders" fetch="LAZY">
-                <join-table name="MENU_ITEM_ORDERS">
-                    <join-column name="MENU_ITEM_ID"/>
-                    <inverse-join-column name="ORDER_ID"/>
-                </join-table>
-            </many-to-many>
+            <one-to-many name="orders" fetch="LAZY">
+                <join-column name="MENU_ITEM_ID"/>
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </one-to-many>
         </attributes>
     </entity>
 
@@ -117,12 +117,12 @@
             <many-to-one name="user" fetch="EAGER">
                 <join-column name="USER_ID"/>
             </many-to-one>
-            <many-to-many name="menuItems" fetch="EAGER">
-                <join-table name="ORDERS_MENU_ITEMS">
-                    <join-column name="ORDER_ID"/>
-                    <inverse-join-column name="MENU_ITEM_ID"/>
-                </join-table>
-            </many-to-many>
+            <one-to-many name="menuItems" fetch="LAZY">
+                <join-column name="ORDER_ID"/>
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </one-to-many>
             <many-to-many name="employees" fetch="EAGER">
                 <join-table name="ORDERS_EMPLOYEE">
                     <join-column name="ORDER_ID"/>
@@ -159,12 +159,6 @@
                 <column name="MENU_ITEM_ID"/>
                 <generated-value strategy="IDENTITY"/>
             </id>
-            <basic name="name">
-                <column name="MENU_ITEM_NAME" nullable="false"/>
-            </basic>
-            <basic name="price">
-                <column name="PRICE" nullable="false"/>
-            </basic>
         </attributes>
     </entity>
 
@@ -175,6 +169,22 @@
                 <column name="ORDER_ID"/>
                 <generated-value strategy="IDENTITY"/>
             </id>
+        </attributes>
+    </entity>
+
+    <entity class="pl.jakubtworek.order.OrderMenuItemSnapshot" access="FIELD">
+        <table name="ORDERS__MENU_ITEMS"/>
+        <attributes>
+            <id name="id">
+                <column name="ORDER_MENU_ITEMS_ID"/>
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <many-to-one name="orderId" fetch="EAGER">
+                <join-column name="ORDER_ID"/>
+            </many-to-one>
+            <many-to-one name="menuItemId" fetch="EAGER">
+                <join-column name="MENU_ITEM_ID"/>
+            </many-to-one>
         </attributes>
     </entity>
 </entity-mappings>

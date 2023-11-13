@@ -2,7 +2,6 @@ package pl.jakubtworek.order;
 
 import pl.jakubtworek.auth.vo.UserId;
 import pl.jakubtworek.employee.vo.EmployeeId;
-import pl.jakubtworek.menu.vo.MenuItemId;
 import pl.jakubtworek.order.dto.TypeOfOrder;
 
 import java.time.ZonedDateTime;
@@ -15,7 +14,7 @@ class Order {
     private ZonedDateTime hourOrder;
     private ZonedDateTime hourAway;
     private TypeOfOrder typeOfOrder;
-    private Set<MenuItemId> menuItems = new HashSet<>();
+    private Set<OrderMenuItemSnapshot> menuItems = new HashSet<>();
     private Set<EmployeeId> employees = new HashSet<>();
     private UserId user;
 
@@ -27,7 +26,7 @@ class Order {
                   final ZonedDateTime hourOrder,
                   final ZonedDateTime hourAway,
                   final TypeOfOrder typeOfOrder,
-                  final Set<MenuItemId> menuItems,
+                  final Set<OrderMenuItemSnapshot> menuItems,
                   final Set<EmployeeId> employees,
                   final UserId user
     ) {
@@ -77,7 +76,7 @@ class Order {
         this.hourAway = ZonedDateTime.now();
     }
 
-    void updateInfo(Set<MenuItemId> menuItems, int price, String typeOfOrderName, UserId user) {
+    void updateInfo(Set<OrderMenuItemSnapshot> menuItems, int price, String typeOfOrderName, UserId user) {
         this.menuItems = menuItems;
         this.price = price;
         this.hourOrder = ZonedDateTime.now();

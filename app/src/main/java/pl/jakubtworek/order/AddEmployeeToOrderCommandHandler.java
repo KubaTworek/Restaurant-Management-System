@@ -3,6 +3,7 @@ package pl.jakubtworek.order;
 import pl.jakubtworek.common.CommandHandler;
 import pl.jakubtworek.employee.EmployeeFacade;
 import pl.jakubtworek.employee.vo.EmployeeId;
+import pl.jakubtworek.order.command.AddEmployeeToOrderCommand;
 
 class AddEmployeeToOrderCommandHandler implements CommandHandler<AddEmployeeToOrderCommand> {
     private final OrderFacade orderFacade;

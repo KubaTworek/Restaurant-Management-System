@@ -3,6 +3,7 @@ package pl.jakubtworek.order.dto;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @JsonDeserialize(as = OrderDto.DeserializationImpl.class)
 public interface OrderDto {
@@ -11,9 +12,10 @@ public interface OrderDto {
                            final int price,
                            final ZonedDateTime hourOrder,
                            final ZonedDateTime hourAway,
-                           final TypeOfOrder typeOfOrder
+                           final TypeOfOrder typeOfOrder,
+                           final List<OrderMenuItemDto> menuItems
     ) {
-        return new OrderDto.DeserializationImpl(id, price, hourOrder, hourAway, typeOfOrder);
+        return new OrderDto.DeserializationImpl(id, price, hourOrder, hourAway, typeOfOrder, menuItems);
     }
 
     Long getId();
@@ -26,24 +28,28 @@ public interface OrderDto {
 
     TypeOfOrder getTypeOfOrder();
 
+    List<OrderMenuItemDto> getMenuItems();
+
     class DeserializationImpl implements OrderDto {
         private final Long id;
         private final int price;
         private final ZonedDateTime hourOrder;
         private final ZonedDateTime hourAway;
         private final TypeOfOrder typeOfOrder;
+        private final List<OrderMenuItemDto> menuItems;
 
         DeserializationImpl(final Long id,
                             final int price,
                             final ZonedDateTime hourOrder,
                             final ZonedDateTime hourAway,
-                            final TypeOfOrder typeOfOrder
-        ) {
+                            final TypeOfOrder typeOfOrder,
+                            final List<OrderMenuItemDto> menuItems) {
             this.id = id;
             this.price = price;
             this.hourOrder = hourOrder;
             this.hourAway = hourAway;
             this.typeOfOrder = typeOfOrder;
+            this.menuItems = menuItems;
         }
 
         @Override
@@ -69,6 +75,11 @@ public interface OrderDto {
         @Override
         public TypeOfOrder getTypeOfOrder() {
             return typeOfOrder;
+        }
+
+        @Override
+        public List<OrderMenuItemDto> getMenuItems() {
+            return menuItems;
         }
     }
 }
