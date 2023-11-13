@@ -41,6 +41,11 @@
             </basic>
             <basic name="job">
                 <column name="JOB" nullable="false"/>
+                <enumerated>STRING</enumerated>
+            </basic>
+            <basic name="status">
+                <column name="STATUS" nullable="false"/>
+                <enumerated>STRING</enumerated>
             </basic>
             <many-to-many name="orders" fetch="LAZY">
                 <join-table name="EMPLOYEE_ORDERS">
@@ -83,6 +88,10 @@
             <basic name="price">
                 <column name="PRICE" nullable="false"/>
             </basic>
+            <basic name="status">
+                <column name="STATUS" nullable="false"/>
+                <enumerated>STRING</enumerated>
+            </basic>
             <many-to-one name="menu" fetch="EAGER">
                 <join-column name="MENU_ID"/>
             </many-to-one>
@@ -113,6 +122,7 @@
             </basic>
             <basic name="typeOfOrder">
                 <column name="TYPE_OF_ORDER" nullable="false"/>
+                <enumerated>STRING</enumerated>
             </basic>
             <many-to-one name="user" fetch="EAGER">
                 <join-column name="USER_ID"/>

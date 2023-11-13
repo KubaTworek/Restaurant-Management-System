@@ -13,6 +13,7 @@ import pl.jakubtworek.menu.MenuItemFacade;
 import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.order.dto.OrderDto;
 import pl.jakubtworek.order.dto.OrderRequest;
+import pl.jakubtworek.order.dto.Status;
 import pl.jakubtworek.order.dto.TypeOfOrder;
 import pl.jakubtworek.order.vo.OrderEvent;
 
@@ -65,7 +66,7 @@ class OrderFacadeIT {
         final var user = UserDto.create(
                 1L, "username", "password"
         );
-        final var burger = MenuItemDto.create(1L, "Pizza", new BigDecimal("10.00"));
+        final var burger = MenuItemDto.create(1L, "Pizza", new BigDecimal("10.00"), Status.ACTIVE);
 
         when(userFacade.getByToken(any())).thenReturn(user);
         when(menuItemFacade.getByName(any())).thenReturn(burger);

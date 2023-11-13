@@ -2,6 +2,7 @@ package pl.jakubtworek.employee;
 
 import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.employee.dto.Job;
+import pl.jakubtworek.order.dto.Status;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,5 +13,5 @@ public interface EmployeeQueryRepository {
 
     Optional<EmployeeDto> findDtoById(Long id);
 
-    <T> Set<T> findBy(Class<T> type);
+    Set<EmployeeDto> findDtoByStatus(Status status);
 }

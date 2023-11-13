@@ -11,6 +11,7 @@ import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.employee.dto.EmployeeRequest;
 import pl.jakubtworek.employee.dto.Job;
 import pl.jakubtworek.employee.vo.EmployeeEvent;
+import pl.jakubtworek.order.dto.Status;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -48,7 +49,7 @@ class EmployeeFacadeTest {
     void shouldReturnEmployeeById() {
         // given
         final var employeeId = 1L;
-        final var expectedEmployee = EmployeeDto.create(employeeId, "John", "Doe", Job.COOK);
+        final var expectedEmployee = EmployeeDto.create(employeeId, "John", "Doe", Job.COOK, Status.ACTIVE);
 
         when(employeeQueryRepository.findDtoById(employeeId)).thenReturn(Optional.of(expectedEmployee));
 
@@ -86,7 +87,7 @@ class EmployeeFacadeTest {
         employeeFacade.deleteById(employeeId);
 
         // then
-        verify(employeeRepository).deleteById(employeeId);
+        verify(employeeRepository).deactivateEmployee(employeeId);
     }
 
     @Test
@@ -94,7 +95,7 @@ class EmployeeFacadeTest {
         // given
         final Set<EmployeeDto> expectedEmployees = new HashSet<>();
 
-        when(employeeQueryRepository.findBy(EmployeeDto.class)).thenReturn(expectedEmployees);
+        when(employeeQueryRepository.findDtoByStatus(Status.ACTIVE)).thenReturn(expectedEmployees);
 
         // when
         final Set<EmployeeDto> result = new HashSet<>(employeeFacade.findAll());
@@ -107,7 +108,7 @@ class EmployeeFacadeTest {
     void shouldFindEmployeeById() {
         // given
         final var employeeId = 1L;
-        final var expectedEmployee = EmployeeDto.create(1L, "John", "Doe", Job.COOK);
+        final var expectedEmployee = EmployeeDto.create(1L, "John", "Doe", Job.COOK, Status.ACTIVE);
 
         when(employeeQueryRepository.findDtoById(employeeId)).thenReturn(Optional.of(expectedEmployee));
 
@@ -136,7 +137,7 @@ class EmployeeFacadeTest {
 
     private Employee createEmployee(Long id, String firstName, String lastName, Job job) {
         return Employee.restore(new EmployeeSnapshot(
-                id, firstName, lastName, job, new HashSet<>()
+                id, firstName, lastName, job, Status.ACTIVE, new HashSet<>()
         ));
     }
 

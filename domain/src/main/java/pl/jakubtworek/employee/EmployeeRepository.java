@@ -7,5 +7,5 @@ interface EmployeeRepository {
 
     Employee save(Employee entity);
 
-    void deleteById(Long id);
+    int deactivateEmployee(Long id);
 }

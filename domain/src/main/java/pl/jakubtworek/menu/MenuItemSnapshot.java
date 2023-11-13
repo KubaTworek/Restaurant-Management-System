@@ -1,5 +1,6 @@
 package pl.jakubtworek.menu;
 
+import pl.jakubtworek.order.dto.Status;
 import pl.jakubtworek.order.vo.OrderId;
 
 import java.math.BigDecimal;
@@ -11,6 +12,7 @@ class MenuItemSnapshot {
     private String name;
     private BigDecimal price;
     private MenuSnapshot menu;
+    private Status status;
     private Set<OrderId> orders = new HashSet<>();
 
     public MenuItemSnapshot() {
@@ -20,12 +22,14 @@ class MenuItemSnapshot {
                      final String name,
                      final BigDecimal price,
                      final MenuSnapshot menu,
+                     final Status status,
                      final Set<OrderId> orders
     ) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.menu = menu;
+        this.status = status;
         this.orders = orders;
     }
 
@@ -43,6 +47,10 @@ class MenuItemSnapshot {
 
     MenuSnapshot getMenu() {
         return menu;
+    }
+
+    Status getStatus() {
+        return status;
     }
 
     Set<OrderId> getOrders() {

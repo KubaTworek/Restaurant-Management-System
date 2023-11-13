@@ -1,8 +1,12 @@
 package pl.jakubtworek.employee;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 interface SqlEmployeeRepository extends JpaRepository<EmployeeSnapshot, Long> {
@@ -10,7 +14,10 @@ interface SqlEmployeeRepository extends JpaRepository<EmployeeSnapshot, Long> {
 
     <S extends EmployeeSnapshot> S save(S entity);
 
-    void deleteById(Long id);
+    @Modifying
+    @Query("UPDATE EmployeeSnapshot e SET e.status = 'INACTIVE' WHERE e.id = :id AND e.status = 'ACTIVE'")
+    @Transactional
+    int deactivateEmployee(@Param("id") Long id);
 }
 
 interface SqlEmployeeQueryRepository extends EmployeeQueryRepository, JpaRepository<EmployeeSnapshot, Long> {
@@ -36,7 +43,7 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
     }
 
     @Override
-    public void deleteById(final Long id) {
-        repository.deleteById(id);
+    public int deactivateEmployee(final Long id) {
+        return repository.deactivateEmployee(id);
     }
 }

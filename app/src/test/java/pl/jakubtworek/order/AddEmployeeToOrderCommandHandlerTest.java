@@ -8,6 +8,7 @@ import pl.jakubtworek.employee.EmployeeFacade;
 import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.employee.dto.Job;
 import pl.jakubtworek.order.command.AddEmployeeToOrderCommand;
+import pl.jakubtworek.order.dto.Status;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
@@ -38,7 +39,7 @@ class AddEmployeeToOrderCommandHandlerTest {
         // given
         final var command = new AddEmployeeToOrderCommand(1L, 1L);
         final var order = new Order();
-        final var employee = EmployeeDto.create(1L, "Joe", "Doe", Job.COOK);
+        final var employee = EmployeeDto.create(1L, "Joe", "Doe", Job.COOK, Status.ACTIVE);
 
         when(orderFacade.getById(1L)).thenReturn(order);
         when(employeeFacade.getById(1L)).thenReturn(employee);

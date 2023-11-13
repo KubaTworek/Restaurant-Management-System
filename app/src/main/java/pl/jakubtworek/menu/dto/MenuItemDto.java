@@ -1,6 +1,7 @@
 package pl.jakubtworek.menu.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import pl.jakubtworek.order.dto.Status;
 
 import java.math.BigDecimal;
 
@@ -9,9 +10,10 @@ public interface MenuItemDto {
 
     static MenuItemDto create(final Long id,
                               final String name,
-                              final BigDecimal price
+                              final BigDecimal price,
+                              final Status status
     ) {
-        return new MenuItemDto.DeserializationImpl(id, name, price);
+        return new MenuItemDto.DeserializationImpl(id, name, price, status);
     }
 
     Long getId();
@@ -20,18 +22,23 @@ public interface MenuItemDto {
 
     BigDecimal getPrice();
 
+    Status getStatus();
+
     class DeserializationImpl implements MenuItemDto {
         private final Long id;
         private final String name;
         private final BigDecimal price;
+        private final Status status;
 
         DeserializationImpl(final Long id,
                             final String name,
-                            final BigDecimal price
+                            final BigDecimal price,
+                            final Status status
         ) {
             this.id = id;
             this.name = name;
             this.price = price;
+            this.status = status;
         }
 
         @Override
@@ -47,6 +54,11 @@ public interface MenuItemDto {
         @Override
         public BigDecimal getPrice() {
             return price;
+        }
+
+        @Override
+        public Status getStatus() {
+            return status;
         }
     }
 }

@@ -22,13 +22,38 @@ class MenuItemFactory {
         return menuItem;
     }
 
-    MenuItem createMenuItemWithMenu(final MenuItemRequest toSave) {
+    MenuItem createMenuItemAndMenu(final MenuItemRequest toSave) {
         final var menu = createMenu(toSave.getMenu());
         final var created = menuItemRepository.save(menu);
         MenuItem menuItem = new MenuItem();
         menuItem.createWithMenu(
                 toSave.getName(),
                 new Money(toSave.getPrice()),
+                created
+        );
+        return menuItem;
+    }
+
+    MenuItem updateMenuItem(Long menuItemId, MenuItemRequest toUpdate, MenuDto menu) {
+        MenuItem menuItem = new MenuItem();
+        menuItem.update(
+                menuItemId,
+                toUpdate.getName(),
+                new Money(toUpdate.getPrice()),
+                menu.getId(),
+                menu.getName()
+        );
+        return menuItem;
+    }
+
+    MenuItem updateMenuItemAndCreateMenu(Long menuItemId, MenuItemRequest toUpdate) {
+        final var menu = createMenu(toUpdate.getMenu());
+        final var created = menuItemRepository.save(menu);
+        MenuItem menuItem = new MenuItem();
+        menuItem.update(
+                menuItemId,
+                toUpdate.getName(),
+                new Money(toUpdate.getPrice()),
                 created
         );
         return menuItem;

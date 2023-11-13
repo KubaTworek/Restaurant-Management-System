@@ -9,6 +9,7 @@ import pl.jakubtworek.auth.dto.UserDto;
 import pl.jakubtworek.menu.MenuItemFacade;
 import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.order.dto.OrderRequest;
+import pl.jakubtworek.order.dto.Status;
 import pl.jakubtworek.order.dto.TypeOfOrder;
 
 import java.math.BigDecimal;
@@ -45,8 +46,8 @@ class OrderFactoryTest {
         final var user = UserDto.create(
                 1L, "username", "password"
         );
-        final var burger = MenuItemDto.create(1L, "Burger", new BigDecimal("10.00"));
-        final var fries = MenuItemDto.create(2L, "Fries", new BigDecimal("5.00"));
+        final var burger = MenuItemDto.create(1L, "Burger", new BigDecimal("10.00"), Status.ACTIVE);
+        final var fries = MenuItemDto.create(2L, "Fries", new BigDecimal("5.00"), Status.ACTIVE);
 
         when(menuItemFacade.getByName(eq("Burger"))).thenReturn(burger);
         when(menuItemFacade.getByName(eq("Fries"))).thenReturn(fries);

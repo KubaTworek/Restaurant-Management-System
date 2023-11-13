@@ -101,14 +101,14 @@ public class OrderFacade {
         final var menuItems = snap.getMenuItems().stream()
                 .map(mi -> menuItemFacade.getById(mi.getMenuItemId().getId()))
                 .map(menuItem -> MenuItemDto.create(
-                        menuItem.getId(), menuItem.getName(), menuItem.getPrice())
+                        menuItem.getId(), menuItem.getName(), menuItem.getPrice(), menuItem.getStatus())
                 )
                 .collect(Collectors.toSet());
 
         final var employees = snap.getEmployees().stream()
                 .map(e -> employeeFacade.getById(e.getId()))
                 .map(employee -> EmployeeDto.create(
-                        employee.getId(), employee.getFirstName(), employee.getLastName(), employee.getJob())
+                        employee.getId(), employee.getFirstName(), employee.getLastName(), employee.getJob(), employee.getStatus())
                 )
                 .collect(Collectors.toSet());
 

@@ -7,6 +7,7 @@ import org.mockito.MockitoAnnotations;
 import pl.jakubtworek.menu.dto.MenuDto;
 import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.menu.dto.MenuItemRequest;
+import pl.jakubtworek.order.dto.Status;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ class MenuItemFacadeIT {
     void shouldReturnMenuItemByName() {
         // given
         final var itemName = "Spaghetti";
-        final var expectedMenuItem = MenuItemDto.create(1L, itemName, new BigDecimal("10.00"));
+        final var expectedMenuItem = MenuItemDto.create(1L, itemName, new BigDecimal("10.00"), Status.ACTIVE);
 
         when(menuItemQueryRepository.findDtoByName(itemName)).thenReturn(Optional.of(expectedMenuItem));
 
@@ -99,7 +100,7 @@ class MenuItemFacadeIT {
         menuItemFacade.deleteById(itemId);
 
         // then
-        verify(menuItemRepository).deleteById(itemId);
+        verify(menuItemRepository).deactivateMenuItem(itemId);
     }
 
     @Test
@@ -107,7 +108,7 @@ class MenuItemFacadeIT {
         // given
         final Set<MenuDto> expectedMenuList = new HashSet<>();
 
-        when(menuQueryRepository.findBy(MenuDto.class)).thenReturn(expectedMenuList);
+        when(menuQueryRepository.findDtoByMenuItems_Status(Status.ACTIVE)).thenReturn(expectedMenuList);
 
         // when
         final var result = new HashSet<>(menuItemFacade.findAll());
@@ -120,7 +121,7 @@ class MenuItemFacadeIT {
     void shouldFindMenuItemById() {
         // given
         final var itemId = 1L;
-        final var expectedMenuItem = MenuItemDto.create(itemId, "Pizza", new BigDecimal("12.00"));
+        final var expectedMenuItem = MenuItemDto.create(itemId, "Pizza", new BigDecimal("12.00"), Status.ACTIVE);
 
         when(menuItemQueryRepository.findDtoById(itemId)).thenReturn(Optional.of(expectedMenuItem));
 
@@ -148,27 +149,27 @@ class MenuItemFacadeIT {
 
     private MenuItem createMenuItem(Long id, String name, BigDecimal price, MenuDto menuDto) {
         return MenuItem.restore(new MenuItemSnapshot(
-                id, name, price, createMenu(menuDto).getSnapshot(), new HashSet<>()
-        ));
+                id, name, price, createMenu(menuDto).getSnapshot(1), Status.ACTIVE, new HashSet<>()
+        ), 1);
     }
 
     private List<MenuItemDto> createMenuItemDtos() {
         final List<MenuItemDto> menuItems = new ArrayList<>();
-        menuItems.add(MenuItemDto.create(1L, "Spaghetti", new BigDecimal("10.00")));
-        menuItems.add(MenuItemDto.create(2L, "Pizza", new BigDecimal("12.00")));
-        menuItems.add(MenuItemDto.create(3L, "Salad", new BigDecimal("5.00")));
+        menuItems.add(MenuItemDto.create(1L, "Spaghetti", new BigDecimal("10.00"), Status.ACTIVE));
+        menuItems.add(MenuItemDto.create(2L, "Pizza", new BigDecimal("12.00"), Status.ACTIVE));
+        menuItems.add(MenuItemDto.create(3L, "Salad", new BigDecimal("5.00"), Status.ACTIVE));
         return menuItems;
     }
 
     private MenuItem.Menu createMenu(MenuDto menuDto) {
         return MenuItem.Menu.restore(new MenuSnapshot(
                 menuDto.getId(), menuDto.getName(), new HashSet<>()
-        ));
+        ), 1);
     }
 
     private void assertMenuItemEquals(final MenuItem expected, final MenuItemDto actual) {
-        assertEquals(expected.getSnapshot().getId(), actual.getId());
-        assertEquals(expected.getSnapshot().getName(), actual.getName());
-        assertEquals(expected.getSnapshot().getPrice(), actual.getPrice());
+        assertEquals(expected.getSnapshot(1).getId(), actual.getId());
+        assertEquals(expected.getSnapshot(1).getName(), actual.getName());
+        assertEquals(expected.getSnapshot(1).getPrice(), actual.getPrice());
     }
 }

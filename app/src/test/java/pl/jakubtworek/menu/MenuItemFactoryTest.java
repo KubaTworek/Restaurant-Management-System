@@ -40,7 +40,7 @@ class MenuItemFactoryTest {
         final var menuItem = menuItemFactory.createMenuItem(menuItemRequest, menuDto);
 
         // then
-        final var snap = menuItem.getSnapshot();
+        final var snap = menuItem.getSnapshot(1);
         assertEquals("Burger", snap.getName());
         assertEquals(15.99, snap.getPrice().doubleValue());
         assertEquals(1L, snap.getMenu().getId());
@@ -59,10 +59,10 @@ class MenuItemFactoryTest {
         when(menuItemRepository.save(any(MenuItem.Menu.class))).thenReturn(menu);
 
         // when
-        final var menuItem = menuItemFactory.createMenuItemWithMenu(menuItemRequest);
+        final var menuItem = menuItemFactory.createMenuItemAndMenu(menuItemRequest);
 
         // then
-        final var snap = menuItem.getSnapshot();
+        final var snap = menuItem.getSnapshot(1);
         assertEquals("Burger", snap.getName());
         assertEquals(15.99, snap.getPrice().doubleValue());
         assertEquals("Food", snap.getMenu().getName());

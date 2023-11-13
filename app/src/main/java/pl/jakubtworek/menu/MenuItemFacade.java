@@ -3,6 +3,7 @@ package pl.jakubtworek.menu;
 import pl.jakubtworek.menu.dto.MenuDto;
 import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.menu.dto.MenuItemRequest;
+import pl.jakubtworek.order.dto.Status;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,23 +38,38 @@ public class MenuItemFacade {
     }
 
     MenuItemDto save(MenuItemRequest toSave) {
-        return menuQueryRepository.findDtoByName(toSave.getMenu())
-                .map(menu -> {
-                    final var created = menuItemFactory.createMenuItem(toSave, menu);
-                    return toDto(menuItemRepository.save(created));
+        return menuItemQueryRepository.findDtoByName(toSave.getName())
+                .map(menuItem -> {
+                    if (menuItem.getStatus() == Status.ACTIVE) {
+                        throw new IllegalStateException("Menu item with that name: " + menuItem.getName() + " is already exist!");
+                    }
+                    return menuQueryRepository.findDtoByName(toSave.getMenu())
+                            .map(menu -> {
+                                final var updated = menuItemFactory.updateMenuItem(menuItem.getId(), toSave, menu);
+                                return toDto(menuItemRepository.save(updated));
+                            })
+                            .orElseGet(() -> {
+                                final var updated = menuItemFactory.updateMenuItemAndCreateMenu(menuItem.getId(), toSave);
+                                return toDto(menuItemRepository.save(updated));
+                            });
                 })
-                .orElseGet(() -> {
-                    final var created = menuItemFactory.createMenuItemWithMenu(toSave);
-                    return toDto(menuItemRepository.save(created));
-                });
+                .orElseGet(() -> menuQueryRepository.findDtoByName(toSave.getMenu())
+                        .map(menu -> {
+                            final var created = menuItemFactory.createMenuItem(toSave, menu);
+                            return toDto(menuItemRepository.save(created));
+                        })
+                        .orElseGet(() -> {
+                            final var created = menuItemFactory.createMenuItemAndMenu(toSave);
+                            return toDto(menuItemRepository.save(created));
+                        }));
     }
 
     List<MenuDto> findAll() {
-        return new ArrayList<>(menuQueryRepository.findBy(MenuDto.class));
+        return new ArrayList<>(menuQueryRepository.findDtoByMenuItems_Status(Status.ACTIVE));
     }
 
-    void deleteById(Long id) {
-        menuItemRepository.deleteById(id);
+    int deleteById(Long id) {
+        return menuItemRepository.deactivateMenuItem(id);
     }
 
     Optional<MenuItemDto> findById(Long theId) {
@@ -65,7 +81,7 @@ public class MenuItemFacade {
     }
 
     private MenuItemDto toDto(MenuItem menuItem) {
-        final var snap = menuItem.getSnapshot();
-        return MenuItemDto.create(snap.getId(), snap.getName(), snap.getPrice());
+        final var snap = menuItem.getSnapshot(1);
+        return MenuItemDto.create(snap.getId(), snap.getName(), snap.getPrice(), snap.getStatus());
     }
 }

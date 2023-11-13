@@ -5,6 +5,7 @@ import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.employee.dto.EmployeeRequest;
 import pl.jakubtworek.employee.dto.Job;
 import pl.jakubtworek.employee.vo.EmployeeEvent;
+import pl.jakubtworek.order.dto.Status;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,12 +37,12 @@ public class EmployeeFacade {
         return toDto(created);
     }
 
-    void deleteById(Long id) {
-        employeeRepository.deleteById(id);
+    int deleteById(Long id) {
+        return employeeRepository.deactivateEmployee(id);
     }
 
     List<EmployeeDto> findAll() {
-        return new ArrayList<>(employeeQueryRepository.findBy(EmployeeDto.class));
+        return new ArrayList<>(employeeQueryRepository.findDtoByStatus(Status.ACTIVE));
     }
 
     Optional<EmployeeDto> findById(Long id) {
@@ -69,6 +70,6 @@ public class EmployeeFacade {
 
     private EmployeeDto toDto(Employee employee) {
         final var snap = employee.getSnapshot();
-        return EmployeeDto.create(snap.getId(), snap.getFirstName(), snap.getLastName(), snap.getJob());
+        return EmployeeDto.create(snap.getId(), snap.getFirstName(), snap.getLastName(), snap.getJob(), snap.getStatus());
     }
 }

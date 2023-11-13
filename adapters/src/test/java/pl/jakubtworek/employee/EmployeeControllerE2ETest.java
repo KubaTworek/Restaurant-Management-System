@@ -6,6 +6,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import pl.jakubtworek.AbstractIT;
 import pl.jakubtworek.employee.dto.EmployeeRequest;
 import pl.jakubtworek.employee.dto.Job;
+import pl.jakubtworek.order.dto.Status;
 
 import java.util.List;
 
@@ -33,23 +34,24 @@ class EmployeeControllerE2ETest extends AbstractIT {
     @DirtiesContext
     void shouldGetAllEmployees() {
         // given
-        postEmployee(
+        final var employeeId = postEmployee(
                 new EmployeeRequest("John", "Doe", "COOK")
-        );
+        ).getBody().getId();
         postEmployee(
                 new EmployeeRequest("Jane", "Smith", "WAITER")
         );
 
         // when
+        deleteEmployeeById(employeeId);
         final var response = getEmployees();
 
         // then
         assertEquals(HttpStatus.OK, response.getStatusCode());
         final var employees = List.of(response.getBody());
-        assertEquals(2, employees.size());
+        assertEquals(1, employees.size());
     }
 
-/*    @Test
+    @Test
     @DirtiesContext
     void shouldDeleteEmployee() {
         // given
@@ -57,20 +59,16 @@ class EmployeeControllerE2ETest extends AbstractIT {
                 new EmployeeRequest("John", "Doe", "COOK")
         ).getBody().getId();
 
-        final var request = new OrderRequest(
-                "ON_SITE",
-                List.of("Burger", "Cola")
-        );
-        final var createdOrderId = postOrder(request, userToken).getBody().getId();
-
         // when
-        final var response = deleteEmployeeById(createdId);
+        final var firstDelete = deleteEmployeeById(createdId);
+        final var secondDelete = deleteEmployeeById(createdId);
 
         // then
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-        final var orderResponse = getOrderById(createdOrderId, userToken);
-        assertEquals(HttpStatus.OK, orderResponse.getStatusCode());
-    }*/
+        assertEquals(HttpStatus.NO_CONTENT, firstDelete.getStatusCode());
+        assertEquals(HttpStatus.NOT_FOUND, secondDelete.getStatusCode());
+        final var deletedOrder = getEmployeeById(createdId);
+        assertEquals(Status.INACTIVE, deletedOrder.getBody().getStatus());
+    }
 
     @Test
     @DirtiesContext

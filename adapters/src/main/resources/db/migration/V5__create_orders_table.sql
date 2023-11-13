@@ -4,7 +4,7 @@ CREATE TABLE ORDERS
     PRICE         DECIMAL(19, 4)  NOT NULL,
     HOUR_ORDER    timestamp       default sysdate,
     HOUR_AWAY     timestamp       default null,
-    TYPE_OF_ORDER INT             NOT NULL,
+    TYPE_OF_ORDER VARCHAR(9)      NOT NULL,
     USER_ID       BIGINT          NOT NULL,
     PRIMARY KEY (ORDER_ID)
 );

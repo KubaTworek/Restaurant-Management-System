@@ -7,7 +7,7 @@ interface MenuItemRepository {
 
     MenuItem save(MenuItem entity);
 
-    void deleteById(Long id);
+    int deactivateMenuItem(Long id);
 
     MenuItem.Menu save(MenuItem.Menu entity);
 }
