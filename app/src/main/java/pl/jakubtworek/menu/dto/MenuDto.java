@@ -7,7 +7,10 @@ import java.util.List;
 @JsonDeserialize(as = MenuDto.DeserializationImpl.class)
 public interface MenuDto {
 
-    static MenuDto create(final Long id, final String name, final List<MenuItemDto> menuItems) {
+    static MenuDto create(final Long id,
+                          final String name,
+                          final List<MenuItemDto> menuItems
+    ) {
         return new DeserializationImpl(id, name, menuItems);
     }
 
@@ -22,7 +25,10 @@ public interface MenuDto {
         private final String name;
         private final List<MenuItemDto> menuItems;
 
-        DeserializationImpl(final Long id, final String name, final List<MenuItemDto> menuItems) {
+        DeserializationImpl(final Long id,
+                            final String name,
+                            final List<MenuItemDto> menuItems
+        ) {
             this.id = id;
             this.name = name;
             this.menuItems = menuItems;

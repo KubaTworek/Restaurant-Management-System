@@ -7,7 +7,12 @@ import java.time.ZonedDateTime;
 @JsonDeserialize(as = OrderDto.DeserializationImpl.class)
 public interface OrderDto {
 
-    static OrderDto create(final Long id, final int price, final ZonedDateTime hourOrder, final ZonedDateTime hourAway, final TypeOfOrder typeOfOrder) {
+    static OrderDto create(final Long id,
+                           final int price,
+                           final ZonedDateTime hourOrder,
+                           final ZonedDateTime hourAway,
+                           final TypeOfOrder typeOfOrder
+    ) {
         return new OrderDto.DeserializationImpl(id, price, hourOrder, hourAway, typeOfOrder);
     }
 
@@ -28,7 +33,12 @@ public interface OrderDto {
         private final ZonedDateTime hourAway;
         private final TypeOfOrder typeOfOrder;
 
-        DeserializationImpl(final Long id, final int price, final ZonedDateTime hourOrder, final ZonedDateTime hourAway, final TypeOfOrder typeOfOrder) {
+        DeserializationImpl(final Long id,
+                            final int price,
+                            final ZonedDateTime hourOrder,
+                            final ZonedDateTime hourAway,
+                            final TypeOfOrder typeOfOrder
+        ) {
             this.id = id;
             this.price = price;
             this.hourOrder = hourOrder;

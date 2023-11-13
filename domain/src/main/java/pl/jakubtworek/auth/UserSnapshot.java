@@ -14,7 +14,11 @@ class UserSnapshot {
     public UserSnapshot() {
     }
 
-    UserSnapshot(final Long id, final String username, final String password, final Set<OrderId> orders) {
+    UserSnapshot(final Long id,
+                 final String username,
+                 final String password,
+                 final Set<OrderId> orders
+    ) {
         this.id = id;
         this.username = username;
         this.password = password;

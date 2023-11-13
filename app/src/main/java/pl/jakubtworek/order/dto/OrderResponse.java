@@ -15,7 +15,13 @@ public class OrderResponse {
     private final List<MenuItemDto> menuItems;
     private final List<EmployeeDto> employees;
 
-    public OrderResponse(final Long id, final int price, final ZonedDateTime hourOrder, final ZonedDateTime hourAway, final TypeOfOrder typeOfOrder, final List<MenuItemDto> menuItems, final List<EmployeeDto> employees) {
+    public OrderResponse(final Long id,
+                         final int price,
+                         final ZonedDateTime hourOrder,
+                         final ZonedDateTime hourAway,
+                         final TypeOfOrder typeOfOrder,
+                         final List<MenuItemDto> menuItems,
+                         final List<EmployeeDto> employees) {
         this.id = id;
         this.price = price;
         this.hourOrder = hourOrder;

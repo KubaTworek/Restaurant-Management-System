@@ -5,7 +5,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(as = MenuItemDto.DeserializationImpl.class)
 public interface MenuItemDto {
 
-    static MenuItemDto create(final Long id, final String name, final int price) {
+    static MenuItemDto create(final Long id,
+                              final String name,
+                              final int price
+    ) {
         return new MenuItemDto.DeserializationImpl(id, name, price);
     }
 
@@ -20,7 +23,10 @@ public interface MenuItemDto {
         private final String name;
         private final int price;
 
-        DeserializationImpl(final Long id, final String name, final int price) {
+        DeserializationImpl(final Long id,
+                            final String name,
+                            final int price
+        ) {
             this.id = id;
             this.name = name;
             this.price = price;

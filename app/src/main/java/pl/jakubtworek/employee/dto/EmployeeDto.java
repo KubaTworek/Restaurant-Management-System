@@ -5,7 +5,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(as = EmployeeDto.DeserializationImpl.class)
 public interface EmployeeDto {
 
-    static EmployeeDto create(final Long id, final String firstName, final String lastName, final Job job) {
+    static EmployeeDto create(final Long id,
+                              final String firstName,
+                              final String lastName,
+                              final Job job
+    ) {
         return new EmployeeDto.DeserializationImpl(id, firstName, lastName, job);
     }
 
@@ -23,7 +27,11 @@ public interface EmployeeDto {
         private final String lastName;
         private final Job job;
 
-        DeserializationImpl(final Long id, final String firstName, final String lastName, final Job job) {
+        DeserializationImpl(final Long id,
+                            final String firstName,
+                            final String lastName,
+                            final Job job
+        ) {
             this.id = id;
             this.firstName = firstName;
             this.lastName = lastName;

@@ -1,4 +1,4 @@
-package pl.jakubtworek.order.delivery.dto;
+package pl.jakubtworek.order.dto;
 
 import pl.jakubtworek.order.dto.TypeOfOrder;
 
@@ -7,7 +7,10 @@ public class OrderDelivery {
     private final TypeOfOrder orderType;
     private final Integer amountOfMenuItems;
 
-    public OrderDelivery(final Long orderId, final TypeOfOrder orderType, final Integer amountOfMenuItems) {
+    public OrderDelivery(final Long orderId,
+                         final TypeOfOrder orderType,
+                         final Integer amountOfMenuItems
+    ) {
         this.orderId = orderId;
         this.orderType = orderType;
         this.amountOfMenuItems = amountOfMenuItems;

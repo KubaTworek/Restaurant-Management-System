@@ -10,7 +10,7 @@ public class UserId {
         this.id = id;
     }
 
-    Long getId() {
+    public Long getId() {
         return id;
     }
 }

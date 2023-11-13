@@ -16,7 +16,12 @@ class MenuItem {
     public MenuItem() {
     }
 
-    private MenuItem(final Long id, final String name, final int price, final Menu menu, final Set<OrderId> orders) {
+    private MenuItem(final Long id,
+                     final String name,
+                     final int price,
+                     final Menu menu,
+                     final Set<OrderId> orders
+    ) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -52,10 +57,10 @@ class MenuItem {
         this.menu = menu;
     }
 
-    Menu createNewMenu(final String menuName) {
-        final var menu = new Menu();
-        menu.updateName(menuName);
-        return menu;
+    void createWithMenu(String name, int price, Menu menu) {
+        this.name = name;
+        this.price = price;
+        this.menu = menu;
     }
 
     static class Menu {

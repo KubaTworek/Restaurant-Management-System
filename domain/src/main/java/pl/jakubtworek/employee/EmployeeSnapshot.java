@@ -16,7 +16,12 @@ class EmployeeSnapshot {
     public EmployeeSnapshot() {
     }
 
-    EmployeeSnapshot(final Long id, final String firstName, final String lastName, final Job job, final Set<OrderId> orders) {
+    EmployeeSnapshot(final Long id,
+                     final String firstName,
+                     final String lastName,
+                     final Job job,
+                     final Set<OrderId> orders
+    ) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

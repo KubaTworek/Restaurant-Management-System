@@ -1,4 +1,4 @@
-package pl.jakubtworek.order.delivery;
+package pl.jakubtworek.order;
 
 import pl.jakubtworek.common.Command;
 
@@ -13,4 +13,3 @@ public class DeliverOrderCommand implements Command {
         return orderId;
     }
 }
-

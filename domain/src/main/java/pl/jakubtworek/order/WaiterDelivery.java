@@ -1,4 +1,4 @@
-package pl.jakubtworek.order.delivery;
+package pl.jakubtworek.order;
 
 import pl.jakubtworek.DomainEventPublisher;
 

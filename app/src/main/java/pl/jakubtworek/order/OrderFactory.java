@@ -35,7 +35,6 @@ class OrderFactory {
         return order;
     }
 
-
     private Set<MenuItemDto> getMenuItems(List<String> names) {
         return names.stream()
                 .map(menuItemFacade::getByName)

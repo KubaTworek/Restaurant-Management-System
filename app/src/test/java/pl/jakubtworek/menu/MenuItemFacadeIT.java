@@ -19,7 +19,7 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class MenuItemFacadeTest {
+class MenuItemFacadeIT {
     @Mock
     private MenuItemRepository menuItemRepository;
     @Mock
@@ -32,7 +32,12 @@ class MenuItemFacadeTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        menuItemFacade = new MenuItemFacade(menuItemRepository, menuItemQueryRepository, menuQueryRepository);
+        menuItemFacade = new MenuItemFacade(
+                new MenuItemFactory(menuItemRepository),
+                menuItemRepository,
+                menuItemQueryRepository,
+                menuQueryRepository
+        );
     }
 
     @Test
@@ -61,7 +66,7 @@ class MenuItemFacadeTest {
         when(menuItemRepository.save(any(MenuItem.class))).thenReturn(expectedMenuItem);
 
         // when
-        final MenuItemDto result = menuItemFacade.save(request);
+        final var result = menuItemFacade.save(request);
 
         // then
         assertMenuItemEquals(expectedMenuItem, result);
@@ -71,16 +76,14 @@ class MenuItemFacadeTest {
     void shouldSaveMenuItemWithNotExistingMenu() {
         // given
         final var request = new MenuItemRequest("Lasagna", 140, "Dinner Menu");
-        final var expectedMenu = createMenu(1L, "Dinner Menu");
         final var expectedMenuDto = MenuDto.create(1L, "Dinner Menu", null);
         final var expectedMenuItem = createMenuItem(1L, "Lasagna", 140, expectedMenuDto);
 
         when(menuQueryRepository.findDtoByName(request.getMenu())).thenReturn(Optional.empty());
-        when(menuItemRepository.save(any(MenuItem.Menu.class))).thenReturn(expectedMenu);
         when(menuItemRepository.save(any(MenuItem.class))).thenReturn(expectedMenuItem);
 
         // when
-        final MenuItemDto result = menuItemFacade.save(request);
+        final var result = menuItemFacade.save(request);
 
         // then
         assertMenuItemEquals(expectedMenuItem, result);
@@ -106,7 +109,7 @@ class MenuItemFacadeTest {
         when(menuQueryRepository.findBy(MenuDto.class)).thenReturn(expectedMenuList);
 
         // when
-        final Set<MenuDto> result = new HashSet<>(menuItemFacade.findAll());
+        final var result = new HashSet<>(menuItemFacade.findAll());
 
         // then
         assertEquals(expectedMenuList, result);
@@ -121,7 +124,7 @@ class MenuItemFacadeTest {
         when(menuItemQueryRepository.findDtoById(itemId)).thenReturn(Optional.of(expectedMenuItem));
 
         // when
-        final Optional<MenuItemDto> result = menuItemFacade.findById(itemId);
+        final var result = menuItemFacade.findById(itemId);
 
         // then
         assertEquals(Optional.of(expectedMenuItem), result);
@@ -136,7 +139,7 @@ class MenuItemFacadeTest {
         when(menuItemQueryRepository.findByMenuName(menuName)).thenReturn(menuItems);
 
         // when
-        final List<MenuItemDto> result = menuItemFacade.findByMenu(menuName);
+        final var result = menuItemFacade.findByMenu(menuName);
 
         // then
         assertEquals(menuItems, result);
@@ -145,12 +148,6 @@ class MenuItemFacadeTest {
     private MenuItem createMenuItem(Long id, String name, Integer price, MenuDto menuDto) {
         return MenuItem.restore(new MenuItemSnapshot(
                 id, name, price, createMenu(menuDto).getSnapshot(), new HashSet<>()
-        ));
-    }
-
-    private MenuItem.Menu createMenu(Long id, String name) {
-        return MenuItem.Menu.restore(new MenuSnapshot(
-                id, name, new HashSet<>()
         ));
     }
 

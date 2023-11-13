@@ -1,6 +1,5 @@
 package pl.jakubtworek.common;
 
-
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.ParameterizedType;

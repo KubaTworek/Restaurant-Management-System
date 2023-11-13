@@ -37,7 +37,11 @@ class EmployeeFacadeTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        employeeFacade = new EmployeeFacade(employeeRepository, employeeQueryRepository, publisher);
+        employeeFacade = new EmployeeFacade(
+                employeeRepository,
+                employeeQueryRepository,
+                publisher
+        );
     }
 
     @Test

@@ -16,7 +16,12 @@ class Employee {
     public Employee() {
     }
 
-    private Employee(final Long id, final String firstName, final String lastName, final Job job, final Set<OrderId> orders) {
+    private Employee(final Long id,
+                     final String firstName,
+                     final String lastName,
+                     final Job job,
+                     final Set<OrderId> orders
+    ) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

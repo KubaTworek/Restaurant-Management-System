@@ -13,7 +13,13 @@ public class OrderEvent implements DomainEvent {
     private final TypeOfOrder orderType;
     private final Integer amountOfMenuItems;
     private final State state;
-    public OrderEvent(final Long orderId, final Long employeeId, final TypeOfOrder orderType, final Integer amountOfMenuItems, final State state) {
+
+    public OrderEvent(final Long orderId,
+                      final Long employeeId,
+                      final TypeOfOrder orderType,
+                      final Integer amountOfMenuItems,
+                      final State state
+    ) {
         this.occurredOn = Instant.now();
         this.orderId = orderId;
         this.employeeId = employeeId;

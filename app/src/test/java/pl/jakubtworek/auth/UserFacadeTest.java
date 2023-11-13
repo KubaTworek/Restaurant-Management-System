@@ -35,7 +35,11 @@ class UserFacadeTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        userFacade = new UserFacade(userRepository, userQueryRepository, jwtService);
+        userFacade = new UserFacade(
+                userRepository,
+                userQueryRepository,
+                jwtService
+        );
     }
 
     @Test

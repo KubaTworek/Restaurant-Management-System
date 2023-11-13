@@ -14,7 +14,11 @@ class User {
     public User() {
     }
 
-    private User(final Long id, final String username, final String password, final Set<OrderId> orders) {
+    private User(final Long id,
+                 final String username,
+                 final String password,
+                 final Set<OrderId> orders
+    ) {
         this.id = id;
         this.username = username;
         this.password = password;

@@ -15,7 +15,12 @@ class MenuItemSnapshot {
     public MenuItemSnapshot() {
     }
 
-    MenuItemSnapshot(final Long id, final String name, final int price, final MenuSnapshot menu, final Set<OrderId> orders) {
+    MenuItemSnapshot(final Long id,
+                     final String name,
+                     final int price,
+                     final MenuSnapshot menu,
+                     final Set<OrderId> orders
+    ) {
         this.id = id;
         this.name = name;
         this.price = price;

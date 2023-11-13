@@ -11,7 +11,10 @@ public class EmployeeEvent implements DomainEvent {
     private final Long orderId;
     private final Job job;
 
-    public EmployeeEvent(final Long employeeId, final Long orderId, final Job job) {
+    public EmployeeEvent(final Long employeeId,
+                         final Long orderId,
+                         final Job job
+    ) {
         this.occurredOn = Instant.now();
         this.employeeId = employeeId;
         this.orderId = orderId;

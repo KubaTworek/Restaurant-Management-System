@@ -11,7 +11,10 @@ class MenuSnapshot {
     public MenuSnapshot() {
     }
 
-    MenuSnapshot(final Long id, final String name, final Set<MenuItemSnapshot> menuItems) {
+    MenuSnapshot(final Long id,
+                 final String name,
+                 final Set<MenuItemSnapshot> menuItems
+    ) {
         this.id = id;
         this.name = name;
         this.menuItems = menuItems;

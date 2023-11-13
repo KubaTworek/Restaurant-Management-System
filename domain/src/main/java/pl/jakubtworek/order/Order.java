@@ -22,7 +22,15 @@ class Order {
     public Order() {
     }
 
-    private Order(final Long id, final int price, final ZonedDateTime hourOrder, final ZonedDateTime hourAway, final TypeOfOrder typeOfOrder, final Set<MenuItemId> menuItems, final Set<EmployeeId> employees, final UserId user) {
+    private Order(final Long id,
+                  final int price,
+                  final ZonedDateTime hourOrder,
+                  final ZonedDateTime hourAway,
+                  final TypeOfOrder typeOfOrder,
+                  final Set<MenuItemId> menuItems,
+                  final Set<EmployeeId> employees,
+                  final UserId user
+    ) {
         this.id = id;
         this.price = price;
         this.hourOrder = hourOrder;

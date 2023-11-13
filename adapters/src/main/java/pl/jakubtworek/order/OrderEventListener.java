@@ -1,4 +1,4 @@
-package pl.jakubtworek.order.delivery;
+package pl.jakubtworek.order;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;

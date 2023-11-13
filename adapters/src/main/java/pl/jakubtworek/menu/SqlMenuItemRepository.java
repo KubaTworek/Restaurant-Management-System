@@ -30,7 +30,10 @@ class MenuItemRepositoryImpl implements MenuItemRepository {
     private final SqlMenuItemRepository menuItemRepository;
     private final SqlMenuRepository menuRepository;
 
-    MenuItemRepositoryImpl(final SqlMenuItemRepository menuItemRepository, final SqlMenuRepository menuRepository) {
+    MenuItemRepositoryImpl(
+            final SqlMenuItemRepository menuItemRepository,
+            final SqlMenuRepository menuRepository
+    ) {
         this.menuItemRepository = menuItemRepository;
         this.menuRepository = menuRepository;
     }
