@@ -3,17 +3,17 @@ package pl.jakubtworek.order;
 import pl.jakubtworek.menu.vo.MenuItemId;
 import pl.jakubtworek.order.vo.OrderId;
 
-public class OrderMenuItemSnapshot {
+class OrderItem {
     private Long id;
     private OrderId orderId;
     private MenuItemId menuItemId;
 
-    public OrderMenuItemSnapshot() {
+    public OrderItem() {
     }
 
-    OrderMenuItemSnapshot(final Long id,
-                          final OrderId orderId,
-                          final MenuItemId menuItem
+    OrderItem(final Long id,
+              final OrderId orderId,
+              final MenuItemId menuItem
     ) {
         this.id = id;
         this.orderId = orderId;

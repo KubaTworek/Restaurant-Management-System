@@ -2,6 +2,7 @@ package pl.jakubtworek.order.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
 public interface OrderDto {
 
     static OrderDto create(final Long id,
-                           final int price,
+                           final BigDecimal price,
                            final ZonedDateTime hourOrder,
                            final ZonedDateTime hourAway,
                            final TypeOfOrder typeOfOrder,
@@ -20,7 +21,7 @@ public interface OrderDto {
 
     Long getId();
 
-    int getPrice();
+    BigDecimal getPrice();
 
     ZonedDateTime getHourOrder();
 
@@ -32,14 +33,14 @@ public interface OrderDto {
 
     class DeserializationImpl implements OrderDto {
         private final Long id;
-        private final int price;
+        private final BigDecimal price;
         private final ZonedDateTime hourOrder;
         private final ZonedDateTime hourAway;
         private final TypeOfOrder typeOfOrder;
         private final List<OrderMenuItemDto> menuItems;
 
         DeserializationImpl(final Long id,
-                            final int price,
+                            final BigDecimal price,
                             final ZonedDateTime hourOrder,
                             final ZonedDateTime hourAway,
                             final TypeOfOrder typeOfOrder,
@@ -58,7 +59,7 @@ public interface OrderDto {
         }
 
         @Override
-        public int getPrice() {
+        public BigDecimal getPrice() {
             return price;
         }
 

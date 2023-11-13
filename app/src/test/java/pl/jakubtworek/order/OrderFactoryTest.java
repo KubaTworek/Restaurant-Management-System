@@ -1,4 +1,3 @@
-/*
 package pl.jakubtworek.order;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +11,7 @@ import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.order.dto.OrderRequest;
 import pl.jakubtworek.order.dto.TypeOfOrder;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,8 +45,8 @@ class OrderFactoryTest {
         final var user = UserDto.create(
                 1L, "username", "password"
         );
-        final var burger = MenuItemDto.create(1L, "Burger", 10);
-        final var fries = MenuItemDto.create(2L, "Fries", 5);
+        final var burger = MenuItemDto.create(1L, "Burger", new BigDecimal("10.00"));
+        final var fries = MenuItemDto.create(2L, "Fries", new BigDecimal("5.00"));
 
         when(menuItemFacade.getByName(eq("Burger"))).thenReturn(burger);
         when(menuItemFacade.getByName(eq("Fries"))).thenReturn(fries);
@@ -59,8 +59,7 @@ class OrderFactoryTest {
         final var snap = order.getSnapshot();
         assertEquals(user.getId(), snap.getUser().getId());
         assertEquals(2, snap.getMenuItems().size());
-        assertEquals(15, snap.getPrice());
+        assertEquals(15.00, snap.getPrice().doubleValue());
         assertEquals(TypeOfOrder.TAKE_AWAY, snap.getTypeOfOrder());
     }
 }
-*/

@@ -26,6 +26,7 @@ import pl.jakubtworek.order.dto.OrderDto;
 import pl.jakubtworek.order.dto.OrderRequest;
 import pl.jakubtworek.order.dto.OrderResponse;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 @ActiveProfiles("test")
@@ -54,10 +55,10 @@ public class AbstractIT {
     }
 
     private void createMenuItems() {
-        postMenuItem(new MenuItemRequest("Burger", 1099, "Food"));
-        postMenuItem(new MenuItemRequest("Pasta", 1299, "Food"));
-        postMenuItem(new MenuItemRequest("Cola", 599, "Drinks"));
-        postMenuItem(new MenuItemRequest("Sprite", 499, "Drinks"));
+        postMenuItem(new MenuItemRequest("Burger", new BigDecimal("10.99"), "Food"));
+        postMenuItem(new MenuItemRequest("Pasta", new BigDecimal("12.99"), "Food"));
+        postMenuItem(new MenuItemRequest("Cola", new BigDecimal("5.99"), "Drinks"));
+        postMenuItem(new MenuItemRequest("Sprite", new BigDecimal("4.99"), "Drinks"));
     }
 
     private String loginUserAndGetToken(LoginRequest request) {

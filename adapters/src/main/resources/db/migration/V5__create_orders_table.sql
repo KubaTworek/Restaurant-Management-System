@@ -1,11 +1,11 @@
 CREATE TABLE ORDERS
 (
-    ORDER_ID      BIGINT AUTO_INCREMENT,
-    PRICE         INTEGER NOT NULL,
-    HOUR_ORDER    timestamp default sysdate,
-    HOUR_AWAY     timestamp default null,
-    TYPE_OF_ORDER INT     NOT NULL,
-    USER_ID       BIGINT  NOT NULL,
+    ORDER_ID      BIGINT          AUTO_INCREMENT,
+    PRICE         DECIMAL(19, 4)  NOT NULL,
+    HOUR_ORDER    timestamp       default sysdate,
+    HOUR_AWAY     timestamp       default null,
+    TYPE_OF_ORDER INT             NOT NULL,
+    USER_ID       BIGINT          NOT NULL,
     PRIMARY KEY (ORDER_ID)
 );
 

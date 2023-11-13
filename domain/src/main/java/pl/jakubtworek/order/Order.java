@@ -3,6 +3,7 @@ package pl.jakubtworek.order;
 import pl.jakubtworek.auth.vo.UserId;
 import pl.jakubtworek.employee.vo.EmployeeId;
 import pl.jakubtworek.order.dto.TypeOfOrder;
+import pl.jakubtworek.order.vo.Money;
 
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -10,11 +11,11 @@ import java.util.Set;
 
 class Order {
     private Long id;
-    private int price;
+    private Money price;
     private ZonedDateTime hourOrder;
     private ZonedDateTime hourAway;
     private TypeOfOrder typeOfOrder;
-    private Set<OrderMenuItemSnapshot> menuItems = new HashSet<>();
+    private Set<OrderItem> menuItems = new HashSet<>();
     private Set<EmployeeId> employees = new HashSet<>();
     private UserId user;
 
@@ -22,11 +23,11 @@ class Order {
     }
 
     private Order(final Long id,
-                  final int price,
+                  final Money price,
                   final ZonedDateTime hourOrder,
                   final ZonedDateTime hourAway,
                   final TypeOfOrder typeOfOrder,
-                  final Set<OrderMenuItemSnapshot> menuItems,
+                  final Set<OrderItem> menuItems,
                   final Set<EmployeeId> employees,
                   final UserId user
     ) {
@@ -43,7 +44,7 @@ class Order {
     static Order restore(OrderSnapshot snapshot) {
         return new Order(
                 snapshot.getId(),
-                snapshot.getPrice(),
+                new Money(snapshot.getPrice()),
                 snapshot.getHourOrder(),
                 snapshot.getHourAway(),
                 snapshot.getTypeOfOrder(),
@@ -56,7 +57,7 @@ class Order {
     OrderSnapshot getSnapshot() {
         return new OrderSnapshot(
                 id,
-                price,
+                price != null ? price.getAmount() : null,
                 hourOrder,
                 hourAway,
                 typeOfOrder,
@@ -76,7 +77,7 @@ class Order {
         this.hourAway = ZonedDateTime.now();
     }
 
-    void updateInfo(Set<OrderMenuItemSnapshot> menuItems, int price, String typeOfOrderName, UserId user) {
+    void updateInfo(Set<OrderItem> menuItems, Money price, String typeOfOrderName, UserId user) {
         this.menuItems = menuItems;
         this.price = price;
         this.hourOrder = ZonedDateTime.now();

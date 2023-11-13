@@ -7,6 +7,7 @@ import org.mockito.MockitoAnnotations;
 import pl.jakubtworek.menu.dto.MenuDto;
 import pl.jakubtworek.menu.dto.MenuItemRequest;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,7 +30,7 @@ class MenuItemFactoryTest {
     void shouldCreateMenuItem_whenMenuExist() {
         // given
         final var menuItemRequest = new MenuItemRequest(
-                "Burger", 1599, "Food"
+                "Burger", new BigDecimal("15.99"), "Food"
         );
         final var menuDto = MenuDto.create(
                 1L, "Food", new ArrayList<>()
@@ -41,7 +42,7 @@ class MenuItemFactoryTest {
         // then
         final var snap = menuItem.getSnapshot();
         assertEquals("Burger", snap.getName());
-        assertEquals(1599, snap.getPrice());
+        assertEquals(15.99, snap.getPrice().doubleValue());
         assertEquals(1L, snap.getMenu().getId());
         assertEquals("Food", snap.getMenu().getName());
     }
@@ -50,7 +51,7 @@ class MenuItemFactoryTest {
     void shouldCreateMenuItem_whenMenuNotExist() {
         // given
         final var menuItemRequest = new MenuItemRequest(
-                "Burger", 1599, "Food"
+                "Burger", new BigDecimal("15.99"), "Food"
         );
         final var menu = new MenuItem.Menu();
         menu.updateInfo(1L, "Food");
@@ -63,7 +64,7 @@ class MenuItemFactoryTest {
         // then
         final var snap = menuItem.getSnapshot();
         assertEquals("Burger", snap.getName());
-        assertEquals(1599, snap.getPrice());
+        assertEquals(15.99, snap.getPrice().doubleValue());
         assertEquals("Food", snap.getMenu().getName());
     }
 }

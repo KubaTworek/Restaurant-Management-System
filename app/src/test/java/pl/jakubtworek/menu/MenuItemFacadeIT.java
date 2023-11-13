@@ -8,6 +8,7 @@ import pl.jakubtworek.menu.dto.MenuDto;
 import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.menu.dto.MenuItemRequest;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -44,7 +45,7 @@ class MenuItemFacadeIT {
     void shouldReturnMenuItemByName() {
         // given
         final var itemName = "Spaghetti";
-        final var expectedMenuItem = MenuItemDto.create(1L, itemName, 100);
+        final var expectedMenuItem = MenuItemDto.create(1L, itemName, new BigDecimal("10.00"));
 
         when(menuItemQueryRepository.findDtoByName(itemName)).thenReturn(Optional.of(expectedMenuItem));
 
@@ -58,9 +59,9 @@ class MenuItemFacadeIT {
     @Test
     void shouldSaveMenuItemWithExistingMenu() {
         // given
-        final var request = new MenuItemRequest("Lasagna", 140, "Dinner Menu");
+        final var request = new MenuItemRequest("Lasagna", new BigDecimal("14.00"), "Dinner Menu");
         final var expectedMenu = MenuDto.create(1L, "Dinner Menu", null);
-        final var expectedMenuItem = createMenuItem(1L, "Lasagna", 140, expectedMenu);
+        final var expectedMenuItem = createMenuItem(1L, "Lasagna", new BigDecimal("14.00"), expectedMenu);
 
         when(menuQueryRepository.findDtoByName(request.getMenu())).thenReturn(Optional.of(expectedMenu));
         when(menuItemRepository.save(any(MenuItem.class))).thenReturn(expectedMenuItem);
@@ -75,9 +76,9 @@ class MenuItemFacadeIT {
     @Test
     void shouldSaveMenuItemWithNotExistingMenu() {
         // given
-        final var request = new MenuItemRequest("Lasagna", 140, "Dinner Menu");
+        final var request = new MenuItemRequest("Lasagna", new BigDecimal("14.00"), "Dinner Menu");
         final var expectedMenuDto = MenuDto.create(1L, "Dinner Menu", null);
-        final var expectedMenuItem = createMenuItem(1L, "Lasagna", 140, expectedMenuDto);
+        final var expectedMenuItem = createMenuItem(1L, "Lasagna", new BigDecimal("14.00"), expectedMenuDto);
 
         when(menuQueryRepository.findDtoByName(request.getMenu())).thenReturn(Optional.empty());
         when(menuItemRepository.save(any(MenuItem.class))).thenReturn(expectedMenuItem);
@@ -119,7 +120,7 @@ class MenuItemFacadeIT {
     void shouldFindMenuItemById() {
         // given
         final var itemId = 1L;
-        final var expectedMenuItem = MenuItemDto.create(itemId, "Pizza", 120);
+        final var expectedMenuItem = MenuItemDto.create(itemId, "Pizza", new BigDecimal("12.00"));
 
         when(menuItemQueryRepository.findDtoById(itemId)).thenReturn(Optional.of(expectedMenuItem));
 
@@ -145,7 +146,7 @@ class MenuItemFacadeIT {
         assertEquals(menuItems, result);
     }
 
-    private MenuItem createMenuItem(Long id, String name, Integer price, MenuDto menuDto) {
+    private MenuItem createMenuItem(Long id, String name, BigDecimal price, MenuDto menuDto) {
         return MenuItem.restore(new MenuItemSnapshot(
                 id, name, price, createMenu(menuDto).getSnapshot(), new HashSet<>()
         ));
@@ -153,9 +154,9 @@ class MenuItemFacadeIT {
 
     private List<MenuItemDto> createMenuItemDtos() {
         final List<MenuItemDto> menuItems = new ArrayList<>();
-        menuItems.add(MenuItemDto.create(1L, "Spaghetti", 100));
-        menuItems.add(MenuItemDto.create(2L, "Pizza", 120));
-        menuItems.add(MenuItemDto.create(3L, "Salad", 50));
+        menuItems.add(MenuItemDto.create(1L, "Spaghetti", new BigDecimal("10.00")));
+        menuItems.add(MenuItemDto.create(2L, "Pizza", new BigDecimal("12.00")));
+        menuItems.add(MenuItemDto.create(3L, "Salad", new BigDecimal("5.00")));
         return menuItems;
     }
 

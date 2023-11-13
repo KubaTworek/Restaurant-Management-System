@@ -1,5 +1,6 @@
 package pl.jakubtworek.menu;
 
+import pl.jakubtworek.order.vo.Money;
 import pl.jakubtworek.order.vo.OrderId;
 
 import java.util.HashSet;
@@ -9,7 +10,7 @@ import java.util.stream.Collectors;
 class MenuItem {
     private Long id;
     private String name;
-    private int price;
+    private Money price;
     private Menu menu;
     private Set<OrderId> orders = new HashSet<>();
 
@@ -18,7 +19,7 @@ class MenuItem {
 
     private MenuItem(final Long id,
                      final String name,
-                     final int price,
+                     final Money price,
                      final Menu menu,
                      final Set<OrderId> orders
     ) {
@@ -33,7 +34,7 @@ class MenuItem {
         return new MenuItem(
                 snapshot.getId(),
                 snapshot.getName(),
-                snapshot.getPrice(),
+                new Money(snapshot.getPrice()),
                 Menu.restore(snapshot.getMenu()),
                 snapshot.getOrders()
         );
@@ -43,13 +44,13 @@ class MenuItem {
         return new MenuItemSnapshot(
                 id,
                 name,
-                price,
+                price.getAmount(),
                 menu.getSnapshot(),
                 orders
         );
     }
 
-    void createWithMenu(String name, int price, Long menuId, String menuName) {
+    void createWithMenu(String name, Money price, Long menuId, String menuName) {
         this.name = name;
         this.price = price;
         final var menu = new Menu();
@@ -57,7 +58,7 @@ class MenuItem {
         this.menu = menu;
     }
 
-    void createWithMenu(String name, int price, Menu menu) {
+    void createWithMenu(String name, Money price, Menu menu) {
         this.name = name;
         this.price = price;
         this.menu = menu;

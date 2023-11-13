@@ -3,12 +3,13 @@ package pl.jakubtworek.order.dto;
 import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.menu.dto.MenuItemDto;
 
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
 public class OrderResponse {
     private final Long id;
-    private final int price;
+    private final BigDecimal price;
     private final ZonedDateTime hourOrder;
     private final ZonedDateTime hourAway;
     private final TypeOfOrder typeOfOrder;
@@ -16,7 +17,7 @@ public class OrderResponse {
     private final Set<EmployeeDto> employees;
 
     public OrderResponse(final Long id,
-                         final int price,
+                         final BigDecimal price,
                          final ZonedDateTime hourOrder,
                          final ZonedDateTime hourAway,
                          final TypeOfOrder typeOfOrder,
@@ -35,7 +36,7 @@ public class OrderResponse {
         return id;
     }
 
-    public int getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 

@@ -172,7 +172,7 @@
         </attributes>
     </entity>
 
-    <entity class="pl.jakubtworek.order.OrderMenuItemSnapshot" access="FIELD">
+    <entity class="pl.jakubtworek.order.OrderItem" access="FIELD">
         <table name="ORDERS__MENU_ITEMS"/>
         <attributes>
             <id name="id">

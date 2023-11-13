@@ -2,6 +2,7 @@ package pl.jakubtworek.menu;
 
 import pl.jakubtworek.menu.dto.MenuDto;
 import pl.jakubtworek.menu.dto.MenuItemRequest;
+import pl.jakubtworek.order.vo.Money;
 
 class MenuItemFactory {
     private final MenuItemRepository menuItemRepository;
@@ -14,7 +15,7 @@ class MenuItemFactory {
         MenuItem menuItem = new MenuItem();
         menuItem.createWithMenu(
                 toSave.getName(),
-                toSave.getPrice(),
+                new Money(toSave.getPrice()),
                 menuDto.getId(),
                 menuDto.getName()
         );
@@ -27,7 +28,7 @@ class MenuItemFactory {
         MenuItem menuItem = new MenuItem();
         menuItem.createWithMenu(
                 toSave.getName(),
-                toSave.getPrice(),
+                new Money(toSave.getPrice()),
                 created
         );
         return menuItem;

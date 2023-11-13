@@ -4,28 +4,30 @@ import pl.jakubtworek.auth.vo.UserId;
 import pl.jakubtworek.employee.vo.EmployeeId;
 import pl.jakubtworek.order.dto.TypeOfOrder;
 
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 class OrderSnapshot {
     private Long id;
-    private int price;
+    private BigDecimal price;
     private ZonedDateTime hourOrder;
     private ZonedDateTime hourAway;
     private TypeOfOrder typeOfOrder;
-    private Set<OrderMenuItemSnapshot> menuItems = new HashSet<>();
+    private Set<OrderItem> menuItems = new HashSet<>();
     private Set<EmployeeId> employees = new HashSet<>();
     private UserId user;
 
     public OrderSnapshot() {
     }
 
-    OrderSnapshot(final Long id, final int price,
+    OrderSnapshot(final Long id,
+                  final BigDecimal price,
                   final ZonedDateTime hourOrder,
                   final ZonedDateTime hourAway,
                   final TypeOfOrder typeOfOrder,
-                  final Set<OrderMenuItemSnapshot> menuItems,
+                  final Set<OrderItem> menuItems,
                   final Set<EmployeeId> employees,
                   final UserId user
     ) {
@@ -43,7 +45,7 @@ class OrderSnapshot {
         return id;
     }
 
-    int getPrice() {
+    BigDecimal getPrice() {
         return price;
     }
 
@@ -59,7 +61,7 @@ class OrderSnapshot {
         return typeOfOrder;
     }
 
-    Set<OrderMenuItemSnapshot> getMenuItems() {
+    Set<OrderItem> getMenuItems() {
         return menuItems;
     }
 

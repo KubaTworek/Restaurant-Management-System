@@ -6,6 +6,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import pl.jakubtworek.AbstractIT;
 import pl.jakubtworek.menu.dto.MenuItemRequest;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,7 +18,7 @@ class MenuItemControllerE2ETest extends AbstractIT {
     @DirtiesContext
     void shouldCreateMenuItem_whenMenuIsExist() {
         // given
-        final var request = new MenuItemRequest("Cheeseburger", 1199, "Food");
+        final var request = new MenuItemRequest("Cheeseburger", new BigDecimal("11.99"), "Food");
 
         // when
         final var responseMenuItem = postMenuItem(request);
@@ -33,7 +34,7 @@ class MenuItemControllerE2ETest extends AbstractIT {
     @DirtiesContext
     void shouldCreateMenuItem_whenMenuIsNotExist() {
         // given
-        final var request = new MenuItemRequest("Cheeseburger", 1199, "Fast-Foods");
+        final var request = new MenuItemRequest("Cheeseburger", new BigDecimal("11.99"), "Fast-Foods");
 
         // when
         final var responseMenuItem = postMenuItem(request);
@@ -85,7 +86,7 @@ class MenuItemControllerE2ETest extends AbstractIT {
     void shouldGetMenuItemById() {
         // given
         final var createdId = postMenuItem(
-                new MenuItemRequest("Cheeseburger", 1199, "Food")
+                new MenuItemRequest("Cheeseburger", new BigDecimal("11.99"), "Food")
         ).getBody().getId();
 
         // when
@@ -94,7 +95,7 @@ class MenuItemControllerE2ETest extends AbstractIT {
         // then
         assertEquals(HttpStatus.OK, retrievedResponse.getStatusCode());
         assertEquals("Cheeseburger", retrievedResponse.getBody().getName());
-        assertEquals(1199, retrievedResponse.getBody().getPrice());
+        assertEquals(new BigDecimal("11.99"), retrievedResponse.getBody().getPrice());
     }
 
     @Test
@@ -108,6 +109,6 @@ class MenuItemControllerE2ETest extends AbstractIT {
         final var menuItems = List.of(response.getBody());
         assertEquals(2, menuItems.size());
         assertEquals("Burger", menuItems.get(0).getName());
-        assertEquals(1099, menuItems.get(0).getPrice());
+        assertEquals(new BigDecimal("10.99"), menuItems.get(0).getPrice());
     }
 }

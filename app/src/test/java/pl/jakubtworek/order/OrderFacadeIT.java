@@ -16,6 +16,7 @@ import pl.jakubtworek.order.dto.OrderRequest;
 import pl.jakubtworek.order.dto.TypeOfOrder;
 import pl.jakubtworek.order.vo.OrderEvent;
 
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -60,11 +61,11 @@ class OrderFacadeIT {
     void shouldSaveOrderAndAddToQueue() {
         // given
         final var request = new OrderRequest("ON_SITE", List.of("Pizza"));
-        final var expectedOrder = createOrder(1L, 220, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
+        final var expectedOrder = createOrder(1L, new BigDecimal("22.00"), ZonedDateTime.now(), null, TypeOfOrder.ON_SITE);
         final var user = UserDto.create(
                 1L, "username", "password"
         );
-        final var burger = MenuItemDto.create(1L, "Pizza", 100);
+        final var burger = MenuItemDto.create(1L, "Pizza", new BigDecimal("10.00"));
 
         when(userFacade.getByToken(any())).thenReturn(user);
         when(menuItemFacade.getByName(any())).thenReturn(burger);
@@ -109,7 +110,7 @@ class OrderFacadeIT {
         assertEquals(2, result.size());
     }*/
 
-    private Order createOrder(Long id, Integer price, ZonedDateTime hourOrder, ZonedDateTime hourAway, TypeOfOrder typeOfOrder) {
+    private Order createOrder(Long id, BigDecimal price, ZonedDateTime hourOrder, ZonedDateTime hourAway, TypeOfOrder typeOfOrder) {
         return Order.restore(new OrderSnapshot(
                 id, price, hourOrder, hourAway, typeOfOrder,
                 new HashSet<>(), new HashSet<>(), new UserId(1L)
@@ -118,8 +119,8 @@ class OrderFacadeIT {
 
     private List<OrderDto> createOrderDtos() {
         List<OrderDto> orderDtos = new ArrayList<>();
-        orderDtos.add(OrderDto.create(1L, 220, ZonedDateTime.now(), null, TypeOfOrder.ON_SITE, new ArrayList<>()));
-        orderDtos.add(OrderDto.create(2L, 250, ZonedDateTime.now(), null, TypeOfOrder.DELIVERY, new ArrayList<>()));
+        orderDtos.add(OrderDto.create(1L, new BigDecimal("22.00"), ZonedDateTime.now(), null, TypeOfOrder.ON_SITE, new ArrayList<>()));
+        orderDtos.add(OrderDto.create(2L, new BigDecimal("25.00"), ZonedDateTime.now(), null, TypeOfOrder.DELIVERY, new ArrayList<>()));
         return orderDtos;
     }
 }

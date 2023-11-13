@@ -2,13 +2,14 @@ package pl.jakubtworek.menu;
 
 import pl.jakubtworek.order.vo.OrderId;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
 class MenuItemSnapshot {
     private Long id;
     private String name;
-    private int price;
+    private BigDecimal price;
     private MenuSnapshot menu;
     private Set<OrderId> orders = new HashSet<>();
 
@@ -17,7 +18,7 @@ class MenuItemSnapshot {
 
     MenuItemSnapshot(final Long id,
                      final String name,
-                     final int price,
+                     final BigDecimal price,
                      final MenuSnapshot menu,
                      final Set<OrderId> orders
     ) {
@@ -36,7 +37,7 @@ class MenuItemSnapshot {
         return name;
     }
 
-    int getPrice() {
+    BigDecimal getPrice() {
         return price;
     }
 

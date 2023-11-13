@@ -6,7 +6,9 @@ import pl.jakubtworek.menu.MenuItemFacade;
 import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.menu.vo.MenuItemId;
 import pl.jakubtworek.order.dto.OrderRequest;
+import pl.jakubtworek.order.vo.Money;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,10 +28,10 @@ class OrderFactory {
 
         final var order = new Order();
         order.updateInfo(
-                menuItems.stream().map(mi -> new OrderMenuItemSnapshot(
+                menuItems.stream().map(mi -> new OrderItem(
                         null, null, new MenuItemId(mi.getId())
                 )).collect(Collectors.toSet()),
-                calculatePrice(menuItems),
+                new Money(calculatePrice(menuItems)),
                 toSave.getTypeOfOrder(),
                 new UserId(user.getId())
         );
@@ -43,9 +45,9 @@ class OrderFactory {
                 .collect(Collectors.toSet());
     }
 
-    private int calculatePrice(Set<MenuItemDto> menuItems) {
+    private BigDecimal calculatePrice(Set<MenuItemDto> menuItems) {
         return menuItems.stream()
-                .mapToInt(MenuItemDto::getPrice)
-                .sum();
+                .map(MenuItemDto::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
