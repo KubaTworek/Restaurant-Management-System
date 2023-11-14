@@ -34,7 +34,8 @@ public class OrderFacade {
                 final OrderFactory orderFactory,
                 final OrderRepository orderRepository,
                 final OrderQueryRepository orderQueryRepository,
-                final DomainEventPublisher publisher) {
+                final DomainEventPublisher publisher
+    ) {
         this.userFacade = userFacade;
         this.employeeFacade = employeeFacade;
         this.menuItemFacade = menuItemFacade;

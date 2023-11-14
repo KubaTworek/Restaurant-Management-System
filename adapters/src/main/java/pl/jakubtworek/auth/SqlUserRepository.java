@@ -3,7 +3,6 @@ package pl.jakubtworek.auth;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-
 interface SqlUserRepository extends JpaRepository<UserSnapshot, Long> {
     <S extends UserSnapshot> S save(S entity);
 }

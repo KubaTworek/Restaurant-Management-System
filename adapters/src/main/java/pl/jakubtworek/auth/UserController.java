@@ -35,9 +35,9 @@ class UserController {
 
     @PostMapping("/login")
     ResponseEntity<LoginResponse> register(@RequestBody LoginRequest loginRequest) {
-        logger.info("Received a login request for user: {}", loginRequest.getUsername());
+        logger.info("Received a login request for user: {}", loginRequest.username());
         LoginResponse result = userFacade.login(loginRequest);
-        logger.info("User {} logged in successfully.", result.getUsername());
+        logger.info("User {} logged in successfully.", result.username());
         return ResponseEntity.ok().body(result);
     }
 

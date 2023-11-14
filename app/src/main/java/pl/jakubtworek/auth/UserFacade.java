@@ -16,7 +16,10 @@ public class UserFacade {
     private final UserQueryRepository userQueryRepository;
     private final JwtService jwtService;
 
-    UserFacade(final UserRepository userRepository, final UserQueryRepository userQueryRepository, final JwtService jwtService) {
+    UserFacade(final UserRepository userRepository,
+               final UserQueryRepository userQueryRepository,
+               final JwtService jwtService
+    ) {
         this.userRepository = userRepository;
         this.userQueryRepository = userQueryRepository;
         this.jwtService = jwtService;
@@ -39,9 +42,9 @@ public class UserFacade {
     }
 
     LoginResponse login(LoginRequest loginRequest) {
-        final var user = userQueryRepository.findDtoByUsername(loginRequest.getUsername())
+        final var user = userQueryRepository.findDtoByUsername(loginRequest.username())
                 .orElseThrow(() -> new IllegalStateException(USER_NOT_FOUND_ERROR));
-        validPasswords(loginRequest.getPassword(), user.getPassword());
+        validPasswords(loginRequest.password(), user.getPassword());
 
         final var expirationDate = Instant.now().toEpochMilli() + TOKEN_EXPIRATION_TIME;
         final var token = jwtService.buildJwt(user.getUsername(), expirationDate);

@@ -34,7 +34,7 @@ class UserFacadeTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         userFacade = new UserFacade(
                 userRepository,
                 userQueryRepository,
@@ -88,9 +88,9 @@ class UserFacadeTest {
         final LoginResponse result = userFacade.login(request);
 
         // then
-        assertEquals(expectedUser.getUsername(), result.getUsername());
-        assertEquals("token", result.getToken());
-        assertTrue(result.getTokenExpirationDate() > Instant.now().toEpochMilli());
+        assertEquals(expectedUser.getUsername(), result.username());
+        assertEquals("token", result.token());
+        assertTrue(result.tokenExpirationDate() > Instant.now().toEpochMilli());
     }
 
     @Test

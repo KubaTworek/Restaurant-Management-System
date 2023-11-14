@@ -7,7 +7,6 @@ public class OrderMenuItemId implements Serializable {
     private Long menuItemId;
 
     public OrderMenuItemId() {
-        // konstruktor domyślny potrzebny do JPA
     }
 
     public OrderMenuItemId(Long orderId, Long menuItemId) {
@@ -22,5 +21,4 @@ public class OrderMenuItemId implements Serializable {
     public Long getMenuItemId() {
         return menuItemId;
     }
-
 }

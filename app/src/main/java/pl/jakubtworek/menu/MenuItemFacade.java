@@ -38,12 +38,12 @@ public class MenuItemFacade {
     }
 
     MenuItemDto save(MenuItemRequest toSave) {
-        return menuItemQueryRepository.findDtoByName(toSave.getName())
+        return menuItemQueryRepository.findDtoByName(toSave.name())
                 .map(menuItem -> {
                     if (menuItem.getStatus() == Status.ACTIVE) {
                         throw new IllegalStateException("Menu item with that name: " + menuItem.getName() + " is already exist!");
                     }
-                    return menuQueryRepository.findDtoByName(toSave.getMenu())
+                    return menuQueryRepository.findDtoByName(toSave.menu())
                             .map(menu -> {
                                 final var updated = menuItemFactory.updateMenuItem(menuItem.getId(), toSave, menu);
                                 return toDto(menuItemRepository.save(updated));
@@ -53,7 +53,7 @@ public class MenuItemFacade {
                                 return toDto(menuItemRepository.save(updated));
                             });
                 })
-                .orElseGet(() -> menuQueryRepository.findDtoByName(toSave.getMenu())
+                .orElseGet(() -> menuQueryRepository.findDtoByName(toSave.menu())
                         .map(menu -> {
                             final var created = menuItemFactory.createMenuItem(toSave, menu);
                             return toDto(menuItemRepository.save(created));

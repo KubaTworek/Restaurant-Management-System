@@ -39,7 +39,7 @@ class Kitchen {
     private void startCooking() {
         final var cook = queues.getFirstCook();
         final var order = queues.getFirstOrder();
-        final int timeToCook = order.getAmountOfMenuItems();
+        final int timeToCook = order.amountOfMenuItems();
         startPreparingOrder(cook, order, timeToCook);
     }
 
@@ -48,15 +48,15 @@ class Kitchen {
             try {
                 Thread.sleep(time);
                 publisher.publish(new OrderEvent(
-                        order.getOrderId(),
-                        cook.getEmployeeId(),
-                        order.getOrderType(),
-                        order.getAmountOfMenuItems(),
+                        order.orderId(),
+                        cook.employeeId(),
+                        order.orderType(),
+                        order.amountOfMenuItems(),
                         OrderEvent.State.READY
                 ));
                 publisher.publish(new EmployeeEvent(
-                        cook.getEmployeeId(),
-                        order.getOrderId(),
+                        cook.employeeId(),
+                        order.orderId(),
                         Job.COOK
                 ));
             } catch (InterruptedException e) {

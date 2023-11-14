@@ -6,7 +6,7 @@
     <artifactId>Restaurant-Management-System</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Restaurant-Management-System</name>
-    <description>CRUD WebApp with REST API</description>
+    <description>Modular monolith</description>
 
     <packaging>pom</packaging>
 

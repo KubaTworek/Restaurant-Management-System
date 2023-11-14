@@ -1,11 +1,11 @@
 package pl.jakubtworek.auth.dto;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
 public class RegisterRequest {
-    @NotNull(message = "First name cannot be null.")
+    @NotBlank(message = "First name cannot be null.")
     private final String username;
-    @NotNull(message = "Last name cannot be null.")
+    @NotBlank(message = "Last name cannot be null.")
     private final String password;
 
     public RegisterRequest(final String username, final String password) {

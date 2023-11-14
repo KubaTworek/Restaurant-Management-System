@@ -38,9 +38,8 @@ class UserControllerE2ETest extends AbstractIT {
 
         // then
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("testuser", response.getBody().getUsername());
-        assertNotNull(response.getBody().getToken());
-        assertNotNull(response.getBody().getTokenExpirationDate());
+        assertEquals("testuser", response.getBody().username());
+        assertNotNull(response.getBody().token());
+        assertNotNull(response.getBody().tokenExpirationDate());
     }
 }
-

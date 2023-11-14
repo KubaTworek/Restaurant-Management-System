@@ -17,14 +17,16 @@ class OrderFactory {
     private final UserFacade userFacade;
     private final MenuItemFacade menuItemFacade;
 
-    OrderFactory(UserFacade userFacade, final MenuItemFacade menuItemFacade) {
+    OrderFactory(final UserFacade userFacade,
+                 final MenuItemFacade menuItemFacade
+    ) {
         this.userFacade = userFacade;
         this.menuItemFacade = menuItemFacade;
     }
 
     Order createOrder(OrderRequest toSave, String jwt) {
         final var user = userFacade.getByToken(jwt);
-        final var menuItems = getMenuItems(toSave.getMenuItems());
+        final var menuItems = getMenuItems(toSave.menuItems());
 
         final var order = new Order();
         order.updateInfo(
@@ -32,7 +34,7 @@ class OrderFactory {
                         null, null, new MenuItemId(mi.getId())
                 )).collect(Collectors.toSet()),
                 new Money(calculatePrice(menuItems)),
-                toSave.getTypeOfOrder(),
+                toSave.typeOfOrder(),
                 new UserId(user.getId())
         );
 

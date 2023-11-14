@@ -29,15 +29,9 @@ class OrderEventListener {
     @EventListener
     public void handleOrderEvent(OrderEvent event) {
         switch (event.getState()) {
-            case TODO:
-                handleTodo(event);
-                break;
-            case READY:
-                handleReady(event.getOrderType(), event);
-                break;
-            case DELIVERED:
-                handleDelivered(event);
-                break;
+            case TODO -> handleTodo(event);
+            case READY -> handleReady(event.getOrderType(), event);
+            case DELIVERED -> handleDelivered(event);
         }
 
         if (event.getEmployeeId() != null) {
@@ -59,13 +53,8 @@ class OrderEventListener {
 
     private void handleReady(TypeOfOrder orderType, OrderEvent event) {
         switch (orderType) {
-            case ON_SITE:
-            case TAKE_AWAY:
-                waiterDelivery.handle(event);
-                break;
-            case DELIVERY:
-                carDelivery.handle(event);
-                break;
+            case ON_SITE, TAKE_AWAY -> waiterDelivery.handle(event);
+            case DELIVERY -> carDelivery.handle(event);
         }
     }
 }

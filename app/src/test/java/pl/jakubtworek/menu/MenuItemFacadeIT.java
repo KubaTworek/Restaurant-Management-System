@@ -33,7 +33,7 @@ class MenuItemFacadeIT {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         menuItemFacade = new MenuItemFacade(
                 new MenuItemFactory(menuItemRepository),
                 menuItemRepository,
@@ -64,7 +64,7 @@ class MenuItemFacadeIT {
         final var expectedMenu = MenuDto.create(1L, "Dinner Menu", null);
         final var expectedMenuItem = createMenuItem(1L, "Lasagna", new BigDecimal("14.00"), expectedMenu);
 
-        when(menuQueryRepository.findDtoByName(request.getMenu())).thenReturn(Optional.of(expectedMenu));
+        when(menuQueryRepository.findDtoByName(request.menu())).thenReturn(Optional.of(expectedMenu));
         when(menuItemRepository.save(any(MenuItem.class))).thenReturn(expectedMenuItem);
 
         // when
@@ -81,7 +81,7 @@ class MenuItemFacadeIT {
         final var expectedMenuDto = MenuDto.create(1L, "Dinner Menu", null);
         final var expectedMenuItem = createMenuItem(1L, "Lasagna", new BigDecimal("14.00"), expectedMenuDto);
 
-        when(menuQueryRepository.findDtoByName(request.getMenu())).thenReturn(Optional.empty());
+        when(menuQueryRepository.findDtoByName(request.menu())).thenReturn(Optional.empty());
         when(menuItemRepository.save(any(MenuItem.class))).thenReturn(expectedMenuItem);
 
         // when

@@ -29,7 +29,7 @@ class OrderFactoryTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         orderFactory = new OrderFactory(
                 userFacade,
                 menuItemFacade

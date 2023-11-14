@@ -32,12 +32,11 @@ class EmployeeFacadeTest {
     @Mock
     private DomainEventPublisher publisher;
 
-
     private EmployeeFacade employeeFacade;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         employeeFacade = new EmployeeFacade(
                 employeeRepository,
                 employeeQueryRepository,

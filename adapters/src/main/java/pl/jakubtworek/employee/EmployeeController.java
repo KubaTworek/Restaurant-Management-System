@@ -30,7 +30,7 @@ class EmployeeController {
 
     @PostMapping
     ResponseEntity<EmployeeDto> create(@RequestBody EmployeeRequest employeeRequest) {
-        logger.info("Received a request to create a new employee with job: {}", employeeRequest.getJob());
+        logger.info("Received a request to create a new employee with job: {}", employeeRequest.job());
         EmployeeDto result = employeeFacade.save(employeeRequest);
         logger.info("Employee {} created successfully.", result.getFirstName() + result.getLastName());
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);

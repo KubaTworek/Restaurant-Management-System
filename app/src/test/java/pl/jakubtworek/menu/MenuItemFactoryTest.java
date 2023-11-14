@@ -22,7 +22,7 @@ class MenuItemFactoryTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         menuItemFactory = new MenuItemFactory(menuItemRepository);
     }
 

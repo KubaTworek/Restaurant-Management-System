@@ -34,7 +34,7 @@ abstract class AbstractDelivery {
     private void startDelivering() {
         final var employee = queues.getFirstEmployee();
         final var order = queues.getFirstOrder();
-        delivering(employee, order, 0); // fixme: specific time
+        delivering(employee, order, 0);
     }
 
     private void delivering(EmployeeDelivery employee, OrderDelivery order, int time) {
@@ -42,16 +42,16 @@ abstract class AbstractDelivery {
             try {
                 Thread.sleep(time);
                 publisher.publish(new OrderEvent(
-                        order.getOrderId(),
-                        employee.getEmployeeId(),
-                        order.getOrderType(),
-                        order.getAmountOfMenuItems(),
+                        order.orderId(),
+                        employee.employeeId(),
+                        order.orderType(),
+                        order.amountOfMenuItems(),
                         OrderEvent.State.DELIVERED
                 ));
                 publisher.publish(new EmployeeEvent(
-                        employee.getEmployeeId(),
-                        order.getOrderId(),
-                        employee.getJob()
+                        employee.employeeId(),
+                        order.orderId(),
+                        employee.job()
                 ));
             } catch (InterruptedException e) {
                 e.printStackTrace();

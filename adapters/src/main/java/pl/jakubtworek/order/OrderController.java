@@ -33,8 +33,8 @@ class OrderController {
     ResponseEntity<OrderResponse> create(@RequestBody OrderRequest orderRequest, @RequestHeader("Authorization") String jwt) {
         logger.info("Received a request to create a new order.");
         final var result = orderFacade.save(orderRequest, jwt);
-        logger.info("Order {} created successfully.", result.getId());
-        return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
+        logger.info("Order {} created successfully.", result.id());
+        return ResponseEntity.created(URI.create("/" + result.id())).body(result);
     }
 
     @GetMapping("/filter")
@@ -69,7 +69,7 @@ class OrderController {
         logger.info("Received a request to get order details for ID: {}", id);
         return orderFacade.findById(id)
                 .map(order -> {
-                    logger.info("Found order with ID {}: {}", id, order.getId());
+                    logger.info("Found order with ID {}: {}", id, order.id());
                     return ResponseEntity.ok(order);
                 })
                 .orElseGet(() -> {

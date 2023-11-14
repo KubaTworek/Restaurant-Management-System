@@ -7,56 +7,12 @@ import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
-public class OrderResponse {
-    private final Long id;
-    private final BigDecimal price;
-    private final ZonedDateTime hourOrder;
-    private final ZonedDateTime hourAway;
-    private final TypeOfOrder typeOfOrder;
-    private final Set<MenuItemDto> menuItems;
-    private final Set<EmployeeDto> employees;
-
-    public OrderResponse(final Long id,
-                         final BigDecimal price,
-                         final ZonedDateTime hourOrder,
-                         final ZonedDateTime hourAway,
-                         final TypeOfOrder typeOfOrder,
-                         final Set<MenuItemDto> menuItems,
-                         final Set<EmployeeDto> employees) {
-        this.id = id;
-        this.price = price;
-        this.hourOrder = hourOrder;
-        this.hourAway = hourAway;
-        this.typeOfOrder = typeOfOrder;
-        this.menuItems = menuItems;
-        this.employees = employees;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public ZonedDateTime getHourOrder() {
-        return hourOrder;
-    }
-
-    public ZonedDateTime getHourAway() {
-        return hourAway;
-    }
-
-    public TypeOfOrder getTypeOfOrder() {
-        return typeOfOrder;
-    }
-
-    public Set<MenuItemDto> getMenuItems() {
-        return menuItems;
-    }
-
-    public Set<EmployeeDto> getEmployees() {
-        return employees;
-    }
-}
+public record OrderResponse(
+        Long id,
+        BigDecimal price,
+        ZonedDateTime hourOrder,
+        ZonedDateTime hourAway,
+        TypeOfOrder typeOfOrder,
+        Set<MenuItemDto> menuItems,
+        Set<EmployeeDto> employees
+) {}

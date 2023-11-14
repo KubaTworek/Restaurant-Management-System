@@ -26,7 +26,7 @@ class AddEmployeeToOrderCommandHandlerTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         handler = new AddEmployeeToOrderCommandHandler(
                 orderFacade,
                 employeeFacade,

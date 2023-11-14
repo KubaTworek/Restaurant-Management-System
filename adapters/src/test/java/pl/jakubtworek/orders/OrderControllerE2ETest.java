@@ -59,7 +59,7 @@ class OrderControllerE2ETest extends AbstractIT {
 
         // then
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertNotNull(response.getBody().getId());
+        assertNotNull(response.getBody().id());
     }
 
     @Test
@@ -95,14 +95,14 @@ class OrderControllerE2ETest extends AbstractIT {
                 List.of("Burger", "Cola")
         );
         final var createdId = postOrder(request, userToken)
-                .getBody().getId();
+                .getBody().id();
 
         // when
         final var response = getOrderById(createdId, userToken);
 
         // ten
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(TypeOfOrder.DELIVERY, response.getBody().getTypeOfOrder());
+        assertEquals(TypeOfOrder.DELIVERY, response.getBody().typeOfOrder());
     }
 
     @ParameterizedTest(name = "Orders: {0}, Parameters: {1}")
@@ -155,8 +155,8 @@ class OrderControllerE2ETest extends AbstractIT {
         // then
         assertEquals(HttpStatus.CREATED, createdOrder1.getStatusCode());
         assertEquals(HttpStatus.CREATED, createdOrder2.getStatusCode());
-        assertNotNull(createdOrder1.getBody().getId());
-        assertNotNull(createdOrder2.getBody().getId());
+        assertNotNull(createdOrder1.getBody().id());
+        assertNotNull(createdOrder2.getBody().id());
 
         Thread.sleep(2000);
 

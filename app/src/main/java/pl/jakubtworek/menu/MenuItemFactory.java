@@ -14,8 +14,8 @@ class MenuItemFactory {
     MenuItem createMenuItem(MenuItemRequest toSave, MenuDto menuDto) {
         MenuItem menuItem = new MenuItem();
         menuItem.createWithMenu(
-                toSave.getName(),
-                new Money(toSave.getPrice()),
+                toSave.name(),
+                new Money(toSave.price()),
                 menuDto.getId(),
                 menuDto.getName()
         );
@@ -23,12 +23,12 @@ class MenuItemFactory {
     }
 
     MenuItem createMenuItemAndMenu(final MenuItemRequest toSave) {
-        final var menu = createMenu(toSave.getMenu());
+        final var menu = createMenu(toSave.menu());
         final var created = menuItemRepository.save(menu);
         MenuItem menuItem = new MenuItem();
         menuItem.createWithMenu(
-                toSave.getName(),
-                new Money(toSave.getPrice()),
+                toSave.name(),
+                new Money(toSave.price()),
                 created
         );
         return menuItem;
@@ -38,8 +38,8 @@ class MenuItemFactory {
         MenuItem menuItem = new MenuItem();
         menuItem.update(
                 menuItemId,
-                toUpdate.getName(),
-                new Money(toUpdate.getPrice()),
+                toUpdate.name(),
+                new Money(toUpdate.price()),
                 menu.getId(),
                 menu.getName()
         );
@@ -47,13 +47,13 @@ class MenuItemFactory {
     }
 
     MenuItem updateMenuItemAndCreateMenu(Long menuItemId, MenuItemRequest toUpdate) {
-        final var menu = createMenu(toUpdate.getMenu());
+        final var menu = createMenu(toUpdate.menu());
         final var created = menuItemRepository.save(menu);
         MenuItem menuItem = new MenuItem();
         menuItem.update(
                 menuItemId,
-                toUpdate.getName(),
-                new Money(toUpdate.getPrice()),
+                toUpdate.name(),
+                new Money(toUpdate.price()),
                 created
         );
         return menuItem;

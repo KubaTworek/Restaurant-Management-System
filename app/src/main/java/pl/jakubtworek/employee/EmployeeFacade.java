@@ -55,9 +55,9 @@ public class EmployeeFacade {
 
     private Employee saveEmployee(EmployeeRequest toSave) {
         final var created = EmployeeFactory.createEmployee(
-                toSave.getFirstName(),
-                toSave.getLastName(),
-                toSave.getJob()
+                toSave.firstName(),
+                toSave.lastName(),
+                toSave.job()
         );
         return employeeRepository.save(created);
     }

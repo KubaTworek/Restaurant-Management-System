@@ -22,8 +22,8 @@ class AddEmployeeToOrderCommandHandler implements CommandHandler<AddEmployeeToOr
 
     @Override
     public void handle(AddEmployeeToOrderCommand command) {
-        final var order = orderFacade.getById(command.getOrderId());
-        final var employee = employeeFacade.getById(command.getEmployeeId());
+        final var order = orderFacade.getById(command.orderId());
+        final var employee = employeeFacade.getById(command.employeeId());
         order.addEmployee(
                 new EmployeeId(employee.getId())
         );

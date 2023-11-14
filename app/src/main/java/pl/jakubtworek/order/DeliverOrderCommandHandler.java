@@ -16,7 +16,7 @@ class DeliverOrderCommandHandler implements CommandHandler<DeliverOrderCommand> 
 
     @Override
     public void handle(DeliverOrderCommand command) {
-        final var order = orderFacade.getById(command.getOrderId());
+        final var order = orderFacade.getById(command.orderId());
         order.delivery();
         orderRepository.save(order);
     }

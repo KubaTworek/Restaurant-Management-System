@@ -46,7 +46,7 @@ class OrderFacadeIT {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         orderFacade = new OrderFacade(
                 userFacade,
                 employeeFacade,
@@ -77,8 +77,8 @@ class OrderFacadeIT {
 
         // then
         verify(publisher).publish(any(OrderEvent.class));
-        assertEquals(expectedOrder.getSnapshot().getId(), result.getId());
-        assertEquals(expectedOrder.getSnapshot().getPrice(), result.getPrice());
+        assertEquals(expectedOrder.getSnapshot().getId(), result.id());
+        assertEquals(expectedOrder.getSnapshot().getPrice(), result.price());
     }
 
     @Test

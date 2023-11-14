@@ -1,13 +1,16 @@
 package pl.jakubtworek.menu;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import pl.jakubtworek.menu.dto.MenuDto;
+import pl.jakubtworek.order.dto.Status;
 
-import javax.transaction.Transactional;
 import java.util.Optional;
+import java.util.Set;
 
 interface SqlMenuItemRepository extends JpaRepository<MenuItemSnapshot, Long> {
 
@@ -29,9 +32,10 @@ interface SqlMenuItemQueryRepository extends MenuItemQueryRepository, JpaReposit
 }
 
 interface SqlMenuQueryRepository extends MenuQueryRepository, JpaRepository<MenuSnapshot, Long> {
+    @Override
+    @Query("SELECT DISTINCT m FROM MenuSnapshot m LEFT JOIN FETCH m.menuItems mi WHERE mi.status = :status")
+    Set<MenuDto> findDtoByMenuItems_Status(Status status);
 }
-
-
 
 @Repository
 class MenuItemRepositoryImpl implements MenuItemRepository {

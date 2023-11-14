@@ -21,7 +21,7 @@ class DeliverOrderCommandHandlerTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         handler = new DeliverOrderCommandHandler(
                 orderFacade,
                 orderRepository
