@@ -9,9 +9,9 @@ import org.mockito.MockitoAnnotations;
 import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.employee.dto.EmployeeRequest;
-import pl.jakubtworek.employee.dto.Job;
+import pl.jakubtworek.employee.vo.Job;
 import pl.jakubtworek.employee.vo.EmployeeEvent;
-import pl.jakubtworek.order.dto.Status;
+import pl.jakubtworek.common.vo.Status;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -70,7 +70,7 @@ class EmployeeFacadeTest {
         when(employeeRepository.save(any())).thenReturn(expectedEmployee);
 
         // when
-        final EmployeeDto result = employeeFacade.save(request);
+        final var result = employeeFacade.save(request);
 
         // then
         assertEmployeeEquals(expectedEmployee, result);
@@ -97,7 +97,7 @@ class EmployeeFacadeTest {
         when(employeeQueryRepository.findDtoByStatus(Status.ACTIVE)).thenReturn(expectedEmployees);
 
         // when
-        final Set<EmployeeDto> result = new HashSet<>(employeeFacade.findAll());
+        final var result = new HashSet<>(employeeFacade.findAll());
 
         // then
         assertEquals(expectedEmployees, result);
@@ -112,7 +112,7 @@ class EmployeeFacadeTest {
         when(employeeQueryRepository.findDtoById(employeeId)).thenReturn(Optional.of(expectedEmployee));
 
         // when
-        final Optional<EmployeeDto> result = employeeFacade.findById(employeeId);
+        final var result = employeeFacade.findById(employeeId);
 
         // then
         assertEquals(Optional.of(expectedEmployee), result);
@@ -128,7 +128,7 @@ class EmployeeFacadeTest {
         when(employeeQueryRepository.findByJob(job)).thenReturn(expectedEmployees);
 
         // when
-        List<EmployeeDto> result = employeeFacade.findByJob(jobName);
+        final var result = employeeFacade.findByJob(jobName);
 
         // then
         assertEquals(expectedEmployees, result);

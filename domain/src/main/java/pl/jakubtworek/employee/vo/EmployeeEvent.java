@@ -1,7 +1,6 @@
 package pl.jakubtworek.employee.vo;
 
 import pl.jakubtworek.DomainEvent;
-import pl.jakubtworek.employee.dto.Job;
 
 import java.time.Instant;
 

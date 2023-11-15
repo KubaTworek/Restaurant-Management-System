@@ -2,11 +2,11 @@ package pl.jakubtworek.order;
 
 import pl.jakubtworek.auth.UserFacade;
 import pl.jakubtworek.auth.vo.UserId;
+import pl.jakubtworek.common.vo.Money;
 import pl.jakubtworek.menu.MenuItemFacade;
 import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.menu.vo.MenuItemId;
 import pl.jakubtworek.order.dto.OrderRequest;
-import pl.jakubtworek.order.vo.Money;
 
 import java.math.BigDecimal;
 import java.util.List;

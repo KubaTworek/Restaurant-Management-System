@@ -4,4 +4,5 @@ import pl.jakubtworek.common.Command;
 
 public record DeliverOrderCommand(
         Long orderId
-) implements Command {}
+) implements Command {
+}

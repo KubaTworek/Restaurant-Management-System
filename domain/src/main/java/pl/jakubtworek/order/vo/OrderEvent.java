@@ -1,7 +1,6 @@
 package pl.jakubtworek.order.vo;
 
 import pl.jakubtworek.DomainEvent;
-import pl.jakubtworek.order.dto.TypeOfOrder;
 
 import java.time.Instant;
 

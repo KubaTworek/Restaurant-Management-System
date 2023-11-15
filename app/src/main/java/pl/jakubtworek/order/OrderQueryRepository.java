@@ -1,7 +1,7 @@
 package pl.jakubtworek.order;
 
 import pl.jakubtworek.order.dto.OrderDto;
-import pl.jakubtworek.order.dto.TypeOfOrder;
+import pl.jakubtworek.order.vo.TypeOfOrder;
 
 import java.time.ZonedDateTime;
 import java.util.List;

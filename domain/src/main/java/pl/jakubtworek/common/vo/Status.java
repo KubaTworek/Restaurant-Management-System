@@ -1,4 +1,4 @@
-package pl.jakubtworek.order.dto;
+package pl.jakubtworek.common.vo;
 
 public enum Status {
     ACTIVE, INACTIVE

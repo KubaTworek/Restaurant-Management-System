@@ -9,7 +9,7 @@ import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.order.dto.OrderDto;
 import pl.jakubtworek.order.dto.OrderRequest;
 import pl.jakubtworek.order.dto.OrderResponse;
-import pl.jakubtworek.order.dto.TypeOfOrder;
+import pl.jakubtworek.order.vo.TypeOfOrder;
 import pl.jakubtworek.order.vo.OrderEvent;
 
 import java.time.ZonedDateTime;
@@ -26,7 +26,6 @@ public class OrderFacade {
     private final OrderRepository orderRepository;
     private final OrderQueryRepository orderQueryRepository;
     private final DomainEventPublisher publisher;
-
 
     OrderFacade(final UserFacade userFacade,
                 final EmployeeFacade employeeFacade,

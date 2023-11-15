@@ -1,7 +1,6 @@
 package pl.jakubtworek.auth;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.jakubtworek.AbstractIT;
 import pl.jakubtworek.auth.dto.LoginRequest;
@@ -22,9 +21,8 @@ class UserControllerE2ETest extends AbstractIT {
         final var response = registerUser(request);
 
         // then
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertNotNull(response.getBody().getId());
-        assertEquals("user", response.getBody().getUsername());
+        assertEquals("user", response.getUsername());
+        assertEquals("password", response.getPassword());
     }
 
     @Test
@@ -37,9 +35,8 @@ class UserControllerE2ETest extends AbstractIT {
         final var response = loginUser(request);
 
         // then
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("testuser", response.getBody().username());
-        assertNotNull(response.getBody().token());
-        assertNotNull(response.getBody().tokenExpirationDate());
+        assertEquals("testuser", response.username());
+        assertNotNull(response.token());
+        assertNotNull(response.tokenExpirationDate());
     }
 }

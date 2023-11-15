@@ -1,4 +1,4 @@
-package pl.jakubtworek.order.vo;
+package pl.jakubtworek.common.vo;
 
 import java.math.BigDecimal;
 import java.util.Objects;

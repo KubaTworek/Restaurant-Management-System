@@ -1,7 +1,7 @@
 package pl.jakubtworek.menu.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import pl.jakubtworek.order.dto.Status;
+import pl.jakubtworek.common.vo.Status;
 
 import java.math.BigDecimal;
 

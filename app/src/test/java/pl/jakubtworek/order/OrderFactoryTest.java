@@ -9,8 +9,8 @@ import pl.jakubtworek.auth.dto.UserDto;
 import pl.jakubtworek.menu.MenuItemFacade;
 import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.order.dto.OrderRequest;
-import pl.jakubtworek.order.dto.Status;
-import pl.jakubtworek.order.dto.TypeOfOrder;
+import pl.jakubtworek.common.vo.Status;
+import pl.jakubtworek.order.vo.TypeOfOrder;
 
 import java.math.BigDecimal;
 import java.util.List;

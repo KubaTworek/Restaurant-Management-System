@@ -1,6 +1,6 @@
 package pl.jakubtworek.menu;
 
-import pl.jakubtworek.order.dto.Status;
+import pl.jakubtworek.common.vo.Status;
 import pl.jakubtworek.order.vo.OrderId;
 
 import java.math.BigDecimal;

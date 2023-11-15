@@ -1,7 +1,7 @@
 package pl.jakubtworek.employee;
 
-import pl.jakubtworek.employee.dto.Job;
-import pl.jakubtworek.order.dto.Status;
+import pl.jakubtworek.employee.vo.Job;
+import pl.jakubtworek.common.vo.Status;
 import pl.jakubtworek.order.vo.OrderId;
 
 import java.util.HashSet;

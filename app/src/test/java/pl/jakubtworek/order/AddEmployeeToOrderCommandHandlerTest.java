@@ -6,9 +6,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import pl.jakubtworek.employee.EmployeeFacade;
 import pl.jakubtworek.employee.dto.EmployeeDto;
-import pl.jakubtworek.employee.dto.Job;
+import pl.jakubtworek.employee.vo.Job;
 import pl.jakubtworek.order.command.AddEmployeeToOrderCommand;
-import pl.jakubtworek.order.dto.Status;
+import pl.jakubtworek.common.vo.Status;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;

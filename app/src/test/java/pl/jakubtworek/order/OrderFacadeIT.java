@@ -13,8 +13,8 @@ import pl.jakubtworek.menu.MenuItemFacade;
 import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.order.dto.OrderDto;
 import pl.jakubtworek.order.dto.OrderRequest;
-import pl.jakubtworek.order.dto.Status;
-import pl.jakubtworek.order.dto.TypeOfOrder;
+import pl.jakubtworek.common.vo.Status;
+import pl.jakubtworek.order.vo.TypeOfOrder;
 import pl.jakubtworek.order.vo.OrderEvent;
 
 import java.math.BigDecimal;
@@ -91,13 +91,13 @@ class OrderFacadeIT {
         when(orderQueryRepository.findByUserId(1L)).thenReturn(expectedOrders);
 
         // when
-        final List<OrderDto> result = orderFacade.findAllByToken("jwt-token");
+        final var result = orderFacade.findAllByToken("jwt-token");
 
         // then
         assertEquals(2, result.size());
     }
 
-/*    @Test
+    @Test
     void shouldFindOrdersByParams() {
         // given
         final var expectedOrders = createOrderDtos();
@@ -105,11 +105,11 @@ class OrderFacadeIT {
         when(orderQueryRepository.findFilteredOrders(any(), any(), any(), any(), any(), any())).thenReturn(expectedOrders);
 
         // when
-        final List<OrderResponse> result = orderFacade.findByParams(ZonedDateTime.now().toString(), ZonedDateTime.now().toString(), "ON_SITE", true, 1L, 1L);
+        final var result = orderFacade.findByParams(ZonedDateTime.now().toString(), ZonedDateTime.now().toString(), "ON_SITE", true, 1L, 1L);
 
         // then
         assertEquals(2, result.size());
-    }*/
+    }
 
     private Order createOrder(Long id, BigDecimal price, ZonedDateTime hourOrder, ZonedDateTime hourAway, TypeOfOrder typeOfOrder) {
         return Order.restore(new OrderSnapshot(

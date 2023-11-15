@@ -4,14 +4,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.jakubtworek.AbstractIT;
+import pl.jakubtworek.common.vo.Status;
+import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.employee.dto.EmployeeRequest;
-import pl.jakubtworek.employee.dto.Job;
-import pl.jakubtworek.order.dto.Status;
-
-import java.util.List;
+import pl.jakubtworek.employee.vo.Job;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class EmployeeControllerE2ETest extends AbstractIT {
 
@@ -25,88 +24,73 @@ class EmployeeControllerE2ETest extends AbstractIT {
         final var response = postEmployee(request);
 
         // then
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertNotNull(response.getBody().getId());
+        assertEmployeeResponse(response);
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldDeleteEmployeeById() {
+        // given
+        final var created = postEmployee(new EmployeeRequest("John", "Doe", "COOK"));
+
+        // when
+        final var firstDelete = deleteEmployeeById(created.getId());
+        final var secondDelete = deleteEmployeeById(created.getId());
+
+        // then
+        assertEquals(HttpStatus.NO_CONTENT, firstDelete.getStatusCode());
+        assertEquals(HttpStatus.NOT_FOUND, secondDelete.getStatusCode());
+        final var deletedOrder = getEmployeeById(created.getId());
+        assertEquals(Status.INACTIVE, deletedOrder.getStatus());
     }
 
     @Test
     @DirtiesContext
     void shouldGetAllEmployees() {
         // given
-        final var employeeId = postEmployee(
-                new EmployeeRequest("John", "Doe", "COOK")
-        ).getBody().getId();
-        postEmployee(
-                new EmployeeRequest("Jane", "Smith", "WAITER")
-        );
+        final var created = postEmployee(new EmployeeRequest("John", "Doe", "COOK"));
+        postEmployee(new EmployeeRequest("Jane", "Smith", "WAITER"));
 
         // when
-        deleteEmployeeById(employeeId);
+        deleteEmployeeById(created.getId());
         final var response = getEmployees();
 
         // then
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        final var employees = List.of(response.getBody());
-        assertEquals(1, employees.size());
-    }
-
-    @Test
-    @DirtiesContext
-    void shouldDeleteEmployee() {
-        // given
-        final var createdId = postEmployee(
-                new EmployeeRequest("John", "Doe", "COOK")
-        ).getBody().getId();
-
-        // when
-        final var firstDelete = deleteEmployeeById(createdId);
-        final var secondDelete = deleteEmployeeById(createdId);
-
-        // then
-        assertEquals(HttpStatus.NO_CONTENT, firstDelete.getStatusCode());
-        assertEquals(HttpStatus.NOT_FOUND, secondDelete.getStatusCode());
-        final var deletedOrder = getEmployeeById(createdId);
-        assertEquals(Status.INACTIVE, deletedOrder.getBody().getStatus());
+        assertEquals(1, response.size());
     }
 
     @Test
     @DirtiesContext
     void shouldGetEmployeeById() {
         // given
-        final var createdId = postEmployee(
-                new EmployeeRequest("John", "Doe", "COOK")
-        ).getBody().getId();
+        final var created = postEmployee(new EmployeeRequest("John", "Doe", "COOK"));
 
         // when
-        final var retrievedResponse = getEmployeeById(createdId);
+        final var response = getEmployeeById(created.getId());
 
         // then
-        assertEquals(HttpStatus.OK, retrievedResponse.getStatusCode());
-        assertEquals("John", retrievedResponse.getBody().getFirstName());
-        assertEquals("Doe", retrievedResponse.getBody().getLastName());
-        assertEquals(Job.COOK, retrievedResponse.getBody().getJob());
+        assertEmployeeResponse(response);
     }
 
     @Test
     @DirtiesContext
     void shouldGetEmployeeByJob() {
         // given
-        postEmployee(
-                new EmployeeRequest("John", "Doe", "COOK")
-        );
-        postEmployee(
-                new EmployeeRequest("Jane", "Smith", "WAITER")
-        );
+        postEmployee(new EmployeeRequest("John", "Doe", "COOK"));
+        postEmployee(new EmployeeRequest("Jane", "Smith", "WAITER"));
 
         // when
         final var response = getEmployeeByJob("COOK");
 
         // then
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        final var employees = List.of(response.getBody());
-        assertEquals(1, employees.size());
-        assertEquals("John", employees.get(0).getFirstName());
-        assertEquals("Doe", employees.get(0).getLastName());
-        assertEquals(Job.COOK, employees.get(0).getJob());
+        assertEquals(1, response.size());
+        assertTrue(response.stream().allMatch(employee -> Job.COOK.equals(employee.getJob())));
+    }
+
+    private void assertEmployeeResponse(EmployeeDto response) {
+        assertEquals("John", response.getFirstName());
+        assertEquals("Doe", response.getLastName());
+        assertEquals(Job.COOK, response.getJob());
+        assertEquals(Status.ACTIVE, response.getStatus());
     }
 }

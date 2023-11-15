@@ -2,6 +2,7 @@ package pl.jakubtworek.order.dto;
 
 import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.menu.dto.MenuItemDto;
+import pl.jakubtworek.order.vo.TypeOfOrder;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -15,4 +16,5 @@ public record OrderResponse(
         TypeOfOrder typeOfOrder,
         Set<MenuItemDto> menuItems,
         Set<EmployeeDto> employees
-) {}
+) {
+}

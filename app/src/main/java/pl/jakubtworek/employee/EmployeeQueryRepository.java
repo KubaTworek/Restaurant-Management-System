@@ -1,8 +1,8 @@
 package pl.jakubtworek.employee;
 
 import pl.jakubtworek.employee.dto.EmployeeDto;
-import pl.jakubtworek.employee.dto.Job;
-import pl.jakubtworek.order.dto.Status;
+import pl.jakubtworek.employee.vo.Job;
+import pl.jakubtworek.common.vo.Status;
 
 import java.util.List;
 import java.util.Optional;

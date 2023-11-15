@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pl.jakubtworek.order.dto.OrderDto;
-import pl.jakubtworek.order.dto.TypeOfOrder;
+import pl.jakubtworek.order.vo.TypeOfOrder;
 
 import java.time.ZonedDateTime;
 import java.util.List;

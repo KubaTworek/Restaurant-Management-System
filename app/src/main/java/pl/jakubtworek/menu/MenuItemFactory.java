@@ -1,8 +1,8 @@
 package pl.jakubtworek.menu;
 
+import pl.jakubtworek.common.vo.Money;
 import pl.jakubtworek.menu.dto.MenuDto;
 import pl.jakubtworek.menu.dto.MenuItemRequest;
-import pl.jakubtworek.order.vo.Money;
 
 class MenuItemFactory {
     private final MenuItemRepository menuItemRepository;

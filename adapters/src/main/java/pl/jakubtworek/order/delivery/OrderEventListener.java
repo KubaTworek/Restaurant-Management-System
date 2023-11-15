@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import pl.jakubtworek.common.CommandBus;
 import pl.jakubtworek.order.command.AddEmployeeToOrderCommand;
 import pl.jakubtworek.order.command.DeliverOrderCommand;
-import pl.jakubtworek.order.dto.TypeOfOrder;
+import pl.jakubtworek.order.vo.TypeOfOrder;
 import pl.jakubtworek.order.vo.OrderEvent;
 
 @Service

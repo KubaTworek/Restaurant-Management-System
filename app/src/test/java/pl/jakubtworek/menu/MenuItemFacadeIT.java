@@ -7,7 +7,7 @@ import org.mockito.MockitoAnnotations;
 import pl.jakubtworek.menu.dto.MenuDto;
 import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.menu.dto.MenuItemRequest;
-import pl.jakubtworek.order.dto.Status;
+import pl.jakubtworek.common.vo.Status;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

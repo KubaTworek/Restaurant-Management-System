@@ -2,7 +2,7 @@ package pl.jakubtworek.order;
 
 import pl.jakubtworek.auth.vo.UserId;
 import pl.jakubtworek.employee.vo.EmployeeId;
-import pl.jakubtworek.order.dto.TypeOfOrder;
+import pl.jakubtworek.order.vo.TypeOfOrder;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;

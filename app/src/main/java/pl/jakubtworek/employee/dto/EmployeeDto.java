@@ -1,7 +1,8 @@
 package pl.jakubtworek.employee.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import pl.jakubtworek.order.dto.Status;
+import pl.jakubtworek.common.vo.Status;
+import pl.jakubtworek.employee.vo.Job;
 
 @JsonDeserialize(as = EmployeeDto.DeserializationImpl.class)
 public interface EmployeeDto {

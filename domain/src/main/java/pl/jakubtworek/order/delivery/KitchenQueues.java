@@ -2,7 +2,7 @@ package pl.jakubtworek.order.delivery;
 
 import pl.jakubtworek.order.delivery.dto.EmployeeDelivery;
 import pl.jakubtworek.order.delivery.dto.OrderDelivery;
-import pl.jakubtworek.order.dto.TypeOfOrder;
+import pl.jakubtworek.order.vo.TypeOfOrder;
 
 import java.util.LinkedList;
 import java.util.PriorityQueue;

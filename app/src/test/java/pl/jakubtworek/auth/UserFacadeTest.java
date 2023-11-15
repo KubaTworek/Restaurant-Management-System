@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import pl.jakubtworek.auth.dto.LoginRequest;
-import pl.jakubtworek.auth.dto.LoginResponse;
 import pl.jakubtworek.auth.dto.RegisterRequest;
 import pl.jakubtworek.auth.dto.UserDto;
 
@@ -69,7 +68,7 @@ class UserFacadeTest {
         when(userRepository.save(any())).thenReturn(expectedUser);
 
         // when
-        final UserDto result = userFacade.register(request);
+        final var result = userFacade.register(request);
 
         // then
         assertUserEquals(expectedUser, result);
@@ -85,7 +84,7 @@ class UserFacadeTest {
         when(jwtService.buildJwt(eq("john.doe"), any(Long.class))).thenReturn("token");
 
         // when
-        final LoginResponse result = userFacade.login(request);
+        final var result = userFacade.login(request);
 
         // then
         assertEquals(expectedUser.getUsername(), result.username());

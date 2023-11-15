@@ -1,7 +1,7 @@
 package pl.jakubtworek.menu;
 
 import pl.jakubtworek.menu.dto.MenuDto;
-import pl.jakubtworek.order.dto.Status;
+import pl.jakubtworek.common.vo.Status;
 
 import java.util.Optional;
 import java.util.Set;

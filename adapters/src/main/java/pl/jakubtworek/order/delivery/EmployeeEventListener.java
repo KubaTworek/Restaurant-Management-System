@@ -3,9 +3,6 @@ package pl.jakubtworek.order.delivery;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import pl.jakubtworek.employee.vo.EmployeeEvent;
-import pl.jakubtworek.order.delivery.CarDelivery;
-import pl.jakubtworek.order.delivery.Kitchen;
-import pl.jakubtworek.order.delivery.WaiterDelivery;
 
 @Service
 class EmployeeEventListener {

@@ -4,21 +4,21 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.jakubtworek.AbstractIT;
+import pl.jakubtworek.common.vo.Status;
+import pl.jakubtworek.menu.dto.MenuDto;
+import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.menu.dto.MenuItemRequest;
-import pl.jakubtworek.order.dto.Status;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class MenuItemControllerE2ETest extends AbstractIT {
 
     @Test
     @DirtiesContext
-    void shouldCreateMenuItem_whenMenuIsExist() {
+    void shouldCreateMenuItem_whenMenuExists() {
         // given
         final var request = new MenuItemRequest("Cheeseburger", new BigDecimal("11.99"), "Food");
 
@@ -27,125 +27,114 @@ class MenuItemControllerE2ETest extends AbstractIT {
         final var responseMenu = getMenus();
 
         // then
-        assertEquals(HttpStatus.CREATED, responseMenuItem.getStatusCode());
-        assertNotNull(responseMenuItem.getBody().getId());
-        assertEquals(2, responseMenu.getBody().length);
+        assertMenuItemResponse(responseMenuItem, new BigDecimal("11.99"));
+        assertMenuItemsCount(responseMenu, "Food", 3);
+        assertMenuItemsCount(responseMenu, "Drinks", 2);
     }
 
     @Test
     @DirtiesContext
-    void shouldCreateMenuItem_whenMenuIsNotExist() {
+    void shouldCreateMenuItem_whenMenuDoesNotExist() {
         // given
-        final var request = new MenuItemRequest("Cheeseburger", new BigDecimal("11.99"), "Fast-Foods");
+        final var request = new MenuItemRequest("Cheeseburger", new BigDecimal("11.99"), "Fast-Food");
 
         // when
         final var responseMenuItem = postMenuItem(request);
         final var responseMenu = getMenus();
 
         // then
-        assertEquals(HttpStatus.CREATED, responseMenuItem.getStatusCode());
-        assertNotNull(responseMenuItem.getBody().getId());
-        assertEquals(3, responseMenu.getBody().length);
+        assertMenuItemResponse(responseMenuItem, new BigDecimal("11.99"));
+        assertMenuItemsCount(responseMenu, "Food", 2);
+        assertMenuItemsCount(responseMenu, "Drinks", 2);
+        assertMenuItemsCount(responseMenu, "Fast-Food", 1);
     }
 
     @Test
     @DirtiesContext
-    void shouldCreateInactiveMenuItem_whenMenuIsExist1() {
+    void shouldCreateInactiveMenuItem_whenMenuExists() {
         // given
-        final var request = new MenuItemRequest("Cheeseburger", new BigDecimal("11.99"), "Food");
+        final var request1 = new MenuItemRequest("Cheeseburger", new BigDecimal("11.99"), "Food");
+        final var request2 = new MenuItemRequest("Cheeseburger", new BigDecimal("10.99"), "Food");
 
         // when
-        final var responseMenuItem = postMenuItem(request);
-        final var deleteResponse = deleteMenuItemById(responseMenuItem.getBody().getId());
-        final var responseMenuItemSecond = postMenuItem(request);
+        final var responseMenuItem = postMenuItem(request1);
+        final var deleteResponse = deleteMenuItemById(responseMenuItem.getId());
+        final var responseMenuItemSecond = postMenuItem(request2);
         final var responseMenu = getMenus();
 
         // then
-        assertEquals(HttpStatus.CREATED, responseMenuItem.getStatusCode());
         assertEquals(HttpStatus.NO_CONTENT, deleteResponse.getStatusCode());
-        assertNotNull(responseMenuItem.getBody().getId());
-        assertEquals(responseMenuItem.getBody().getId(), responseMenuItemSecond.getBody().getId());
-        assertEquals(2, responseMenu.getBody().length);
-        assertEquals(3, Arrays.stream(responseMenu.getBody()).sequential().filter(menu -> "Food".equals(menu.getName())).findFirst().get().getMenuItems().size());
+        assertMenuItemResponse(responseMenuItem, new BigDecimal("11.99"));
+        assertMenuItemResponse(responseMenuItemSecond, new BigDecimal("10.99"));
+        assertMenuItemsCount(responseMenu, "Food", 3);
+        assertMenuItemsCount(responseMenu, "Drinks", 2);
     }
 
     @Test
     @DirtiesContext
-    void shouldCreateInactiveMenuItem_whenMenuIsNotExist() {
+    void shouldCreateInactiveMenuItem_whenMenuDoesNotExist() {
         // given
         final var request1 = new MenuItemRequest("Cheeseburger", new BigDecimal("11.99"), "Food");
         final var request2 = new MenuItemRequest("Cheeseburger", new BigDecimal("10.99"), "Fast-Food");
 
         // when
         final var responseMenuItem = postMenuItem(request1);
-        final var deleteResponse = deleteMenuItemById(responseMenuItem.getBody().getId());
+        final var deleteResponse = deleteMenuItemById(responseMenuItem.getId());
         final var responseMenuItemSecond = postMenuItem(request2);
         final var responseMenu = getMenus();
 
         // then
-        assertEquals(HttpStatus.CREATED, responseMenuItem.getStatusCode());
         assertEquals(HttpStatus.NO_CONTENT, deleteResponse.getStatusCode());
-        assertNotNull(responseMenuItem.getBody().getId());
-        assertEquals(responseMenuItem.getBody().getId(), responseMenuItemSecond.getBody().getId());
-        assertEquals(3, responseMenu.getBody().length);
-        assertEquals(1, Arrays.stream(responseMenu.getBody()).sequential().filter(menu -> "Fast-Food".equals(menu.getName())).findFirst().get().getMenuItems().size());
-        assertEquals(new BigDecimal("10.99"), Arrays.stream(responseMenu.getBody()).sequential().filter(menu -> "Fast-Food".equals(menu.getName())).findFirst().get().getMenuItems().get(0).getPrice());
+        assertMenuItemResponse(responseMenuItem, new BigDecimal("11.99"));
+        assertMenuItemResponse(responseMenuItemSecond, new BigDecimal("10.99"));
+        assertMenuItemsCount(responseMenu, "Food", 2);
+        assertMenuItemsCount(responseMenu, "Drinks", 2);
+        assertMenuItemsCount(responseMenu, "Fast-Food", 1);
     }
 
     @Test
     @DirtiesContext
     void shouldDeleteMenuItemById() {
         // given
-        final var createdId = postMenuItem(
-                new MenuItemRequest("Cheeseburger", new BigDecimal("11.99"), "Food")
-        ).getBody().getId();
+        final var created = postMenuItem(new MenuItemRequest("Cheeseburger", new BigDecimal("11.99"), "Food"));
 
         // when
-        final var firstDelete = deleteMenuItemById(createdId);
-        final var secondDelete = deleteMenuItemById(createdId);
+        final var firstDelete = deleteMenuItemById(created.getId());
+        final var secondDelete = deleteMenuItemById(created.getId());
 
         // then
         assertEquals(HttpStatus.NO_CONTENT, firstDelete.getStatusCode());
         assertEquals(HttpStatus.NOT_FOUND, secondDelete.getStatusCode());
-        final var deletedOrder = getMenuItemById(createdId);
-        assertEquals(Status.INACTIVE, deletedOrder.getBody().getStatus());
+        final var deletedOrder = getMenuItemById(created.getId());
+        assertEquals(Status.INACTIVE, deletedOrder.getStatus());
     }
 
     @Test
     @DirtiesContext
     void shouldGetMenus() {
         // given
-        final var createdId = postMenuItem(
-                new MenuItemRequest("Cheeseburger", new BigDecimal("11.99"), "Food")
-        ).getBody().getId();
+        final var created = postMenuItem(new MenuItemRequest("Cheeseburger", new BigDecimal("11.99"), "Food"));
 
         // when
-        deleteMenuItemById(createdId);
+        deleteMenuItemById(created.getId());
         final var response = getMenus();
 
         // then
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        final var menus = List.of(response.getBody());
-        assertEquals(2, menus.size());
-        assertEquals(2, menus.get(0).getMenuItems().size());
-        assertEquals(2, menus.get(1).getMenuItems().size());
+        assertMenuItemsCount(response, "Food", 2);
+        assertMenuItemsCount(response, "Drinks", 2);
     }
 
     @Test
     @DirtiesContext
     void shouldGetMenuItemById() {
         // given
-        final var createdId = postMenuItem(
-                new MenuItemRequest("Cheeseburger", new BigDecimal("11.99"), "Food")
-        ).getBody().getId();
+        final var created = postMenuItem(new MenuItemRequest("Cheeseburger", new BigDecimal("11.99"), "Food"));
 
         // when
-        final var retrievedResponse = getMenuItemById(createdId);
+        final var response = getMenuItemById(created.getId());
 
         // then
-        assertEquals(HttpStatus.OK, retrievedResponse.getStatusCode());
-        assertEquals("Cheeseburger", retrievedResponse.getBody().getName());
-        assertEquals(new BigDecimal("11.99"), retrievedResponse.getBody().getPrice());
+        assertMenuItemResponse(response, new BigDecimal("11.99"));
     }
 
     @Test
@@ -155,10 +144,16 @@ class MenuItemControllerE2ETest extends AbstractIT {
         final var response = getMenuItemByMenuName("Food");
 
         // then
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        final var menuItems = List.of(response.getBody());
-        assertEquals(2, menuItems.size());
-        assertEquals("Burger", menuItems.get(0).getName());
-        assertEquals(new BigDecimal("10.99"), menuItems.get(0).getPrice());
+        assertEquals(2, response.size());
+    }
+
+    private void assertMenuItemResponse(MenuItemDto response, BigDecimal expectedPrice) {
+        assertEquals("Cheeseburger", response.getName());
+        assertEquals(expectedPrice, response.getPrice());
+        assertEquals(Status.ACTIVE, response.getStatus());
+    }
+
+    private void assertMenuItemsCount(List<MenuDto> responseMenus, String menuName, int expectedItemCount) {
+        assertEquals(expectedItemCount, responseMenus.stream().filter(menu -> menuName.equals(menu.getName())).findFirst().get().getMenuItems().size());
     }
 }

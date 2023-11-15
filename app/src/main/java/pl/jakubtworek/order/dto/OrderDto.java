@@ -1,6 +1,7 @@
 package pl.jakubtworek.order.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import pl.jakubtworek.order.vo.TypeOfOrder;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;

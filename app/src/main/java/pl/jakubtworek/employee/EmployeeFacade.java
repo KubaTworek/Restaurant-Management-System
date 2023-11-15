@@ -3,9 +3,9 @@ package pl.jakubtworek.employee;
 import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.employee.dto.EmployeeRequest;
-import pl.jakubtworek.employee.dto.Job;
+import pl.jakubtworek.employee.vo.Job;
 import pl.jakubtworek.employee.vo.EmployeeEvent;
-import pl.jakubtworek.order.dto.Status;
+import pl.jakubtworek.common.vo.Status;
 
 import java.util.ArrayList;
 import java.util.List;

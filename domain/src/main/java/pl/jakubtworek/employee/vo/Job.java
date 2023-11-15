@@ -1,4 +1,4 @@
-package pl.jakubtworek.employee.dto;
+package pl.jakubtworek.employee.vo;
 
 public enum Job {
     COOK,
