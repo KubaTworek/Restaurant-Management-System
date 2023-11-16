@@ -48,7 +48,7 @@ class AddEmployeeToOrderCommandHandlerTest {
         handler.handle(command);
 
         // then
-        assertEquals(1, order.getSnapshot().getEmployees().size());
+        assertEquals(1, order.getSnapshot(1).getEmployees().size());
         verify(orderRepository).save(order);
     }
 }

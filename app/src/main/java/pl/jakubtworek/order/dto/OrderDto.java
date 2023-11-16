@@ -15,9 +15,9 @@ public interface OrderDto {
                            final ZonedDateTime hourOrder,
                            final ZonedDateTime hourAway,
                            final TypeOfOrder typeOfOrder,
-                           final List<OrderMenuItemDto> menuItems
+                           final List<OrderItemDto> orderItems
     ) {
-        return new OrderDto.DeserializationImpl(id, price, hourOrder, hourAway, typeOfOrder, menuItems);
+        return new OrderDto.DeserializationImpl(id, price, hourOrder, hourAway, typeOfOrder, orderItems);
     }
 
     Long getId();
@@ -30,7 +30,7 @@ public interface OrderDto {
 
     TypeOfOrder getTypeOfOrder();
 
-    List<OrderMenuItemDto> getMenuItems();
+    List<OrderItemDto> getOrderItems();
 
     class DeserializationImpl implements OrderDto {
         private final Long id;
@@ -38,20 +38,20 @@ public interface OrderDto {
         private final ZonedDateTime hourOrder;
         private final ZonedDateTime hourAway;
         private final TypeOfOrder typeOfOrder;
-        private final List<OrderMenuItemDto> menuItems;
+        private final List<OrderItemDto> orderItems;
 
         DeserializationImpl(final Long id,
                             final BigDecimal price,
                             final ZonedDateTime hourOrder,
                             final ZonedDateTime hourAway,
                             final TypeOfOrder typeOfOrder,
-                            final List<OrderMenuItemDto> menuItems) {
+                            final List<OrderItemDto> orderItems) {
             this.id = id;
             this.price = price;
             this.hourOrder = hourOrder;
             this.hourAway = hourAway;
             this.typeOfOrder = typeOfOrder;
-            this.menuItems = menuItems;
+            this.orderItems = orderItems;
         }
 
         @Override
@@ -80,8 +80,8 @@ public interface OrderDto {
         }
 
         @Override
-        public List<OrderMenuItemDto> getMenuItems() {
-            return menuItems;
+        public List<OrderItemDto> getOrderItems() {
+            return orderItems;
         }
     }
 }

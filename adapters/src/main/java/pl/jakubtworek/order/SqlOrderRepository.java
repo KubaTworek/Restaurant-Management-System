@@ -18,6 +18,9 @@ interface SqlOrderRepository extends JpaRepository<OrderSnapshot, Long> {
 }
 
 interface SqlOrderQueryRepository extends OrderQueryRepository, JpaRepository<OrderSnapshot, Long> {
+    @Query("SELECT o FROM OrderSnapshot o LEFT JOIN FETCH o.orderItems WHERE o.id = :orderId")
+    Optional<OrderDto> findDtoById(@Param("orderId") Long id);
+
     @Query("SELECT o FROM OrderSnapshot o " +
             "LEFT JOIN o.employees e " +
             "WHERE " +
@@ -28,7 +31,7 @@ interface SqlOrderQueryRepository extends OrderQueryRepository, JpaRepository<Or
             "    (:isReady = true AND o.hourAway IS NOT NULL) OR " +
             "    (:isReady = false AND o.hourAway IS NULL)) " +
             "AND (:employeeId IS NULL OR e.id = :employeeId) " +
-            "AND (:userId IS NULL OR o.user.id = :userId)")
+            "AND (:userId IS NULL OR o.clientId.id = :userId)")
     List<OrderDto> findFilteredOrders(
             @Param("fromDate") ZonedDateTime fromDate,
             @Param("toDate") ZonedDateTime toDate,
@@ -49,11 +52,11 @@ class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public Optional<Order> findById(final Long id) {
-        return repository.findById(id).map(Order::restore);
+        return repository.findById(id).map(o -> Order.restore(o ,1));
     }
 
     @Override
     public Order save(final Order entity) {
-        return Order.restore(repository.save(entity.getSnapshot()));
+        return Order.restore(repository.save(entity.getSnapshot(1)), 1);
     }
 }

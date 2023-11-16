@@ -149,7 +149,7 @@ class MenuItemFacadeIT {
 
     private MenuItem createMenuItem(Long id, String name, BigDecimal price, MenuDto menuDto) {
         return MenuItem.restore(new MenuItemSnapshot(
-                id, name, price, createMenu(menuDto).getSnapshot(1), Status.ACTIVE, new HashSet<>()
+                id, name, price, createMenu(menuDto).getSnapshot(1), Status.ACTIVE
         ), 1);
     }
 
@@ -161,8 +161,8 @@ class MenuItemFacadeIT {
         return menuItems;
     }
 
-    private MenuItem.Menu createMenu(MenuDto menuDto) {
-        return MenuItem.Menu.restore(new MenuSnapshot(
+    private Menu createMenu(MenuDto menuDto) {
+        return Menu.restore(new MenuSnapshot(
                 menuDto.getId(), menuDto.getName(), new HashSet<>()
         ), 1);
     }

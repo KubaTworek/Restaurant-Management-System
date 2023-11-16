@@ -59,8 +59,8 @@ class MenuItemFactory {
         return menuItem;
     }
 
-    private MenuItem.Menu createMenu(String newMenuName) {
-        final var menu = new MenuItem.Menu();
+    private Menu createMenu(String newMenuName) {
+        final var menu = new Menu();
         menu.updateName(newMenuName);
         return menu;
     }

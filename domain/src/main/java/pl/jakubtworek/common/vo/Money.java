@@ -10,7 +10,7 @@ public class Money {
         this.amount = amount;
     }
 
-    public BigDecimal getAmount() {
+    public BigDecimal getValue() {
         return amount;
     }
 

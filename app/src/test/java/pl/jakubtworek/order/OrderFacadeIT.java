@@ -49,8 +49,6 @@ class OrderFacadeIT {
         MockitoAnnotations.openMocks(this);
         orderFacade = new OrderFacade(
                 userFacade,
-                employeeFacade,
-                menuItemFacade,
                 new OrderFactory(userFacade, menuItemFacade),
                 orderRepository,
                 orderQueryRepository,
@@ -77,8 +75,8 @@ class OrderFacadeIT {
 
         // then
         verify(publisher).publish(any(OrderEvent.class));
-        assertEquals(expectedOrder.getSnapshot().getId(), result.id());
-        assertEquals(expectedOrder.getSnapshot().getPrice(), result.price());
+        assertEquals(expectedOrder.getSnapshot(1).getId(), result.getId());
+        assertEquals(expectedOrder.getSnapshot(1).getPrice(), result.getPrice());
     }
 
     @Test
@@ -88,7 +86,7 @@ class OrderFacadeIT {
         final var expectedOrders = createOrderDtos();
 
         when(userFacade.getByToken("jwt-token")).thenReturn(expectedUser);
-        when(orderQueryRepository.findByUserId(1L)).thenReturn(expectedOrders);
+        when(orderQueryRepository.findDtoByClientId(new UserId(1L))).thenReturn(expectedOrders);
 
         // when
         final var result = orderFacade.findAllByToken("jwt-token");
@@ -115,7 +113,7 @@ class OrderFacadeIT {
         return Order.restore(new OrderSnapshot(
                 id, price, hourOrder, hourAway, typeOfOrder,
                 new HashSet<>(), new HashSet<>(), new UserId(1L)
-        ));
+        ), 1);
     }
 
     private List<OrderDto> createOrderDtos() {

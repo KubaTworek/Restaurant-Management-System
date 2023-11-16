@@ -6,26 +6,80 @@
                  version="1.0">
 
     <description>XML Mapping file</description>
-
-    <entity class="pl.jakubtworek.auth.UserSnapshot" access="FIELD">
-        <table name="USERS"/>
+    <!--ORDERS-->
+    <entity class="pl.jakubtworek.order.OrderSnapshot" access="FIELD">
+        <table name="ORDERS"/>
         <attributes>
             <id name="id">
-                <column name="USER_ID"/>
+                <column name="ORDER_ID"/>
                 <generated-value strategy="IDENTITY"/>
             </id>
-            <basic name="username">
-                <column name="USERNAME" nullable="false"/>
+            <basic name="price">
+                <column name="PRICE" nullable="false"/>
             </basic>
-            <basic name="password">
-                <column name="PASSWORD" nullable="false"/>
+            <basic name="hourOrder">
+                <column name="HOUR_ORDER" nullable="false"/>
             </basic>
-            <one-to-many name="orders" fetch="LAZY">
-                <join-column name="USER_ID"/>
+            <basic name="hourAway">
+                <column name="HOUR_AWAY"/>
+            </basic>
+            <basic name="typeOfOrder">
+                <column name="TYPE_OF_ORDER" nullable="false"/>
+                <enumerated>STRING</enumerated>
+            </basic>
+            <one-to-many name="orderItems" fetch="EAGER">
+                <join-column name="ORDER_ID"/>
+                <cascade>
+                    <cascade-persist/>
+                </cascade>
             </one-to-many>
+            <many-to-many name="employees" fetch="EAGER">
+                <join-table name="ORDERS_EMPLOYEE">
+                    <join-column name="ORDER_ID"/>
+                    <inverse-join-column name="EMPLOYEE_ID"/>
+                </join-table>
+            </many-to-many>
+            <embedded name="clientId">
+                <attribute-override name="id">
+                    <column name="CLIENT_ID"/>
+                </attribute-override>
+            </embedded>
         </attributes>
     </entity>
 
+    <entity class="pl.jakubtworek.order.OrderItemSnapshot" access="FIELD">
+        <table name="ORDER_ITEMS"/>
+        <attributes>
+            <id name="id">
+                <column name="ORDER_ITEM_ID"/>
+                <generated-value strategy="AUTO"/>
+            </id>
+            <basic name="name">
+                <column name="ORDER_ITEM_NAME"/>
+            </basic>
+            <basic name="price">
+                <column name="PRICE" nullable="false"/>
+            </basic>
+            <basic name="amount">
+                <column name="AMOUNT" nullable="false"/>
+            </basic>
+            <many-to-one name="order" fetch="EAGER">
+                <join-column name="ORDER_ID"/>
+            </many-to-one>
+        </attributes>
+    </entity>
+
+    <entity class="pl.jakubtworek.order.vo.OrderId" access="FIELD">
+        <table name="ORDERS"/>
+        <attributes>
+            <id name="id">
+                <column name="ORDER_ID"/>
+                <generated-value strategy="IDENTITY"/>
+            </id>
+        </attributes>
+    </entity>
+
+    <!--EMPLOYEES-->
     <entity class="pl.jakubtworek.employee.EmployeeSnapshot" access="FIELD">
         <table name="EMPLOYEES"/>
         <attributes>
@@ -56,25 +110,34 @@
         </attributes>
     </entity>
 
-    <entity class="pl.jakubtworek.menu.MenuSnapshot" access="FIELD">
-        <table name="MENU"/>
+    <entity class="pl.jakubtworek.employee.vo.EmployeeId" access="FIELD">
+        <table name="EMPLOYEES"/>
         <attributes>
             <id name="id">
-                <column name="MENU_ID"/>
+                <column name="EMPLOYEE_ID"/>
                 <generated-value strategy="IDENTITY"/>
             </id>
-            <basic name="name">
-                <column name="MENU_NAME" nullable="false"/>
-            </basic>
-            <one-to-many name="menuItems" fetch="LAZY">
-                <join-column name="MENU_ID"/>
-                <cascade>
-                    <cascade-all/>
-                </cascade>
-            </one-to-many>
         </attributes>
     </entity>
 
+    <!--USERS-->
+    <entity class="pl.jakubtworek.auth.UserSnapshot" access="FIELD">
+        <table name="USERS"/>
+        <attributes>
+            <id name="id">
+                <column name="USER_ID"/>
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="username">
+                <column name="USERNAME" nullable="false"/>
+            </basic>
+            <basic name="password">
+                <column name="PASSWORD" nullable="false"/>
+            </basic>
+        </attributes>
+    </entity>
+
+    <!--MENU ITEMS-->
     <entity class="pl.jakubtworek.menu.MenuItemSnapshot" access="FIELD">
         <table name="MENU_ITEMS"/>
         <attributes>
@@ -95,106 +158,33 @@
             <many-to-one name="menu" fetch="EAGER">
                 <join-column name="MENU_ID"/>
             </many-to-one>
-            <one-to-many name="orders" fetch="LAZY">
-                <join-column name="MENU_ITEM_ID"/>
-                <cascade>
-                    <cascade-all/>
-                </cascade>
-            </one-to-many>
         </attributes>
     </entity>
 
-    <entity class="pl.jakubtworek.order.OrderSnapshot" access="FIELD">
-        <table name="ORDERS"/>
+    <entity class="pl.jakubtworek.menu.MenuSnapshot" access="FIELD">
+        <table name="MENU"/>
         <attributes>
             <id name="id">
-                <column name="ORDER_ID"/>
+                <column name="MENU_ID"/>
                 <generated-value strategy="IDENTITY"/>
             </id>
-            <basic name="price">
-                <column name="PRICE" nullable="false"/>
+            <basic name="name">
+                <column name="MENU_NAME" nullable="false"/>
             </basic>
-            <basic name="hourOrder">
-                <column name="HOUR_ORDER" nullable="false"/>
-            </basic>
-            <basic name="hourAway">
-                <column name="HOUR_AWAY"/>
-            </basic>
-            <basic name="typeOfOrder">
-                <column name="TYPE_OF_ORDER" nullable="false"/>
-                <enumerated>STRING</enumerated>
-            </basic>
-            <many-to-one name="user" fetch="EAGER">
-                <join-column name="USER_ID"/>
-            </many-to-one>
             <one-to-many name="menuItems" fetch="LAZY">
-                <join-column name="ORDER_ID"/>
+                <join-column name="MENU_ID"/>
                 <cascade>
-                    <cascade-all/>
+                    <cascade-merge/>
                 </cascade>
             </one-to-many>
-            <many-to-many name="employees" fetch="EAGER">
-                <join-table name="ORDERS_EMPLOYEE">
-                    <join-column name="ORDER_ID"/>
-                    <inverse-join-column name="EMPLOYEE_ID"/>
-                </join-table>
-            </many-to-many>
         </attributes>
     </entity>
 
-    <entity class="pl.jakubtworek.auth.vo.UserId" access="FIELD">
-        <table name="USERS"/>
+    <embeddable class="pl.jakubtworek.auth.vo.UserId" access="FIELD">
         <attributes>
-            <id name="id">
-                <column name="USER_ID"/>
-                <generated-value strategy="IDENTITY"/>
-            </id>
+            <basic name="id">
+                <column nullable="false"/>
+            </basic>
         </attributes>
-    </entity>
-
-    <entity class="pl.jakubtworek.employee.vo.EmployeeId" access="FIELD">
-        <table name="EMPLOYEES"/>
-        <attributes>
-            <id name="id">
-                <column name="EMPLOYEE_ID"/>
-                <generated-value strategy="IDENTITY"/>
-            </id>
-        </attributes>
-    </entity>
-
-    <entity class="pl.jakubtworek.menu.vo.MenuItemId" access="FIELD">
-        <table name="MENU_ITEMS"/>
-        <attributes>
-            <id name="id">
-                <column name="MENU_ITEM_ID"/>
-                <generated-value strategy="IDENTITY"/>
-            </id>
-        </attributes>
-    </entity>
-
-    <entity class="pl.jakubtworek.order.vo.OrderId" access="FIELD">
-        <table name="ORDERS"/>
-        <attributes>
-            <id name="id">
-                <column name="ORDER_ID"/>
-                <generated-value strategy="IDENTITY"/>
-            </id>
-        </attributes>
-    </entity>
-
-    <entity class="pl.jakubtworek.order.OrderItem" access="FIELD">
-        <table name="ORDERS__MENU_ITEMS"/>
-        <attributes>
-            <id name="id">
-                <column name="ORDER_MENU_ITEMS_ID"/>
-                <generated-value strategy="IDENTITY"/>
-            </id>
-            <many-to-one name="orderId" fetch="EAGER">
-                <join-column name="ORDER_ID"/>
-            </many-to-one>
-            <many-to-one name="menuItemId" fetch="EAGER">
-                <join-column name="MENU_ITEM_ID"/>
-            </many-to-one>
-        </attributes>
-    </entity>
+    </embeddable>
 </entity-mappings>

@@ -25,7 +25,6 @@ import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.menu.dto.MenuItemRequest;
 import pl.jakubtworek.order.dto.OrderDto;
 import pl.jakubtworek.order.dto.OrderRequest;
-import pl.jakubtworek.order.dto.OrderResponse;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -191,7 +190,7 @@ public class AbstractIT {
 
     // ORDER
 
-    public OrderResponse postOrder(OrderRequest request, String token) {
+    public OrderDto postOrder(OrderRequest request, String token) {
         final var headers = new HttpHeaders();
         headers.add("Authorization", token);
         HttpEntity<OrderRequest> requestEntity = new HttpEntity<>(request, headers);
@@ -200,7 +199,7 @@ public class AbstractIT {
                 "http://localhost:" + port + "/orders",
                 HttpMethod.POST,
                 requestEntity,
-                OrderResponse.class
+                OrderDto.class
         );
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         return response.getBody();
@@ -222,7 +221,7 @@ public class AbstractIT {
         return Arrays.stream(Objects.requireNonNull(response.getBody())).toList();
     }
 
-    public OrderResponse getOrderById(Long orderId, String token) {
+    public OrderDto getOrderById(Long orderId, String token) {
         final var headers = new HttpHeaders();
         headers.add("Authorization", token);
         HttpEntity<OrderRequest> requestEntity = new HttpEntity<>(headers);
@@ -231,7 +230,7 @@ public class AbstractIT {
                 "http://localhost:" + port + "/orders/" + orderId,
                 HttpMethod.GET,
                 requestEntity,
-                OrderResponse.class
+                OrderDto.class
         );
         assertEquals(HttpStatus.OK, response.getStatusCode());
         return response.getBody();

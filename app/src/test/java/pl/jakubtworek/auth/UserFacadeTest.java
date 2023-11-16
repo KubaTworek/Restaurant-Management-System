@@ -10,7 +10,6 @@ import pl.jakubtworek.auth.dto.RegisterRequest;
 import pl.jakubtworek.auth.dto.UserDto;
 
 import java.time.Instant;
-import java.util.HashSet;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -117,7 +116,7 @@ class UserFacadeTest {
 
     private User createUser(String username, String password) {
         return User.restore(new UserSnapshot(
-                1L, username, password, new HashSet<>()
+                1L, username, password
         ));
     }
 

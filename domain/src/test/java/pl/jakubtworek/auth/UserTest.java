@@ -2,15 +2,13 @@ package pl.jakubtworek.auth;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.HashSet;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserTest {
     @Test
     void shouldRestoreUserFromSnapshot() {
         // given
-        final var snapshot = new UserSnapshot(1L, "john.doe", "password123", new HashSet<>());
+        final var snapshot = new UserSnapshot(1L, "john.doe", "password123");
 
         // when
         final var user = User.restore(snapshot);
@@ -20,7 +18,6 @@ class UserTest {
         assertEquals(snapshot.getId(), result.getId());
         assertEquals(snapshot.getUsername(), result.getUsername());
         assertEquals(snapshot.getPassword(), result.getPassword());
-        assertEquals(snapshot.getOrders(), result.getOrders());
     }
 
     @Test

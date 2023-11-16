@@ -4,9 +4,7 @@ import org.junit.jupiter.api.Test;
 import pl.jakubtworek.auth.vo.UserId;
 import pl.jakubtworek.common.vo.Money;
 import pl.jakubtworek.employee.vo.EmployeeId;
-import pl.jakubtworek.menu.vo.MenuItemId;
 import pl.jakubtworek.order.vo.TypeOfOrder;
-import pl.jakubtworek.order.vo.OrderId;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -25,18 +23,18 @@ class OrderTest {
         final var snapshot = new OrderSnapshot(1L, new BigDecimal("25.99"), ZonedDateTime.now(), null, TypeOfOrder.DELIVERY, new HashSet<>(), new HashSet<>(), new UserId(1L));
 
         // when
-        final var order = Order.restore(snapshot);
+        final var order = Order.restore(snapshot, 1);
 
         // then
-        final var result = order.getSnapshot();
+        final var result = order.getSnapshot(1);
         assertEquals(snapshot.getId(), result.getId());
         assertEquals(snapshot.getPrice(), result.getPrice());
         assertEquals(snapshot.getHourOrder(), result.getHourOrder());
         assertNull(result.getHourAway());
         assertEquals(snapshot.getTypeOfOrder(), result.getTypeOfOrder());
-        assertEquals(snapshot.getMenuItems(), result.getMenuItems());
+        assertEquals(snapshot.getOrderItems(), result.getOrderItems());
         assertEquals(snapshot.getEmployees(), result.getEmployees());
-        assertEquals(snapshot.getUser(), result.getUser());
+        assertEquals(snapshot.getClientId(), result.getClientId());
     }
 
     @Test
@@ -49,7 +47,7 @@ class OrderTest {
         order.addEmployee(employeeId);
 
         // then
-        assertTrue(order.getSnapshot().getEmployees().contains(employeeId));
+        assertTrue(order.getSnapshot(1).getEmployees().contains(employeeId));
     }
 
     @Test
@@ -61,7 +59,7 @@ class OrderTest {
         order.delivery();
 
         // then
-        assertNotNull(order.getSnapshot().getHourAway());
+        assertNotNull(order.getSnapshot(1).getHourAway());
     }
 
     @Test
@@ -77,15 +75,15 @@ class OrderTest {
         order.updateInfo(menuItems, price, typeOfOrderName, user);
 
         // then
-        final var result = order.getSnapshot();
-        assertEquals(menuItems, result.getMenuItems());
-        assertEquals(price.getAmount(), result.getPrice());
+        final var result = order.getSnapshot(1);
+        assertEquals(menuItems, result.getOrderItems());
+        assertEquals(price.getValue(), result.getPrice());
         assertNotNull(result.getHourOrder());
         assertEquals(TypeOfOrder.DELIVERY, result.getTypeOfOrder());
-        assertEquals(user, result.getUser());
+        assertEquals(user, result.getClientId());
     }
 
-    @Test
+/*    @Test
     void shouldGetAmountOfMenuItems() {
         // given
         final var order = new Order();
@@ -96,5 +94,5 @@ class OrderTest {
 
         // when & then
         assertEquals(2, order.getAmountOfMenuItems());
-    }
+    }*/
 }

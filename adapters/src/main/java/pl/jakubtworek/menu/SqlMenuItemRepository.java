@@ -58,7 +58,6 @@ class MenuItemRepositoryImpl implements MenuItemRepository {
 
     @Override
     public MenuItem save(final MenuItem entity) {
-        final var e = entity.getSnapshot(1);
         return MenuItem.restore(menuItemRepository.save(entity.getSnapshot(1)), 1);
     }
 
@@ -68,7 +67,7 @@ class MenuItemRepositoryImpl implements MenuItemRepository {
     }
 
     @Override
-    public MenuItem.Menu save(final MenuItem.Menu entity) {
-        return MenuItem.Menu.restore(menuRepository.save(entity.getSnapshot(1)), 1);
+    public Menu save(final Menu entity) {
+        return Menu.restore(menuRepository.save(entity.getSnapshot(1)), 1);
     }
 }

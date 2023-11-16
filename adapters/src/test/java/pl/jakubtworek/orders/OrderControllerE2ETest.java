@@ -8,8 +8,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import pl.jakubtworek.AbstractIT;
 import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.employee.dto.EmployeeRequest;
+import pl.jakubtworek.order.dto.OrderDto;
 import pl.jakubtworek.order.dto.OrderRequest;
-import pl.jakubtworek.order.dto.OrderResponse;
 import pl.jakubtworek.order.vo.TypeOfOrder;
 
 import java.math.BigDecimal;
@@ -56,7 +56,7 @@ class OrderControllerE2ETest extends AbstractIT {
     @DirtiesContext
     void shouldGetOrderById() {
         // given
-        final var createdId = postOrder(new OrderRequest("DELIVERY", List.of("Burger", "Cola", "Cola")), userToken).id();
+        final var createdId = postOrder(new OrderRequest("DELIVERY", List.of("Burger", "Cola", "Cola")), userToken).getId();
 
         // when
         final var response = getOrderById(createdId, userToken);
@@ -110,13 +110,17 @@ class OrderControllerE2ETest extends AbstractIT {
         assertCookAssignment(cook2, delivery);
     }
 
-    private void assertOrderResponse(OrderResponse response) {
-        assertEquals(TypeOfOrder.DELIVERY, response.typeOfOrder());
-        assertEquals(new BigDecimal("22.97"), response.price());
-        assertNotNull(response.hourOrder());
-        assertNull(response.hourAway());
-        assertEquals(2, response.menuItems().stream().filter(menuItem -> "Cola".equals(menuItem.getName())).toList().size());
-        assertEquals(1, response.menuItems().stream().filter(menuItem -> "Burger".equals(menuItem.getName())).toList().size());
+    private void assertOrderResponse(OrderDto response) {
+        assertEquals(TypeOfOrder.DELIVERY, response.getTypeOfOrder());
+        assertEquals(new BigDecimal("22.97"), response.getPrice());
+        assertNotNull(response.getHourOrder());
+        assertNull(response.getHourAway());
+        final var cola = response.getOrderItems().stream().filter(menuItem -> "Cola".equals(menuItem.getName())).findFirst().get();
+        assertEquals(new BigDecimal("5.99"), cola.getPrice());
+        assertEquals(2, cola.getAmount());
+        final var burger = response.getOrderItems().stream().filter(menuItem -> "Burger".equals(menuItem.getName())).findFirst().get();
+        assertEquals(new BigDecimal("10.99"), burger.getPrice());
+        assertEquals(1, burger.getAmount());
     }
 
     private void assertCookAssignment(EmployeeDto cook, EmployeeDto other) {

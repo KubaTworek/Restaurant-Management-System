@@ -16,7 +16,7 @@ class MenuItemTest {
     @Test
     void shouldRestoreMenuItemFromSnapshot() {
         // given
-        final var snapshot = new MenuItemSnapshot(1L, "Burger", new BigDecimal("10.99"), null, Status.ACTIVE, new HashSet<>());
+        final var snapshot = new MenuItemSnapshot(1L, "Burger", new BigDecimal("10.99"), null, Status.ACTIVE);
 
         // when
         final var menuItem = MenuItem.restore(snapshot, 0);
@@ -28,7 +28,6 @@ class MenuItemTest {
         assertEquals(snapshot.getPrice(), result.getPrice());
         assertNull(result.getMenu());
         assertEquals(snapshot.getStatus(), result.getStatus());
-        assertEquals(snapshot.getOrders(), result.getOrders());
     }
 
     @Test
@@ -37,7 +36,7 @@ class MenuItemTest {
         final var menuSnapshot = new MenuSnapshot(1L, "Main Menu", new HashSet<>());
 
         // Create a menu item snapshot with a menu reference
-        final var menuItemSnapshot = new MenuItemSnapshot(1L, "Pizza", new BigDecimal("15.99"), menuSnapshot, Status.ACTIVE, new HashSet<>());
+        final var menuItemSnapshot = new MenuItemSnapshot(1L, "Pizza", new BigDecimal("15.99"), menuSnapshot, Status.ACTIVE);
 
         // Restore the menu item
         final var menuItem = MenuItem.restore(menuItemSnapshot, 1);
@@ -48,7 +47,6 @@ class MenuItemTest {
         assertEquals(menuItemSnapshot.getPrice(), menuItem.getSnapshot(1).getPrice());
         assertNotNull(menuItem.getSnapshot(1).getMenu());
         assertEquals(menuItemSnapshot.getStatus(), menuItem.getSnapshot(1).getStatus());
-        assertEquals(menuItemSnapshot.getOrders(), menuItem.getSnapshot(1).getOrders());
 
         // Check assertions for the restored menu
         assertEquals(menuSnapshot.getId(), menuItem.getSnapshot(1).getMenu().getId());
@@ -82,7 +80,7 @@ class MenuTest {
         final var menuSnapshot = new MenuSnapshot(1L, "Main Menu", new HashSet<>());
 
         // when
-        final var menu = MenuItem.Menu.restore(menuSnapshot, 0);
+        final var menu = Menu.restore(menuSnapshot, 0);
 
         // then
         final var result = menu.getSnapshot(1);
@@ -94,7 +92,7 @@ class MenuTest {
     @Test
     void shouldUpdateMenuInfo() {
         // given
-        final var menu = new MenuItem.Menu();
+        final var menu = new Menu();
 
         // when
         menu.updateInfo(1L, "Healthy Menu");
@@ -109,7 +107,7 @@ class MenuTest {
     @Test
     void shouldUpdateMenuName() {
         // given
-        final var menu = new MenuItem.Menu();
+        final var menu = new Menu();
 
         // when
         menu.updateName("Vegetarian Menu");

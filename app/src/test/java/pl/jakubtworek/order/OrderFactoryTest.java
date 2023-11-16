@@ -57,9 +57,9 @@ class OrderFactoryTest {
         final var order = orderFactory.createOrder(orderRequest, jwt);
 
         // then
-        final var snap = order.getSnapshot();
-        assertEquals(user.getId(), snap.getUser().getId());
-        assertEquals(2, snap.getMenuItems().size());
+        final var snap = order.getSnapshot(1);
+        assertEquals(user.getId(), snap.getClientId().getId());
+        assertEquals(2, snap.getOrderItems().size());
         assertEquals(15.00, snap.getPrice().doubleValue());
         assertEquals(TypeOfOrder.TAKE_AWAY, snap.getTypeOfOrder());
     }

@@ -53,10 +53,10 @@ class MenuItemFactoryTest {
         final var menuItemRequest = new MenuItemRequest(
                 "Burger", new BigDecimal("15.99"), "Food"
         );
-        final var menu = new MenuItem.Menu();
+        final var menu = new Menu();
         menu.updateInfo(1L, "Food");
 
-        when(menuItemRepository.save(any(MenuItem.Menu.class))).thenReturn(menu);
+        when(menuItemRepository.save(any(Menu.class))).thenReturn(menu);
 
         // when
         final var menuItem = menuItemFactory.createMenuItemAndMenu(menuItemRequest);

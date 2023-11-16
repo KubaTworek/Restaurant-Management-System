@@ -15,9 +15,9 @@ class OrderSnapshot {
     private ZonedDateTime hourOrder;
     private ZonedDateTime hourAway;
     private TypeOfOrder typeOfOrder;
-    private Set<OrderItem> menuItems = new HashSet<>();
+    private Set<OrderItemSnapshot> orderItems = new HashSet<>();
     private Set<EmployeeId> employees = new HashSet<>();
-    private UserId user;
+    private UserId clientId;
 
     public OrderSnapshot() {
     }
@@ -27,18 +27,18 @@ class OrderSnapshot {
                   final ZonedDateTime hourOrder,
                   final ZonedDateTime hourAway,
                   final TypeOfOrder typeOfOrder,
-                  final Set<OrderItem> menuItems,
+                  final Set<OrderItemSnapshot> orderItems,
                   final Set<EmployeeId> employees,
-                  final UserId user
+                  final UserId clientId
     ) {
         this.id = id;
         this.price = price;
         this.hourOrder = hourOrder;
         this.hourAway = hourAway;
         this.typeOfOrder = typeOfOrder;
-        this.menuItems = menuItems;
+        this.orderItems = orderItems;
         this.employees = employees;
-        this.user = user;
+        this.clientId = clientId;
     }
 
     Long getId() {
@@ -61,15 +61,15 @@ class OrderSnapshot {
         return typeOfOrder;
     }
 
-    Set<OrderItem> getMenuItems() {
-        return menuItems;
+    Set<OrderItemSnapshot> getOrderItems() {
+        return orderItems;
     }
 
     Set<EmployeeId> getEmployees() {
         return employees;
     }
 
-    UserId getUser() {
-        return user;
+    UserId getClientId() {
+        return clientId;
     }
 }

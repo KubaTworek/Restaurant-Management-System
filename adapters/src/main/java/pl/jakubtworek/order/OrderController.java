@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.jakubtworek.order.dto.OrderDto;
 import pl.jakubtworek.order.dto.OrderRequest;
-import pl.jakubtworek.order.dto.OrderResponse;
 
 import java.net.URI;
 import java.util.List;
@@ -30,11 +29,11 @@ class OrderController {
     }
 
     @PostMapping
-    ResponseEntity<OrderResponse> create(@RequestBody OrderRequest orderRequest, @RequestHeader("Authorization") String jwt) {
+    ResponseEntity<OrderDto> create(@RequestBody OrderRequest orderRequest, @RequestHeader("Authorization") String jwt) {
         logger.info("Received a request to create a new order.");
         final var result = orderFacade.save(orderRequest, jwt);
-        logger.info("Order {} created successfully.", result.id());
-        return ResponseEntity.created(URI.create("/" + result.id())).body(result);
+        logger.info("Order {} created successfully.", result.getId());
+        return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
     @GetMapping("/filter")
@@ -65,11 +64,11 @@ class OrderController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<OrderResponse> getById(@PathVariable Long id) {
+    ResponseEntity<OrderDto> getById(@PathVariable Long id) {
         logger.info("Received a request to get order details for ID: {}", id);
         return orderFacade.findById(id)
                 .map(order -> {
-                    logger.info("Found order with ID {}: {}", id, order.id());
+                    logger.info("Found order with ID {}: {}", id, order.getId());
                     return ResponseEntity.ok(order);
                 })
                 .orElseGet(() -> {

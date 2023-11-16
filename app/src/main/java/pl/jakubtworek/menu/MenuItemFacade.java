@@ -32,11 +32,6 @@ public class MenuItemFacade {
                 .orElseThrow(() -> new IllegalStateException(MENU_ITEM_NOT_FOUND_ERROR));
     }
 
-    public MenuItemDto getById(Long id) {
-        return menuItemQueryRepository.findDtoById(id)
-                .orElseThrow(() -> new IllegalStateException(MENU_ITEM_NOT_FOUND_ERROR));
-    }
-
     MenuItemDto save(MenuItemRequest toSave) {
         return menuItemQueryRepository.findDtoByName(toSave.name())
                 .map(menuItem -> {

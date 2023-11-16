@@ -40,7 +40,7 @@ class DeliverOrderCommandHandlerTest {
         handler.handle(command);
 
         // then
-        assertNotNull(order.getSnapshot().getHourAway());
+        assertNotNull(order.getSnapshot(1).getHourAway());
         verify(orderRepository, times(1)).save(order);
     }
 }
