@@ -1,15 +1,14 @@
 package pl.jakubtworek.employee;
 
+import pl.jakubtworek.common.vo.Status;
 import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.employee.vo.Job;
-import pl.jakubtworek.common.vo.Status;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public interface EmployeeQueryRepository {
-    List<EmployeeDto> findByJob(Job job);
+interface EmployeeQueryRepository {
+    Set<EmployeeDto> findByJob(Job job);
 
     Optional<EmployeeDto> findDtoById(Long id);
 

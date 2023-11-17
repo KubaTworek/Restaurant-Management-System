@@ -5,7 +5,7 @@ CREATE TABLE ORDERS
     HOUR_ORDER    timestamp default sysdate,
     HOUR_AWAY     timestamp default null,
     TYPE_OF_ORDER VARCHAR(9)     NOT NULL,
-    CLIENT_ID       BIGINT         NOT NULL,
+    CLIENT_ID     BIGINT         NOT NULL,
     PRIMARY KEY (ORDER_ID)
 );
 

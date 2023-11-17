@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import pl.jakubtworek.auth.vo.UserId;
 import pl.jakubtworek.order.dto.OrderDto;
 import pl.jakubtworek.order.vo.TypeOfOrder;
 
@@ -12,17 +13,27 @@ import java.util.List;
 import java.util.Optional;
 
 interface SqlOrderRepository extends JpaRepository<OrderSnapshot, Long> {
-    Optional<OrderSnapshot> findById(Long id);
-
-    <S extends OrderSnapshot> S save(S entity);
+    @Query("SELECT o FROM OrderSnapshot o " +
+            "LEFT JOIN FETCH o.orderItems " +
+            "LEFT JOIN FETCH o.employees " +
+            "WHERE o.id = :orderId")
+    Optional<OrderSnapshot> findById(@Param("orderId") Long id);
 }
 
 interface SqlOrderQueryRepository extends OrderQueryRepository, JpaRepository<OrderSnapshot, Long> {
-    @Query("SELECT o FROM OrderSnapshot o LEFT JOIN FETCH o.orderItems WHERE o.id = :orderId")
+    @Query("SELECT o FROM OrderSnapshot o " +
+            "LEFT JOIN FETCH o.orderItems " +
+            "WHERE o.id = :orderId")
     Optional<OrderDto> findDtoById(@Param("orderId") Long id);
 
     @Query("SELECT o FROM OrderSnapshot o " +
-            "LEFT JOIN o.employees e " +
+            "LEFT JOIN FETCH o.orderItems " +
+            "WHERE o.clientId = :clientId")
+    List<OrderDto> findDtoByClientId(@Param("clientId") UserId clientId);
+
+    @Query("SELECT o FROM OrderSnapshot o " +
+            "LEFT JOIN FETCH o.orderItems " +
+            "LEFT JOIN FETCH o.employees e " +
             "WHERE " +
             "(:fromDate IS NULL OR o.hourOrder >= :fromDate) " +
             "AND (:toDate IS NULL OR o.hourOrder <= :toDate) " +
@@ -52,7 +63,7 @@ class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public Optional<Order> findById(final Long id) {
-        return repository.findById(id).map(o -> Order.restore(o ,1));
+        return repository.findById(id).map(o -> Order.restore(o, 1));
     }
 
     @Override

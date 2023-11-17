@@ -8,10 +8,10 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface OrderQueryRepository {
+interface OrderQueryRepository {
     Optional<OrderDto> findDtoById(Long id);
 
-    List<OrderDto> findDtoByClientId(UserId userId);
+    List<OrderDto> findDtoByClientId(UserId clientId);
 
     List<OrderDto> findFilteredOrders(
             ZonedDateTime fromDate,

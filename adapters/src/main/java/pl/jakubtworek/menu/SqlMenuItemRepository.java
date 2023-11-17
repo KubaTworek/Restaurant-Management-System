@@ -6,35 +6,55 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import pl.jakubtworek.menu.dto.MenuDto;
 import pl.jakubtworek.common.vo.Status;
+import pl.jakubtworek.menu.dto.MenuDto;
+import pl.jakubtworek.menu.dto.MenuItemDto;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 interface SqlMenuItemRepository extends JpaRepository<MenuItemSnapshot, Long> {
-
+    @Query("SELECT mi FROM MenuItemSnapshot mi " +
+            "LEFT JOIN FETCH mi.menu " +
+            "WHERE mi.id = :id")
     Optional<MenuItemSnapshot> findById(Long id);
 
-    <S extends MenuItemSnapshot> S save(S entity);
-
     @Modifying
-    @Query("UPDATE MenuItemSnapshot m SET m.status = 'INACTIVE' WHERE m.id = :id AND m.status = 'ACTIVE'")
     @Transactional
+    @Query("UPDATE MenuItemSnapshot m " +
+            "SET m.status = 'INACTIVE' " +
+            "WHERE m.id = :id AND m.status = 'ACTIVE'")
     int deactivateMenuItem(@Param("id") Long id);
 }
 
-interface SqlMenuRepository extends JpaRepository<MenuSnapshot, Long> {
-    <S extends MenuSnapshot> S save(S entity);
-}
+interface SqlMenuRepository extends JpaRepository<MenuSnapshot, Long> {}
 
 interface SqlMenuItemQueryRepository extends MenuItemQueryRepository, JpaRepository<MenuItemSnapshot, Long> {
+    @Query("SELECT DISTINCT mi FROM MenuItemSnapshot mi " +
+            "LEFT JOIN FETCH mi.menu m " +
+            "WHERE m.name = :menuName")
+    List<MenuItemDto> findByMenuName(@Param("menuName") String menuName);
+
+    @Query("SELECT mi FROM MenuItemSnapshot mi " +
+            "WHERE mi.id = :id")
+    Optional<MenuItemDto> findDtoById(@Param("id") Long id);
+
+    @Query("SELECT mi FROM MenuItemSnapshot mi " +
+            "WHERE mi.name = :name")
+    Optional<MenuItemDto> findDtoByName(@Param("name") String name);
 }
 
 interface SqlMenuQueryRepository extends MenuQueryRepository, JpaRepository<MenuSnapshot, Long> {
-    @Override
-    @Query("SELECT DISTINCT m FROM MenuSnapshot m LEFT JOIN FETCH m.menuItems mi WHERE mi.status = :status")
-    Set<MenuDto> findDtoByMenuItems_Status(Status status);
+    @Query("SELECT m FROM MenuSnapshot m " +
+            "LEFT JOIN FETCH m.menuItems " +
+            "WHERE m.name = :name")
+    Optional<MenuDto> findDtoByName(@Param("name") String name);
+
+    @Query("SELECT DISTINCT m FROM MenuSnapshot m " +
+            "LEFT JOIN FETCH m.menuItems mi " +
+            "WHERE mi.status = :status")
+    Set<MenuDto> findDtoByMenuItems_Status(@Param("status") Status status);
 }
 
 @Repository

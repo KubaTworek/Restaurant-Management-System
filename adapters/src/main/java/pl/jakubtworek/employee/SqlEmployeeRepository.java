@@ -6,21 +6,36 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import pl.jakubtworek.common.vo.Status;
+import pl.jakubtworek.employee.dto.EmployeeDto;
+import pl.jakubtworek.employee.vo.Job;
 
 import java.util.Optional;
+import java.util.Set;
 
 interface SqlEmployeeRepository extends JpaRepository<EmployeeSnapshot, Long> {
+    @Query("SELECT e FROM EmployeeSnapshot e " +
+            "LEFT JOIN FETCH e.orders " +
+            "WHERE e.id = :id")
     Optional<EmployeeSnapshot> findById(Long id);
 
-    <S extends EmployeeSnapshot> S save(S entity);
-
     @Modifying
-    @Query("UPDATE EmployeeSnapshot e SET e.status = 'INACTIVE' WHERE e.id = :id AND e.status = 'ACTIVE'")
     @Transactional
+    @Query("UPDATE EmployeeSnapshot e " +
+            "SET e.status = 'INACTIVE' " +
+            "WHERE e.id = :id AND e.status = 'ACTIVE'")
     int deactivateEmployee(@Param("id") Long id);
 }
 
 interface SqlEmployeeQueryRepository extends EmployeeQueryRepository, JpaRepository<EmployeeSnapshot, Long> {
+    @Query("SELECT DISTINCT e FROM EmployeeSnapshot e WHERE e.job = :job")
+    Set<EmployeeDto> findByJob(@Param("job") Job job);
+
+    @Query("SELECT e FROM EmployeeSnapshot e WHERE e.id = :id")
+    Optional<EmployeeDto> findDtoById(@Param("id") Long id);
+
+    @Query("SELECT DISTINCT e FROM EmployeeSnapshot e WHERE e.status = :status")
+    Set<EmployeeDto> findDtoByStatus(@Param("status") Status status);
 }
 
 @Repository

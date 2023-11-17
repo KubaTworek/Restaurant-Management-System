@@ -27,13 +27,13 @@
                 <column name="TYPE_OF_ORDER" nullable="false"/>
                 <enumerated>STRING</enumerated>
             </basic>
-            <one-to-many name="orderItems" fetch="EAGER">
+            <one-to-many name="orderItems" fetch="LAZY">
                 <join-column name="ORDER_ID"/>
                 <cascade>
                     <cascade-persist/>
                 </cascade>
             </one-to-many>
-            <many-to-many name="employees" fetch="EAGER">
+            <many-to-many name="employees" fetch="LAZY">
                 <join-table name="ORDERS_EMPLOYEE">
                     <join-column name="ORDER_ID"/>
                     <inverse-join-column name="EMPLOYEE_ID"/>
@@ -63,7 +63,7 @@
             <basic name="amount">
                 <column name="AMOUNT" nullable="false"/>
             </basic>
-            <many-to-one name="order" fetch="EAGER">
+            <many-to-one name="order" fetch="LAZY">
                 <join-column name="ORDER_ID"/>
             </many-to-one>
         </attributes>

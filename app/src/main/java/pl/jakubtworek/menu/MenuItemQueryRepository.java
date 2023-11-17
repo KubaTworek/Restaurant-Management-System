@@ -5,7 +5,7 @@ import pl.jakubtworek.menu.dto.MenuItemDto;
 import java.util.List;
 import java.util.Optional;
 
-public interface MenuItemQueryRepository {
+interface MenuItemQueryRepository {
     List<MenuItemDto> findByMenuName(String menuName);
 
     Optional<MenuItemDto> findDtoById(Long id);

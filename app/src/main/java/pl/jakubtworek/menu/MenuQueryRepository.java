@@ -1,13 +1,13 @@
 package pl.jakubtworek.menu;
 
-import pl.jakubtworek.menu.dto.MenuDto;
 import pl.jakubtworek.common.vo.Status;
+import pl.jakubtworek.menu.dto.MenuDto;
 
 import java.util.Optional;
 import java.util.Set;
 
-public interface MenuQueryRepository {
-    Optional<MenuDto> findDtoByName(String theName);
+interface MenuQueryRepository {
+    Optional<MenuDto> findDtoByName(String name);
 
     Set<MenuDto> findDtoByMenuItems_Status(Status status);
 }

@@ -1,13 +1,22 @@
 package pl.jakubtworek.auth;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import pl.jakubtworek.auth.dto.UserDto;
 
-interface SqlUserRepository extends JpaRepository<UserSnapshot, Long> {
-    <S extends UserSnapshot> S save(S entity);
-}
+import java.util.Optional;
+
+interface SqlUserRepository extends JpaRepository<UserSnapshot, Long> {}
 
 interface SqlUserQueryRepository extends UserQueryRepository, JpaRepository<UserSnapshot, Long> {
+    @Query("SELECT u FROM UserSnapshot u WHERE u.username = :username")
+    Optional<UserDto> findDtoByUsername(String username);
+
+    @Query("SELECT CASE WHEN COUNT(u) > 0 " +
+            "THEN true ELSE false END " +
+            "FROM UserSnapshot u WHERE u.username = :username")
+    Boolean existsByUsername(String username);
 }
 
 @Repository
