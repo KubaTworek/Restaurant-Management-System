@@ -1,10 +1,11 @@
 package pl.jakubtworek.employee;
 
-import pl.jakubtworek.employee.vo.Job;
 import pl.jakubtworek.common.vo.Status;
+import pl.jakubtworek.employee.vo.Job;
 import pl.jakubtworek.order.vo.OrderId;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 class EmployeeSnapshot {
@@ -15,7 +16,7 @@ class EmployeeSnapshot {
     private Status status;
     private Set<OrderId> orders = new HashSet<>();
 
-    public EmployeeSnapshot() {
+    EmployeeSnapshot() {
     }
 
     EmployeeSnapshot(final Long id,
@@ -55,5 +56,18 @@ class EmployeeSnapshot {
 
     Set<OrderId> getOrders() {
         return orders;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final EmployeeSnapshot that = (EmployeeSnapshot) o;
+        return Objects.equals(id, that.id) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && job == that.job && status == that.status && Objects.equals(orders, that.orders);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, job, status, orders);
     }
 }

@@ -2,7 +2,6 @@ package pl.jakubtworek.order;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.transaction.annotation.Transactional;
 import pl.jakubtworek.auth.UserFacade;
 import pl.jakubtworek.common.SpringDomainEventPublisher;
 import pl.jakubtworek.employee.EmployeeFacade;
@@ -11,20 +10,20 @@ import pl.jakubtworek.menu.MenuItemFacade;
 @Configuration
 class OrderConfiguration {
     @Bean
-    @Transactional
     OrderFacade orderFacade(
             UserFacade userFacade,
-            OrderFactory orderFactory,
+            MenuItemFacade menuItemFacade,
             OrderRepository orderRepository,
             OrderQueryRepository orderQueryRepository,
             SpringDomainEventPublisher publisher
     ) {
         return new OrderFacade(
                 userFacade,
-                orderFactory,
+                menuItemFacade,
                 orderRepository,
                 orderQueryRepository,
-                publisher);
+                publisher
+        );
     }
 
     @Bean
@@ -48,17 +47,6 @@ class OrderConfiguration {
                 orderFacade,
                 employeeFacade,
                 orderRepository
-        );
-    }
-
-    @Bean
-    OrderFactory orderFactory(
-            UserFacade userFacade,
-            MenuItemFacade menuItemFacade
-    ) {
-        return new OrderFactory(
-                userFacade,
-                menuItemFacade
         );
     }
 }

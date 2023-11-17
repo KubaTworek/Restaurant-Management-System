@@ -16,8 +16,11 @@ public interface OrderItemDto {
     }
 
     Long getId();
+
     String getName();
+
     BigDecimal getPrice();
+
     Integer getAmount();
 
     class DeserializationImpl implements OrderItemDto {

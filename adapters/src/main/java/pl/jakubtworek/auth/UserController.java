@@ -27,8 +27,8 @@ class UserController {
 
     @PostMapping("/register")
     ResponseEntity<UserDto> register(@RequestBody RegisterRequest registerRequest) {
-        logger.info("Received a registration request for user: {}", registerRequest.getUsername());
-        UserDto result = userFacade.register(registerRequest);
+        logger.info("Received a registration request for user: {}", registerRequest.username());
+        final var result = userFacade.register(registerRequest);
         logger.info("User {} registered successfully.", result.getUsername());
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
@@ -36,7 +36,7 @@ class UserController {
     @PostMapping("/login")
     ResponseEntity<LoginResponse> register(@RequestBody LoginRequest loginRequest) {
         logger.info("Received a login request for user: {}", loginRequest.username());
-        LoginResponse result = userFacade.login(loginRequest);
+        final var result = userFacade.login(loginRequest);
         logger.info("User {} logged in successfully.", result.username());
         return ResponseEntity.ok().body(result);
     }

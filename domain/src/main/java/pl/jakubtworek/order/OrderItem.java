@@ -2,6 +2,9 @@ package pl.jakubtworek.order;
 
 import pl.jakubtworek.common.vo.Money;
 
+import java.math.BigDecimal;
+import java.util.Objects;
+
 class OrderItem {
     private Long id;
     private String name;
@@ -9,10 +12,10 @@ class OrderItem {
     private Integer amount;
     private Order order;
 
-    public OrderItem() {
+    OrderItem() {
     }
 
-    OrderItem(final Long id,
+    private OrderItem(final Long id,
               final String name,
               final Money price,
               final Integer amount,
@@ -46,15 +49,46 @@ class OrderItem {
 
     OrderItemSnapshot getSnapshot(int depth) {
         if (depth <= 0) {
-            return new OrderItemSnapshot(id, name, price.getValue(), amount, null);
+            return new OrderItemSnapshot(id, name, price.value(), amount, null);
         }
 
         return new OrderItemSnapshot(
                 id,
                 name,
-                price.getValue(),
+                price.value(),
                 amount,
-                order.getSnapshot(depth - 1)
+                order != null ? order.getSnapshot(depth - 1) : null
         );
+    }
+
+    void updateInfo(String name, Money price, Integer amount) {
+        this.name = name;
+        this.price = price;
+        this.amount = amount;
+    }
+
+    void setOrder(final Order order) {
+        this.order = order;
+    }
+
+    BigDecimal calculatePrice() {
+        if (price != null && amount != null) {
+            return price.value().multiply(BigDecimal.valueOf(amount));
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final OrderItem orderItem = (OrderItem) o;
+        return Objects.equals(id, orderItem.id) && Objects.equals(name, orderItem.name) && Objects.equals(price, orderItem.price) && Objects.equals(amount, orderItem.amount) && Objects.equals(order, orderItem.order);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, price, amount, order);
     }
 }

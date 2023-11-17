@@ -31,8 +31,8 @@ class EmployeeController {
     @PostMapping
     ResponseEntity<EmployeeDto> create(@RequestBody EmployeeRequest employeeRequest) {
         logger.info("Received a request to create a new employee with job: {}", employeeRequest.job());
-        EmployeeDto result = employeeFacade.save(employeeRequest);
-        logger.info("Employee {} created successfully.", result.getFirstName() + result.getLastName());
+        final var result = employeeFacade.save(employeeRequest);
+        logger.info("Employee {} created successfully.", result.getFirstName() + " " + result.getLastName());
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
@@ -61,7 +61,7 @@ class EmployeeController {
         logger.info("Received a request to get employee details for ID: {}", id);
         return employeeFacade.findById(id)
                 .map(employee -> {
-                    logger.info("Found employee with ID {}: {}", id, employee.getFirstName() + employee.getLastName());
+                    logger.info("Found employee with ID {}: {}", id, employee.getFirstName() + " " + employee.getLastName());
                     return ResponseEntity.ok(employee);
                 })
                 .orElseGet(() -> {

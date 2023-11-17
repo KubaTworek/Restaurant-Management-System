@@ -3,6 +3,8 @@ package pl.jakubtworek.order;
 import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.auth.UserFacade;
 import pl.jakubtworek.auth.vo.UserId;
+import pl.jakubtworek.menu.MenuItemFacade;
+import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.order.dto.OrderDto;
 import pl.jakubtworek.order.dto.OrderItemDto;
 import pl.jakubtworek.order.dto.OrderRequest;
@@ -16,19 +18,19 @@ import java.util.Optional;
 public class OrderFacade {
     private static final String ORDER_NOT_FOUND_ERROR = "Order with that id doesn't exist";
     private final UserFacade userFacade;
-    private final OrderFactory orderFactory;
+    private final MenuItemFacade menuItemFacade;
     private final OrderRepository orderRepository;
     private final OrderQueryRepository orderQueryRepository;
     private final DomainEventPublisher publisher;
 
     OrderFacade(final UserFacade userFacade,
-                final OrderFactory orderFactory,
+                final MenuItemFacade menuItemFacade,
                 final OrderRepository orderRepository,
                 final OrderQueryRepository orderQueryRepository,
                 final DomainEventPublisher publisher
     ) {
         this.userFacade = userFacade;
-        this.orderFactory = orderFactory;
+        this.menuItemFacade = menuItemFacade;
         this.orderRepository = orderRepository;
         this.orderQueryRepository = orderQueryRepository;
         this.publisher = publisher;
@@ -40,7 +42,11 @@ public class OrderFacade {
     }
 
     OrderDto save(OrderRequest toSave, String jwt) {
-        final var created = saveOrder(toSave, jwt);
+        final var user = userFacade.getByToken(jwt);
+        final var menuItems = getMenuItems(toSave.menuItems());
+
+        final var created = saveOrder(toSave, user.getId(), menuItems);
+
         publishOrderEvent(created, OrderEvent.State.TODO);
         return toDto(created);
     }
@@ -71,10 +77,11 @@ public class OrderFacade {
         );
     }
 
-    private Order saveOrder(OrderRequest toSave, String jwt) {
-        final var created = orderFactory.createOrder(
-                toSave,
-                jwt
+    private Order saveOrder(OrderRequest toSave, Long userId, List<MenuItemDto> menuItems) {
+        final var created = OrderFactory.createOrder(
+                toSave.typeOfOrder(),
+                userId,
+                menuItems
         );
         return orderRepository.save(created);
     }
@@ -83,6 +90,12 @@ public class OrderFacade {
         publisher.publish(
                 new OrderEvent(created.getSnapshot(1).getId(), null, created.getSnapshot(1).getTypeOfOrder(), created.getAmountOfMenuItems(), state)
         );
+    }
+
+    private List<MenuItemDto> getMenuItems(List<String> names) {
+        return names.stream()
+                .map(menuItemFacade::getByName)
+                .toList();
     }
 
     private OrderDto toDto(Order order) {

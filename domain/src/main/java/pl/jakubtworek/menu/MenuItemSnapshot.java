@@ -3,6 +3,7 @@ package pl.jakubtworek.menu;
 import pl.jakubtworek.common.vo.Status;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 class MenuItemSnapshot {
     private Long id;
@@ -11,7 +12,7 @@ class MenuItemSnapshot {
     private MenuSnapshot menu;
     private Status status;
 
-    public MenuItemSnapshot() {
+    MenuItemSnapshot() {
     }
 
     MenuItemSnapshot(final Long id,
@@ -45,5 +46,13 @@ class MenuItemSnapshot {
 
     Status getStatus() {
         return status;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final MenuItemSnapshot that = (MenuItemSnapshot) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(price, that.price) && Objects.equals(menu, that.menu) && status == that.status;
     }
 }

@@ -5,6 +5,7 @@ import pl.jakubtworek.common.vo.Money;
 import pl.jakubtworek.employee.vo.EmployeeId;
 import pl.jakubtworek.order.vo.TypeOfOrder;
 
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.HashSet;
@@ -21,7 +22,7 @@ class Order {
     private Set<EmployeeId> employees = new HashSet<>();
     private UserId user;
 
-    public Order() {
+    Order() {
     }
 
     private Order(final Long id,
@@ -72,7 +73,7 @@ class Order {
         if (depth <= 0) {
             return new OrderSnapshot(
                     id,
-                    price != null ? price.getValue() : null,
+                    price != null ? price.value() : null,
                     hourOrder,
                     hourAway,
                     typeOfOrder,
@@ -83,7 +84,7 @@ class Order {
         }
         return new OrderSnapshot(
                 id,
-                price != null ? price.getValue() : null,
+                price != null ? price.value() : null,
                 hourOrder,
                 hourAway,
                 typeOfOrder,
@@ -91,6 +92,15 @@ class Order {
                 employees,
                 user
         );
+    }
+
+    void updateInfo(Set<OrderItem> menuItems, String typeOfOrderName, UserId user) {
+        this.orderItems = menuItems;
+        this.orderItems.forEach(oi -> oi.setOrder(this));
+        this.price = new Money(calculateTotalPrice());
+        this.hourOrder = ZonedDateTime.now();
+        this.typeOfOrder = getAndValidateTypeOfOrder(typeOfOrderName);
+        this.user = user;
     }
 
     void addEmployee(EmployeeId employee) {
@@ -103,15 +113,21 @@ class Order {
         this.hourAway = ZonedDateTime.now();
     }
 
-    void updateInfo(Set<OrderItem> menuItems, Money price, String typeOfOrderName, UserId user) {
-        this.orderItems = menuItems;
-        this.price = price;
-        this.hourOrder = ZonedDateTime.now();
-        this.typeOfOrder = TypeOfOrder.valueOf(typeOfOrderName);
-        this.user = user;
-    }
-
     int getAmountOfMenuItems() {
         return this.orderItems.size();
+    }
+
+    private BigDecimal calculateTotalPrice() {
+        return orderItems.stream()
+                .map(OrderItem::calculatePrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    private TypeOfOrder getAndValidateTypeOfOrder(String typeOfOrder) {
+        try {
+            return TypeOfOrder.valueOf(typeOfOrder);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalStateException("Invalid type of order type!!");
+        }
     }
 }

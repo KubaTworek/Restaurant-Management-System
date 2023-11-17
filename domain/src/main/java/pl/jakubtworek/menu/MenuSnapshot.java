@@ -1,6 +1,7 @@
 package pl.jakubtworek.menu;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 class MenuSnapshot {
@@ -8,7 +9,7 @@ class MenuSnapshot {
     private String name;
     private Set<MenuItemSnapshot> menuItems = new HashSet<>();
 
-    public MenuSnapshot() {
+    MenuSnapshot() {
     }
 
     MenuSnapshot(final Long id,
@@ -30,5 +31,13 @@ class MenuSnapshot {
 
     Set<MenuItemSnapshot> getMenuItems() {
         return menuItems;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final MenuSnapshot that = (MenuSnapshot) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(menuItems, that.menuItems);
     }
 }

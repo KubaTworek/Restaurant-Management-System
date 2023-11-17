@@ -1,4 +1,3 @@
 package pl.jakubtworek.common;
 
-public interface Command {
-}
+public interface Command { }

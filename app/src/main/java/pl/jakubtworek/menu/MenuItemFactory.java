@@ -12,7 +12,7 @@ class MenuItemFactory {
     }
 
     MenuItem createMenuItem(MenuItemRequest toSave, MenuDto menuDto) {
-        MenuItem menuItem = new MenuItem();
+        final var menuItem = new MenuItem();
         menuItem.createWithMenu(
                 toSave.name(),
                 new Money(toSave.price()),
@@ -35,7 +35,7 @@ class MenuItemFactory {
     }
 
     MenuItem updateMenuItem(Long menuItemId, MenuItemRequest toUpdate, MenuDto menu) {
-        MenuItem menuItem = new MenuItem();
+        final var menuItem = new MenuItem();
         menuItem.update(
                 menuItemId,
                 toUpdate.name(),
@@ -49,7 +49,7 @@ class MenuItemFactory {
     MenuItem updateMenuItemAndCreateMenu(Long menuItemId, MenuItemRequest toUpdate) {
         final var menu = createMenu(toUpdate.menu());
         final var created = menuItemRepository.save(menu);
-        MenuItem menuItem = new MenuItem();
+        final var menuItem = new MenuItem();
         menuItem.update(
                 menuItemId,
                 toUpdate.name(),

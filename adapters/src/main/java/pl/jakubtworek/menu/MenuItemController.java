@@ -31,7 +31,7 @@ class MenuItemController {
     @PostMapping
     ResponseEntity<MenuItemDto> saveMenuItem(@RequestBody MenuItemRequest menuItemRequest) {
         logger.info("Received a request to save a new menu item for menu: {}", menuItemRequest.menu());
-        MenuItemDto result = menuItemFacade.save(menuItemRequest);
+        final var result = menuItemFacade.save(menuItemRequest);
         logger.info("Menu item {} saved successfully.", result.getName());
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }

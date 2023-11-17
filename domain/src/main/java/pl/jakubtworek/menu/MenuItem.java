@@ -3,6 +3,8 @@ package pl.jakubtworek.menu;
 import pl.jakubtworek.common.vo.Money;
 import pl.jakubtworek.common.vo.Status;
 
+import java.util.Objects;
+
 class MenuItem {
     private Long id;
     private String name;
@@ -10,7 +12,7 @@ class MenuItem {
     private Menu menu;
     private Status status;
 
-    public MenuItem() {
+    MenuItem() {
     }
 
     private MenuItem(final Long id,
@@ -47,16 +49,18 @@ class MenuItem {
 
     MenuItemSnapshot getSnapshot(int depth) {
         if (depth <= 0) {
-            return new MenuItemSnapshot(id, name, price.getValue(), null, status);
+            return new MenuItemSnapshot(id, name, price.value(), null, status);
         }
 
-        return new MenuItemSnapshot(
-                id,
-                name,
-                price.getValue(),
-                menu != null ? menu.getSnapshot(depth - 1) : null,
-                status
-        );
+        return new MenuItemSnapshot(id, name, price.value(), menu != null ? menu.getSnapshot(depth - 1) : null, status);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final MenuItem menuItem = (MenuItem) o;
+        return Objects.equals(id, menuItem.id) && Objects.equals(name, menuItem.name) && Objects.equals(price, menuItem.price) && Objects.equals(menu, menuItem.menu) && status == menuItem.status;
     }
 
     void update(Long id, String name, Money price, Long menuId, String menuName) {

@@ -2,6 +2,7 @@ package pl.jakubtworek.menu;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -59,5 +60,18 @@ class Menu {
         if (menuItem != null) {
             this.menuItems.add(menuItem);
         }
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final Menu menu = (Menu) o;
+        return Objects.equals(id, menu.id) && Objects.equals(name, menu.name) && Objects.equals(menuItems, menu.menuItems);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, menuItems);
     }
 }

@@ -1,11 +1,11 @@
 package pl.jakubtworek.employee;
 
 import pl.jakubtworek.DomainEventPublisher;
+import pl.jakubtworek.common.vo.Status;
 import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.employee.dto.EmployeeRequest;
-import pl.jakubtworek.employee.vo.Job;
 import pl.jakubtworek.employee.vo.EmployeeEvent;
-import pl.jakubtworek.common.vo.Status;
+import pl.jakubtworek.employee.vo.Job;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,7 @@ public class EmployeeFacade {
     }
 
     List<EmployeeDto> findByJob(String jobName) {
-        return employeeQueryRepository.findByJob(Job.valueOf(jobName));
+        return new ArrayList<>(employeeQueryRepository.findByJob(Job.valueOf(jobName)));
     }
 
     private Employee saveEmployee(EmployeeRequest toSave) {

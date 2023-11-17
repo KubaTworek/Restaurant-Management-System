@@ -7,6 +7,7 @@ import pl.jakubtworek.order.vo.TypeOfOrder;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 class OrderSnapshot {
@@ -19,7 +20,7 @@ class OrderSnapshot {
     private Set<EmployeeId> employees = new HashSet<>();
     private UserId clientId;
 
-    public OrderSnapshot() {
+    OrderSnapshot() {
     }
 
     OrderSnapshot(final Long id,
@@ -71,5 +72,13 @@ class OrderSnapshot {
 
     UserId getClientId() {
         return clientId;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final OrderSnapshot that = (OrderSnapshot) o;
+        return Objects.equals(id, that.id) && Objects.equals(price, that.price) && Objects.equals(hourOrder, that.hourOrder) && Objects.equals(hourAway, that.hourAway) && typeOfOrder == that.typeOfOrder && Objects.equals(orderItems, that.orderItems) && Objects.equals(employees, that.employees) && Objects.equals(clientId, that.clientId);
     }
 }

@@ -1,9 +1,9 @@
 package pl.jakubtworek.menu;
 
+import pl.jakubtworek.common.vo.Status;
 import pl.jakubtworek.menu.dto.MenuDto;
 import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.menu.dto.MenuItemRequest;
-import pl.jakubtworek.common.vo.Status;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +11,8 @@ import java.util.Optional;
 
 public class MenuItemFacade {
     private static final String MENU_ITEM_NOT_FOUND_ERROR = "Menu item with that name doesn't exist";
+    private static final String MENU_ITEM_ALREADY_EXISTS_ERROR = "Menu item with that name already exists!";
+
     private final MenuItemFactory menuItemFactory;
     private final MenuItemRepository menuItemRepository;
     private final MenuItemQueryRepository menuItemQueryRepository;
@@ -36,7 +38,7 @@ public class MenuItemFacade {
         return menuItemQueryRepository.findDtoByName(toSave.name())
                 .map(menuItem -> {
                     if (menuItem.getStatus() == Status.ACTIVE) {
-                        throw new IllegalStateException("Menu item with that name: " + menuItem.getName() + " is already exist!");
+                        throw new IllegalStateException(MENU_ITEM_ALREADY_EXISTS_ERROR);
                     }
                     return menuQueryRepository.findDtoByName(toSave.menu())
                             .map(menu -> {

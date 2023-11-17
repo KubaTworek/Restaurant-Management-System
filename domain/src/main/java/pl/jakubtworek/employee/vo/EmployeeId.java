@@ -3,7 +3,7 @@ package pl.jakubtworek.employee.vo;
 public class EmployeeId {
     private Long id;
 
-    public EmployeeId() {
+    EmployeeId() {
     }
 
     public EmployeeId(final Long id) {

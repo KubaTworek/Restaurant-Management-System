@@ -14,7 +14,8 @@ class UserConfiguration {
         return new UserFacade(
                 userRepository,
                 userQueryRepository,
-                jwtService);
+                jwtService
+        );
     }
 
     @Bean
