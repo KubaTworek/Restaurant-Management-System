@@ -1,14 +1,8 @@
 # Restaurant Management System
 
-> REST APIs based on CRUD methods. The project was written in Java using Spring. The database tries to maintain a third
-> normal form, it was built on an internal H2 database. The Admin position gives us the ability to manage the
-> restaurant,
-> modify the menu and employees, and collect information on placed orders. User privileges allow us to place orders,
-> while
-> we don't even need to be authenticated to view the menu. The project has been written in accordance with the
-> principles
-> of Clean Code and good object-oriented programming practices. All classes and methods have been tested with unit and
-> integration tests.
+> The application is designed for restaurant management. It allows adding, deleting, and editing menu items as well as managing staff members. Additionally, users can create orders that will be fulfilled by specific employees.
+>
+> The application is a modular monolith implemented in Java and Spring, utilizing an H2 database stored in a file. During the project's development, particular emphasis was placed on its architectural design. The process began with the construction of ports and adapters, and the core of the application adheres to the principles of Domain-Driven Design (DDD). The project has been crafted in accordance with Clean Code principles and adheres to good object-oriented programming practices. Comprehensive unit and integration tests have been conducted to validate all classes and methods.
 
 ## Table of Contents
 
@@ -23,26 +17,48 @@
 
 ## General Information
 
-- Restaurant manager gives us the ability to add, modify and delete menus and the dishes belonging to them. We also have
-  the ability to manage employees such as cooks, waiters and delivery men. The customer has the ability to place orders
-  on the spot and for take-out. The restaurant also has a cook and order delivery system, which is used by waiters and
-  delivery personnel. A system of authentication and authorization by login data and JWT token has been introduced.
+### Menu Management:
 
+Users can add, remove, and modify menu items.
+Each menu item is associated with details such as name, price, and status.
 
-- The purpose of writing this project is to improve my programming skills, learn various tools and demonstrate my
-  ability to write readable and working code.
+### Employee Management:
 
+The application allows the administration of the staff, including adding and removing employees.
+Staff members are categorized based on their roles and responsibilities.
 
-- I prepared a project with similar requirements in my GUI classes (https://github.com/KubaTworek/Restaurant-Management)
-  but I decided to develop it further as a full-fledged web application using a wide range of tools.
+### Order Processing:
+
+Users can create orders, specifying the type of order (e.g., dine-in, takeout) and selecting items from the menu.
+Orders are processed by assigning them to specific employees for fulfillment.
+
+### Architecture and Technology:
+
+The application follows a modular monolith architecture written in Java and utilizes the Spring framework.
+The data is stored in an H2 database, and the information persists in a file.
+
+### Domain-Driven Design (DDD):
+
+The core of the application is designed according to the principles of DDD, emphasizing a domain-centric approach to modeling.
+
+### Testing:
+
+Comprehensive testing practices, including unit and integration tests, have been implemented to ensure the reliability and correctness of the code.
+
+### Clean Code Principles:
+
+The project adheres to Clean Code principles, promoting readability, maintainability, and extensibility.
+
+### Generics:
+
+The project was initially written in early 2022 as a simple console application as part of a university assignment. Since then, I have been consistently working on this project, testing and incorporating newly acquired software development methods.
 
 ## Technologies Used
 
-- Java 11
+- Java 17
 - Spring Boot
-- Spring Security
 - Hibernate, JPA
-- Postman
+- H2, Flyway
 
 ## Run and Test
 
@@ -58,42 +74,17 @@ To execute unit and integration tests
 mvn test
 ```
 
-To execute unit tests
-
-```
-mvn '-Dtest=*Test' test
-```
-
-To execute integration tests
-
-```
-mvn '-Dtest=*IT' test
-```
-
-To execute End-toEnd tests in Postman (need NodeJs and Newman)
-
-```
-newman run Restaurant-Management-System.postman_collection.json
-```
-
 ## Endpoints
 
 This API provides HTTP endpoint's and tools for the following:
 
-* JWT [ADMIN] =
-  eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJSZXN0YXVyYW50Iiwic3ViIjoiSldUIFRva2VuIiwidXNlcm5hbWUiOiJhZG1pbiIsImF1dGhvcml0aWVzIjoiUk9MRV9BRE1JTiIsImlhdCI6MTY3MDk5MDgwMSwiZXhwIjoxMDAxNjcwOTkwODAxfQ.-3BdaIuq5rSWzf9zIdkR3S1ftAk9SSGY5iaX0zCYO08
-
-
-* JWT [USER] =
-  eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJSZXN0YXVyYW50Iiwic3ViIjoiSldUIFRva2VuIiwidXNlcm5hbWUiOiJ1c2VyIiwiYXV0aG9yaXRpZXMiOiJST0xFX1VTRVIiLCJpYXQiOjE2NzA5OTA3MTEsImV4cCI6MTAwMTY3MDk5MDcxMX0.FQXWI59l0axX413c5H4F1lByE2mSK4fe4pBvvR-gYV8
-
 # Employee
 
-* Create an employee: `POST/employees/{jobName}`
-* Delete an employee (by id): `DELETE/employees/{employeeId}`
-* Find all employees in restaurant: `GET/employees`
-* Find unique employee in restaurant (by id): `GET/employees/{employeeId}`
-* Find employees in restaurant by param (name) : `GET/employees`
+* Create an employee: `POST /employees/{jobName}`
+* Delete an employee (by id): `DELETE /employees/{employeeId}`
+* Find all employees in restaurant: `GET /employees`
+* Find unique employee in restaurant (by id): `GET /employees/{employeeId}`
+* Find employees in restaurant by param (jobName) : `GET /employees?job={jobName}`
 
 Request Body [Employee]
 
@@ -101,119 +92,153 @@ Request Body [Employee]
 {
      "firstName": varchar(50),
      "lastName": varchar(50),
-     "job": varchar[Cook/Waiter/DeliveryMan]
+     "job": varchar[COOK/WAITER/DELIVERY]
+}
+```
+
+Response Body [Employee]
+
+```
+{
+     "id": bigint
+     "firstName": varchar(50),
+     "lastName": varchar(50),
+     "job": varchar[COOK/WAITER/DELIVERY]
+     "status": varchar[ACTIVE/INACTIVE]
 }
 ```
 
 # Menu
 
-* Create a menu: `POST/menu`
-* Update a menu: `PUT/menu`
-* Create a menu item and add to menu (by menu name): `POST/menu-items`
-* Update a menu item and add to menu (by menu name): `PUT/menu-items`
-* Delete a menu (by id): `DELETE/menu/{menuId}`
-* Delete a menu item (by id): `DELETE/menu-items/{menuItemId}`
-* Find every menu in restaurant: `GET/menu`
-* Find unique menu in restaurant (by id): `GET/menu/{menuId}`
+* Create a menu item: `POST /menu-items`
+* Find every menu in restaurant: `GET /menu-items`
+* Delete a menu item (by id): `DELETE /menu-items/{menuItemId}`
+* Find unique menu item in restaurant (by id): `GET/menu-items/{menuItemId}`
 * Find menu items in restaurant (by menu name): `GET/menu-items/menu/{menuName}`
 
-Request Body [Menu]
-
-```
-{
-     "name": varchar(20)
-}
-```
-
-Request Body [Menu-Item]
+Request Body [MenuItem]
 
 ```
 {
      "name": varchar(20),
-     "price": double,
-     "menu": varchar[Menu name]
+     "price": decimal,
+     "menu": varchar(20)
+}
+```
+
+Response Body [Menu]
+
+```
+{
+     "id": bigint,
+     "name": varchar(20),
+     "menuItems": []
+}
+```
+
+Response Body [Menu-Item]
+
+```
+{
+     "id": bigint,
+     "name": varchar(20),
+     "price": decimal,
+     "status": varchar[ACTIVE/INACTIVE]
 }
 ```
 
 # Order
 
-* Create an order: `POST/orders`
-* Delete an order (by id): `DELETE/orders/{orderId}`
-* Find every order in restaurant: `GET/orders`
+* Create an order: `POST /orders`
+
+Request Header:
+Authorization: Bearer <jwt-token>
+
+* Find orders in restaurant assigned to you: `GET /orders`
+
+Request Header:
+Authorization: Bearer <jwt-token>
+
 * Find unique order in restaurant (by id): `GET/orders/{orderId}`
-* Find made orders in restaurant: `GET/orders/ready`
-* Find unmade orders in restaurant: `GET/orders/unready`
+* Find made orders in restaurant: `GET /orders/filter`
+
+Request Parameters:
+
+- fromDate: Start date for filtering (optional)
+- toDate: End date for filtering (optional)
+- typeOfOrder: Type of order for filtering (optional)
+- isReady: Filter orders that are ready (optional)
+- employeeId: Filter orders by employee ID (optional)
+- userId: Filter orders by user ID (optional)
 
 Request Body [Order]
 
 ```
 {
-    "typeOfOrder": varchar[On-site, Delivery]
-      "menuItems": [
-    {
-        "name": varchar(20),
-        "price": Double,
-        "menu": varchar(20)
-    },
-    {
-        "name": varchar(20),
-        "price": Double,
-        "menu": varchar(20)
-    },
-    {
-        "name": varchar(20),
-        "price": Double,
-        "menu": varchar(20)
-    }
+     "typeOfOrder": varchar[TAKE_AWAY/ON_SITE/DELIVERY],
+     "menuItems": [varchar(40)...]
 }
 ```
 
-# Order-Admin
-
-* Create an order: `POST/admin-orders`
-* Delete an order (by id): `DELETE/admin-orders/{orderId}`
-* Find all order in restaurant: `GET/admin-orders`
-* Find unique order in restaurant (by id): `GET/admin-orders/{orderId}`
-* Find made orders in restaurant: `GET/admin-orders/ready`
-* Find unmade orders in restaurant: `GET/admin-orders/unready`
-* Find orders in restaurant by params (by type of order, date, employee id): `GET/admin-orders/find`
-
-Request Body [Order]
+Response Body [Order]
 
 ```
 {
-    "typeOfOrder": varchar[On-site, Delivery]
-      "menuItems": [
-    {
-        "name": varchar(20),
-        "price": Double,
-        "menu": varchar(20)
-    },
-    {
-        "name": varchar(20),
-        "price": Double,
-        "menu": varchar(20)
-    },
-    {
-        "name": varchar(20),
-        "price": Double,
-        "menu": varchar(20)
-    }
+     "id": bigint,
+     "price": decimal,
+     "hourOrder": datetime,
+     "hourAway": datetime(optional),
+     "typeOfOrder": varchar[TAKE_AWAY/ON_SITE/DELIVERY],
+     "orderItems": [
+      {
+        "id": bigint,
+        "name": varchar(40),
+        "price": decimal,
+        "amount": integer
+      }...
+    ]
 }
 ```
 
 # User
 
-* Register user with a specific role: `POST/user`
-* Delete user (by username): `DELETE/users/{username}`
+* Register user with a specific role: `POST /users/register`
+* Login user: `DELETE /users/login`
 
-Request Body [User]
+Request Body [Register]
 
 ```
 {
-    "username": varchar(20),
-    "password": varchar(50),
-    "role": varchar[ROLE_USER, ROLE_ADMIN]
+  "username": varchar(40),
+  "password": varchar(40)
+}
+```
+
+Response Body [Register]
+
+```
+{
+     "id": bigint,
+     "username": varchar(40)
+}
+```
+
+Request Body [Login]
+
+```
+{
+     "username": varchar(40),
+     "password": varchar(40)
+}
+```
+
+Response Body [Login]
+
+```
+{
+     "username": varchar(40),
+     "token": varchar(255),
+     "tokenExpirationDate": Long
 }
 ```
 
@@ -223,34 +248,9 @@ Request Body [User]
 
 ![Database schema](database/schema.png)
 
-### Description ENG
+### Description
 
-The database represents restaurant serving orders to customers.
-
-The restaurant has many menus to choose from, which include many dishes.
-
-The restaurant stores data on its employees and customers. In addition, we record the addresses of each customer to
-delivery orders to them. Employees, of course, have specific positions.
-
-The key element of the database are orders, each of which has a corresponding type assigned to it. Multiple menu items
-can be assigned to each order, also some of the same. In addition, to the order we assign the customer who ordered it.
-Each customer can of course place multiple orders. We also assign employees who took part in the preparation or delivery
-of the order. Employees in their work take part in the preparation of multiple orders.
-
-### Description PL
-
-Baza danych przedstawia restaurację serwującą zamówienia dla klientów.
-
-Restauracja posiada wiele menu do wyboru, które zawiera wiele potraw.
-
-W restauracji przechowywane są dane dotyczące pracowników oraz klientów. Dodatkowo zapisujemy adresy poszczególnych
-klientów, aby umożliwić dostarczenie zamówień. Pracownicy również, oczywiście mają określone stanowiska.
-
-Kluczowym elementem bazy danych są zamówienia, z których każde ma przypisany odpowiedni typ. Do każdego zamówienia można
-przypisać wiele pozycji z menu, rowniez kilka takich samych. Dodatkowo do zamówienia przypisujemy klienta, który je
-zamówił. Każdy klient może naturalne składać wiele zamówień. Do zamówienia przypisujemy również pracowników, którzy
-brali udział w przygotowaniu lub dostarczeniu zamówienia. Pracownicy w trakcie swojej pracy biorą udział w przygotowaniu
-wielu zamówień.
+The database comprises tables for managing a restaurant system. The USERS table stores user authentication data, while the EMPLOYEES table contains information about restaurant staff. MENU_ITEMS and MENU tables handle menu items and categories. ORDERS and ORDER_ITEMS tables manage customer orders and their details. The ORDERS__EMPLOYEE table establishes relationships between orders and assigned employees. The schema supports key functionalities such as user authentication, employee management, menu item organization, and order processing in a restaurant setting. Foreign key constraints ensure data integrity, and unique constraints are applied where needed for consistency and efficiency.
 
 ## Project Status
 
@@ -260,11 +260,9 @@ Project is: _in_progress_
 
 Room for improvement:
 
-- Add frontend based on Web Components
-- Add Rest API tests prepared in Rest Assured
-- Add entities described in database
-- Add SELECT queries, PL/SQL procedures and triggers
-- Break monolith on microservices
+- Add frontend based on React
+- Add external tests
+- Create a more complex logic that enables the management of orders by employees.
 
 ## Contact
 
