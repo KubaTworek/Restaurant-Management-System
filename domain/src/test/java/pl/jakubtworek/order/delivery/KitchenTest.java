@@ -2,10 +2,10 @@ package pl.jakubtworek.order.delivery;
 
 import org.junit.jupiter.api.Test;
 import pl.jakubtworek.DomainEventPublisher;
-import pl.jakubtworek.employee.vo.Job;
 import pl.jakubtworek.employee.vo.EmployeeEvent;
-import pl.jakubtworek.order.vo.TypeOfOrder;
+import pl.jakubtworek.employee.vo.Job;
 import pl.jakubtworek.order.vo.OrderEvent;
+import pl.jakubtworek.order.vo.TypeOfOrder;
 
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;

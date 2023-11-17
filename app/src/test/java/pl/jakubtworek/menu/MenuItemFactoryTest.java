@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -29,42 +31,77 @@ class MenuItemFactoryTest {
     @Test
     void shouldCreateMenuItem_whenMenuExist() {
         // given
-        final var menuItemRequest = new MenuItemRequest(
-                "Burger", new BigDecimal("15.99"), "Food"
-        );
-        final var menuDto = MenuDto.create(
-                1L, "Food", new ArrayList<>()
-        );
+        final var request = new MenuItemRequest("Burger", BigDecimal.valueOf(10.99), "Food");
+        final var menu = MenuDto.create(1L, "Food", new ArrayList<>());
 
         // when
-        final var menuItem = menuItemFactory.createMenuItem(menuItemRequest, menuDto);
+        final var menuItem = menuItemFactory.createMenuItem(request, menu);
 
         // then
-        final var snap = menuItem.getSnapshot(1);
-        assertEquals("Burger", snap.getName());
-        assertEquals(15.99, snap.getPrice().doubleValue());
-        assertEquals(1L, snap.getMenu().getId());
-        assertEquals("Food", snap.getMenu().getName());
+        assertMenuItemCreated(menuItem);
+
     }
 
     @Test
-    void shouldCreateMenuItem_whenMenuNotExist() {
+    void shouldCreateMenuItemAndMenu_whenMenuNotExist() {
         // given
-        final var menuItemRequest = new MenuItemRequest(
-                "Burger", new BigDecimal("15.99"), "Food"
-        );
+        final var request = new MenuItemRequest("Burger", BigDecimal.valueOf(10.99), "Food");
         final var menu = new Menu();
         menu.updateInfo(1L, "Food");
 
         when(menuItemRepository.save(any(Menu.class))).thenReturn(menu);
 
         // when
-        final var menuItem = menuItemFactory.createMenuItemAndMenu(menuItemRequest);
+        final var menuItem = menuItemFactory.createMenuItemAndMenu(request);
 
         // then
-        final var snap = menuItem.getSnapshot(1);
-        assertEquals("Burger", snap.getName());
-        assertEquals(15.99, snap.getPrice().doubleValue());
-        assertEquals("Food", snap.getMenu().getName());
+        assertMenuItemCreated(menuItem);
+    }
+
+    @Test
+    void shouldUpdateMenuItem_whenMenuExist() {
+        // given
+        final var request = new MenuItemRequest("Burger", BigDecimal.valueOf(10.99), "Food");
+        final var menu = MenuDto.create(1L, "Food", null);
+
+        // when
+        final var menuItem = menuItemFactory.updateMenuItem(1L, request, menu);
+
+        // then
+        assertMenuItemUpdated(menuItem);
+    }
+
+    @Test
+    void shouldUpdateMenuItemAndCreateMenu_whenMenuNotExist() {
+        // given
+        final var request = new MenuItemRequest("Burger", BigDecimal.valueOf(10.99), "Food");
+        final var menu = new Menu();
+        menu.updateInfo(1L, "Food");
+
+        when(menuItemRepository.save(any(Menu.class))).thenReturn(menu);
+
+        // when
+        final var menuItem = menuItemFactory.updateMenuItemAndCreateMenu(1L, request);
+
+        // then
+        assertMenuItemUpdated(menuItem);
+    }
+
+    private void assertMenuItemCreated(MenuItem menuItem) {
+        final var result = menuItem.getSnapshot(1);
+        assertNull(result.getId());
+        assertEquals("Burger", result.getName());
+        assertEquals(10.99, result.getPrice().doubleValue());
+        assertEquals(1L, result.getMenu().getId());
+        assertEquals("Food", result.getMenu().getName());
+    }
+
+    private void assertMenuItemUpdated(MenuItem menuItem) {
+        final var result = menuItem.getSnapshot(1);
+        assertNotNull(result.getId());
+        assertEquals("Burger", result.getName());
+        assertEquals(10.99, result.getPrice().doubleValue());
+        assertEquals(1L, result.getMenu().getId());
+        assertEquals("Food", result.getMenu().getName());
     }
 }

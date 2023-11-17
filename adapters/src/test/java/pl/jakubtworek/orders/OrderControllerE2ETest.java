@@ -80,16 +80,6 @@ class OrderControllerE2ETest extends AbstractIT {
         assertEquals(expectedAmountOfOrders, response.size());
     }
 
-    private static Stream<Arguments> parameters() {
-        return Stream.of(
-                Arguments.of(1, Map.of("typeOfOrder", "DELIVERY")),
-                Arguments.of(2, Map.of("fromDate", createFromDateStr(), "toDate", createToDateStr())),
-                Arguments.of(0, Map.of("isReady", "true")),
-                Arguments.of(0, Map.of("employeeId", "1")),
-                Arguments.of(2, Map.of("userId", "1"))
-        );
-    }
-
     @Test
     @DirtiesContext
     void shouldCookTheOtherCook_whenThereIsMoreThanOneOrderInQueue() throws InterruptedException {
@@ -133,6 +123,16 @@ class OrderControllerE2ETest extends AbstractIT {
 
         assertEquals(response.getId(), getOrderByParam(userToken, Map.of("employeeId", String.valueOf(other.getId())))
                 .stream().findFirst().orElse(null).getId());
+    }
+
+    private static Stream<Arguments> parameters() {
+        return Stream.of(
+                Arguments.of(1, Map.of("typeOfOrder", "DELIVERY")),
+                Arguments.of(2, Map.of("fromDate", createFromDateStr(), "toDate", createToDateStr())),
+                Arguments.of(0, Map.of("isReady", "true")),
+                Arguments.of(0, Map.of("employeeId", "1")),
+                Arguments.of(2, Map.of("userId", "1"))
+        );
     }
 
     private static String createToDateStr() {

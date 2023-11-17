@@ -1,8 +1,8 @@
 package pl.jakubtworek.employee;
 
 import org.junit.jupiter.api.Test;
-import pl.jakubtworek.employee.vo.Job;
 import pl.jakubtworek.common.vo.Status;
+import pl.jakubtworek.employee.vo.Job;
 
 import java.util.HashSet;
 

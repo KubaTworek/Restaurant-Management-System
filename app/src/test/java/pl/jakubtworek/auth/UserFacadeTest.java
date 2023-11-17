@@ -62,7 +62,7 @@ class UserFacadeTest {
     void shouldRegisterUser() {
         // given
         final var request = new RegisterRequest("john.doe", "password123");
-        final var expectedUser = createUser(request.getUsername(), request.getPassword());
+        final var expectedUser = createUser(request.username(), request.password());
 
         when(userRepository.save(any())).thenReturn(expectedUser);
 

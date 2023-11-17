@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MenuItemTest {
+
     @Test
     void shouldRestoreMenuItemFromSnapshot() {
         // given
@@ -22,53 +23,102 @@ class MenuItemTest {
         final var menuItem = MenuItem.restore(snapshot, 0);
 
         // then
+        assertMenuItemFromSnapshot(snapshot, menuItem);
+    }
+
+    @Test
+    void shouldRestoreMenuItemWithMenuFromSnapshot() {
+        // given
+        final var snapshot = new MenuItemSnapshot(1L, "Burger", new BigDecimal("10.99"), null, Status.ACTIVE);
+
+        // when
+        final var menuItem = MenuItem.restore(snapshot, 0);
+
+        // then
+        assertMenuItemFromSnapshot(snapshot, menuItem);
+    }
+
+    @Test
+    void shouldUpdateMenuItemInfoWithMenuIdAndMenuName() {
+        // given
+        final var menuItem = new MenuItem();
+
+        // when
+        menuItem.update(1L, "Burger", new Money(BigDecimal.valueOf(7.99)), 2L, "Food");
+
+        // then
+        assertMenuItemWithMenuIdAndName(menuItem, BigDecimal.valueOf(7.99));
+        assertEquals(1L, menuItem.getSnapshot(1).getId());
+    }
+
+    @Test
+    void shouldUpdateMenuItemWithMenuObject() {
+        // given
+        final var menuItem = new MenuItem();
+        final var menu = new Menu();
+
+        // when
+        menuItem.update(1L, "Burger", new Money(BigDecimal.valueOf(7.99)), menu);
+
+        // then
+        assertMenuItemWithMenuObject(menuItem, BigDecimal.valueOf(7.99));
+        assertEquals(1L, menuItem.getSnapshot(1).getId());
+    }
+
+    @Test
+    void shouldCreateMenuItemWithMenuIdAndMenuName() {
+        // given
+        final var menuItem = new MenuItem();
+
+        // when
+        menuItem.createWithMenu("Burger", new Money(BigDecimal.valueOf(7.99)), 2L, "Food");
+
+        // then
+        assertMenuItemWithMenuIdAndName(menuItem, BigDecimal.valueOf(7.99));
+        assertNull(menuItem.getSnapshot(1).getId());
+    }
+
+    @Test
+    void shouldCreateMenuItemWithMenuObject() {
+        // given
+        final var menuItem = new MenuItem();
+        final var menu = new Menu();
+
+        // when
+        menuItem.createWithMenu("Burger", new Money(BigDecimal.valueOf(7.99)), menu);
+
+        // then
+        assertMenuItemWithMenuObject(menuItem, BigDecimal.valueOf(7.99));
+        assertNull(menuItem.getSnapshot(1).getId());
+    }
+
+    private void assertMenuItemWithMenuIdAndName(MenuItem menuItem, BigDecimal expectedPrice) {
+        final var result = menuItem.getSnapshot(1);
+        assertEquals("Burger", result.getName());
+        assertEquals(expectedPrice, result.getPrice());
+        assertNotNull(result.getMenu());
+        assertEquals(Status.ACTIVE, result.getStatus());
+
+        final var menuSnap = result.getMenu();
+        assertEquals(2, menuSnap.getId());
+        assertEquals("Food", menuSnap.getName());
+        assertTrue(menuSnap.getMenuItems().isEmpty());
+    }
+
+    private void assertMenuItemWithMenuObject(MenuItem menuItem, BigDecimal expectedPrice) {
+        final var result = menuItem.getSnapshot(1);
+        assertEquals("Burger", result.getName());
+        assertEquals(expectedPrice, result.getPrice());
+        assertEquals(Status.ACTIVE, result.getStatus());
+    }
+
+    private void assertMenuItemFromSnapshot(MenuItemSnapshot snapshot, MenuItem menuItem) {
         final var result = menuItem.getSnapshot(1);
         assertEquals(snapshot.getId(), result.getId());
         assertEquals(snapshot.getName(), result.getName());
         assertEquals(snapshot.getPrice(), result.getPrice());
         assertNull(result.getMenu());
         assertEquals(snapshot.getStatus(), result.getStatus());
-    }
-
-    @Test
-    void shouldRestoreMenuItemWithMenuFromSnapshot() {
-        // Create a menu snapshot
-        final var menuSnapshot = new MenuSnapshot(1L, "Main Menu", new HashSet<>());
-
-        // Create a menu item snapshot with a menu reference
-        final var menuItemSnapshot = new MenuItemSnapshot(1L, "Pizza", new BigDecimal("15.99"), menuSnapshot, Status.ACTIVE);
-
-        // Restore the menu item
-        final var menuItem = MenuItem.restore(menuItemSnapshot, 1);
-
-        // Check assertions
-        assertEquals(menuItemSnapshot.getId(), menuItem.getSnapshot(1).getId());
-        assertEquals(menuItemSnapshot.getName(), menuItem.getSnapshot(1).getName());
-        assertEquals(menuItemSnapshot.getPrice(), menuItem.getSnapshot(1).getPrice());
-        assertNotNull(menuItem.getSnapshot(1).getMenu());
-        assertEquals(menuItemSnapshot.getStatus(), menuItem.getSnapshot(1).getStatus());
-
-        // Check assertions for the restored menu
-        assertEquals(menuSnapshot.getId(), menuItem.getSnapshot(1).getMenu().getId());
-        assertEquals(menuSnapshot.getName(), menuItem.getSnapshot(1).getMenu().getName());
-        assertTrue(menuItem.getSnapshot(1).getMenu().getMenuItems().isEmpty());
-    }
-
-    @Test
-    void shouldUpdateMenuItemInfo() {
-        // given
-        final var menuItem = new MenuItem();
-
-        // when
-        menuItem.update(1L, "Salad", new Money(new BigDecimal("7.99")), 2L, "Healthy Menu");
-
-        // then
-        final var result = menuItem.getSnapshot(1);
-        assertEquals(1L, result.getId());
-        assertEquals("Salad", result.getName());
-        assertEquals(new BigDecimal("7.99"), result.getPrice());
-        assertNotNull(result.getMenu());
-        assertEquals(Status.ACTIVE, result.getStatus());
     }
 }
 
@@ -95,12 +145,12 @@ class MenuTest {
         final var menu = new Menu();
 
         // when
-        menu.updateInfo(1L, "Healthy Menu");
+        menu.updateInfo(1L, "Food");
 
         // then
         final var result = menu.getSnapshot(1);
         assertEquals(1L, result.getId());
-        assertEquals("Healthy Menu", result.getName());
+        assertEquals("Food", result.getName());
         assertTrue(result.getMenuItems().isEmpty());
     }
 
@@ -110,9 +160,9 @@ class MenuTest {
         final var menu = new Menu();
 
         // when
-        menu.updateName("Vegetarian Menu");
+        menu.updateName("Food");
 
         // then
-        assertEquals("Vegetarian Menu", menu.getSnapshot(0).getName());
+        assertEquals("Food", menu.getSnapshot(0).getName());
     }
 }

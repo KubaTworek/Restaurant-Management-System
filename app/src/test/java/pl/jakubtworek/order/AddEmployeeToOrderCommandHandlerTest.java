@@ -4,11 +4,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import pl.jakubtworek.common.vo.Status;
 import pl.jakubtworek.employee.EmployeeFacade;
 import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.employee.vo.Job;
 import pl.jakubtworek.order.command.AddEmployeeToOrderCommand;
-import pl.jakubtworek.common.vo.Status;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;

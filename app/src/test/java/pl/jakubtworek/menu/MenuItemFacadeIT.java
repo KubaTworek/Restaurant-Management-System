@@ -4,10 +4,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import pl.jakubtworek.common.vo.Status;
 import pl.jakubtworek.menu.dto.MenuDto;
 import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.menu.dto.MenuItemRequest;
-import pl.jakubtworek.common.vo.Status;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -31,6 +31,13 @@ class MenuItemFacadeIT {
 
     private MenuItemFacade menuItemFacade;
 
+    private final MenuItem burger = createMenuItem();
+    private final Menu food = createMenu();
+    private final MenuItemDto burgerDto = MenuItemDto.create(1L, "Burger", BigDecimal.valueOf(10.00), Status.ACTIVE);
+    private final MenuDto foodDto = MenuDto.create(1L, "Food", List.of(burgerDto));
+    private final Set<MenuDto> menus = new HashSet<>();
+    private final List<MenuItemDto> menuItems = createMenuItemDtos();
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -40,116 +47,101 @@ class MenuItemFacadeIT {
                 menuItemQueryRepository,
                 menuQueryRepository
         );
+        when(menuItemRepository.save(any(MenuItem.class))).thenReturn(burger);
+        when(menuItemRepository.save(any(Menu.class))).thenReturn(food);
+        when(menuItemQueryRepository.findDtoById(1L)).thenReturn(Optional.of(burgerDto));
+        when(menuItemQueryRepository.findDtoByName("Burger")).thenReturn(Optional.of(burgerDto));
+        when(menuItemQueryRepository.findDtoByName("Pasta")).thenReturn(Optional.empty());
+        when(menuItemQueryRepository.findByMenuName("Food")).thenReturn(menuItems);
+        when(menuQueryRepository.findDtoByName("Food")).thenReturn(Optional.of(foodDto));
+        when(menuQueryRepository.findDtoByName("Drinks")).thenReturn(Optional.empty());
+        when(menuQueryRepository.findDtoByMenuItems_Status(Status.ACTIVE)).thenReturn(new HashSet<>());
     }
 
     @Test
     void shouldReturnMenuItemByName() {
-        // given
-        final var itemName = "Spaghetti";
-        final var expectedMenuItem = MenuItemDto.create(1L, itemName, new BigDecimal("10.00"), Status.ACTIVE);
-
-        when(menuItemQueryRepository.findDtoByName(itemName)).thenReturn(Optional.of(expectedMenuItem));
-
         // when
-        final var result = menuItemFacade.getByName(itemName);
+        final var result = menuItemFacade.getByName("Burger");
 
         // then
-        assertEquals(expectedMenuItem, result);
+        assertEquals(burgerDto, result);
     }
 
     @Test
     void shouldSaveMenuItemWithExistingMenu() {
         // given
-        final var request = new MenuItemRequest("Lasagna", new BigDecimal("14.00"), "Dinner Menu");
-        final var expectedMenu = MenuDto.create(1L, "Dinner Menu", null);
-        final var expectedMenuItem = createMenuItem(1L, "Lasagna", new BigDecimal("14.00"), expectedMenu);
-
-        when(menuQueryRepository.findDtoByName(request.menu())).thenReturn(Optional.of(expectedMenu));
-        when(menuItemRepository.save(any(MenuItem.class))).thenReturn(expectedMenuItem);
+        final var request = new MenuItemRequest("Pasta", BigDecimal.valueOf(10.00), "Food");
 
         // when
         final var result = menuItemFacade.save(request);
 
         // then
-        assertMenuItemEquals(expectedMenuItem, result);
+        assertEquals(burger.getSnapshot(1).getId(), result.getId());
+        assertEquals(burger.getSnapshot(1).getName(), result.getName());
+        assertEquals(burger.getSnapshot(1).getPrice(), result.getPrice());
+        assertEquals(burger.getSnapshot(1).getStatus(), result.getStatus());
     }
 
     @Test
     void shouldSaveMenuItemWithNotExistingMenu() {
         // given
-        final var request = new MenuItemRequest("Lasagna", new BigDecimal("14.00"), "Dinner Menu");
-        final var expectedMenuDto = MenuDto.create(1L, "Dinner Menu", null);
-        final var expectedMenuItem = createMenuItem(1L, "Lasagna", new BigDecimal("14.00"), expectedMenuDto);
-
-        when(menuQueryRepository.findDtoByName(request.menu())).thenReturn(Optional.empty());
-        when(menuItemRepository.save(any(MenuItem.class))).thenReturn(expectedMenuItem);
+        final var request = new MenuItemRequest("Cola", BigDecimal.valueOf(10.00), "Drinks");
 
         // when
         final var result = menuItemFacade.save(request);
 
         // then
-        assertMenuItemEquals(expectedMenuItem, result);
+        assertEquals(burger.getSnapshot(1).getId(), result.getId());
+        assertEquals(burger.getSnapshot(1).getName(), result.getName());
+        assertEquals(burger.getSnapshot(1).getPrice(), result.getPrice());
+        assertEquals(burger.getSnapshot(1).getStatus(), result.getStatus());
     }
 
     @Test
     void shouldDeleteMenuItem() {
-        // given
-        final var itemId = 1L;
-
         // when
-        menuItemFacade.deleteById(itemId);
+        menuItemFacade.deleteById(1L);
 
         // then
-        verify(menuItemRepository).deactivateMenuItem(itemId);
+        verify(menuItemRepository).deactivateMenuItem(1L);
     }
 
     @Test
     void shouldFindAllMenu() {
-        // given
-        final Set<MenuDto> expectedMenuList = new HashSet<>();
-
-        when(menuQueryRepository.findDtoByMenuItems_Status(Status.ACTIVE)).thenReturn(expectedMenuList);
-
         // when
         final var result = new HashSet<>(menuItemFacade.findAll());
 
         // then
-        assertEquals(expectedMenuList, result);
+        assertEquals(menus, result);
     }
 
     @Test
     void shouldFindMenuItemById() {
-        // given
-        final var itemId = 1L;
-        final var expectedMenuItem = MenuItemDto.create(itemId, "Pizza", new BigDecimal("12.00"), Status.ACTIVE);
-
-        when(menuItemQueryRepository.findDtoById(itemId)).thenReturn(Optional.of(expectedMenuItem));
-
         // when
-        final var result = menuItemFacade.findById(itemId);
+        final var result = menuItemFacade.findById(1L);
 
         // then
-        assertEquals(Optional.of(expectedMenuItem), result);
+        assertEquals(Optional.of(burgerDto), result);
     }
 
     @Test
     void shouldFindMenuByName() {
-        // given
-        final var menuName = "Lunch Menu";
-        final List<MenuItemDto> menuItems = createMenuItemDtos();
-
-        when(menuItemQueryRepository.findByMenuName(menuName)).thenReturn(menuItems);
-
         // when
-        final var result = menuItemFacade.findByMenu(menuName);
+        final var result = menuItemFacade.findByMenu("Food");
 
         // then
         assertEquals(menuItems, result);
     }
 
-    private MenuItem createMenuItem(Long id, String name, BigDecimal price, MenuDto menuDto) {
+    private MenuItem createMenuItem() {
         return MenuItem.restore(new MenuItemSnapshot(
-                id, name, price, createMenu(menuDto).getSnapshot(1), Status.ACTIVE
+                1L, "Burger", BigDecimal.valueOf(10.00), new MenuSnapshot(1L, "Food", new HashSet<>()), Status.INACTIVE
+        ), 1);
+    }
+
+    private Menu createMenu() {
+        return Menu.restore(new MenuSnapshot(
+                1L, "Food", new HashSet<>()
         ), 1);
     }
 
@@ -159,17 +151,5 @@ class MenuItemFacadeIT {
         menuItems.add(MenuItemDto.create(2L, "Pizza", new BigDecimal("12.00"), Status.ACTIVE));
         menuItems.add(MenuItemDto.create(3L, "Salad", new BigDecimal("5.00"), Status.ACTIVE));
         return menuItems;
-    }
-
-    private Menu createMenu(MenuDto menuDto) {
-        return Menu.restore(new MenuSnapshot(
-                menuDto.getId(), menuDto.getName(), new HashSet<>()
-        ), 1);
-    }
-
-    private void assertMenuItemEquals(final MenuItem expected, final MenuItemDto actual) {
-        assertEquals(expected.getSnapshot(1).getId(), actual.getId());
-        assertEquals(expected.getSnapshot(1).getName(), actual.getName());
-        assertEquals(expected.getSnapshot(1).getPrice(), actual.getPrice());
     }
 }
