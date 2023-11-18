@@ -6,7 +6,6 @@ import pl.jakubtworek.common.CommandBus;
 import pl.jakubtworek.order.command.AddEmployeeToOrderCommand;
 import pl.jakubtworek.order.command.DeliverOrderCommand;
 import pl.jakubtworek.order.vo.OrderEvent;
-import pl.jakubtworek.order.vo.TypeOfOrder;
 
 @Service
 class OrderEventListener {
@@ -30,7 +29,7 @@ class OrderEventListener {
     public void handleOrderEvent(OrderEvent event) {
         switch (event.getState()) {
             case TODO -> handleTodo(event);
-            case READY -> handleReady(event.getOrderType(), event);
+            case READY -> handleReady(event);
             case DELIVERED -> handleDelivered(event);
         }
 
@@ -51,8 +50,8 @@ class OrderEventListener {
         commandBus.dispatch(new AddEmployeeToOrderCommand(event.getOrderId(), event.getEmployeeId()));
     }
 
-    private void handleReady(TypeOfOrder orderType, OrderEvent event) {
-        switch (orderType) {
+    private void handleReady(OrderEvent event) {
+        switch (event.getOrderType()) {
             case ON_SITE, TAKE_AWAY -> waiterDelivery.handle(event);
             case DELIVERY -> carDelivery.handle(event);
         }

@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class EmployeeFacade {
-    private static final String EMPLOYEE_NOT_FOUND_ERROR = "Employee with that id doesn't exist";
     private final EmployeeRepository employeeRepository;
     private final EmployeeQueryRepository employeeQueryRepository;
     private final DomainEventPublisher publisher;
@@ -24,11 +23,6 @@ public class EmployeeFacade {
         this.employeeRepository = employeeRepository;
         this.employeeQueryRepository = employeeQueryRepository;
         this.publisher = publisher;
-    }
-
-    public EmployeeDto getById(Long id) {
-        return employeeQueryRepository.findDtoById(id)
-                .orElseThrow(() -> new IllegalStateException(EMPLOYEE_NOT_FOUND_ERROR));
     }
 
     EmployeeDto save(EmployeeRequest toSave) {

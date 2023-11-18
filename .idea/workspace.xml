@@ -4,9 +4,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6804a3ab-3eba-4f33-a440-5fed16101a6e" name="Changes" comment="clean code">
+    <list default="true" id="6804a3ab-3eba-4f33-a440-5fed16101a6e" name="Changes" comment="update readme">
+      <change afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/dto/ItemDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/domain/src/test/java/pl/jakubtworek/order/OrderItemFactoryTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/domain/src/test/java/pl/jakubtworek/order/OrderItemTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/delivery/OrderEventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/delivery/OrderEventListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/EmployeeFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/EmployeeFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/AddEmployeeToOrderCommandHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/AddEmployeeToOrderCommandHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/DeliverOrderCommandHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/DeliverOrderCommandHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderItemFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/OrderItemFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/employee/EmployeeFacadeIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/employee/EmployeeFacadeIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/order/AddEmployeeToOrderCommandHandlerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/order/DeliverOrderCommandHandlerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/order/OrderFacadeIT.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/order/OrderFactoryTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/order/OrderItemFactoryTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/OrderItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/OrderItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/src/test/java/pl/jakubtworek/order/OrderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/test/java/pl/jakubtworek/order/OrderTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,59 +99,59 @@
     <option name="showLibraryContents" value="true" />
     <option name="showVisibilityIcons" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Downloaded.Files.Path.Enabled": "false",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "jdk.selected.JAVA_MODULE": "openjdk-19",
-    "last_opened_file_path": "C:/Users/kubat/IdeaProjects/Restaurant-Management-System",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.46967897",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.sourceCode",
-    "spring.configuration.checksum": "676e672a14b9b749483ba81e6389133b",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;openjdk-19&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/kubat/IdeaProjects/Restaurant-Management-System&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.46967897&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;676e672a14b9b749483ba81e6389133b&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql",
-      "h2"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;,
+      &quot;h2&quot;
     ],
-    "RunConfigurationTargetLRU": [
-      "e3312dba-36d1-479b-8648-b3569df24244"
+    &quot;RunConfigurationTargetLRU&quot;: [
+      &quot;e3312dba-36d1-479b-8648-b3569df24244&quot;
     ],
-    "com.intellij.ide.scratch.LRUPopupBuilder$1/": [
-      "H2",
-      "MySQL"
+    &quot;com.intellij.ide.scratch.LRUPopupBuilder$1/&quot;: [
+      &quot;H2&quot;,
+      &quot;MySQL&quot;
     ],
-    "com.intellij.ide.scratch.LRUPopupBuilder$1/Change SQL Dialect": [
-      "H2",
-      "MySQL",
-      "Cockroach"
+    &quot;com.intellij.ide.scratch.LRUPopupBuilder$1/Change SQL Dialect&quot;: [
+      &quot;H2&quot;,
+      &quot;MySQL&quot;,
+      &quot;Cockroach&quot;
     ],
-    "com.intellij.ide.scratch.LRUPopupBuilder$1/SQL Dialect": [
-      "Oracle",
-      "H2"
+    &quot;com.intellij.ide.scratch.LRUPopupBuilder$1/SQL Dialect&quot;: [
+      &quot;Oracle&quot;,
+      &quot;H2&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\kubat\IdeaProjects\Restaurant-Management-System\domain\src\main\java\pl\jakubtworek\auth" />
@@ -152,8 +171,8 @@
       <recent name="" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="pl.jakubtworek.employee" />
       <recent name="pl.jakubtworek.order" />
+      <recent name="pl.jakubtworek.employee" />
       <recent name="pl.jakubtworek.delivery" />
       <recent name="pl.jakubtworek.queue" />
       <recent name="pl.jakubtworek" />
@@ -176,39 +195,9 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.MenuItemFactoryTest">
-    <configuration name="EmployeeControllerE2ETest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="adapters" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.employee.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.employee" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.employee.EmployeeControllerE2ETest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MenuItemFactoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="app" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.menu.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.menu" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.menu.MenuItemFactoryTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="OrderFactoryTest.shouldCreateOrder" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="app" />
+  <component name="RunManager" selected="JUnit.OrderTest">
+    <configuration name="OrderItemFactoryTest.shouldCalculatePriceForOrderItem" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="domain" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="pl.jakubtworek.order.*" />
@@ -216,8 +205,8 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="pl.jakubtworek.order" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.order.OrderFactoryTest" />
-      <option name="METHOD_NAME" value="shouldCreateOrder" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.order.OrderItemFactoryTest" />
+      <option name="METHOD_NAME" value="shouldCalculatePriceForOrderItem" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -253,13 +242,45 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="OrderTest.shouldAddEmployeeToOrder" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="domain" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.jakubtworek.order.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.order" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.order.OrderTest" />
+      <option name="METHOD_NAME" value="shouldAddEmployeeToOrder" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrderTest.shouldCreateOrder" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="domain" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.jakubtworek.order.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.order" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.order.OrderTest" />
+      <option name="METHOD_NAME" value="shouldCreateOrder(java.lang.String)" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.MenuItemFactoryTest" />
-        <item itemvalue="JUnit.EmployeeControllerE2ETest" />
         <item itemvalue="JUnit.OrderTest" />
         <item itemvalue="JUnit.OrderItemTest" />
-        <item itemvalue="JUnit.OrderFactoryTest.shouldCreateOrder" />
+        <item itemvalue="JUnit.OrderItemFactoryTest.shouldCalculatePriceForOrderItem" />
+        <item itemvalue="JUnit.OrderTest.shouldAddEmployeeToOrder" />
+        <item itemvalue="JUnit.OrderTest.shouldCreateOrder" />
       </list>
     </recent_temporary>
   </component>
@@ -310,7 +331,8 @@
       <workItem from="1699051599543" duration="13418000" />
       <workItem from="1699730347694" duration="7372000" />
       <workItem from="1700091642775" duration="40783000" />
-      <workItem from="1700203287807" duration="4067000" />
+      <workItem from="1700203287807" duration="5289000" />
+      <workItem from="1700312182369" duration="11757000" />
     </task>
     <task id="LOCAL-00001" summary="package organized by feature">
       <created>1696611505523</created>
@@ -536,7 +558,14 @@
       <option name="project" value="LOCAL" />
       <updated>1700203227569</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="update readme">
+      <created>1700215968445</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1700215968445</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -555,7 +584,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="fix application to deploy" />
     <MESSAGE value="add necessary business logic" />
     <MESSAGE value="implement flyway" />
     <MESSAGE value="create unit tests" />
@@ -580,7 +608,8 @@
     <MESSAGE value="refactor tests" />
     <MESSAGE value="implement native query mechanism" />
     <MESSAGE value="clean code" />
-    <option name="LAST_COMMIT_MESSAGE" value="clean code" />
+    <MESSAGE value="update readme" />
+    <option name="LAST_COMMIT_MESSAGE" value="update readme" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -599,6 +628,11 @@
           <url>file://$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/menu/MenuItemFacadeIT.java</url>
           <line>93</line>
           <option name="timeStamp" value="45" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/delivery/AbstractDelivery.java</url>
+          <line>42</line>
+          <option name="timeStamp" value="49" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

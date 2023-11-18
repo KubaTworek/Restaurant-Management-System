@@ -1,32 +1,21 @@
 package pl.jakubtworek.order;
 
 import pl.jakubtworek.common.CommandHandler;
-import pl.jakubtworek.employee.EmployeeFacade;
 import pl.jakubtworek.employee.vo.EmployeeId;
 import pl.jakubtworek.order.command.AddEmployeeToOrderCommand;
 
 class AddEmployeeToOrderCommandHandler implements CommandHandler<AddEmployeeToOrderCommand> {
-    private final OrderFacade orderFacade;
-    private final EmployeeFacade employeeFacade;
-    private final OrderRepository orderRepository;
+    private final Order order;
 
-    AddEmployeeToOrderCommandHandler(final OrderFacade orderFacade,
-                                     final EmployeeFacade employeeFacade,
-                                     final OrderRepository orderRepository
-    ) {
-
-        this.orderFacade = orderFacade;
-        this.employeeFacade = employeeFacade;
-        this.orderRepository = orderRepository;
+    AddEmployeeToOrderCommandHandler(final Order order) {
+        this.order = order;
     }
 
     @Override
     public void handle(AddEmployeeToOrderCommand command) {
-        final var order = orderFacade.getById(command.orderId());
-        final var employee = employeeFacade.getById(command.employeeId());
         order.addEmployee(
-                new EmployeeId(employee.getId())
+                command.orderId(),
+                new EmployeeId(command.employeeId())
         );
-        orderRepository.save(order);
     }
 }

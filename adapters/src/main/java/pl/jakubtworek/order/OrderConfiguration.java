@@ -2,51 +2,54 @@ package pl.jakubtworek.order;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import pl.jakubtworek.auth.UserFacade;
 import pl.jakubtworek.common.SpringDomainEventPublisher;
-import pl.jakubtworek.employee.EmployeeFacade;
 import pl.jakubtworek.menu.MenuItemFacade;
 
 @Configuration
 class OrderConfiguration {
     @Bean
+    @Scope("prototype")
+    Order order(
+            SpringDomainEventPublisher publisher,
+            OrderRepository repository
+    ) {
+        Order order = new Order();
+        order.setDependencies(publisher, repository);
+        return order;
+    }
+
+    @Bean
     OrderFacade orderFacade(
             UserFacade userFacade,
             MenuItemFacade menuItemFacade,
-            OrderRepository orderRepository,
             OrderQueryRepository orderQueryRepository,
-            SpringDomainEventPublisher publisher
+            Order order
     ) {
         return new OrderFacade(
                 userFacade,
                 menuItemFacade,
-                orderRepository,
                 orderQueryRepository,
-                publisher
+                order
         );
     }
 
     @Bean
     DeliverOrderCommandHandler deliverOrderCommandHandler(
-            OrderFacade orderFacade,
-            OrderRepository orderRepository
+            Order order
     ) {
         return new DeliverOrderCommandHandler(
-                orderFacade,
-                orderRepository
+                order
         );
     }
 
     @Bean
     AddEmployeeToOrderCommandHandler addEmployeeToOrderCommandHandler(
-            OrderFacade orderFacade,
-            EmployeeFacade employeeFacade,
-            OrderRepository orderRepository
+            Order order
     ) {
         return new AddEmployeeToOrderCommandHandler(
-                orderFacade,
-                employeeFacade,
-                orderRepository
+                order
         );
     }
 }

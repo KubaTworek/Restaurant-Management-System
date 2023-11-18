@@ -1,9 +1,11 @@
 package pl.jakubtworek.order;
 
 import pl.jakubtworek.common.vo.Money;
+import pl.jakubtworek.order.dto.ItemDto;
 
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.Set;
 
 class OrderItem {
     private Long id;
@@ -16,10 +18,10 @@ class OrderItem {
     }
 
     private OrderItem(final Long id,
-              final String name,
-              final Money price,
-              final Integer amount,
-              final Order order
+                      final String name,
+                      final Money price,
+                      final Integer amount,
+                      final Order order
     ) {
         this.id = id;
         this.name = name;
@@ -61,9 +63,9 @@ class OrderItem {
         );
     }
 
-    void updateInfo(String name, Money price, Integer amount) {
+    void updateInfo(String name, Set<ItemDto> menuItems, Integer amount) {
         this.name = name;
-        this.price = price;
+        this.price = getPriceForItem(name, menuItems);
         this.amount = amount;
     }
 
@@ -77,6 +79,14 @@ class OrderItem {
         } else {
             return BigDecimal.ZERO;
         }
+    }
+
+    private Money getPriceForItem(String itemName, Set<ItemDto> menuItems) {
+        return menuItems.stream()
+                .filter(mi -> mi.getName().equals(itemName))
+                .findFirst()
+                .map(mi -> new Money(mi.getPrice()))
+                .orElse(new Money(BigDecimal.valueOf(0)));
     }
 
     @Override

@@ -1,18 +1,24 @@
 package pl.jakubtworek.order;
 
+import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.auth.vo.UserId;
 import pl.jakubtworek.common.vo.Money;
 import pl.jakubtworek.employee.vo.EmployeeId;
+import pl.jakubtworek.order.dto.ItemDto;
+import pl.jakubtworek.order.vo.OrderEvent;
 import pl.jakubtworek.order.vo.TypeOfOrder;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 class Order {
+    private static final String ORDER_NOT_FOUND_ERROR = "Order with that id doesn't exist";
+
     private Long id;
     private Money price;
     private ZonedDateTime hourOrder;
@@ -21,6 +27,8 @@ class Order {
     private Set<OrderItem> orderItems = new HashSet<>();
     private Set<EmployeeId> employees = new HashSet<>();
     private UserId user;
+    private DomainEventPublisher publisher;
+    private OrderRepository repository;
 
     Order() {
     }
@@ -94,27 +102,44 @@ class Order {
         );
     }
 
-    void updateInfo(Set<OrderItem> menuItems, String typeOfOrderName, UserId user) {
-        this.orderItems = menuItems;
+    void setDependencies(DomainEventPublisher publisher, OrderRepository repository) {
+        this.publisher = publisher;
+        this.repository = repository;
+    }
+
+    Order from(List<ItemDto> items, String typeOfOrderName, UserId user) {
+        this.orderItems = OrderItemFactory.from(items);
         this.orderItems.forEach(oi -> oi.setOrder(this));
         this.price = new Money(calculateTotalPrice());
         this.hourOrder = ZonedDateTime.now();
         this.typeOfOrder = getAndValidateTypeOfOrder(typeOfOrderName);
         this.user = user;
+        final var created = this.repository.save(this);
+        this.publisher.publish(
+                new OrderEvent(
+                        created.id, null, this.typeOfOrder, this.orderItems.size(), OrderEvent.State.TODO
+                )
+        );
+        return created;
     }
 
-    void addEmployee(EmployeeId employee) {
+    void addEmployee(Long id, EmployeeId employee) {
         if (employee != null) {
-            employees.add(employee);
+            final var order = this.getById(id);
+            order.employees.add(employee);
+            this.repository.save(order);
         }
     }
 
-    void delivery() {
-        this.hourAway = ZonedDateTime.now();
+    void delivery(Long id) {
+        final var order = this.getById(id);
+        order.hourAway = ZonedDateTime.now();
+        this.repository.save(order);
     }
 
-    int getAmountOfMenuItems() {
-        return this.orderItems.size();
+    private Order getById(final Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new IllegalStateException(ORDER_NOT_FOUND_ERROR));
     }
 
     private BigDecimal calculateTotalPrice() {
