@@ -1,28 +1,62 @@
 package pl.jakubtworek.order;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.auth.vo.UserId;
-import pl.jakubtworek.common.vo.Money;
 import pl.jakubtworek.employee.vo.EmployeeId;
+import pl.jakubtworek.order.dto.ItemDto;
+import pl.jakubtworek.order.vo.OrderEvent;
 import pl.jakubtworek.order.vo.TypeOfOrder;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class OrderTest {
+    @Mock
+    private OrderRepository repository;
+    @Mock
+    private DomainEventPublisher publisher;
+    @Captor
+    private ArgumentCaptor<OrderEvent> event;
+
+    private Order order;
+    private List<ItemDto> items;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        order = new Order();
+        order.setDependencies(
+                publisher,
+                repository
+        );
+        items = createItems();
+
+        when(repository.save(order)).thenReturn(order);
+        when(repository.findById(1L)).thenReturn(Optional.of(order));
+    }
 
     @Test
-    void shouldRestoreOrderFromSnapshotWithDepthZero() {
+    void shouldRestoreOrderFromSnapshot_whenDepthIsZero() {
         // given
         final var orderSnapshot = new OrderSnapshot(1L, BigDecimal.valueOf(50), ZonedDateTime.now(), ZonedDateTime.now().plusHours(1),
                 TypeOfOrder.ON_SITE, Collections.emptySet(), new HashSet<>(), new UserId(1L));
@@ -35,7 +69,7 @@ class OrderTest {
     }
 
     @Test
-    void shouldRestoreOrderFromSnapshotWithDepthGreaterThanZero() {
+    void shouldRestoreOrderFromSnapshot_whenDepthIsGreaterThanZero() {
         // given
         final var orderItemSnapshot = new OrderItemSnapshot(1L, "Burger", BigDecimal.valueOf(10), 2, null);
         final var orderSnapshot = new OrderSnapshot(1L, BigDecimal.valueOf(50), ZonedDateTime.now(), ZonedDateTime.now().plusHours(1),
@@ -50,82 +84,52 @@ class OrderTest {
 
     @ParameterizedTest
     @CsvSource({"ON_SITE", "TAKE_AWAY", "DELIVERY"})
-    void shouldUpdateInfoForOrder(String typeOfOrder) {
+    void shouldCreateOrder(String typeOfOrder) {
         // given
-        final var order = new Order();
         final var userId = new UserId(1L);
-        final var orderItems = createOrderItems();
 
         // when
-        order.updateInfo(orderItems, typeOfOrder, userId);
+        order.from(items, typeOfOrder, userId);
 
         // then
-        final var snap = order.getSnapshot(1);
-        assertEquals(BigDecimal.valueOf(60), snap.getPrice());
-        assertEquals(typeOfOrder, snap.getTypeOfOrder().toString());
-        assertEquals(userId, snap.getClientId());
-        assertNotNull(snap.getHourOrder());
-        assertNull(snap.getHourAway());
+        final var result = order.getSnapshot(1);
+        assertEquals(BigDecimal.valueOf(34.97), result.getPrice());
+        assertEquals(typeOfOrder, result.getTypeOfOrder().toString());
+        assertEquals(userId, result.getClientId());
+        assertNotNull(result.getHourOrder());
+        assertNull(result.getHourAway());
+        verify(publisher).publish(event.capture());
+        final var eventCaptured = event.getValue();
+        assertEquals(result.getId(), eventCaptured.getOrderId());
+        assertNull(eventCaptured.getEmployeeId());
+        assertEquals(result.getTypeOfOrder(), eventCaptured.getOrderType());
+        assertEquals(result.getOrderItems().size(), eventCaptured.getAmountOfMenuItems());
+        assertEquals(OrderEvent.State.TODO, eventCaptured.getState());
     }
 
     @Test
     void shouldAddEmployeeToOrder() {
-        // given
-        final var order = new Order();
-        final var employeeId = new EmployeeId(1L);
-
         // when
-        order.addEmployee(employeeId);
+        order.addEmployee(1L, new EmployeeId(1L));
 
         // then
-        assertEquals(Collections.singleton(employeeId), order.getSnapshot(1).getEmployees());
+        assertEquals(1, order.getSnapshot(1).getEmployees().stream().findFirst().get().getId());
     }
 
     @Test
     void shouldSetDeliveryForOrder() {
-        // given
-        final var order = new Order();
-
         // when
-        order.delivery();
+        order.delivery(1L);
 
         // then
-        assertEquals(ZonedDateTime.now().getHour(), order.getSnapshot(1).getHourAway().getHour());
+        assertEquals(ZonedDateTime.now().getSecond(), order.getSnapshot(1).getHourAway().getSecond());
     }
 
     @Test
-    void shouldReturnZeroAmountOfMenuItemsForEmptyOrder() {
-        // given
-        final var order = new Order();
-
-        // when
-        int amountOfMenuItems = order.getAmountOfMenuItems();
-
-        // then
-        assertEquals(0, amountOfMenuItems);
-    }
-
-    @Test
-    void shouldReturnCorrectAmountOfMenuItems() {
-        // given
-        final var order = new Order();
-        order.updateInfo(createOrderItems(), TypeOfOrder.ON_SITE.toString(), new UserId(1L));
-
-        // when
-        int amountOfMenuItems = order.getAmountOfMenuItems();
-
-        // then
-        assertEquals(3, amountOfMenuItems);
-    }
-
-    @Test
-    void shouldThrowException_whenUpdateOrderInfoWithInvalidTypeOfOrder() {
-        // given
-        final var order = new Order();
-
+    void shouldThrowException_whenCreateOrderInfoWithInvalidTypeOfOrder() {
         // when & then
         assertThrows(IllegalStateException.class, () ->
-                order.updateInfo(createOrderItems(), "INVALID_TYPE_OF_ORDER_TYPE", new UserId(1L))
+                order.from(createItems(), "INVALID_TYPE_OF_ORDER_TYPE", new UserId(1L))
         );
     }
 
@@ -140,79 +144,11 @@ class OrderTest {
         assertEquals(expected.getClientId(), actual.getClientId());
     }
 
-    private Set<OrderItem> createOrderItems() {
-        final Set<OrderItem> orderItems = new HashSet<>();
-        orderItems.add(OrderItem.restore(new OrderItemSnapshot(1L, "Item1", BigDecimal.TEN, 2, null), 0));
-        orderItems.add(OrderItem.restore(new OrderItemSnapshot(2L, "Item2", BigDecimal.TEN, 1, null), 0));
-        orderItems.add(OrderItem.restore(new OrderItemSnapshot(3L, "Item3", BigDecimal.TEN, 3, null), 0));
-        return orderItems;
-    }
-}
-
-class OrderItemTest {
-
-    @Test
-    void shouldRestoreOrderItemFromSnapshotWithDepthZero() {
-        // given
-        final var orderItemSnapshot = new OrderItemSnapshot(1L, "Burger", BigDecimal.valueOf(10), 2, null);
-
-        // when
-        final var orderItem = OrderItem.restore(orderItemSnapshot, 0);
-
-        // then
-        assertOrderItemSnapshotsEqual(orderItemSnapshot, orderItem.getSnapshot(1));
-    }
-
-    @Test
-    void shouldRestoreOrderItemFromSnapshotWithDepthGreaterThanZero() {
-        // given
-        final var orderSnapshot = new OrderSnapshot(1L, BigDecimal.valueOf(50), ZonedDateTime.now(), ZonedDateTime.now().plusHours(1),
-                TypeOfOrder.ON_SITE, Collections.emptySet(), new HashSet<>(), new UserId(1L));
-        final var orderItemSnapshot = new OrderItemSnapshot(1L, "Burger", BigDecimal.valueOf(10), 2, orderSnapshot);
-
-        // when
-        final var orderItem = OrderItem.restore(orderItemSnapshot, 1);
-
-        // then
-        assertOrderItemSnapshotsEqual(orderItemSnapshot, orderItem.getSnapshot(1));
-    }
-
-    @Test
-    void shouldUpdateInfoForOrderItem() {
-        // given
-        final var orderItem = new OrderItem();
-        final var name = "UpdatedItem";
-        final var price = new Money(BigDecimal.TEN);
-        final var amount = 2;
-
-        // when
-        orderItem.updateInfo(name, price, amount);
-
-        // then
-        final var result = orderItem.getSnapshot(1);
-        assertEquals(name, result.getName());
-        assertEquals(price.value(), result.getPrice());
-        assertEquals(amount, result.getAmount());
-    }
-
-    @Test
-    void shouldCalculatePriceForOrderItem() {
-        // given
-        final var orderItem = new OrderItem();
-        orderItem.updateInfo("TestItem", new Money(BigDecimal.TEN), 3);
-
-        // when
-        final var calculatedPrice = orderItem.calculatePrice();
-
-        // then
-        assertEquals(BigDecimal.valueOf(30), calculatedPrice);
-    }
-
-    private void assertOrderItemSnapshotsEqual(OrderItemSnapshot expected, OrderItemSnapshot actual) {
-        assertEquals(expected.getId(), actual.getId());
-        assertEquals(expected.getName(), actual.getName());
-        assertEquals(expected.getPrice(), actual.getPrice());
-        assertEquals(expected.getAmount(), actual.getAmount());
-        assertEquals(expected.getOrder(), actual.getOrder());
+    private List<ItemDto> createItems() {
+        final List<ItemDto> items = new ArrayList<>();
+        items.add(new ItemDto("Burger", BigDecimal.valueOf(10.99)));
+        items.add(new ItemDto("Pizza", BigDecimal.valueOf(12.99)));
+        items.add(new ItemDto("Burger", BigDecimal.valueOf(10.99)));
+        return items;
     }
 }

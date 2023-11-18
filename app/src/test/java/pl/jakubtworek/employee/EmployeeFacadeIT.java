@@ -50,15 +50,6 @@ class EmployeeFacadeIT {
     }
 
     @Test
-    void shouldReturnEmployeeById() {
-        // when
-        final var result = employeeFacade.getById(1L);
-
-        // then
-        assertEquals(employeeDto, result);
-    }
-
-    @Test
     void shouldSaveEmployeeAndAddToQueue() {
         // given
         final var request = new EmployeeRequest("John", "Doe", "COOK");
