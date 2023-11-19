@@ -2,20 +2,30 @@ package pl.jakubtworek.employee;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import pl.jakubtworek.common.SpringDomainEventPublisher;
 
 @Configuration
 class EmployeeConfiguration {
     @Bean
+    @Scope("prototype")
+    Employee employee(
+            SpringDomainEventPublisher publisher,
+            EmployeeRepository repository
+    ) {
+        Employee employee = new Employee();
+        employee.setDependencies(publisher, repository);
+        return employee;
+    }
+
+    @Bean
     EmployeeFacade employeeFacade(
-            EmployeeRepository employeeRepository,
             EmployeeQueryRepository employeeQueryRepository,
-            SpringDomainEventPublisher publisher
+            Employee employee
     ) {
         return new EmployeeFacade(
-                employeeRepository,
                 employeeQueryRepository,
-                publisher
+                employee
         );
     }
 }

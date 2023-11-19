@@ -4,28 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6804a3ab-3eba-4f33-a440-5fed16101a6e" name="Changes" comment="update readme">
-      <change afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/dto/ItemDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domain/src/test/java/pl/jakubtworek/order/OrderItemFactoryTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domain/src/test/java/pl/jakubtworek/order/OrderItemTest.java" afterDir="false" />
+    <list default="true" id="6804a3ab-3eba-4f33-a440-5fed16101a6e" name="Changes" comment="update tests">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/OrderConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/delivery/OrderEventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/order/delivery/OrderEventListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/employee/EmployeeConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/employee/EmployeeConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/employee/EmployeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/employee/EmployeeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/employee/SqlEmployeeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/main/java/pl/jakubtworek/employee/SqlEmployeeRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapters/src/test/java/pl/jakubtworek/employee/EmployeeControllerE2ETest.java" beforeDir="false" afterPath="$PROJECT_DIR$/adapters/src/test/java/pl/jakubtworek/employee/EmployeeControllerE2ETest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/EmployeeFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/EmployeeFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/AddEmployeeToOrderCommandHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/AddEmployeeToOrderCommandHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/DeliverOrderCommandHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/DeliverOrderCommandHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderFactory.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/order/OrderItemFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/OrderItemFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/employee/EmployeeFacadeIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/employee/EmployeeFacadeIT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/order/AddEmployeeToOrderCommandHandlerTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/order/DeliverOrderCommandHandlerTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/order/OrderFacadeIT.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/order/OrderFactoryTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/order/OrderItemFactoryTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/OrderItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/OrderItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain/src/test/java/pl/jakubtworek/order/OrderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/test/java/pl/jakubtworek/order/OrderTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/EmployeeFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/pl/jakubtworek/employee/EmployeeFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/employee/EmployeeFacadeIT.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/employee/EmployeeFactoryTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/employee/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/employee/Employee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/employee/EmployeeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/employee/EmployeeRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/src/test/java/pl/jakubtworek/employee/EmployeeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/test/java/pl/jakubtworek/employee/EmployeeTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -195,7 +186,38 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.OrderTest">
+  <component name="RunManager" selected="JUnit.EmployeeTest">
+    <configuration name="EmployeeTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="domain" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.jakubtworek.employee.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.employee" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.employee.EmployeeTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EmployeeTest.shouldDeactivateEmployee" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="domain" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.jakubtworek.employee.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.jakubtworek.employee" />
+      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.employee.EmployeeTest" />
+      <option name="METHOD_NAME" value="shouldDeactivateEmployee" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="OrderItemFactoryTest.shouldCalculatePriceForOrderItem" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="domain" />
       <extension name="coverage">
@@ -242,45 +264,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="OrderTest.shouldAddEmployeeToOrder" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="domain" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.order.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.order" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.order.OrderTest" />
-      <option name="METHOD_NAME" value="shouldAddEmployeeToOrder" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="OrderTest.shouldCreateOrder" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="domain" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pl.jakubtworek.order.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pl.jakubtworek.order" />
-      <option name="MAIN_CLASS_NAME" value="pl.jakubtworek.order.OrderTest" />
-      <option name="METHOD_NAME" value="shouldCreateOrder(java.lang.String)" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.EmployeeTest" />
+        <item itemvalue="JUnit.EmployeeTest.shouldDeactivateEmployee" />
         <item itemvalue="JUnit.OrderTest" />
         <item itemvalue="JUnit.OrderItemTest" />
         <item itemvalue="JUnit.OrderItemFactoryTest.shouldCalculatePriceForOrderItem" />
-        <item itemvalue="JUnit.OrderTest.shouldAddEmployeeToOrder" />
-        <item itemvalue="JUnit.OrderTest.shouldCreateOrder" />
       </list>
     </recent_temporary>
   </component>
@@ -332,7 +322,7 @@
       <workItem from="1699730347694" duration="7372000" />
       <workItem from="1700091642775" duration="40783000" />
       <workItem from="1700203287807" duration="5289000" />
-      <workItem from="1700312182369" duration="11757000" />
+      <workItem from="1700312182369" duration="14162000" />
     </task>
     <task id="LOCAL-00001" summary="package organized by feature">
       <created>1696611505523</created>
@@ -565,7 +555,21 @@
       <option name="project" value="LOCAL" />
       <updated>1700215968445</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="move order logic to domain">
+      <created>1700324336374</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1700324336374</updated>
+    </task>
+    <task id="LOCAL-00035" summary="update tests">
+      <created>1700324351603</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1700324351603</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -584,7 +588,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="add necessary business logic" />
     <MESSAGE value="implement flyway" />
     <MESSAGE value="create unit tests" />
     <MESSAGE value="update classes" />
@@ -595,7 +598,6 @@
     <MESSAGE value="add logger" />
     <MESSAGE value="refactor e2e tests" />
     <MESSAGE value="fix some things" />
-    <MESSAGE value="update tests" />
     <MESSAGE value="provide event storming" />
     <MESSAGE value="create more independent aggregates" />
     <MESSAGE value="fix tests and little refactor" />
@@ -609,7 +611,9 @@
     <MESSAGE value="implement native query mechanism" />
     <MESSAGE value="clean code" />
     <MESSAGE value="update readme" />
-    <option name="LAST_COMMIT_MESSAGE" value="update readme" />
+    <MESSAGE value="move order logic to domain" />
+    <MESSAGE value="update tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="update tests" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -628,11 +632,6 @@
           <url>file://$PROJECT_DIR$/app/src/test/java/pl/jakubtworek/menu/MenuItemFacadeIT.java</url>
           <line>93</line>
           <option name="timeStamp" value="45" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/domain/src/main/java/pl/jakubtworek/order/delivery/AbstractDelivery.java</url>
-          <line>42</line>
-          <option name="timeStamp" value="49" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

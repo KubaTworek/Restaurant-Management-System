@@ -1,10 +1,8 @@
 package pl.jakubtworek.employee;
 
-import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.common.vo.Status;
 import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.employee.dto.EmployeeRequest;
-import pl.jakubtworek.employee.vo.EmployeeEvent;
 import pl.jakubtworek.employee.vo.Job;
 
 import java.util.ArrayList;
@@ -12,27 +10,28 @@ import java.util.List;
 import java.util.Optional;
 
 public class EmployeeFacade {
-    private final EmployeeRepository employeeRepository;
     private final EmployeeQueryRepository employeeQueryRepository;
-    private final DomainEventPublisher publisher;
+    private final Employee employee;
 
-    EmployeeFacade(final EmployeeRepository employeeRepository,
-                   final EmployeeQueryRepository employeeQueryRepository,
-                   final DomainEventPublisher publisher
+
+    EmployeeFacade(final EmployeeQueryRepository employeeQueryRepository,
+                   final Employee employee
     ) {
-        this.employeeRepository = employeeRepository;
         this.employeeQueryRepository = employeeQueryRepository;
-        this.publisher = publisher;
+        this.employee = employee;
     }
 
     EmployeeDto save(EmployeeRequest toSave) {
-        final var created = saveEmployee(toSave);
-        publishEmployeeEvent(created.getSnapshot());
+        final var created = employee.from(
+                toSave.firstName(),
+                toSave.lastName(),
+                toSave.job()
+        );
         return toDto(created);
     }
 
-    int deleteById(Long id) {
-        return employeeRepository.deactivateEmployee(id);
+    void deleteById(Long id) {
+        employee.deactivate(id);
     }
 
     List<EmployeeDto> findAll() {
@@ -45,21 +44,6 @@ public class EmployeeFacade {
 
     List<EmployeeDto> findByJob(String jobName) {
         return new ArrayList<>(employeeQueryRepository.findByJob(Job.valueOf(jobName)));
-    }
-
-    private Employee saveEmployee(EmployeeRequest toSave) {
-        final var created = EmployeeFactory.createEmployee(
-                toSave.firstName(),
-                toSave.lastName(),
-                toSave.job()
-        );
-        return employeeRepository.save(created);
-    }
-
-    private void publishEmployeeEvent(EmployeeSnapshot employee) {
-        publisher.publish(
-                new EmployeeEvent(employee.getId(), null, employee.getJob())
-        );
     }
 
     private EmployeeDto toDto(Employee employee) {

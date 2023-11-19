@@ -1,6 +1,8 @@
 package pl.jakubtworek.employee;
 
+import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.common.vo.Status;
+import pl.jakubtworek.employee.vo.EmployeeEvent;
 import pl.jakubtworek.employee.vo.Job;
 import pl.jakubtworek.order.vo.OrderId;
 
@@ -9,12 +11,18 @@ import java.util.Objects;
 import java.util.Set;
 
 class Employee {
+    private static final String EMPLOYEE_NOT_FOUND_ERROR = "Employee with that id doesn't exist";
+    private static final String EMPLOYEE_NOT_ACTIVE_ERROR = "Employee is already inactive!";
+    private static final String INVALID_JOB_TYPE_ERROR = "Invalid job type!!";
+
     private Long id;
     private String firstName;
     private String lastName;
     private Job job;
     private Status status;
     private Set<OrderId> orders = new HashSet<>();
+    private DomainEventPublisher publisher;
+    private EmployeeRepository repository;
 
     Employee() {
     }
@@ -56,19 +64,46 @@ class Employee {
         );
     }
 
-    void updateInfo(String firstName, String lastName, String jobName) {
+    void setDependencies(DomainEventPublisher publisher, EmployeeRepository repository) {
+        this.publisher = publisher;
+        this.repository = repository;
+    }
+
+    Employee from(String firstName, String lastName, String jobName) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.job = getAndValidateJob(jobName);
         this.status = Status.ACTIVE;
+        final var created = this.repository.save(this);
+        this.publisher.publish(
+                new EmployeeEvent(
+                        created.id, null, this.job
+                )
+        );
+        return created;
+    }
+
+    void deactivate(Long id) {
+        final var employee = this.getById(id);
+        if (employee.status == Status.ACTIVE) {
+            employee.status = Status.INACTIVE;
+            this.repository.save(employee);
+        } else {
+            throw new IllegalStateException(EMPLOYEE_NOT_ACTIVE_ERROR);
+        }
     }
 
     private Job getAndValidateJob(String jobName) {
         try {
             return Job.valueOf(jobName);
         } catch (IllegalArgumentException e) {
-            throw new IllegalStateException("Invalid job type!!");
+            throw new IllegalStateException(INVALID_JOB_TYPE_ERROR);
         }
+    }
+
+    private Employee getById(final Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new IllegalStateException(EMPLOYEE_NOT_FOUND_ERROR));
     }
 
     @Override

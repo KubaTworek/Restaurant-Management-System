@@ -6,6 +6,4 @@ interface EmployeeRepository {
     Optional<Employee> findById(Long id);
 
     Employee save(Employee entity);
-
-    int deactivateEmployee(Long id);
 }

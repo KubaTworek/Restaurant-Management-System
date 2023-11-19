@@ -1,8 +1,6 @@
 package pl.jakubtworek.employee;
 
-import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -18,13 +16,6 @@ interface SqlEmployeeRepository extends JpaRepository<EmployeeSnapshot, Long> {
             "LEFT JOIN FETCH e.orders " +
             "WHERE e.id = :id")
     Optional<EmployeeSnapshot> findById(Long id);
-
-    @Modifying
-    @Transactional
-    @Query("UPDATE EmployeeSnapshot e " +
-            "SET e.status = 'INACTIVE' " +
-            "WHERE e.id = :id AND e.status = 'ACTIVE'")
-    int deactivateEmployee(@Param("id") Long id);
 }
 
 interface SqlEmployeeQueryRepository extends EmployeeQueryRepository, JpaRepository<EmployeeSnapshot, Long> {
@@ -55,10 +46,5 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
     @Override
     public Employee save(final Employee entity) {
         return Employee.restore(repository.save(entity.getSnapshot()));
-    }
-
-    @Override
-    public int deactivateEmployee(final Long id) {
-        return repository.deactivateEmployee(id);
     }
 }

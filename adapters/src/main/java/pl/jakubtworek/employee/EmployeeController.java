@@ -39,15 +39,9 @@ class EmployeeController {
     @DeleteMapping("/{id}")
     ResponseEntity<EmployeeDto> delete(@PathVariable Long id) {
         logger.info("Received a request to delete an employee with ID: {}", id);
-        final var updatedRecords = employeeFacade.deleteById(id);
-
-        if (updatedRecords > 0) {
-            logger.info("Employee with ID {} deleted successfully.", id);
-            return ResponseEntity.noContent().build();
-        } else {
-            logger.info("No changes made. Employee with ID {} not found or already deleted.", id);
-            return ResponseEntity.notFound().build();
-        }
+        employeeFacade.deleteById(id);
+        logger.info("Employee with ID {} deleted successfully.", id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping

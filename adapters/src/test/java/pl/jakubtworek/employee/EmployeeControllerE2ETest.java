@@ -39,7 +39,7 @@ class EmployeeControllerE2ETest extends AbstractIT {
 
         // then
         assertEquals(HttpStatus.NO_CONTENT, firstDelete.getStatusCode());
-        assertEquals(HttpStatus.NOT_FOUND, secondDelete.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST, secondDelete.getStatusCode());
         final var deletedOrder = getEmployeeById(created.getId());
         assertEquals(Status.INACTIVE, deletedOrder.getStatus());
     }

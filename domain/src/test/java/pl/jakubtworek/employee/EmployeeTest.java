@@ -1,15 +1,48 @@
 package pl.jakubtworek.employee;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.common.vo.Status;
+import pl.jakubtworek.employee.vo.EmployeeEvent;
 import pl.jakubtworek.employee.vo.Job;
 
 import java.util.HashSet;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class EmployeeTest {
+    @Mock
+    private EmployeeRepository repository;
+    @Mock
+    private DomainEventPublisher publisher;
+    @Captor
+    private ArgumentCaptor<EmployeeEvent> event;
+
+    private Employee employee;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        employee = Employee.restore(new EmployeeSnapshot(1L, "John", "Doe", Job.COOK, Status.ACTIVE, new HashSet<>()));
+        employee.setDependencies(
+                publisher,
+                repository
+        );
+
+        when(repository.save(employee)).thenReturn(employee);
+        when(repository.findById(1L)).thenReturn(Optional.of(employee));
+    }
+
     @Test
     void shouldRestoreEmployeeFromSnapshot() {
         // given
@@ -29,12 +62,9 @@ class EmployeeTest {
     }
 
     @Test
-    void shouldUpdateEmployeeInfo() {
-        // given
-        final var employee = new Employee();
-
+    void shouldCreateEmployee() {
         // when
-        employee.updateInfo("Jane", "Doe", "COOK");
+        employee.from("Jane", "Doe", "COOK");
 
         // then
         final var result = employee.getSnapshot();
@@ -42,16 +72,44 @@ class EmployeeTest {
         assertEquals("Doe", result.getLastName());
         assertEquals(Job.COOK, result.getJob());
         assertEquals(Status.ACTIVE, result.getStatus());
+        verify(publisher).publish(event.capture());
+        final var eventCaptured = event.getValue();
+        assertEquals(result.getId(), eventCaptured.getEmployeeId());
+        assertNull(eventCaptured.getOrderId());
+        assertEquals(result.getJob(), eventCaptured.getJob());
     }
 
     @Test
-    void shouldUpdateEmployeeInfoWithInvalidJob() {
+    void shouldDeactivateEmployee() {
+        // when
+        employee.deactivate(1L);
+
+        // then
+        assertEquals(Status.INACTIVE, employee.getSnapshot().getStatus());
+    }
+
+    @Test
+    void shouldThrowException_whenDeactivatingInactiveEmployee() {
         // given
-        final var employee = new Employee();
+        employee.deactivate(1L);
 
         // when & then
+        assertThrows(IllegalStateException.class,
+                () -> employee.deactivate(1L));
+    }
+
+    @Test
+    void shouldThrowException_whenDeactivatingNonExistingEmployee() {
+        // when & then
+        assertThrows(IllegalStateException.class,
+                () -> employee.deactivate(2L));
+    }
+
+    @Test
+    void shouldThrowException_whenCreateEmployeeJobIsInvalid() {
+        // when & then
         assertThrows(IllegalStateException.class, () ->
-                employee.updateInfo("Jane", "Doe", "INVALID_JOB_TYPE")
+                employee.from("Jane", "Doe", "INVALID_JOB_TYPE")
         );
     }
 }
