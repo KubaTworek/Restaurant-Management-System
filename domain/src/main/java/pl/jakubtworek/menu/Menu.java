@@ -56,12 +56,6 @@ class Menu {
         this.name = name;
     }
 
-    void addMenuItem(final MenuItem menuItem) {
-        if (menuItem != null) {
-            this.menuItems.add(menuItem);
-        }
-    }
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;

@@ -11,22 +11,18 @@ import java.util.Optional;
 
 public class MenuItemFacade {
     private static final String MENU_ITEM_NOT_FOUND_ERROR = "Menu item with that name doesn't exist";
-    private static final String MENU_ITEM_ALREADY_EXISTS_ERROR = "Menu item with that name already exists!";
 
-    private final MenuItemFactory menuItemFactory;
-    private final MenuItemRepository menuItemRepository;
     private final MenuItemQueryRepository menuItemQueryRepository;
     private final MenuQueryRepository menuQueryRepository;
+    private final MenuItem menuItem;
 
-    MenuItemFacade(final MenuItemFactory menuItemFactory,
-                   final MenuItemRepository menuItemRepository,
-                   final MenuItemQueryRepository menuItemQueryRepository,
-                   final MenuQueryRepository menuQueryRepository
+    MenuItemFacade(final MenuItemQueryRepository menuItemQueryRepository,
+                   final MenuQueryRepository menuQueryRepository,
+                   final MenuItem menuItem
     ) {
-        this.menuItemFactory = menuItemFactory;
-        this.menuItemRepository = menuItemRepository;
         this.menuItemQueryRepository = menuItemQueryRepository;
         this.menuQueryRepository = menuQueryRepository;
+        this.menuItem = menuItem;
     }
 
     public MenuItemDto getByName(String name) {
@@ -35,38 +31,17 @@ public class MenuItemFacade {
     }
 
     MenuItemDto save(MenuItemRequest toSave) {
-        return menuItemQueryRepository.findDtoByName(toSave.name())
-                .map(menuItem -> {
-                    if (menuItem.getStatus() == Status.ACTIVE) {
-                        throw new IllegalStateException(MENU_ITEM_ALREADY_EXISTS_ERROR);
-                    }
-                    return menuQueryRepository.findDtoByName(toSave.menu())
-                            .map(menu -> {
-                                final var updated = menuItemFactory.updateMenuItem(menuItem.getId(), toSave, menu);
-                                return toDto(menuItemRepository.save(updated));
-                            })
-                            .orElseGet(() -> {
-                                final var updated = menuItemFactory.updateMenuItemAndCreateMenu(menuItem.getId(), toSave);
-                                return toDto(menuItemRepository.save(updated));
-                            });
-                })
-                .orElseGet(() -> menuQueryRepository.findDtoByName(toSave.menu())
-                        .map(menu -> {
-                            final var created = menuItemFactory.createMenuItem(toSave, menu);
-                            return toDto(menuItemRepository.save(created));
-                        })
-                        .orElseGet(() -> {
-                            final var created = menuItemFactory.createMenuItemAndMenu(toSave);
-                            return toDto(menuItemRepository.save(created));
-                        }));
+        return toDto(menuItemQueryRepository.findDtoByName(toSave.name())
+                .map(menuItemDto -> getUpdatedMenuItem(toSave, menuItemDto))
+                .orElseGet(() -> createMenuItem(toSave)));
+    }
+
+    void deleteById(Long id) {
+        menuItem.deactivate(id);
     }
 
     List<MenuDto> findAll() {
         return new ArrayList<>(menuQueryRepository.findDtoByMenuItems_Status(Status.ACTIVE));
-    }
-
-    int deleteById(Long id) {
-        return menuItemRepository.deactivateMenuItem(id);
     }
 
     Optional<MenuItemDto> findById(Long theId) {
@@ -75,6 +50,36 @@ public class MenuItemFacade {
 
     List<MenuItemDto> findByMenu(String menuName) {
         return menuItemQueryRepository.findByMenuName(menuName);
+    }
+
+    private MenuItem getUpdatedMenuItem(MenuItemRequest toSave, MenuItemDto menuItemDto) {
+        return menuQueryRepository.findDtoByName(toSave.menu())
+                .map(menu -> menuItem.update(
+                        menuItemDto.getId(),
+                        toSave.name(),
+                        toSave.price(),
+                        menu.getId()
+                ))
+                .orElseGet(() -> menuItem.updateAndCreateMenu(
+                        menuItemDto.getId(),
+                        toSave.name(),
+                        toSave.price(),
+                        toSave.menu()
+                ));
+    }
+
+    private MenuItem createMenuItem(MenuItemRequest toSave) {
+        return menuQueryRepository.findDtoByName(toSave.menu())
+                .map(menu -> menuItem.create(
+                        toSave.name(),
+                        toSave.price(),
+                        menu.getId()
+                ))
+                .orElseGet(() -> menuItem.createWithMenu(
+                        toSave.name(),
+                        toSave.price(),
+                        toSave.menu()
+                ));
     }
 
     private MenuItemDto toDto(MenuItem menuItem) {

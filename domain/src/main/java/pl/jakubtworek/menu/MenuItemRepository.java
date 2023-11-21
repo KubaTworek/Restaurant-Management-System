@@ -5,9 +5,9 @@ import java.util.Optional;
 interface MenuItemRepository {
     Optional<MenuItem> findById(Long id);
 
-    MenuItem save(MenuItem entity);
+    Optional<Menu> findMenuById(Long id);
 
-    int deactivateMenuItem(Long id);
+    MenuItem save(MenuItem entity);
 
     Menu save(Menu entity);
 }

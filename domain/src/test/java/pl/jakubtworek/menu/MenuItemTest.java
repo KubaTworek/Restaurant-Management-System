@@ -1,18 +1,46 @@
 package pl.jakubtworek.menu;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.jakubtworek.common.vo.Money;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.common.vo.Status;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class MenuItemTest {
+
+    @Mock
+    private MenuItemRepository repository;
+    @Mock
+    private DomainEventPublisher publisher;
+
+    private final MenuItem menuItem = MenuItem.restore(new MenuItemSnapshot(1L, "Burger", BigDecimal.valueOf(10.99), new MenuSnapshot(1L, "Food", new HashSet<>()), Status.ACTIVE), 1);
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        menuItem.setDependencies(
+                publisher,
+                repository
+        );
+
+        when(repository.save(menuItem)).thenReturn(menuItem);
+        when(repository.save(any(Menu.class))).thenReturn(Menu.restore(menuItem.getSnapshot(1).getMenu(), 1));
+        when(repository.findById(1L)).thenReturn(Optional.of(menuItem));
+        when(repository.findMenuById(1L)).thenReturn(Optional.of(Menu.restore(menuItem.getSnapshot(1).getMenu(), 1)));
+    }
 
     @Test
     void shouldRestoreMenuItemFromSnapshot() {
@@ -39,76 +67,78 @@ class MenuItemTest {
     }
 
     @Test
-    void shouldUpdateMenuItemInfoWithMenuIdAndMenuName() {
+    void shouldUpdateMenuItemWithExistingMenu() {
         // given
-        final var menuItem = new MenuItem();
+        menuItem.deactivate(1L);
 
         // when
-        menuItem.update(1L, "Burger", new Money(BigDecimal.valueOf(7.99)), 2L, "Food");
+        final var updatedMenuItem = menuItem.update(1L, "Cheeseburger", BigDecimal.valueOf(11.99), 1L);
 
         // then
-        assertMenuItemWithMenuIdAndName(menuItem, BigDecimal.valueOf(7.99));
-        assertEquals(1L, menuItem.getSnapshot(1).getId());
+        assertMenuItem(updatedMenuItem);
+        verify(repository, times(2)).save(updatedMenuItem);
     }
 
     @Test
-    void shouldUpdateMenuItemWithMenuObject() {
+    void shouldUpdateMenuItemAndCreateMenu() {
         // given
-        final var menuItem = new MenuItem();
-        final var menu = new Menu();
+        menuItem.deactivate(1L);
 
         // when
-        menuItem.update(1L, "Burger", new Money(BigDecimal.valueOf(7.99)), menu);
+        final var updatedMenuItem = menuItem.updateAndCreateMenu(1L, "Cheeseburger", BigDecimal.valueOf(11.99), "Food");
 
         // then
-        assertMenuItemWithMenuObject(menuItem, BigDecimal.valueOf(7.99));
-        assertEquals(1L, menuItem.getSnapshot(1).getId());
+        assertMenuItem(updatedMenuItem);
+        verify(repository, times(2)).save(updatedMenuItem);
     }
 
     @Test
-    void shouldCreateMenuItemWithMenuIdAndMenuName() {
-        // given
-        final var menuItem = new MenuItem();
-
+    void shouldCreateMenuItem() {
         // when
-        menuItem.createWithMenu("Burger", new Money(BigDecimal.valueOf(7.99)), 2L, "Food");
+        final var createdMenuItem = menuItem.create("Cheeseburger", BigDecimal.valueOf(11.99), 1L);
 
         // then
-        assertMenuItemWithMenuIdAndName(menuItem, BigDecimal.valueOf(7.99));
-        assertNull(menuItem.getSnapshot(1).getId());
+        assertMenuItem(createdMenuItem);
+        verify(repository, times(1)).save(createdMenuItem);
     }
 
     @Test
-    void shouldCreateMenuItemWithMenuObject() {
-        // given
-        final var menuItem = new MenuItem();
-        final var menu = new Menu();
-
+    void shouldCreateMenuItemAndMenu() {
         // when
-        menuItem.createWithMenu("Burger", new Money(BigDecimal.valueOf(7.99)), menu);
+        final var createdMenuItem = menuItem.createWithMenu("Cheeseburger", BigDecimal.valueOf(11.99), "Food");
 
         // then
-        assertMenuItemWithMenuObject(menuItem, BigDecimal.valueOf(7.99));
-        assertNull(menuItem.getSnapshot(1).getId());
+        assertMenuItem(createdMenuItem);
+        verify(repository, times(1)).save(createdMenuItem);
     }
 
-    private void assertMenuItemWithMenuIdAndName(MenuItem menuItem, BigDecimal expectedPrice) {
+    @Test
+    void shouldDeactivateMenuItem() {
+        // when
+        menuItem.deactivate(1L);
+
+        // then
+        assertEquals(Status.INACTIVE, menuItem.getSnapshot(1).getStatus());
+        verify(repository, times(1)).save(menuItem);
+    }
+
+    @Test
+    void shouldValidateStatus() {
+        // when & then
+        assertThrows(IllegalStateException.class,
+                () -> menuItem.updateAndCreateMenu(1L, "Cheeseburger", BigDecimal.valueOf(11.99), "Food"));
+        assertThrows(IllegalStateException.class,
+                () -> menuItem.update(1L, "Cheeseburger", BigDecimal.valueOf(11.99), 1L));
+        menuItem.deactivate(1L);
+        assertThrows(IllegalStateException.class, () -> menuItem.deactivate(1L));
+    }
+
+    private void assertMenuItem(MenuItem menuItem) {
         final var result = menuItem.getSnapshot(1);
-        assertEquals("Burger", result.getName());
-        assertEquals(expectedPrice, result.getPrice());
-        assertNotNull(result.getMenu());
-        assertEquals(Status.ACTIVE, result.getStatus());
-
-        final var menuSnap = result.getMenu();
-        assertEquals(2, menuSnap.getId());
-        assertEquals("Food", menuSnap.getName());
-        assertTrue(menuSnap.getMenuItems().isEmpty());
-    }
-
-    private void assertMenuItemWithMenuObject(MenuItem menuItem, BigDecimal expectedPrice) {
-        final var result = menuItem.getSnapshot(1);
-        assertEquals("Burger", result.getName());
-        assertEquals(expectedPrice, result.getPrice());
+        assertEquals("Cheeseburger", result.getName());
+        assertEquals(BigDecimal.valueOf(11.99), result.getPrice());
+        assertEquals(1L, result.getMenu().getId());
+        assertEquals("Food", result.getMenu().getName());
         assertEquals(Status.ACTIVE, result.getStatus());
     }
 
@@ -119,50 +149,5 @@ class MenuItemTest {
         assertEquals(snapshot.getPrice(), result.getPrice());
         assertNull(result.getMenu());
         assertEquals(snapshot.getStatus(), result.getStatus());
-    }
-}
-
-class MenuTest {
-
-    @Test
-    void shouldRestoreMenuFromSnapshot() {
-        // given
-        final var menuSnapshot = new MenuSnapshot(1L, "Main Menu", new HashSet<>());
-
-        // when
-        final var menu = Menu.restore(menuSnapshot, 0);
-
-        // then
-        final var result = menu.getSnapshot(1);
-        assertEquals(menuSnapshot.getId(), result.getId());
-        assertEquals(menuSnapshot.getName(), result.getName());
-        assertTrue(result.getMenuItems().isEmpty());
-    }
-
-    @Test
-    void shouldUpdateMenuInfo() {
-        // given
-        final var menu = new Menu();
-
-        // when
-        menu.updateInfo(1L, "Food");
-
-        // then
-        final var result = menu.getSnapshot(1);
-        assertEquals(1L, result.getId());
-        assertEquals("Food", result.getName());
-        assertTrue(result.getMenuItems().isEmpty());
-    }
-
-    @Test
-    void shouldUpdateMenuName() {
-        // given
-        final var menu = new Menu();
-
-        // when
-        menu.updateName("Food");
-
-        // then
-        assertEquals("Food", menu.getSnapshot(0).getName());
     }
 }

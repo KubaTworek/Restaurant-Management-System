@@ -1,8 +1,6 @@
 package pl.jakubtworek.menu;
 
-import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -20,12 +18,10 @@ interface SqlMenuItemRepository extends JpaRepository<MenuItemSnapshot, Long> {
             "WHERE mi.id = :id")
     Optional<MenuItemSnapshot> findById(Long id);
 
-    @Modifying
-    @Transactional
-    @Query("UPDATE MenuItemSnapshot m " +
-            "SET m.status = 'INACTIVE' " +
-            "WHERE m.id = :id AND m.status = 'ACTIVE'")
-    int deactivateMenuItem(@Param("id") Long id);
+    @Query("SELECT m FROM MenuSnapshot m " +
+            "LEFT JOIN FETCH m.menuItems " +
+            "WHERE m.id = :id")
+    Optional<MenuSnapshot> findMenuById(Long id);
 }
 
 interface SqlMenuRepository extends JpaRepository<MenuSnapshot, Long> {}
@@ -77,13 +73,13 @@ class MenuItemRepositoryImpl implements MenuItemRepository {
     }
 
     @Override
-    public MenuItem save(final MenuItem entity) {
-        return MenuItem.restore(menuItemRepository.save(entity.getSnapshot(1)), 1);
+    public Optional<Menu> findMenuById(final Long id) {
+        return menuItemRepository.findMenuById(id).map(m -> Menu.restore(m, 1));
     }
 
     @Override
-    public int deactivateMenuItem(Long id) {
-        return menuItemRepository.deactivateMenuItem(id);
+    public MenuItem save(final MenuItem entity) {
+        return MenuItem.restore(menuItemRepository.save(entity.getSnapshot(1)), 1);
     }
 
     @Override

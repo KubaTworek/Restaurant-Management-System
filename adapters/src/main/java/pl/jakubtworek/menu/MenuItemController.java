@@ -45,15 +45,9 @@ class MenuItemController {
     @DeleteMapping("/{id}")
     ResponseEntity<MenuItemDto> deleteMenuItem(@PathVariable Long id) {
         logger.info("Received a request to delete a menu item with ID: {}", id);
-        final var updatedRecords = menuItemFacade.deleteById(id);
-
-        if (updatedRecords > 0) {
-            logger.info("Menu item with ID {} deleted successfully.", id);
-            return ResponseEntity.noContent().build();
-        } else {
-            logger.info("No changes made. Menu item with ID {} not found or already deleted.", id);
-            return ResponseEntity.notFound().build();
-        }
+        menuItemFacade.deleteById(id);
+        logger.info("Menu item with ID {} deleted successfully.", id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
