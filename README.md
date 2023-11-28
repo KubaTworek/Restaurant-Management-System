@@ -169,7 +169,7 @@ Request Parameters:
 - typeOfOrder: Type of order for filtering (optional)
 - isReady: Filter orders that are ready (optional)
 - employeeId: Filter orders by employee ID (optional)
-- userId: Filter orders by user ID (optional)
+- customerId: Filter orders by user ID (optional)
 
 Request Body [Order]
 
@@ -242,6 +242,16 @@ Response Body [Login]
 }
 ```
 
+## Analysis
+
+### Use case model
+
+![Use case model](analysis/use-case-model.png)
+
+### Class diagram
+
+![Class diagram](analysis/class-diagram.png)
+
 ## Database
 
 ### Schema
@@ -261,8 +271,9 @@ Project is: _in_progress_
 Room for improvement:
 
 - Add frontend based on React
-- Add external tests
-- Create a more complex logic that enables the management of orders by employees.
+- Analyze more complex logic to upgrade application
+- Update backend
+- Update frontend
 
 ## Contact
 
