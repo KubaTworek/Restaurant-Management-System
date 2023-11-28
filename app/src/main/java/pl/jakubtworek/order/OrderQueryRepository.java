@@ -1,6 +1,6 @@
 package pl.jakubtworek.order;
 
-import pl.jakubtworek.auth.vo.UserId;
+import pl.jakubtworek.auth.vo.CustomerId;
 import pl.jakubtworek.order.dto.OrderDto;
 import pl.jakubtworek.order.vo.TypeOfOrder;
 
@@ -11,7 +11,7 @@ import java.util.Optional;
 interface OrderQueryRepository {
     Optional<OrderDto> findDtoById(Long id);
 
-    List<OrderDto> findDtoByClientId(UserId clientId);
+    List<OrderDto> findDtoByCustomerId(CustomerId customerId);
 
     List<OrderDto> findFilteredOrders(
             ZonedDateTime fromDate,
@@ -19,6 +19,6 @@ interface OrderQueryRepository {
             TypeOfOrder typeOfOrder,
             Boolean isReady,
             Long employeeId,
-            Long userId
+            Long customerId
     );
 }

@@ -83,8 +83,8 @@ class Employee {
         return created;
     }
 
-    void deactivate(Long id) {
-        final var employee = this.getById(id);
+    void deactivate(Long employeeId) {
+        final var employee = this.getById(employeeId);
         if (employee.status == Status.ACTIVE) {
             employee.status = Status.INACTIVE;
             this.repository.save(employee);

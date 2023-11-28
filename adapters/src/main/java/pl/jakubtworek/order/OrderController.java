@@ -42,7 +42,7 @@ class OrderController {
                                     @RequestParam(required = false) String typeOfOrder,
                                     @RequestParam(required = false) Boolean isReady,
                                     @RequestParam(required = false) Long employeeId,
-                                    @RequestParam(required = false) Long userId
+                                    @RequestParam(required = false) Long customerId
     ) {
         logger.info("Received a request for filtering orders:");
         logger.info("fromDate: {}", fromDate);
@@ -50,9 +50,9 @@ class OrderController {
         logger.info("typeOfOrder: {}", typeOfOrder);
         logger.info("isReady: {}", isReady);
         logger.info("employeeId: {}", employeeId);
-        logger.info("userId: {}", userId);
+        logger.info("customerId: {}", customerId);
 
-        final var orders = orderFacade.findByParams(fromDate, toDate, typeOfOrder, isReady, employeeId, userId);
+        final var orders = orderFacade.findByParams(fromDate, toDate, typeOfOrder, isReady, employeeId, customerId);
         logger.info("Returned {} orders in the response.", orders.size());
         return orders;
     }

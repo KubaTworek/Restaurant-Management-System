@@ -39,6 +39,10 @@ interface SqlMenuItemQueryRepository extends MenuItemQueryRepository, JpaReposit
     @Query("SELECT mi FROM MenuItemSnapshot mi " +
             "WHERE mi.name = :name")
     Optional<MenuItemDto> findDtoByName(@Param("name") String name);
+
+    @Query("SELECT mi FROM MenuItemSnapshot mi " +
+            "WHERE mi.name IN :names")
+    List<MenuItemDto> findAllDtoByNames(@Param("names") Set<String> names);
 }
 
 interface SqlMenuQueryRepository extends MenuQueryRepository, JpaRepository<MenuSnapshot, Long> {

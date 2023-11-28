@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import pl.jakubtworek.auth.vo.UserId;
+import pl.jakubtworek.auth.vo.CustomerId;
 import pl.jakubtworek.order.dto.OrderDto;
 import pl.jakubtworek.order.vo.TypeOfOrder;
 
@@ -28,8 +28,8 @@ interface SqlOrderQueryRepository extends OrderQueryRepository, JpaRepository<Or
 
     @Query("SELECT o FROM OrderSnapshot o " +
             "LEFT JOIN FETCH o.orderItems " +
-            "WHERE o.clientId = :clientId")
-    List<OrderDto> findDtoByClientId(@Param("clientId") UserId clientId);
+            "WHERE o.customerId = :customerId")
+    List<OrderDto> findDtoByCustomerId(@Param("customerId") CustomerId customerId);
 
     @Query("SELECT o FROM OrderSnapshot o " +
             "LEFT JOIN FETCH o.orderItems " +
@@ -42,14 +42,14 @@ interface SqlOrderQueryRepository extends OrderQueryRepository, JpaRepository<Or
             "    (:isReady = true AND o.hourAway IS NOT NULL) OR " +
             "    (:isReady = false AND o.hourAway IS NULL)) " +
             "AND (:employeeId IS NULL OR e.id = :employeeId) " +
-            "AND (:userId IS NULL OR o.clientId.id = :userId)")
+            "AND (:customerId IS NULL OR o.customerId.id = :customerId)")
     List<OrderDto> findFilteredOrders(
             @Param("fromDate") ZonedDateTime fromDate,
             @Param("toDate") ZonedDateTime toDate,
             @Param("typeOfOrder") TypeOfOrder typeOfOrder,
             @Param("isReady") Boolean isReady,
             @Param("employeeId") Long employeeId,
-            @Param("userId") Long userId);
+            @Param("customerId") Long customerId);
 }
 
 @Repository

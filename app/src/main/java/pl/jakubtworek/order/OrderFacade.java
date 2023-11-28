@@ -1,7 +1,7 @@
 package pl.jakubtworek.order;
 
 import pl.jakubtworek.auth.UserFacade;
-import pl.jakubtworek.auth.vo.UserId;
+import pl.jakubtworek.auth.vo.CustomerId;
 import pl.jakubtworek.menu.MenuItemFacade;
 import pl.jakubtworek.order.dto.ItemDto;
 import pl.jakubtworek.order.dto.OrderDto;
@@ -37,7 +37,7 @@ public class OrderFacade {
         final var created = order.from(
                 items,
                 toSave.typeOfOrder(),
-                new UserId(user.getId())
+                new CustomerId(user.getId())
         );
 
         return toDto(created);
@@ -45,7 +45,7 @@ public class OrderFacade {
 
     List<OrderDto> findAllByToken(String jwt) {
         final var user = userFacade.getByToken(jwt);
-        return orderQueryRepository.findDtoByClientId(new UserId(user.getId()));
+        return orderQueryRepository.findDtoByCustomerId(new CustomerId(user.getId()));
     }
 
     Optional<OrderDto> findById(Long id) {
@@ -57,7 +57,7 @@ public class OrderFacade {
                                 String typeOfOrder,
                                 Boolean isReady,
                                 Long employeeId,
-                                Long userId
+                                Long customerId
     ) {
         return orderQueryRepository.findFilteredOrders(
                 parseDate(fromDate),
@@ -65,13 +65,14 @@ public class OrderFacade {
                 parseOrderType(typeOfOrder),
                 isReady,
                 employeeId,
-                userId
+                customerId
         );
     }
 
     private List<ItemDto> getMenuItems(List<String> names) {
-        return names.stream()
-                .map(menuItemFacade::getByName)
+        final var menuItems = menuItemFacade.getByNames(names);
+
+        return menuItems.stream()
                 .map(mi -> new ItemDto(mi.getName(), mi.getPrice()))
                 .toList();
     }

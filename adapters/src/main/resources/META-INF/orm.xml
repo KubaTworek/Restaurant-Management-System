@@ -39,9 +39,9 @@
                     <inverse-join-column name="EMPLOYEE_ID"/>
                 </join-table>
             </many-to-many>
-            <embedded name="clientId">
+            <embedded name="customerId">
                 <attribute-override name="id">
-                    <column name="CLIENT_ID"/>
+                    <column name="CUSTOMER_ID"/>
                 </attribute-override>
             </embedded>
         </attributes>
@@ -180,7 +180,7 @@
         </attributes>
     </entity>
 
-    <embeddable class="pl.jakubtworek.auth.vo.UserId" access="FIELD">
+    <embeddable class="pl.jakubtworek.auth.vo.CustomerId" access="FIELD">
         <attributes>
             <basic name="id">
                 <column nullable="false"/>

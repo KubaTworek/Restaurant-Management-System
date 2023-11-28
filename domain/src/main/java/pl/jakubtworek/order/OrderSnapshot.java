@@ -1,6 +1,6 @@
 package pl.jakubtworek.order;
 
-import pl.jakubtworek.auth.vo.UserId;
+import pl.jakubtworek.auth.vo.CustomerId;
 import pl.jakubtworek.employee.vo.EmployeeId;
 import pl.jakubtworek.order.vo.TypeOfOrder;
 
@@ -18,7 +18,7 @@ class OrderSnapshot {
     private TypeOfOrder typeOfOrder;
     private Set<OrderItemSnapshot> orderItems = new HashSet<>();
     private Set<EmployeeId> employees = new HashSet<>();
-    private UserId clientId;
+    private CustomerId customerId;
 
     OrderSnapshot() {
     }
@@ -30,7 +30,7 @@ class OrderSnapshot {
                   final TypeOfOrder typeOfOrder,
                   final Set<OrderItemSnapshot> orderItems,
                   final Set<EmployeeId> employees,
-                  final UserId clientId
+                  final CustomerId customerId
     ) {
         this.id = id;
         this.price = price;
@@ -39,7 +39,7 @@ class OrderSnapshot {
         this.typeOfOrder = typeOfOrder;
         this.orderItems = orderItems;
         this.employees = employees;
-        this.clientId = clientId;
+        this.customerId = customerId;
     }
 
     Long getId() {
@@ -70,8 +70,8 @@ class OrderSnapshot {
         return employees;
     }
 
-    UserId getClientId() {
-        return clientId;
+    CustomerId getClientId() {
+        return customerId;
     }
 
     @Override
@@ -79,6 +79,6 @@ class OrderSnapshot {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         final OrderSnapshot that = (OrderSnapshot) o;
-        return Objects.equals(id, that.id) && Objects.equals(price, that.price) && Objects.equals(hourOrder, that.hourOrder) && Objects.equals(hourAway, that.hourAway) && typeOfOrder == that.typeOfOrder && Objects.equals(orderItems, that.orderItems) && Objects.equals(employees, that.employees) && Objects.equals(clientId, that.clientId);
+        return Objects.equals(id, that.id) && Objects.equals(price, that.price) && Objects.equals(hourOrder, that.hourOrder) && Objects.equals(hourAway, that.hourAway) && typeOfOrder == that.typeOfOrder && Objects.equals(orderItems, that.orderItems) && Objects.equals(employees, that.employees) && Objects.equals(customerId, that.customerId);
     }
 }

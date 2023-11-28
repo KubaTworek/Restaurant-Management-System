@@ -12,6 +12,6 @@ class DeliverOrderCommandHandler implements CommandHandler<DeliverOrderCommand> 
 
     @Override
     public void handle(DeliverOrderCommand command) {
-        order.delivery(command.orderId());
+        order.setAsDelivered(command.orderId());
     }
 }

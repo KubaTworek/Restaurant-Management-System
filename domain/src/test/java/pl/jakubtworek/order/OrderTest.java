@@ -9,7 +9,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import pl.jakubtworek.DomainEventPublisher;
-import pl.jakubtworek.auth.vo.UserId;
+import pl.jakubtworek.auth.vo.CustomerId;
 import pl.jakubtworek.employee.vo.EmployeeId;
 import pl.jakubtworek.order.dto.ItemDto;
 import pl.jakubtworek.order.vo.OrderEvent;
@@ -59,7 +59,7 @@ class OrderTest {
     void shouldRestoreOrderFromSnapshot_whenDepthIsZero() {
         // given
         final var orderSnapshot = new OrderSnapshot(1L, BigDecimal.valueOf(50), ZonedDateTime.now(), ZonedDateTime.now().plusHours(1),
-                TypeOfOrder.ON_SITE, Collections.emptySet(), new HashSet<>(), new UserId(1L));
+                TypeOfOrder.ON_SITE, Collections.emptySet(), new HashSet<>(), new CustomerId(1L));
 
         // when
         final var order = Order.restore(orderSnapshot, 0);
@@ -73,7 +73,7 @@ class OrderTest {
         // given
         final var orderItemSnapshot = new OrderItemSnapshot(1L, "Burger", BigDecimal.valueOf(10), 2, null);
         final var orderSnapshot = new OrderSnapshot(1L, BigDecimal.valueOf(50), ZonedDateTime.now(), ZonedDateTime.now().plusHours(1),
-                TypeOfOrder.ON_SITE, Collections.singleton(orderItemSnapshot), new HashSet<>(), new UserId(1L));
+                TypeOfOrder.ON_SITE, Collections.singleton(orderItemSnapshot), new HashSet<>(), new CustomerId(1L));
 
         // when
         final var order = Order.restore(orderSnapshot, 1);
@@ -86,7 +86,7 @@ class OrderTest {
     @CsvSource({"ON_SITE", "TAKE_AWAY", "DELIVERY"})
     void shouldCreateOrder(String typeOfOrder) {
         // given
-        final var userId = new UserId(1L);
+        final var userId = new CustomerId(1L);
 
         // when
         order.from(items, typeOfOrder, userId);
@@ -119,7 +119,7 @@ class OrderTest {
     @Test
     void shouldSetDeliveryForOrder() {
         // when
-        order.delivery(1L);
+        order.setAsDelivered(1L);
 
         // then
         assertEquals(ZonedDateTime.now().getSecond(), order.getSnapshot(1).getHourAway().getSecond());
@@ -129,7 +129,7 @@ class OrderTest {
     void shouldThrowException_whenCreateOrderInfoWithInvalidTypeOfOrder() {
         // when & then
         assertThrows(IllegalStateException.class, () ->
-                order.from(createItems(), "INVALID_TYPE_OF_ORDER_TYPE", new UserId(1L))
+                order.from(createItems(), "INVALID_TYPE_OF_ORDER_TYPE", new CustomerId(1L))
         );
     }
 

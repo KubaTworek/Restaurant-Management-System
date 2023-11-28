@@ -6,8 +6,12 @@ import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.menu.dto.MenuItemRequest;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MenuItemFacade {
     private static final String MENU_ITEM_NOT_FOUND_ERROR = "Menu item with that name doesn't exist";
@@ -25,9 +29,13 @@ public class MenuItemFacade {
         this.menuItem = menuItem;
     }
 
-    public MenuItemDto getByName(String name) {
-        return menuItemQueryRepository.findDtoByName(name)
-                .orElseThrow(() -> new IllegalStateException(MENU_ITEM_NOT_FOUND_ERROR));
+    public List<MenuItemDto> getByNames(List<String> names) {
+        return menuItemQueryRepository.findAllDtoByNames(new HashSet<>(names)).stream()
+                .flatMap(menuItem -> {
+                    long count = names.stream().filter(name -> menuItem.getName().equals(name)).count();
+                    return count > 1 ? Collections.nCopies((int) count, menuItem).stream() : Stream.of(menuItem);
+                })
+                .collect(Collectors.toList());
     }
 
     MenuItemDto save(MenuItemRequest toSave) {

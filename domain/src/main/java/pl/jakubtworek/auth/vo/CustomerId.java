@@ -1,12 +1,12 @@
 package pl.jakubtworek.auth.vo;
 
-public class UserId {
+public class CustomerId {
     private Long id;
 
-    public UserId() {
+    public CustomerId() {
     }
 
-    public UserId(final Long id) {
+    public CustomerId(final Long id) {
         this.id = id;
     }
 

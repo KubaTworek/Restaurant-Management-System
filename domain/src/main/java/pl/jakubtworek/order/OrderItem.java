@@ -63,9 +63,9 @@ class OrderItem {
         );
     }
 
-    void updateInfo(String name, Set<ItemDto> menuItems, Integer amount) {
+    void updateInfo(String name, Set<ItemDto> items, Integer amount) {
         this.name = name;
-        this.price = getPriceForItem(name, menuItems);
+        this.price = getPriceForItem(name, items);
         this.amount = amount;
     }
 

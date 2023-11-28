@@ -1,7 +1,7 @@
 package pl.jakubtworek.order;
 
 import org.junit.jupiter.api.Test;
-import pl.jakubtworek.auth.vo.UserId;
+import pl.jakubtworek.auth.vo.CustomerId;
 import pl.jakubtworek.order.dto.ItemDto;
 import pl.jakubtworek.order.vo.TypeOfOrder;
 
@@ -31,7 +31,7 @@ class OrderItemTest {
     void shouldRestoreOrderItemFromSnapshot_whenDepthIsGreaterThanZero() {
         // given
         final var orderSnapshot = new OrderSnapshot(1L, BigDecimal.valueOf(50), ZonedDateTime.now(), ZonedDateTime.now().plusHours(1),
-                TypeOfOrder.ON_SITE, Collections.emptySet(), new HashSet<>(), new UserId(1L));
+                TypeOfOrder.ON_SITE, Collections.emptySet(), new HashSet<>(), new CustomerId(1L));
         final var orderItemSnapshot = new OrderItemSnapshot(1L, "Burger", BigDecimal.valueOf(10), 2, orderSnapshot);
 
         // when

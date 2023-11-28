@@ -131,7 +131,7 @@ class OrderControllerE2ETest extends AbstractIT {
                 Arguments.of(2, Map.of("fromDate", createFromDateStr(), "toDate", createToDateStr())),
                 Arguments.of(0, Map.of("isReady", "true")),
                 Arguments.of(0, Map.of("employeeId", "1")),
-                Arguments.of(2, Map.of("userId", "1"))
+                Arguments.of(2, Map.of("customerId", "1"))
         );
     }
 

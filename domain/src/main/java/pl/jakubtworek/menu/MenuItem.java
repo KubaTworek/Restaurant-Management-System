@@ -79,8 +79,8 @@ class MenuItem {
         return this.repository.save(menuItem);
     }
 
-    MenuItem updateAndCreateMenu(Long id, String name, BigDecimal price, String menuName) {
-        final var menuItem = this.getById(id);
+    MenuItem updateAndCreateMenu(Long menuItemId, String name, BigDecimal price, String menuName) {
+        final var menuItem = this.getById(menuItemId);
         validateStatus(menuItem.status, Status.INACTIVE);
 
         menuItem.menu = this.createMenu(menuName);
@@ -103,8 +103,8 @@ class MenuItem {
         return this.repository.save(this);
     }
 
-    void deactivate(Long id) {
-        final var menuItem = this.getById(id);
+    void deactivate(Long menuItemId) {
+        final var menuItem = this.getById(menuItemId);
         validateStatus(menuItem.status, Status.ACTIVE);
         menuItem.status = Status.INACTIVE;
         this.repository.save(menuItem);

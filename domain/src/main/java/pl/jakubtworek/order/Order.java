@@ -1,7 +1,7 @@
 package pl.jakubtworek.order;
 
 import pl.jakubtworek.DomainEventPublisher;
-import pl.jakubtworek.auth.vo.UserId;
+import pl.jakubtworek.auth.vo.CustomerId;
 import pl.jakubtworek.common.vo.Money;
 import pl.jakubtworek.employee.vo.EmployeeId;
 import pl.jakubtworek.order.dto.ItemDto;
@@ -26,7 +26,7 @@ class Order {
     private TypeOfOrder typeOfOrder;
     private Set<OrderItem> orderItems = new HashSet<>();
     private Set<EmployeeId> employees = new HashSet<>();
-    private UserId user;
+    private CustomerId user;
     private DomainEventPublisher publisher;
     private OrderRepository repository;
 
@@ -40,7 +40,7 @@ class Order {
                   final TypeOfOrder typeOfOrder,
                   final Set<OrderItem> orderItems,
                   final Set<EmployeeId> employees,
-                  final UserId user
+                  final CustomerId user
     ) {
         this.id = id;
         this.price = price;
@@ -107,13 +107,13 @@ class Order {
         this.repository = repository;
     }
 
-    Order from(List<ItemDto> items, String typeOfOrderName, UserId user) {
+    Order from(List<ItemDto> items, String orderType, CustomerId customerId) {
         this.orderItems = OrderItemFactory.from(items);
         this.orderItems.forEach(oi -> oi.setOrder(this));
         this.price = new Money(calculateTotalPrice());
         this.hourOrder = ZonedDateTime.now();
-        this.typeOfOrder = getAndValidateTypeOfOrder(typeOfOrderName);
-        this.user = user;
+        this.typeOfOrder = getAndValidateTypeOfOrder(orderType);
+        this.user = customerId;
         final var created = this.repository.save(this);
         this.publisher.publish(
                 new OrderEvent(
@@ -123,21 +123,21 @@ class Order {
         return created;
     }
 
-    void addEmployee(Long id, EmployeeId employee) {
+    void addEmployee(Long orderId, EmployeeId employee) {
         if (employee != null) {
-            final var order = this.getById(id);
+            final var order = this.getById(orderId);
             order.employees.add(employee);
             this.repository.save(order);
         }
     }
 
-    void delivery(Long id) {
-        final var order = this.getById(id);
+    void setAsDelivered(Long orderId) {
+        final var order = this.getById(orderId);
         order.hourAway = ZonedDateTime.now();
         this.repository.save(order);
     }
 
-    private Order getById(final Long id) {
+    private Order getById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new IllegalStateException(ORDER_NOT_FOUND_ERROR));
     }
