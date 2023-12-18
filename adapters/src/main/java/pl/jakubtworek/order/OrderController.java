@@ -29,7 +29,7 @@ class OrderController {
     }
 
     @PostMapping
-    ResponseEntity<OrderDto> create(@RequestBody OrderRequest orderRequest, @RequestHeader("Authorization") String jwt) {
+    ResponseEntity<OrderDto> create(@RequestHeader("Authorization") String jwt, @RequestBody OrderRequest orderRequest) {
         logger.info("Received a request to create a new order.");
         final var result = orderFacade.save(orderRequest, jwt);
         logger.info("Order {} created successfully.", result.getId());
@@ -37,7 +37,8 @@ class OrderController {
     }
 
     @GetMapping("/filter")
-    List<OrderDto> getOrderByParams(@RequestParam(required = false) String fromDate,
+    List<OrderDto> getOrderByParams(@RequestHeader("Authorization") String jwt,
+                                    @RequestParam(required = false) String fromDate,
                                     @RequestParam(required = false) String toDate,
                                     @RequestParam(required = false) String typeOfOrder,
                                     @RequestParam(required = false) Boolean isReady,
@@ -52,7 +53,7 @@ class OrderController {
         logger.info("employeeId: {}", employeeId);
         logger.info("customerId: {}", customerId);
 
-        final var orders = orderFacade.findByParams(fromDate, toDate, typeOfOrder, isReady, employeeId, customerId);
+        final var orders = orderFacade.findByParams(fromDate, toDate, typeOfOrder, isReady, employeeId, customerId, jwt);
         logger.info("Returned {} orders in the response.", orders.size());
         return orders;
     }

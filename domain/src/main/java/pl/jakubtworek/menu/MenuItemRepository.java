@@ -10,4 +10,6 @@ interface MenuItemRepository {
     MenuItem save(MenuItem entity);
 
     Menu save(Menu entity);
+
+    void deleteById(Long id);
 }

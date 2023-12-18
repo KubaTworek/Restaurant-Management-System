@@ -19,14 +19,15 @@ interface SqlEmployeeRepository extends JpaRepository<EmployeeSnapshot, Long> {
 }
 
 interface SqlEmployeeQueryRepository extends EmployeeQueryRepository, JpaRepository<EmployeeSnapshot, Long> {
-    @Query("SELECT DISTINCT e FROM EmployeeSnapshot e WHERE e.job = :job")
-    Set<EmployeeDto> findByJob(@Param("job") Job job);
 
     @Query("SELECT e FROM EmployeeSnapshot e WHERE e.id = :id")
     Optional<EmployeeDto> findDtoById(@Param("id") Long id);
 
-    @Query("SELECT DISTINCT e FROM EmployeeSnapshot e WHERE e.status = :status")
-    Set<EmployeeDto> findDtoByStatus(@Param("status") Status status);
+    @Query("SELECT DISTINCT e FROM EmployeeSnapshot e " +
+            "WHERE " +
+            "(:job IS NULL OR e.job = :job)" +
+            "AND (:status IS NULL OR e.status = :status)")
+    Set<EmployeeDto> findFilteredEmployees(@Param("job") Job job, @Param("status") Status status);
 }
 
 @Repository

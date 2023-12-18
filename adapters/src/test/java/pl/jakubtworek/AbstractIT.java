@@ -44,13 +44,16 @@ public class AbstractIT {
     @Autowired
     public TestRestTemplate restTemplate;
     public String userToken;
+    public String adminToken;
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @BeforeEach
     void setup() {
-        registerUser(new RegisterRequest("testuser", "password"));
+        registerUser(new RegisterRequest("testuser", "password", "USER"));
+        registerUser(new RegisterRequest("admin", "admin", "ADMIN"));
         userToken = loginUserAndGetToken(new LoginRequest("testuser", "password"));
+        adminToken = loginUserAndGetToken(new LoginRequest("admin", "admin"));
         createMenuItems();
     }
 
@@ -73,48 +76,59 @@ public class AbstractIT {
     // EMPLOYEE
 
     public EmployeeDto postEmployee(EmployeeRequest request) {
+        final var headers = new HttpHeaders();
+        headers.add("Authorization", adminToken);
+        HttpEntity<EmployeeRequest> requestEntity = new HttpEntity<>(request, headers);
+
         final var response = restTemplate.postForEntity(
                 "http://localhost:" + port + "/employees",
-                request,
+                requestEntity,
                 EmployeeDto.class);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         return response.getBody();
     }
 
     public List<EmployeeDto> getEmployees() {
-        final var response = restTemplate.getForEntity(
+        final var headers = new HttpHeaders();
+        headers.add("Authorization", adminToken);
+        HttpEntity<EmployeeRequest> requestEntity = new HttpEntity<>(headers);
+
+        final var response = restTemplate.exchange(
                 "http://localhost:" + port + "/employees",
+                HttpMethod.GET,
+                requestEntity,
                 EmployeeDto[].class
         );
         assertEquals(HttpStatus.OK, response.getStatusCode());
         return Arrays.stream(Objects.requireNonNull(response.getBody())).toList();
     }
 
-    public ResponseEntity<Void> deleteEmployeeById(Long employeeId) {
+    public ResponseEntity<Void> deactivateEmployeeById(Long employeeId) {
+        final var headers = new HttpHeaders();
+        headers.add("Authorization", adminToken);
+        HttpEntity<EmployeeRequest> requestEntity = new HttpEntity<>(headers);
+
         return restTemplate.exchange(
                 "http://localhost:" + port + "/employees/" + employeeId,
-                HttpMethod.DELETE,
-                null,
+                HttpMethod.PUT,
+                requestEntity,
                 Void.class
         );
     }
 
     public EmployeeDto getEmployeeById(Long employeeId) {
-        final var response = restTemplate.getForEntity(
+        final var headers = new HttpHeaders();
+        headers.add("Authorization", adminToken);
+        HttpEntity<EmployeeRequest> requestEntity = new HttpEntity<>(headers);
+
+        final var response = restTemplate.exchange(
                 "http://localhost:" + port + "/employees/" + employeeId,
+                HttpMethod.GET,
+                requestEntity,
                 EmployeeDto.class
         );
         assertEquals(HttpStatus.OK, response.getStatusCode());
         return response.getBody();
-    }
-
-    public List<EmployeeDto> getEmployeeByJob(String jobName) {
-        final var response = restTemplate.getForEntity(
-                "http://localhost:" + port + "/employees/job?job=" + jobName,
-                EmployeeDto[].class
-        );
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        return Arrays.stream(Objects.requireNonNull(response.getBody())).toList();
     }
 
     // USER
@@ -143,9 +157,13 @@ public class AbstractIT {
     // MENU ITEM
 
     public MenuItemDto postMenuItem(MenuItemRequest request) {
+        final var headers = new HttpHeaders();
+        headers.add("Authorization", adminToken);
+        HttpEntity<MenuItemRequest> requestEntity = new HttpEntity<>(request, headers);
+
         final var response = restTemplate.postForEntity(
                 "http://localhost:" + port + "/menu-items",
-                request,
+                requestEntity,
                 MenuItemDto.class
         );
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -162,10 +180,27 @@ public class AbstractIT {
     }
 
     public ResponseEntity<Void> deleteMenuItemById(Long menuItemId) {
+        final var headers = new HttpHeaders();
+        headers.add("Authorization", adminToken);
+        HttpEntity<MenuItemRequest> requestEntity = new HttpEntity<>(headers);
+
         return restTemplate.exchange(
                 "http://localhost:" + port + "/menu-items/" + menuItemId,
                 HttpMethod.DELETE,
-                null,
+                requestEntity,
+                Void.class
+        );
+    }
+
+    public ResponseEntity<Void> deactivateMenuItemById(Long menuItemId) {
+        final var headers = new HttpHeaders();
+        headers.add("Authorization", adminToken);
+        HttpEntity<MenuItemRequest> requestEntity = new HttpEntity<>(headers);
+
+        return restTemplate.exchange(
+                "http://localhost:" + port + "/menu-items/" + menuItemId,
+                HttpMethod.PUT,
+                requestEntity,
                 Void.class
         );
     }
@@ -177,15 +212,6 @@ public class AbstractIT {
         );
         assertEquals(HttpStatus.OK, response.getStatusCode());
         return response.getBody();
-    }
-
-    public List<MenuItemDto> getMenuItemByMenuName(String menuItemName) {
-        final var response = restTemplate.getForEntity(
-                "http://localhost:" + port + "/menu-items/menu/" + menuItemName,
-                MenuItemDto[].class
-        );
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        return Arrays.stream(Objects.requireNonNull(response.getBody())).toList();
     }
 
     // ORDER
@@ -236,9 +262,9 @@ public class AbstractIT {
         return response.getBody();
     }
 
-    public List<OrderDto> getOrderByParam(String token, Map<String, String> params) {
+    public List<OrderDto> getOrderByParam(Map<String, String> params) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", token);
+        headers.add("Authorization", adminToken);
         HttpEntity<OrderRequest> requestEntity = new HttpEntity<>(headers);
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://localhost:" + port + "/orders/filter");

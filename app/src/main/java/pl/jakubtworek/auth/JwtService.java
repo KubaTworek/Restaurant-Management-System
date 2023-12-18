@@ -20,6 +20,7 @@ class JwtService {
                 .setIssuer("Social Media")
                 .setSubject("JWT Token")
                 .claim("username", username)
+                .claim("role", username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(expirationDate))
                 .signWith(createSecretKey())

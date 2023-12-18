@@ -64,7 +64,7 @@ class MenuItemControllerE2ETest extends AbstractIT {
 
         // when
         final var responseMenuItem = postMenuItem(request1);
-        final var deleteResponse = deleteMenuItemById(responseMenuItem.getId());
+        final var deleteResponse = deactivateMenuItemById(responseMenuItem.getId());
         final var responseMenuItemSecond = postMenuItem(request2);
         final var responseMenu = getMenus();
 
@@ -75,7 +75,6 @@ class MenuItemControllerE2ETest extends AbstractIT {
         assertMenuItemsCount(responseMenu, "Food", 3);
         assertMenuItemsCount(responseMenu, "Drinks", 2);
         assertUpdatedMenuItem(responseMenu, "Food", BigDecimal.valueOf(10.99));
-
     }
 
     @Test
@@ -87,7 +86,7 @@ class MenuItemControllerE2ETest extends AbstractIT {
 
         // when
         final var responseMenuItem = postMenuItem(request1);
-        final var deleteResponse = deleteMenuItemById(responseMenuItem.getId());
+        final var deleteResponse = deactivateMenuItemById(responseMenuItem.getId());
         final var responseMenuItemSecond = postMenuItem(request2);
         final var responseMenu = getMenus();
 
@@ -124,8 +123,23 @@ class MenuItemControllerE2ETest extends AbstractIT {
         final var created = postMenuItem(new MenuItemRequest("Cheeseburger", BigDecimal.valueOf(11.99), "Food"));
 
         // when
-        final var firstDelete = deleteMenuItemById(created.getId());
-        final var secondDelete = deleteMenuItemById(created.getId());
+        final var deleteResponse = deleteMenuItemById(created.getId());
+        final var response = getMenus();
+
+        // then
+        assertEquals(HttpStatus.NO_CONTENT, deleteResponse.getStatusCode());
+        assertEquals(2, response.stream().filter(menu -> "Food".equals(menu.getName())).findFirst().get().getMenuItems().size());
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldDeactivateMenuItemById() {
+        // given
+        final var created = postMenuItem(new MenuItemRequest("Cheeseburger", BigDecimal.valueOf(11.99), "Food"));
+
+        // when
+        final var firstDelete = deactivateMenuItemById(created.getId());
+        final var secondDelete = deactivateMenuItemById(created.getId());
 
         // then
         assertEquals(HttpStatus.NO_CONTENT, firstDelete.getStatusCode());
@@ -140,7 +154,7 @@ class MenuItemControllerE2ETest extends AbstractIT {
         final var created = postMenuItem(new MenuItemRequest("Cheeseburger", BigDecimal.valueOf(11.99), "Food"));
 
         // when
-        deleteMenuItemById(created.getId());
+        deactivateMenuItemById(created.getId());
         final var response = getMenus();
 
         // then
@@ -159,16 +173,6 @@ class MenuItemControllerE2ETest extends AbstractIT {
 
         // then
         assertMenuItemResponse(response, BigDecimal.valueOf(11.99));
-    }
-
-    @Test
-    @DirtiesContext
-    void shouldGetMenuItemByMenuName() {
-        // when
-        final var response = getMenuItemByMenuName("Food");
-
-        // then
-        assertEquals(2, response.size());
     }
 
     private void assertMenuItemResponse(MenuItemDto response, BigDecimal expectedPrice) {

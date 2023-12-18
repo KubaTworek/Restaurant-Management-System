@@ -103,6 +103,10 @@ class MenuItem {
         return this.repository.save(this);
     }
 
+    void delete(Long id) {
+        this.repository.deleteById(id);
+    }
+
     void deactivate(Long menuItemId) {
         final var menuItem = this.getById(menuItemId);
         validateStatus(menuItem.status, Status.ACTIVE);

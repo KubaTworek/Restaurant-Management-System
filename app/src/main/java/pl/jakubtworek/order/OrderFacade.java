@@ -2,6 +2,7 @@ package pl.jakubtworek.order;
 
 import pl.jakubtworek.auth.UserFacade;
 import pl.jakubtworek.auth.vo.CustomerId;
+import pl.jakubtworek.common.vo.Role;
 import pl.jakubtworek.menu.MenuItemFacade;
 import pl.jakubtworek.order.dto.ItemDto;
 import pl.jakubtworek.order.dto.OrderDto;
@@ -57,8 +58,11 @@ public class OrderFacade {
                                 String typeOfOrder,
                                 Boolean isReady,
                                 Long employeeId,
-                                Long customerId
+                                Long customerId,
+                                String jwt
     ) {
+        userFacade.verifyRole(jwt, Role.ADMIN);
+
         return orderQueryRepository.findFilteredOrders(
                 parseDate(fromDate),
                 parseDate(toDate),

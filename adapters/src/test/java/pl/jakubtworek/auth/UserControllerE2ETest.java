@@ -5,6 +5,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import pl.jakubtworek.AbstractIT;
 import pl.jakubtworek.auth.dto.LoginRequest;
 import pl.jakubtworek.auth.dto.RegisterRequest;
+import pl.jakubtworek.common.vo.Role;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -15,7 +16,7 @@ class UserControllerE2ETest extends AbstractIT {
     @DirtiesContext
     void shouldRegisterUser() {
         // given
-        final var request = new RegisterRequest("user", "password");
+        final var request = new RegisterRequest("user", "password", "USER");
 
         // when
         final var response = registerUser(request);
@@ -23,6 +24,7 @@ class UserControllerE2ETest extends AbstractIT {
         // then
         assertEquals("user", response.getUsername());
         assertEquals("password", response.getPassword());
+        assertEquals(Role.USER, response.getRole());
     }
 
     @Test

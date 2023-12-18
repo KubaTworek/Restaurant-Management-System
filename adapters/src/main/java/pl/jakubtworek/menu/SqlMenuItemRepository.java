@@ -90,4 +90,9 @@ class MenuItemRepositoryImpl implements MenuItemRepository {
     public Menu save(final Menu entity) {
         return Menu.restore(menuRepository.save(entity.getSnapshot(1)), 1);
     }
+
+    @Override
+    public void deleteById(final Long id) {
+        menuItemRepository.deleteById(id);
+    }
 }

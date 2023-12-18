@@ -10,7 +10,6 @@ import pl.jakubtworek.employee.dto.EmployeeRequest;
 import pl.jakubtworek.employee.vo.Job;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class EmployeeControllerE2ETest extends AbstractIT {
 
@@ -29,13 +28,13 @@ class EmployeeControllerE2ETest extends AbstractIT {
 
     @Test
     @DirtiesContext
-    void shouldDeleteEmployeeById() {
+    void shouldDeactivateEmployeeById() {
         // given
         final var created = postEmployee(new EmployeeRequest("John", "Doe", "COOK"));
 
         // when
-        final var firstDelete = deleteEmployeeById(created.getId());
-        final var secondDelete = deleteEmployeeById(created.getId());
+        final var firstDelete = deactivateEmployeeById(created.getId());
+        final var secondDelete = deactivateEmployeeById(created.getId());
 
         // then
         assertEquals(HttpStatus.NO_CONTENT, firstDelete.getStatusCode());
@@ -48,15 +47,14 @@ class EmployeeControllerE2ETest extends AbstractIT {
     @DirtiesContext
     void shouldGetAllEmployees() {
         // given
-        final var created = postEmployee(new EmployeeRequest("John", "Doe", "COOK"));
+        postEmployee(new EmployeeRequest("John", "Doe", "COOK"));
         postEmployee(new EmployeeRequest("Jane", "Smith", "WAITER"));
 
         // when
-        deleteEmployeeById(created.getId());
         final var response = getEmployees();
 
         // then
-        assertEquals(1, response.size());
+        assertEquals(2, response.size());
     }
 
     @Test
@@ -70,21 +68,6 @@ class EmployeeControllerE2ETest extends AbstractIT {
 
         // then
         assertEmployeeResponse(response);
-    }
-
-    @Test
-    @DirtiesContext
-    void shouldGetEmployeeByJob() {
-        // given
-        postEmployee(new EmployeeRequest("John", "Doe", "COOK"));
-        postEmployee(new EmployeeRequest("Jane", "Smith", "WAITER"));
-
-        // when
-        final var response = getEmployeeByJob("COOK");
-
-        // then
-        assertEquals(1, response.size());
-        assertTrue(response.stream().allMatch(employee -> Job.COOK.equals(employee.getJob())));
     }
 
     private void assertEmployeeResponse(EmployeeDto response) {

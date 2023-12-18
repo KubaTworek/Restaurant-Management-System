@@ -1,5 +1,7 @@
 package pl.jakubtworek.menu;
 
+import pl.jakubtworek.auth.UserFacade;
+import pl.jakubtworek.common.vo.Role;
 import pl.jakubtworek.common.vo.Status;
 import pl.jakubtworek.menu.dto.MenuDto;
 import pl.jakubtworek.menu.dto.MenuItemDto;
@@ -14,16 +16,17 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MenuItemFacade {
-    private static final String MENU_ITEM_NOT_FOUND_ERROR = "Menu item with that name doesn't exist";
-
+    private final UserFacade userFacade;
     private final MenuItemQueryRepository menuItemQueryRepository;
     private final MenuQueryRepository menuQueryRepository;
     private final MenuItem menuItem;
 
-    MenuItemFacade(final MenuItemQueryRepository menuItemQueryRepository,
+    MenuItemFacade(final UserFacade userFacade,
+                   final MenuItemQueryRepository menuItemQueryRepository,
                    final MenuQueryRepository menuQueryRepository,
                    final MenuItem menuItem
     ) {
+        this.userFacade = userFacade;
         this.menuItemQueryRepository = menuItemQueryRepository;
         this.menuQueryRepository = menuQueryRepository;
         this.menuItem = menuItem;
@@ -44,7 +47,15 @@ public class MenuItemFacade {
                 .orElseGet(() -> createMenuItem(toSave)));
     }
 
-    void deleteById(Long id) {
+    void deleteById(Long id, String jwt) {
+        userFacade.verifyRole(jwt, Role.ADMIN);
+
+        menuItem.delete(id);
+    }
+
+    void deactivateById(Long id, String jwt) {
+        userFacade.verifyRole(jwt, Role.ADMIN);
+
         menuItem.deactivate(id);
     }
 
@@ -54,10 +65,6 @@ public class MenuItemFacade {
 
     Optional<MenuItemDto> findById(Long theId) {
         return menuItemQueryRepository.findDtoById(theId);
-    }
-
-    List<MenuItemDto> findByMenu(String menuName) {
-        return menuItemQueryRepository.findByMenuName(menuName);
     }
 
     private MenuItem getUpdatedMenuItem(MenuItemRequest toSave, MenuItemDto menuItemDto) {

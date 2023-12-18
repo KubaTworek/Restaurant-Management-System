@@ -74,7 +74,7 @@ class OrderControllerE2ETest extends AbstractIT {
         postOrder(new OrderRequest("ON_SITE", List.of("Pasta", "Sprite")), userToken);
 
         // when
-        final var response = getOrderByParam(userToken, params);
+        final var response = getOrderByParam(params);
 
         // then
         assertEquals(expectedAmountOfOrders, response.size());
@@ -116,12 +116,12 @@ class OrderControllerE2ETest extends AbstractIT {
     private void assertCookAssignment(EmployeeDto cook, EmployeeDto other) {
         final var response = getOrders(userToken)
                 .stream()
-                .filter(o -> o.getId().equals(getOrderByParam(userToken, Map.of("employeeId", String.valueOf(cook.getId())))
+                .filter(o -> o.getId().equals(getOrderByParam(Map.of("employeeId", String.valueOf(cook.getId())))
                         .stream().findFirst().orElse(null).getId()))
                 .findFirst()
                 .orElse(null);
 
-        assertEquals(response.getId(), getOrderByParam(userToken, Map.of("employeeId", String.valueOf(other.getId())))
+        assertEquals(response.getId(), getOrderByParam(Map.of("employeeId", String.valueOf(other.getId())))
                 .stream().findFirst().orElse(null).getId());
     }
 

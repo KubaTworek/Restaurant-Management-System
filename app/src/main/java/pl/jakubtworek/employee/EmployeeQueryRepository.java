@@ -8,9 +8,8 @@ import java.util.Optional;
 import java.util.Set;
 
 interface EmployeeQueryRepository {
-    Set<EmployeeDto> findByJob(Job job);
 
     Optional<EmployeeDto> findDtoById(Long id);
 
-    Set<EmployeeDto> findDtoByStatus(Status status);
+    Set<EmployeeDto> findFilteredEmployees(Job job, Status active);
 }

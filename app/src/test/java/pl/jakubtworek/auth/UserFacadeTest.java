@@ -8,6 +8,7 @@ import org.mockito.MockitoAnnotations;
 import pl.jakubtworek.auth.dto.LoginRequest;
 import pl.jakubtworek.auth.dto.RegisterRequest;
 import pl.jakubtworek.auth.dto.UserDto;
+import pl.jakubtworek.common.vo.Role;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -45,7 +46,7 @@ class UserFacadeTest {
         // given
         final var jwt = "sample_jwt";
         final var claims = mock(Claims.class);
-        final var expectedUser = UserDto.create(1L, "john.doe", "password");
+        final var expectedUser = UserDto.create(1L, "john.doe", "password", Role.USER);
 
         when(jwtService.parseJwtClaims(jwt)).thenReturn(claims);
         when(claims.get("username", String.class)).thenReturn("john.doe");
@@ -61,8 +62,8 @@ class UserFacadeTest {
     @Test
     void shouldRegisterUser() {
         // given
-        final var request = new RegisterRequest("john.doe", "password123");
-        final var expectedUser = createUser(request.username(), request.password());
+        final var request = new RegisterRequest("john.doe", "password123", "USER");
+        final var expectedUser = createUser(request.username(), request.password(), request.role());
 
         when(userRepository.save(any())).thenReturn(expectedUser);
 
@@ -77,7 +78,7 @@ class UserFacadeTest {
     void shouldLoginUser() {
         // given
         final var request = new LoginRequest("john.doe", "password123");
-        final var expectedUser = UserDto.create(1L, "john.doe", "password123");
+        final var expectedUser = UserDto.create(1L, "john.doe", "password123", Role.USER);
 
         when(userQueryRepository.findDtoByUsername("john.doe")).thenReturn(Optional.of(expectedUser));
         when(jwtService.buildJwt(eq("john.doe"), any(Long.class))).thenReturn("token");
@@ -94,7 +95,7 @@ class UserFacadeTest {
     @Test
     void shouldThrowException_whenRegisterUserWithSameUsername() {
         // given
-        final var request = new RegisterRequest("existing_user", "password123");
+        final var request = new RegisterRequest("existing_user", "password123", "USER");
 
         when(userQueryRepository.existsByUsername("existing_user")).thenReturn(true);
 
@@ -106,7 +107,7 @@ class UserFacadeTest {
     void shouldThrowException_whenLoginWithWrongCredentials() {
         // given
         final var request = new LoginRequest("john.doe", "password123");
-        final var expectedUser = UserDto.create(1L, "john.doe", "invalid_password");
+        final var expectedUser = UserDto.create(1L, "john.doe", "invalid_password", Role.USER);
 
         when(userQueryRepository.findDtoByUsername("john.doe")).thenReturn(Optional.of(expectedUser));
 
@@ -114,9 +115,9 @@ class UserFacadeTest {
         assertThrows(IllegalStateException.class, () -> userFacade.login(request));
     }
 
-    private User createUser(String username, String password) {
+    private User createUser(String username, String password, String role) {
         return User.restore(new UserSnapshot(
-                1L, username, password
+                1L, username, password, Role.valueOf(role)
         ));
     }
 

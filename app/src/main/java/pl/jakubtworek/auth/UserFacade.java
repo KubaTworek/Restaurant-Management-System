@@ -4,11 +4,13 @@ import pl.jakubtworek.auth.dto.LoginRequest;
 import pl.jakubtworek.auth.dto.LoginResponse;
 import pl.jakubtworek.auth.dto.RegisterRequest;
 import pl.jakubtworek.auth.dto.UserDto;
+import pl.jakubtworek.common.vo.Role;
 
 import java.time.Instant;
 
 public class UserFacade {
     private static final String USER_NOT_FOUND_ERROR = "No user registered with this username!";
+    private static final String USER_NOT_PERMITTED_ERROR = "User not permitted!";
     private static final String USER_ALREADY_EXISTS_ERROR = "User with this username already exists!";
     private static final String INVALID_PASSWORD_ERROR = "Invalid password!";
     private static final Long TOKEN_EXPIRATION_TIME = 180000L;
@@ -33,6 +35,17 @@ public class UserFacade {
                 orElseThrow(() -> new IllegalStateException(USER_NOT_FOUND_ERROR));
     }
 
+    public void verifyRole(String jwt, Role expectedRole) {
+        final var username = getUsernameFromJwt(jwt);
+
+        final var userDto = userQueryRepository.findDtoByUsername(username)
+                .orElseThrow(() -> new IllegalStateException(USER_NOT_FOUND_ERROR));
+
+        if (userDto.getRole() != expectedRole) {
+            throw new IllegalStateException(USER_NOT_PERMITTED_ERROR);
+        }
+    }
+
     UserDto register(RegisterRequest registerRequest) {
         validateUsernameDoesNotExist(registerRequest.username());
 
@@ -49,6 +62,7 @@ public class UserFacade {
 
         return new LoginResponse(
                 user.getUsername(),
+                user.getRole(),
                 token,
                 expirationDate
         );
@@ -66,7 +80,7 @@ public class UserFacade {
 
     private User createUserFromRequest(RegisterRequest registerRequest) {
         User user = new User();
-        user.updateInfo(registerRequest.username(), registerRequest.password());
+        user.updateInfo(registerRequest.username(), registerRequest.password(), registerRequest.role());
         return user;
     }
 
@@ -83,6 +97,6 @@ public class UserFacade {
 
     private UserDto toDto(User user) {
         final var snap = user.getSnapshot();
-        return UserDto.create(snap.getId(), snap.getUsername(), snap.getPassword());
+        return UserDto.create(snap.getId(), snap.getUsername(), snap.getPassword(), snap.getRole());
     }
 }
