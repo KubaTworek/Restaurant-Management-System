@@ -13,6 +13,8 @@ interface OrderQueryRepository {
 
     List<OrderDto> findDtoByCustomerId(CustomerId customerId);
 
+    List<OrderDto> findOngoingDtoByCustomerId(CustomerId customerId);
+
     List<OrderDto> findFilteredOrders(
             ZonedDateTime fromDate,
             ZonedDateTime toDate,
@@ -21,4 +23,5 @@ interface OrderQueryRepository {
             Long employeeId,
             Long customerId
     );
+
 }

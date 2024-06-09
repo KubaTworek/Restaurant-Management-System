@@ -23,7 +23,9 @@ import pl.jakubtworek.employee.dto.EmployeeRequest;
 import pl.jakubtworek.menu.dto.MenuDto;
 import pl.jakubtworek.menu.dto.MenuItemDto;
 import pl.jakubtworek.menu.dto.MenuItemRequest;
+import pl.jakubtworek.order.dto.OrderConfirmRequest;
 import pl.jakubtworek.order.dto.OrderDto;
+import pl.jakubtworek.order.dto.OrderReceiveRequest;
 import pl.jakubtworek.order.dto.OrderRequest;
 
 import java.math.BigDecimal;
@@ -229,7 +231,51 @@ public class AbstractIT {
         );
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         return response.getBody();
+    }
 
+    public OrderDto confirmOrder(OrderConfirmRequest request, String token) {
+        final var headers = new HttpHeaders();
+        headers.add("Authorization", token);
+        HttpEntity<OrderConfirmRequest> requestEntity = new HttpEntity<>(request, headers);
+
+        final var response = restTemplate.exchange(
+                "http://localhost:" + port + "/orders/confirm",
+                HttpMethod.POST,
+                requestEntity,
+                OrderDto.class
+        );
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        return response.getBody();
+    }
+
+    public OrderDto receiveOrder(OrderReceiveRequest request, String token) {
+        final var headers = new HttpHeaders();
+        headers.add("Authorization", token);
+        HttpEntity<OrderReceiveRequest> requestEntity = new HttpEntity<>(request, headers);
+
+        final var response = restTemplate.exchange(
+                "http://localhost:" + port + "/orders/receive",
+                HttpMethod.POST,
+                requestEntity,
+                OrderDto.class
+        );
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        return response.getBody();
+    }
+
+    public List<OrderDto> getOngoingOrders(String token) {
+        final var headers = new HttpHeaders();
+        headers.add("Authorization", token);
+        HttpEntity<OrderRequest> requestEntity = new HttpEntity<>(headers);
+
+        final var response = restTemplate.exchange(
+                "http://localhost:" + port + "/orders/ongoing",
+                HttpMethod.GET,
+                requestEntity,
+                OrderDto[].class
+        );
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        return Arrays.stream(Objects.requireNonNull(response.getBody())).toList();
     }
 
     public List<OrderDto> getOrders(String token) {

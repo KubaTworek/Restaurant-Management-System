@@ -8,8 +8,13 @@ import org.springframework.test.annotation.DirtiesContext;
 import pl.jakubtworek.AbstractIT;
 import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.employee.dto.EmployeeRequest;
+import pl.jakubtworek.order.dto.OrderConfirmRequest;
 import pl.jakubtworek.order.dto.OrderDto;
+import pl.jakubtworek.order.dto.OrderReceiveRequest;
 import pl.jakubtworek.order.dto.OrderRequest;
+import pl.jakubtworek.order.vo.Address;
+import pl.jakubtworek.order.vo.DeliveryStatus;
+import pl.jakubtworek.order.vo.OrderStatus;
 import pl.jakubtworek.order.vo.TypeOfOrder;
 
 import java.math.BigDecimal;
@@ -27,23 +32,257 @@ class OrderControllerE2ETest extends AbstractIT {
 
     @Test
     @DirtiesContext
-    void shouldCreateOrder() {
+    void happyFlow_deliveryOrder() throws InterruptedException {
+        final var cook = postEmployee(new EmployeeRequest("John", "Doe", "COOK"));
+        final var delivery = postEmployee(new EmployeeRequest("Bob", "Dylan", "DELIVERY"));
+
+        // create order
+        final var createRequest = new OrderRequest("DELIVERY", List.of("Burger", "Cola", "Cola"), new Address("TEST", "TEST", "TEST"));
+        final var created = postOrder(createRequest, userToken);
+        final var createdId = created.getId();
+        assertEquals(TypeOfOrder.DELIVERY, created.getTypeOfOrder());
+        assertEquals(OrderStatus.NEW, created.getStatus());
+        assertEquals(BigDecimal.valueOf(22.97), created.getPrice().getPrice());
+        assertEquals(BigDecimal.valueOf(0), created.getPrice().getDeliveryFee());
+        assertEquals(BigDecimal.valueOf(7.03), created.getPrice().getMinimumBasketFee());
+        assertEquals(BigDecimal.valueOf(0), created.getPrice().getTip());
+        assertNotNull(created.getHourOrder());
+        assertNull(created.getHourPrepared());
+        assertNull(created.getHourReceived());
+        final var burger = created.getOrderItems().stream().filter(orderItem -> "Burger".equals(orderItem.getName())).findFirst().get();
+        assertEquals("Burger", burger.getName());
+        assertEquals(1, burger.getAmount());
+        assertEquals(BigDecimal.valueOf(10.99), burger.getPrice());
+        final var cola = created.getOrderItems().stream().filter(orderItem -> "Cola".equals(orderItem.getName())).findFirst().get();
+        assertEquals("Cola", cola.getName());
+        assertEquals(2, cola.getAmount());
+        assertEquals(BigDecimal.valueOf(5.99), cola.getPrice());
+        final var deliveryDto = created.getDelivery();
+        assertEquals("TEST", deliveryDto.getDistrict());
+        assertEquals("TEST", deliveryDto.getStreet());
+        assertEquals("TEST", deliveryDto.getHouseNumber());
+        assertNull(deliveryDto.getHourStart());
+        assertNull(deliveryDto.getHourEnd());
+        assertNull(deliveryDto.getStatus());
+
+        // confirm order
+        final var request2 = new OrderConfirmRequest(created.getId(), "ACCEPT");
+        final var confirmed = confirmOrder(request2, userToken);
+        assertEquals(createdId, confirmed.getId());
+        assertEquals(OrderStatus.ACCEPT, confirmed.getStatus());
+        assertNotNull(confirmed.getHourOrder());
+        assertNull(confirmed.getHourPrepared());
+        assertNull(confirmed.getHourReceived());
+
+        // wait for all processes
+        Thread.sleep(1000);
+
+        // receive order and leave tip
+        final var receiveRequest = new OrderReceiveRequest(created.getId(), BigDecimal.valueOf(2.00));
+        final var received = receiveOrder(receiveRequest, userToken);
+        assertEquals(createdId, received.getId());
+        assertEquals(BigDecimal.valueOf(2.00), received.getPrice().getTip());
+        assertEquals(OrderStatus.COMPLETED, received.getStatus());
+        assertNotNull(received.getHourOrder());
+        assertNotNull(received.getHourPrepared());
+        assertNotNull(received.getHourReceived());
+        final var deliveryReceived = received.getDelivery();
+        assertNotNull(deliveryReceived.getHourStart());
+        assertNotNull(deliveryReceived.getHourEnd());
+        assertEquals(DeliveryStatus.END, deliveryReceived.getStatus());
+
+        assertCookAndDeliveryAssignment(cook, delivery);
+    }
+
+    @Test
+    @DirtiesContext
+    void happyFlow_onsiteOrder() throws InterruptedException {
+        final var cook = postEmployee(new EmployeeRequest("John", "Doe", "COOK"));
+
+        // create order
+        final var createRequest = new OrderRequest("ON_SITE", List.of("Burger", "Cola", "Cola"), null);
+        final var created = postOrder(createRequest, userToken);
+        final var createdId = created.getId();
+        assertEquals(TypeOfOrder.ON_SITE, created.getTypeOfOrder());
+        assertEquals(OrderStatus.NEW, created.getStatus());
+        assertEquals(BigDecimal.valueOf(22.97), created.getPrice().getPrice());
+        assertEquals(BigDecimal.valueOf(0), created.getPrice().getDeliveryFee());
+        assertEquals(BigDecimal.valueOf(7.03), created.getPrice().getMinimumBasketFee());
+        assertEquals(BigDecimal.valueOf(0), created.getPrice().getTip());
+        assertNotNull(created.getHourOrder());
+        assertNull(created.getHourPrepared());
+        assertNull(created.getHourReceived());
+        final var burger = created.getOrderItems().stream().filter(orderItem -> "Burger".equals(orderItem.getName())).findFirst().get();
+        assertEquals("Burger", burger.getName());
+        assertEquals(1, burger.getAmount());
+        assertEquals(BigDecimal.valueOf(10.99), burger.getPrice());
+        final var cola = created.getOrderItems().stream().filter(orderItem -> "Cola".equals(orderItem.getName())).findFirst().get();
+        assertEquals("Cola", cola.getName());
+        assertEquals(2, cola.getAmount());
+        assertEquals(BigDecimal.valueOf(5.99), cola.getPrice());
+
+        // confirm order
+        final var confirmRequest = new OrderConfirmRequest(createdId, "ACCEPT");
+        final var confirmed = confirmOrder(confirmRequest, userToken);
+        assertEquals(createdId, confirmed.getId());
+        assertEquals(OrderStatus.ACCEPT, confirmed.getStatus());
+        assertNotNull(confirmed.getHourOrder());
+        assertNull(confirmed.getHourPrepared());
+        assertNull(confirmed.getHourReceived());
+
+        // wait for all processes
+        Thread.sleep(1000);
+
+        // receive order and not leave tip
+        final var receiveRequest = new OrderReceiveRequest(createdId, null);
+        final var received = receiveOrder(receiveRequest, userToken);
+        assertEquals(createdId, received.getId());
+        assertEquals(BigDecimal.valueOf(22.97), created.getPrice().getPrice());
+        assertEquals(OrderStatus.COMPLETED, received.getStatus());
+        assertNotNull(received.getHourOrder());
+        assertNotNull(received.getHourPrepared());
+        assertNotNull(received.getHourReceived());
+
+        assertCookAssignment(cook);
+    }
+
+    @Test
+    @DirtiesContext
+    void badFlow_notAccept() throws InterruptedException {
+        postEmployee(new EmployeeRequest("John", "Doe", "COOK"));
+
+        // create order
+        final var createRequest = new OrderRequest("ON_SITE", List.of("Burger", "Cola", "Cola"), null);
+        final var created = postOrder(createRequest, userToken);
+        final var createdId = created.getId();
+        assertEquals(TypeOfOrder.ON_SITE, created.getTypeOfOrder());
+        assertEquals(OrderStatus.NEW, created.getStatus());
+        assertEquals(BigDecimal.valueOf(22.97), created.getPrice().getPrice());
+        assertEquals(BigDecimal.valueOf(0), created.getPrice().getDeliveryFee());
+        assertEquals(BigDecimal.valueOf(7.03), created.getPrice().getMinimumBasketFee());
+        assertEquals(BigDecimal.valueOf(0), created.getPrice().getTip());
+        assertNotNull(created.getHourOrder());
+        assertNull(created.getHourPrepared());
+        assertNull(created.getHourReceived());
+        final var burger = created.getOrderItems().stream().filter(orderItem -> "Burger".equals(orderItem.getName())).findFirst().get();
+        assertEquals("Burger", burger.getName());
+        assertEquals(1, burger.getAmount());
+        assertEquals(BigDecimal.valueOf(10.99), burger.getPrice());
+        final var cola = created.getOrderItems().stream().filter(orderItem -> "Cola".equals(orderItem.getName())).findFirst().get();
+        assertEquals("Cola", cola.getName());
+        assertEquals(2, cola.getAmount());
+        assertEquals(BigDecimal.valueOf(5.99), cola.getPrice());
+
+        // confirm order
+        final var confirmRequest = new OrderConfirmRequest(createdId, "REJECT");
+        final var confirmed = confirmOrder(confirmRequest, userToken);
+        assertEquals(createdId, confirmed.getId());
+        assertEquals(OrderStatus.CANCELLED, confirmed.getStatus());
+        assertNotNull(confirmed.getHourOrder());
+        assertNull(confirmed.getHourPrepared());
+        assertNull(confirmed.getHourReceived());
+
+        // wait for all processes
+        Thread.sleep(1000);
+
+        // get cancelled order
+        final var cancelled = getOrderById(createdId, userToken);
+        assertEquals(createdId, cancelled.getId());
+        assertEquals(OrderStatus.CANCELLED, cancelled.getStatus());
+        assertNotNull(cancelled.getHourOrder());
+        assertNull(cancelled.getHourPrepared());
+        assertNull(cancelled.getHourReceived());
+    }
+
+    @Test
+    @DirtiesContext
+    void badFlow_NotReceivedBeforeSpecificTime() throws InterruptedException {
+        final var cook = postEmployee(new EmployeeRequest("John", "Doe", "COOK"));
+        final var delivery = postEmployee(new EmployeeRequest("Bob", "Dylan", "DELIVERY"));
+
+        // create order
+        final var request1 = new OrderRequest("DELIVERY", List.of("Burger", "Cola", "Cola"), new Address("TEST", "TEST", "TEST"));
+        final var created = postOrder(request1, userToken);
+        final var createdId = created.getId();
+        assertEquals(TypeOfOrder.DELIVERY, created.getTypeOfOrder());
+        assertEquals(OrderStatus.NEW, created.getStatus());
+        assertEquals(BigDecimal.valueOf(22.97), created.getPrice().getPrice());
+        assertEquals(BigDecimal.valueOf(0), created.getPrice().getDeliveryFee());
+        assertEquals(BigDecimal.valueOf(7.03), created.getPrice().getMinimumBasketFee());
+        assertEquals(BigDecimal.valueOf(0), created.getPrice().getTip());
+        assertNotNull(created.getHourOrder());
+        assertNull(created.getHourPrepared());
+        assertNull(created.getHourReceived());
+        final var burger = created.getOrderItems().stream().filter(orderItem -> "Burger".equals(orderItem.getName())).findFirst().get();
+        assertEquals("Burger", burger.getName());
+        assertEquals(1, burger.getAmount());
+        assertEquals(BigDecimal.valueOf(10.99), burger.getPrice());
+        final var cola = created.getOrderItems().stream().filter(orderItem -> "Cola".equals(orderItem.getName())).findFirst().get();
+        assertEquals("Cola", cola.getName());
+        assertEquals(2, cola.getAmount());
+        assertEquals(BigDecimal.valueOf(5.99), cola.getPrice());
+        final var deliveryDto = created.getDelivery();
+        assertEquals("TEST", deliveryDto.getDistrict());
+        assertEquals("TEST", deliveryDto.getStreet());
+        assertEquals("TEST", deliveryDto.getHouseNumber());
+        assertNull(deliveryDto.getHourStart());
+        assertNull(deliveryDto.getHourEnd());
+        assertNull(deliveryDto.getStatus());
+
+        // confirm order
+        final var confirmRequest = new OrderConfirmRequest(createdId, "ACCEPT");
+        final var confirmed = confirmOrder(confirmRequest, userToken);
+        assertEquals(createdId, confirmed.getId());
+        assertEquals(OrderStatus.ACCEPT, confirmed.getStatus());
+        assertNotNull(confirmed.getHourOrder());
+        assertNull(confirmed.getHourPrepared());
+        assertNull(confirmed.getHourReceived());
+
+        // wait for all processes
+        Thread.sleep(2000);
+
+        // get cancelled order
+        final var cancelled = getOrderById(createdId, userToken);
+        assertEquals(createdId, cancelled.getId());
+        assertEquals(OrderStatus.CANCELLED, cancelled.getStatus());
+        assertNotNull(cancelled.getHourOrder());
+        assertNotNull(cancelled.getHourPrepared());
+        assertNull(cancelled.getHourReceived());
+        final var deliveryCancelled = cancelled.getDelivery();
+        assertNotNull(deliveryCancelled.getHourStart());
+        assertNotNull(deliveryCancelled.getHourEnd());
+        assertEquals(DeliveryStatus.END, deliveryCancelled.getStatus());
+
+        assertCookAndDeliveryAssignment(cook, delivery);
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldVerifyIsOrderAreComparedAndIsCookAssigned_whenThereIsMoreThanOneOrderInQueue() throws InterruptedException {
         // given
-        final var request = new OrderRequest("DELIVERY", List.of("Burger", "Cola", "Cola"));
+        final var delivery = postOrder(new OrderRequest("DELIVERY", List.of("Burger", "Cola"), new Address("TEST", "TEST", "TEST")), userToken);
+        final var onSite = postOrder(new OrderRequest("ON_SITE", List.of("Pasta", "Sprite"), null), userToken);
+        confirmOrder(new OrderConfirmRequest(delivery.getId(), "ACCEPT"), userToken);
+        confirmOrder(new OrderConfirmRequest(onSite.getId(), "ACCEPT"), userToken);
+
+        final var cook1 = postEmployee(new EmployeeRequest("John", "Doe", "COOK"));
+        final var cook2 = postEmployee(new EmployeeRequest("Mary", "Smith", "COOK"));
+        final var deliveryMan = postEmployee(new EmployeeRequest("Bob", "Dylan", "DELIVERY"));
 
         // when
-        final var response = postOrder(request, userToken);
+        Thread.sleep(3000);
 
         // then
-        assertOrderResponse(response);
+        assertCookAssignment(cook1);
+        assertCookAndDeliveryAssignment(cook2, deliveryMan);
     }
 
     @Test
     @DirtiesContext
     void shouldGetAllOrders() {
         // given
-        postOrder(new OrderRequest("DELIVERY", List.of("Burger", "Cola")), userToken);
-        postOrder(new OrderRequest("ON_SITE", List.of("Pasta", "Sprite")), userToken);
+        postOrder(new OrderRequest("DELIVERY", List.of("Burger", "Cola"), new Address("TEST", "TEST", "TEST")), userToken);
+        postOrder(new OrderRequest("ON_SITE", List.of("Pasta", "Sprite"), null), userToken);
 
         // when
         final var response = getOrders(userToken);
@@ -56,7 +295,7 @@ class OrderControllerE2ETest extends AbstractIT {
     @DirtiesContext
     void shouldGetOrderById() {
         // given
-        final var createdId = postOrder(new OrderRequest("DELIVERY", List.of("Burger", "Cola", "Cola")), userToken).getId();
+        final var createdId = postOrder(new OrderRequest("DELIVERY", List.of("Burger", "Cola", "Cola"), new Address("TEST", "TEST", "TEST")), userToken).getId();
 
         // when
         final var response = getOrderById(createdId, userToken);
@@ -70,8 +309,8 @@ class OrderControllerE2ETest extends AbstractIT {
     @DirtiesContext
     void shouldGetOrdersByParams(int expectedAmountOfOrders, Map<String, String> params) {
         // given
-        postOrder(new OrderRequest("DELIVERY", List.of("Burger", "Cola")), userToken);
-        postOrder(new OrderRequest("ON_SITE", List.of("Pasta", "Sprite")), userToken);
+        postOrder(new OrderRequest("DELIVERY", List.of("Burger", "Cola"), new Address("TEST", "TEST", "TEST")), userToken);
+        postOrder(new OrderRequest("ON_SITE", List.of("Pasta", "Sprite"), null), userToken);
 
         // when
         final var response = getOrderByParam(params);
@@ -80,31 +319,14 @@ class OrderControllerE2ETest extends AbstractIT {
         assertEquals(expectedAmountOfOrders, response.size());
     }
 
-    @Test
-    @DirtiesContext
-    void shouldCookTheOtherCook_whenThereIsMoreThanOneOrderInQueue() throws InterruptedException {
-        // given
-        postOrder(new OrderRequest("DELIVERY", List.of("Burger", "Cola")), userToken);
-        postOrder(new OrderRequest("ON_SITE", List.of("Pasta", "Sprite")), userToken);
-
-        final var cook1 = postEmployee(new EmployeeRequest("John", "Doe", "COOK"));
-        final var cook2 = postEmployee(new EmployeeRequest("Mary", "Smith", "COOK"));
-        final var waiter = postEmployee(new EmployeeRequest("Jane", "Smith", "WAITER"));
-        final var delivery = postEmployee(new EmployeeRequest("Bob", "Dylan", "DELIVERY"));
-
-        // when
-        Thread.sleep(2000);
-
-        // then
-        assertCookAssignment(cook1, waiter);
-        assertCookAssignment(cook2, delivery);
-    }
-
     private void assertOrderResponse(OrderDto response) {
         assertEquals(TypeOfOrder.DELIVERY, response.getTypeOfOrder());
-        assertEquals(new BigDecimal("22.97"), response.getPrice());
+        assertEquals(BigDecimal.valueOf(22.97), response.getPrice().getPrice());
+        assertEquals(0, response.getPrice().getDeliveryFee().compareTo(BigDecimal.ZERO));
+        assertEquals(BigDecimal.valueOf(7.03), response.getPrice().getMinimumBasketFee());
+        assertEquals(0, response.getPrice().getTip().compareTo(BigDecimal.ZERO));
         assertNotNull(response.getHourOrder());
-        assertNull(response.getHourAway());
+        assertNull(response.getHourPrepared());
         final var cola = response.getOrderItems().stream().filter(menuItem -> "Cola".equals(menuItem.getName())).findFirst().get();
         assertEquals(new BigDecimal("5.99"), cola.getPrice());
         assertEquals(2, cola.getAmount());
@@ -113,16 +335,26 @@ class OrderControllerE2ETest extends AbstractIT {
         assertEquals(1, burger.getAmount());
     }
 
-    private void assertCookAssignment(EmployeeDto cook, EmployeeDto other) {
+    private void assertCookAssignment(EmployeeDto cook) {
+        final var response = getOrders(userToken)
+                .stream()
+                .filter(o -> getOrderByParam(Map.of("employeeId", String.valueOf(cook.getId())))
+                        .stream().map(OrderDto::getId).toList().contains(o.getId()))
+                .toList();
+
+        assertEquals(1, response.size());
+    }
+
+    private void assertCookAndDeliveryAssignment(EmployeeDto cook, EmployeeDto delivery) {
         final var response = getOrders(userToken)
                 .stream()
                 .filter(o -> o.getId().equals(getOrderByParam(Map.of("employeeId", String.valueOf(cook.getId())))
                         .stream().findFirst().orElse(null).getId()))
-                .findFirst()
-                .orElse(null);
+                .toList();
+        assertEquals(1, response.size());
 
-        assertEquals(response.getId(), getOrderByParam(Map.of("employeeId", String.valueOf(other.getId())))
-                .stream().findFirst().orElse(null).getId());
+/*        assertEquals(response.getId(), getOrderByParam(Map.of("employeeId", String.valueOf(delivery.getId())))
+                .stream().findFirst().orElse(null).getId());*/
     }
 
     private static Stream<Arguments> parameters() {

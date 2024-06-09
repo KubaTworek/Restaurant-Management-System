@@ -1,5 +1,6 @@
 package pl.jakubtworek.order;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -9,6 +10,9 @@ import pl.jakubtworek.menu.MenuItemFacade;
 
 @Configuration
 class OrderConfiguration {
+    @Value("${timeToWaitForReceive}")
+    private Long timeToWaitForReceive;
+
     @Bean
     @Scope("prototype")
     Order order(
@@ -16,7 +20,7 @@ class OrderConfiguration {
             OrderRepository repository
     ) {
         Order order = new Order();
-        order.setDependencies(publisher, repository);
+        order.setDependencies(publisher, repository, timeToWaitForReceive);
         return order;
     }
 
@@ -36,10 +40,28 @@ class OrderConfiguration {
     }
 
     @Bean
-    DeliverOrderCommandHandler deliverOrderCommandHandler(
+    OrderPreparedCommandHandler orderPreparedCommandHandler(
             Order order
     ) {
-        return new DeliverOrderCommandHandler(
+        return new OrderPreparedCommandHandler(
+                order
+        );
+    }
+
+    @Bean
+    OrderStartDeliveryCommandHandler orderStartDeliveryCommandHandler(
+            Order order
+    ) {
+        return new OrderStartDeliveryCommandHandler(
+                order
+        );
+    }
+
+    @Bean
+    OrderDeliveredCommandHandler deliverOrderCommandHandler(
+            Order order
+    ) {
+        return new OrderDeliveredCommandHandler(
                 order
         );
     }
@@ -49,6 +71,15 @@ class OrderConfiguration {
             Order order
     ) {
         return new AddEmployeeToOrderCommandHandler(
+                order
+        );
+    }
+
+    @Bean
+    AddEmployeeToDeliveryCommandHandler addEmployeeToDeliveryCommandHandler(
+            Order order
+    ) {
+        return new AddEmployeeToDeliveryCommandHandler(
                 order
         );
     }

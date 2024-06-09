@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pl.jakubtworek.order.dto.OrderConfirmRequest;
 import pl.jakubtworek.order.dto.OrderDto;
+import pl.jakubtworek.order.dto.OrderReceiveRequest;
 import pl.jakubtworek.order.dto.OrderRequest;
 
 import java.net.URI;
@@ -33,6 +35,30 @@ class OrderController {
         logger.info("Received a request to create a new order.");
         final var result = orderFacade.save(orderRequest, jwt);
         logger.info("Order {} created successfully.", result.getId());
+        return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
+    }
+
+    @PostMapping ("/confirm")
+    ResponseEntity<OrderDto> confirm(@RequestHeader("Authorization") String jwt, @RequestBody OrderConfirmRequest orderRequest) {
+        logger.info("Received a request to confirm an order.");
+        final var result = orderFacade.confirm(orderRequest, jwt);
+        logger.info("Order {} confirmed successfully.", result.getId());
+        return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
+    }
+
+    @GetMapping("/ongoing")
+    List<OrderDto> getOngoingOrders(@RequestHeader("Authorization") String jwt) {
+        logger.info("Received a request for ongoing orders:");
+        final var orders = orderFacade.findOngoingOrders(jwt);
+        logger.info("Returned {} orders in the response.", orders.size());
+        return orders;
+    }
+
+    @PostMapping("/receive")
+    ResponseEntity<OrderDto> received(@RequestHeader("Authorization") String jwt, @RequestBody OrderReceiveRequest orderRequest) {
+        logger.info("Received a request to receive a delivered order.");
+        final var result = orderFacade.receive(orderRequest, jwt);
+        logger.info("Order {} received successfully.", result.getId());
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 

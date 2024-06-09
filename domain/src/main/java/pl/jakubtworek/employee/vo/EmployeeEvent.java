@@ -36,4 +36,14 @@ public class EmployeeEvent implements DomainEvent {
     public Job getJob() {
         return job;
     }
+
+    @Override
+    public String toString() {
+        return "EmployeeEvent{" +
+                "occurredOn=" + occurredOn +
+                ", employeeId=" + employeeId +
+                ", orderId=" + orderId +
+                ", job=" + job +
+                '}';
+    }
 }

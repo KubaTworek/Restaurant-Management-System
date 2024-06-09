@@ -10,10 +10,12 @@ import pl.jakubtworek.order.vo.OrderEvent;
 class Kitchen {
     private final KitchenQueues queues;
     private final DomainEventPublisher publisher;
+    private final Long multiplierTimeToCook;
 
-    Kitchen(final DomainEventPublisher publisher) {
+    Kitchen(final DomainEventPublisher publisher, final Long multiplierTimeToCook) {
         this.queues = new KitchenQueues();
         this.publisher = publisher;
+        this.multiplierTimeToCook = multiplierTimeToCook;
     }
 
     void handle(final OrderEvent event) {
@@ -46,7 +48,7 @@ class Kitchen {
     private void startPreparingOrder(EmployeeDelivery cook, OrderDelivery order, int time) {
         final var thread = new Thread(() -> {
             try {
-                Thread.sleep(time);
+                Thread.sleep(time * multiplierTimeToCook);
                 publisher.publish(new OrderEvent(
                         order.orderId(),
                         cook.employeeId(),

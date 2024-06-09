@@ -14,17 +14,21 @@
                 <column name="ORDER_ID"/>
                 <generated-value strategy="IDENTITY"/>
             </id>
-            <basic name="price">
-                <column name="PRICE" nullable="false"/>
-            </basic>
             <basic name="hourOrder">
                 <column name="HOUR_ORDER" nullable="false"/>
             </basic>
-            <basic name="hourAway">
-                <column name="HOUR_AWAY"/>
+            <basic name="hourPrepared">
+                <column name="HOUR_PREPARED"/>
+            </basic>
+            <basic name="hourReceived">
+                <column name="HOUR_RECEIVED"/>
             </basic>
             <basic name="typeOfOrder">
                 <column name="TYPE_OF_ORDER" nullable="false"/>
+                <enumerated>STRING</enumerated>
+            </basic>
+            <basic name="status">
+                <column name="STATUS" nullable="false"/>
                 <enumerated>STRING</enumerated>
             </basic>
             <one-to-many name="orderItems" fetch="LAZY">
@@ -33,6 +37,19 @@
                     <cascade-persist/>
                 </cascade>
             </one-to-many>
+            <one-to-one name="price" fetch="EAGER">
+                <join-column name="ORDER_ID"/>
+                <cascade>
+                    <cascade-persist/>
+                    <cascade-merge/>
+                </cascade>
+            </one-to-one>
+            <one-to-one name="delivery" fetch="EAGER">
+                <join-column name="ORDER_ID"/>
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </one-to-one>
             <many-to-many name="employees" fetch="LAZY">
                 <join-table name="ORDERS_EMPLOYEE">
                     <join-column name="ORDER_ID"/>
@@ -44,6 +61,28 @@
                     <column name="CUSTOMER_ID"/>
                 </attribute-override>
             </embedded>
+        </attributes>
+    </entity>
+
+    <entity class="pl.jakubtworek.order.OrderPriceSnapshot" access="FIELD">
+        <table name="ORDER_PRICE"/>
+        <attributes>
+            <id name="id">
+                <column name="ORDER_PRICE_ID"/>
+                <generated-value strategy="AUTO"/>
+            </id>
+            <basic name="price">
+                <column name="PRICE"/>
+            </basic>
+            <basic name="deliveryFee">
+                <column name="DELIVERY_FEE" nullable="false"/>
+            </basic>
+            <basic name="minimumBasketFee">
+                <column name="MINIMUM_BASKET_FEE" nullable="false"/>
+            </basic>
+            <basic name="tip">
+                <column name="TIP" nullable="false"/>
+            </basic>
         </attributes>
     </entity>
 
@@ -69,11 +108,59 @@
         </attributes>
     </entity>
 
+    <entity class="pl.jakubtworek.order.OrderDeliverySnapshot" access="FIELD">
+        <table name="ORDER_DELIVERY"/>
+        <attributes>
+            <id name="id">
+                <column name="ORDER_DELIVERY_ID"/>
+                <generated-value strategy="AUTO"/>
+            </id>
+            <basic name="hourStart">
+                <column name="HOUR_START"/>
+            </basic>
+            <basic name="hourEnd">
+                <column name="HOUR_END"/>
+            </basic>
+            <basic name="status">
+                <column name="STATUS"/>
+                <enumerated>STRING</enumerated>
+            </basic>
+            <basic name="district">
+                <column name="DISTRICT" nullable="false"/>
+            </basic>
+            <basic name="street">
+                <column name="STREET" nullable="false"/>
+            </basic>
+            <basic name="houseNumber">
+                <column name="HOUSE_NUMBER" nullable="false"/>
+            </basic>
+            <many-to-one name="employee" fetch="LAZY">
+                <join-column name="EMPLOYEE_ID"/>
+            </many-to-one>
+            <one-to-one name="order" fetch="EAGER">
+                <join-column name="ORDER_DELIVERY_ID"/>
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </one-to-one>
+        </attributes>
+    </entity>
+
     <entity class="pl.jakubtworek.order.vo.OrderId" access="FIELD">
         <table name="ORDERS"/>
         <attributes>
             <id name="id">
                 <column name="ORDER_ID"/>
+                <generated-value strategy="IDENTITY"/>
+            </id>
+        </attributes>
+    </entity>
+
+    <entity class="pl.jakubtworek.order.vo.OrderDeliveryId" access="FIELD">
+        <table name="ORDER_DELIVERY"/>
+        <attributes>
+            <id name="id">
+                <column name="ORDER_DELIVERY_ID"/>
                 <generated-value strategy="IDENTITY"/>
             </id>
         </attributes>
@@ -101,6 +188,12 @@
                 <column name="STATUS" nullable="false"/>
                 <enumerated>STRING</enumerated>
             </basic>
+            <one-to-many name="deliveries" fetch="LAZY">
+                <join-column name="EMPLOYEE_ID"/>
+                <cascade>
+                    <cascade-merge/>
+                </cascade>
+            </one-to-many>
             <many-to-many name="orders" fetch="LAZY">
                 <join-table name="EMPLOYEE_ORDERS">
                     <join-column name="EMPLOYEE_ID"/>

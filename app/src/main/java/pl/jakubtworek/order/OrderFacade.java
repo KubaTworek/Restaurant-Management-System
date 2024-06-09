@@ -5,8 +5,12 @@ import pl.jakubtworek.auth.vo.CustomerId;
 import pl.jakubtworek.common.vo.Role;
 import pl.jakubtworek.menu.MenuItemFacade;
 import pl.jakubtworek.order.dto.ItemDto;
+import pl.jakubtworek.order.dto.OrderConfirmRequest;
+import pl.jakubtworek.order.dto.OrderDeliveryDto;
 import pl.jakubtworek.order.dto.OrderDto;
 import pl.jakubtworek.order.dto.OrderItemDto;
+import pl.jakubtworek.order.dto.OrderPriceDto;
+import pl.jakubtworek.order.dto.OrderReceiveRequest;
 import pl.jakubtworek.order.dto.OrderRequest;
 import pl.jakubtworek.order.vo.TypeOfOrder;
 
@@ -35,13 +39,38 @@ public class OrderFacade {
         final var user = userFacade.getByToken(jwt);
         final var items = getMenuItems(toSave.menuItems());
 
-        final var created = order.from(
+        final var created = order.create(
                 items,
                 toSave.typeOfOrder(),
-                new CustomerId(user.getId())
+                new CustomerId(user.getId()),
+                toSave.address()
         );
 
         return toDto(created);
+    }
+
+    OrderDto confirm(final OrderConfirmRequest orderRequest, final String jwt) {
+        final var user = userFacade.getByToken(jwt);
+
+        final var confirmed = order.confirm(
+                orderRequest.orderId(),
+                orderRequest.decision(),
+                user.getId()
+        );
+
+        return toDto(confirmed);
+    }
+
+    List<OrderDto> findOngoingOrders(final String jwt) {
+        final var user = userFacade.getByToken(jwt);
+
+        return orderQueryRepository.findOngoingDtoByCustomerId(new CustomerId(user.getId()));
+    }
+
+    OrderDto receive(final OrderReceiveRequest orderRequest, final String jwt) {
+        final var user = userFacade.getByToken(jwt);
+
+        return toDto(order.receive(orderRequest.orderId(), orderRequest.tip(), user.getId()));
     }
 
     List<OrderDto> findAllByToken(String jwt) {
@@ -83,7 +112,8 @@ public class OrderFacade {
 
     private OrderDto toDto(Order order) {
         final var snap = order.getSnapshot(1);
-        return OrderDto.create(snap.getId(), snap.getPrice(), snap.getHourOrder(), snap.getHourAway(), snap.getTypeOfOrder(), snap.getOrderItems().stream().map(this::toOrderItemDto).toList());
+        final var price = snap.getPrice();
+        return OrderDto.create(snap.getId(), OrderPriceDto.create(price.getId(), price.getPrice(), price.getDeliveryFee(), price.getMinimumBasketFee(), price.getTip()), snap.getHourOrder(), snap.getHourPrepared(), snap.getHourReceived(), snap.getTypeOfOrder(), snap.getStatus(), snap.getDelivery() != null ? OrderDeliveryDto.create(snap.getDelivery().getId(), snap.getDelivery().getHourStart(), snap.getDelivery().getHourEnd(), snap.getDelivery().getStatus(), snap.getDelivery().getDistrict(), snap.getDelivery().getStreet(), snap.getDelivery().getHouseNumber()) : null, snap.getOrderItems().stream().map(this::toOrderItemDto).toList());
     }
 
     private OrderItemDto toOrderItemDto(OrderItemSnapshot snap) {

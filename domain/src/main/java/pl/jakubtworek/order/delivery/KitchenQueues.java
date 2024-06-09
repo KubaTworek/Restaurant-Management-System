@@ -41,7 +41,7 @@ class KitchenQueues {
 
     private int orderPriority(OrderDelivery order) {
         final var orderType = order.orderType();
-        if (orderType == TypeOfOrder.ON_SITE || orderType == TypeOfOrder.TAKE_AWAY) {
+        if (orderType == TypeOfOrder.ON_SITE) {
             return -1;
         } else if (orderType == TypeOfOrder.DELIVERY) {
             return 1;

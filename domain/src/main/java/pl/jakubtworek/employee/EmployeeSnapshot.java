@@ -2,6 +2,7 @@ package pl.jakubtworek.employee;
 
 import pl.jakubtworek.common.vo.Status;
 import pl.jakubtworek.employee.vo.Job;
+import pl.jakubtworek.order.vo.OrderDeliveryId;
 import pl.jakubtworek.order.vo.OrderId;
 
 import java.util.HashSet;
@@ -15,6 +16,7 @@ class EmployeeSnapshot {
     private Job job;
     private Status status;
     private Set<OrderId> orders = new HashSet<>();
+    private Set<OrderDeliveryId> deliveries = new HashSet<>();
 
     EmployeeSnapshot() {
     }
@@ -24,7 +26,8 @@ class EmployeeSnapshot {
                      final String lastName,
                      final Job job,
                      final Status status,
-                     final Set<OrderId> orders
+                     final Set<OrderId> orders,
+                     final Set<OrderDeliveryId> deliveries
     ) {
         this.id = id;
         this.firstName = firstName;
@@ -32,6 +35,7 @@ class EmployeeSnapshot {
         this.job = job;
         this.status = status;
         this.orders = orders;
+        this.deliveries = deliveries;
     }
 
     Long getId() {
@@ -56,6 +60,10 @@ class EmployeeSnapshot {
 
     Set<OrderId> getOrders() {
         return orders;
+    }
+
+    Set<OrderDeliveryId> getDeliveries() {
+        return deliveries;
     }
 
     @Override

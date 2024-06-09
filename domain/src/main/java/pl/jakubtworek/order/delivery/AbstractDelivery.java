@@ -7,25 +7,20 @@ import pl.jakubtworek.order.delivery.dto.OrderDelivery;
 import pl.jakubtworek.order.vo.OrderEvent;
 
 abstract class AbstractDelivery {
-    private final DeliveryQueues queues;
-    private final DomainEventPublisher publisher;
+    final DeliveryQueues queues;
+    final DomainEventPublisher publisher;
+    final Long timeToDelivery;
 
-    AbstractDelivery(final DomainEventPublisher publisher) {
+    AbstractDelivery(final DomainEventPublisher publisher, final Long timeToDelivery) {
         this.queues = new DeliveryQueues();
         this.publisher = publisher;
+        this.timeToDelivery = timeToDelivery;
     }
 
-    void handle(final EmployeeEvent event) {
-        queues.add(new EmployeeDelivery(event.getEmployeeId(), event.getJob()));
-        processDeliveries();
-    }
+    abstract void handle(final EmployeeEvent event);
+    abstract void handle(final OrderEvent event);
 
-    void handle(final OrderEvent event) {
-        queues.add(new OrderDelivery(event.getOrderId(), event.getOrderType(), event.getAmountOfMenuItems()));
-        processDeliveries();
-    }
-
-    private void processDeliveries() {
+    void processDeliveries() {
         while (queues.isExistsEmployeeAndOrder()) {
             startDelivering();
         }
@@ -34,10 +29,17 @@ abstract class AbstractDelivery {
     private void startDelivering() {
         final var employee = queues.getFirstEmployee();
         final var order = queues.getFirstOrder();
-        delivering(employee, order, 0);
+        publisher.publish(new OrderEvent(
+                order.orderId(),
+                employee.employeeId(),
+                order.orderType(),
+                order.amountOfMenuItems(),
+                OrderEvent.State.START_DELIVERY
+        ));
+        delivering(employee, order, timeToDelivery);
     }
 
-    private void delivering(EmployeeDelivery employee, OrderDelivery order, int time) {
+    private void delivering(EmployeeDelivery employee, OrderDelivery order, Long time) {
         final var thread = new Thread(() -> {
             try {
                 Thread.sleep(time);

@@ -53,6 +53,18 @@ public class OrderEvent implements DomainEvent {
     }
 
     public enum State {
-        TODO, READY, DELIVERED
+        TODO, READY, START_DELIVERY, TO_DELIVER, DELIVERED
+    }
+
+    @Override
+    public String toString() {
+        return "OrderEvent{" +
+                "occurredOn=" + occurredOn +
+                ", orderId=" + orderId +
+                ", employeeId=" + employeeId +
+                ", orderType=" + orderType +
+                ", amountOfMenuItems=" + amountOfMenuItems +
+                ", state=" + state +
+                '}';
     }
 }

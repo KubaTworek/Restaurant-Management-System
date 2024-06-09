@@ -19,7 +19,7 @@ class OrderItemFactory {
 
     private static OrderItem createOrderItem(String name, Set<ItemDto> menuItems, Integer amount) {
         final var item = new OrderItem();
-        item.updateInfo(name, menuItems, amount);
+        item.setInfo(name, menuItems, amount);
         return item;
     }
 

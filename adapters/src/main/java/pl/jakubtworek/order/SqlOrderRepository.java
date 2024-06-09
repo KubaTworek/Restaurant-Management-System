@@ -23,25 +23,35 @@ interface SqlOrderRepository extends JpaRepository<OrderSnapshot, Long> {
 interface SqlOrderQueryRepository extends OrderQueryRepository, JpaRepository<OrderSnapshot, Long> {
     @Query("SELECT o FROM OrderSnapshot o " +
             "LEFT JOIN FETCH o.orderItems " +
+            "LEFT JOIN FETCH o.delivery " +
             "WHERE o.id = :orderId")
     Optional<OrderDto> findDtoById(@Param("orderId") Long id);
 
     @Query("SELECT o FROM OrderSnapshot o " +
             "LEFT JOIN FETCH o.orderItems " +
+            "LEFT JOIN FETCH o.delivery " +
             "WHERE o.customerId = :customerId")
     List<OrderDto> findDtoByCustomerId(@Param("customerId") CustomerId customerId);
 
     @Query("SELECT o FROM OrderSnapshot o " +
             "LEFT JOIN FETCH o.orderItems " +
+            "LEFT JOIN FETCH o.delivery " +
+            "WHERE o.customerId = :customerId " +
+            "AND o.status = 'TO_RECEIVE' OR o.status = 'READY' OR o.status = 'ACCEPT'")
+    List<OrderDto> findOngoingDtoByCustomerId(@Param("customerId") CustomerId customerId);
+
+    @Query("SELECT o FROM OrderSnapshot o " +
+            "LEFT JOIN FETCH o.orderItems " +
+            "LEFT JOIN FETCH o.delivery d " +
             "LEFT JOIN FETCH o.employees e " +
             "WHERE " +
             "(:fromDate IS NULL OR o.hourOrder >= :fromDate) " +
             "AND (:toDate IS NULL OR o.hourOrder <= :toDate) " +
             "AND (:typeOfOrder IS NULL OR o.typeOfOrder = :typeOfOrder) " +
             "AND (:isReady IS NULL OR " +
-            "    (:isReady = true AND o.hourAway IS NOT NULL) OR " +
-            "    (:isReady = false AND o.hourAway IS NULL)) " +
-            "AND (:employeeId IS NULL OR e.id = :employeeId) " +
+            "    (:isReady = true AND o.hourReceived IS NOT NULL) OR " +
+            "    (:isReady = false AND o.hourReceived IS NULL)) " +
+            "AND (:employeeId IS NULL OR e.id = :employeeId)" +
             "AND (:customerId IS NULL OR o.customerId.id = :customerId)")
     List<OrderDto> findFilteredOrders(
             @Param("fromDate") ZonedDateTime fromDate,

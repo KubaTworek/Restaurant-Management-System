@@ -2,10 +2,11 @@ package pl.jakubtworek.order;
 
 import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.auth.vo.CustomerId;
-import pl.jakubtworek.common.vo.Money;
 import pl.jakubtworek.employee.vo.EmployeeId;
 import pl.jakubtworek.order.dto.ItemDto;
+import pl.jakubtworek.order.vo.Address;
 import pl.jakubtworek.order.vo.OrderEvent;
+import pl.jakubtworek.order.vo.OrderStatus;
 import pl.jakubtworek.order.vo.TypeOfOrder;
 
 import java.math.BigDecimal;
@@ -14,30 +15,41 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 class Order {
     private static final String ORDER_NOT_FOUND_ERROR = "Order with that id doesn't exist";
 
     private Long id;
-    private Money price;
+    private OrderPrice price;
     private ZonedDateTime hourOrder;
-    private ZonedDateTime hourAway;
+    private ZonedDateTime hourPrepared;
+    private ZonedDateTime hourReceived;
     private TypeOfOrder typeOfOrder;
+    private OrderStatus status;
+    private OrderDelivery delivery;
     private Set<OrderItem> orderItems = new HashSet<>();
     private Set<EmployeeId> employees = new HashSet<>();
     private CustomerId user;
     private DomainEventPublisher publisher;
     private OrderRepository repository;
+    private Long timeToWaitForReceive;
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     Order() {
     }
 
     private Order(final Long id,
-                  final Money price,
+                  final OrderPrice price,
                   final ZonedDateTime hourOrder,
-                  final ZonedDateTime hourAway,
+                  final ZonedDateTime hourPrepared,
+                  final ZonedDateTime hourReceived,
                   final TypeOfOrder typeOfOrder,
+                  final OrderStatus status,
+                  final OrderDelivery delivery,
                   final Set<OrderItem> orderItems,
                   final Set<EmployeeId> employees,
                   final CustomerId user
@@ -45,8 +57,11 @@ class Order {
         this.id = id;
         this.price = price;
         this.hourOrder = hourOrder;
-        this.hourAway = hourAway;
+        this.hourPrepared = hourPrepared;
+        this.hourReceived = hourReceived;
         this.typeOfOrder = typeOfOrder;
+        this.status = status;
+        this.delivery = delivery;
         this.orderItems = orderItems;
         this.employees = employees;
         this.user = user;
@@ -56,10 +71,13 @@ class Order {
         if (depth <= 0) {
             return new Order(
                     snapshot.getId(),
-                    new Money(snapshot.getPrice()),
+                    OrderPrice.restore(snapshot.getPrice()),
                     snapshot.getHourOrder(),
-                    snapshot.getHourAway(),
+                    snapshot.getHourPrepared(),
+                    snapshot.getHourReceived(),
                     snapshot.getTypeOfOrder(),
+                    snapshot.getStatus(),
+                    snapshot.getDelivery() != null ? OrderDelivery.restore(snapshot.getDelivery()) : null,
                     Collections.emptySet(),
                     snapshot.getEmployees(),
                     snapshot.getClientId()
@@ -67,10 +85,13 @@ class Order {
         }
         return new Order(
                 snapshot.getId(),
-                new Money(snapshot.getPrice()),
+                OrderPrice.restore(snapshot.getPrice()),
                 snapshot.getHourOrder(),
-                snapshot.getHourAway(),
+                snapshot.getHourPrepared(),
+                snapshot.getHourReceived(),
                 snapshot.getTypeOfOrder(),
+                snapshot.getStatus(),
+                snapshot.getDelivery() != null ? OrderDelivery.restore(snapshot.getDelivery()) : null,
                 snapshot.getOrderItems().stream().map(oi -> OrderItem.restore(oi, depth - 1)).collect(Collectors.toSet()),
                 snapshot.getEmployees(),
                 snapshot.getClientId()
@@ -81,10 +102,13 @@ class Order {
         if (depth <= 0) {
             return new OrderSnapshot(
                     id,
-                    price != null ? price.value() : null,
+                    price.getSnapshot(),
                     hourOrder,
-                    hourAway,
+                    hourPrepared,
+                    hourReceived,
                     typeOfOrder,
+                    status,
+                    delivery != null ? delivery.getSnapshot() : null,
                     Collections.emptySet(),
                     employees,
                     user
@@ -92,35 +116,111 @@ class Order {
         }
         return new OrderSnapshot(
                 id,
-                price != null ? price.value() : null,
+                price.getSnapshot(),
                 hourOrder,
-                hourAway,
+                hourPrepared,
+                hourReceived,
                 typeOfOrder,
+                status,
+                delivery != null ? delivery.getSnapshot() : null,
                 orderItems.stream().map(oi -> oi.getSnapshot(depth - 1)).collect(Collectors.toSet()),
                 employees,
                 user
         );
     }
 
-    void setDependencies(DomainEventPublisher publisher, OrderRepository repository) {
+    void setDependencies(DomainEventPublisher publisher, OrderRepository repository, Long timeToWaitForReceive) {
         this.publisher = publisher;
         this.repository = repository;
+        this.timeToWaitForReceive = timeToWaitForReceive;
     }
 
-    Order from(List<ItemDto> items, String orderType, CustomerId customerId) {
+    Order create(List<ItemDto> items, String orderType, CustomerId customerId, Address address) {
         this.orderItems = OrderItemFactory.from(items);
         this.orderItems.forEach(oi -> oi.setOrder(this));
-        this.price = new Money(calculateTotalPrice());
+        this.price = OrderPriceFactory.from(calculateTotalPrice());
         this.hourOrder = ZonedDateTime.now();
+        this.status = OrderStatus.NEW;
         this.typeOfOrder = getAndValidateTypeOfOrder(orderType);
         this.user = customerId;
-        final var created = this.repository.save(this);
-        this.publisher.publish(
-                new OrderEvent(
-                        created.id, null, this.typeOfOrder, this.orderItems.size(), OrderEvent.State.TODO
-                )
-        );
-        return created;
+        if (this.typeOfOrder.equals(TypeOfOrder.DELIVERY)) {
+            this.delivery = OrderDeliveryFactory.from(address);
+        }
+        return this.repository.save(this);
+    }
+
+    Order confirm(Long orderId, String decision, Long customerId) {
+        final var order = this.getById(orderId);
+        if (!order.status.equals(OrderStatus.NEW)) {
+            throw new RuntimeException("Order should be in status NEW");
+        }
+        if (decision.equals("ACCEPT") && this.user.getId().equals(customerId)) {
+            order.status = OrderStatus.ACCEPT;
+            this.publisher.publish(
+                    new OrderEvent(
+                            order.id, null, order.typeOfOrder, order.orderItems.size(), OrderEvent.State.TODO
+                    )
+            );
+        } else {
+            order.status = OrderStatus.CANCELLED;
+        }
+        return this.repository.save(order);
+    }
+
+    void prepare(final Long orderId) {
+        final var order = this.getById(orderId);
+        if (!order.status.equals(OrderStatus.ACCEPT)) {
+            throw new RuntimeException("Order should be in status ACCEPT");
+        }
+        order.hourPrepared = ZonedDateTime.now();
+        if (order.typeOfOrder.equals(TypeOfOrder.DELIVERY)) {
+            order.status = OrderStatus.READY;
+            this.repository.save(order);
+            publisher.publish(new OrderEvent(
+                    order.id,
+                    null,
+                    order.typeOfOrder,
+                    order.orderItems.size(),
+                    OrderEvent.State.TO_DELIVER
+            ));
+        }
+        if (order.typeOfOrder.equals(TypeOfOrder.ON_SITE)) {
+            order.status = OrderStatus.TO_RECEIVE;
+            this.repository.save(order);
+            scheduleOrderStatusCheck(order.id);
+        }
+    }
+
+    void startDelivery(final Long orderId) {
+        final var order = this.getById(orderId);
+        order.delivery.start();
+        this.repository.save(order);
+    }
+
+    void delivery(Long orderId) {
+        final var order = this.getById(orderId);
+        if (!order.status.equals(OrderStatus.READY)) {
+            throw new RuntimeException("Order should be in status READY");
+        }
+        order.delivery.end();
+        order.status = OrderStatus.TO_RECEIVE;
+        this.repository.save(order);
+        scheduleOrderStatusCheck(order.id);
+    }
+
+    Order receive(Long orderId, BigDecimal tip, Long customerId) {
+        final var order = this.getById(orderId);
+        if (!order.status.equals(OrderStatus.TO_RECEIVE)) {
+            throw new RuntimeException("Order should be in status TO_RECEIVE");
+        }
+        if (order.user.getId().equals(customerId)) {
+            order.hourReceived = ZonedDateTime.now();
+            order.status = OrderStatus.COMPLETED;
+            if (tip != null) {
+                order.price.addTip(tip);
+            }
+        }
+        return this.repository.save(order);
     }
 
     void addEmployee(Long orderId, EmployeeId employee) {
@@ -131,10 +231,12 @@ class Order {
         }
     }
 
-    void setAsDelivered(Long orderId) {
-        final var order = this.getById(orderId);
-        order.hourAway = ZonedDateTime.now();
-        this.repository.save(order);
+    void addEmployeeToDelivery(final Long orderId, final EmployeeId employee) {
+        if (employee != null) {
+            final var order = this.getById(orderId);
+            order.delivery.setEmployee(employee);
+            this.repository.save(order);
+        }
     }
 
     private Order getById(Long id) {
@@ -154,5 +256,15 @@ class Order {
         } catch (IllegalArgumentException e) {
             throw new IllegalStateException("Invalid type of order type!!");
         }
+    }
+
+    private void scheduleOrderStatusCheck(Long orderId) {
+        scheduler.schedule(() -> {
+            final var order = getById(orderId);
+            if (order.status == OrderStatus.TO_RECEIVE) {
+                order.status = OrderStatus.CANCELLED;
+                repository.save(order);
+            }
+        }, timeToWaitForReceive, TimeUnit.SECONDS);
     }
 }

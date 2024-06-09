@@ -47,11 +47,6 @@ class Menu {
         );
     }
 
-    void updateInfo(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
     void updateName(String name) {
         this.name = name;
     }

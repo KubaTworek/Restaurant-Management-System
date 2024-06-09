@@ -1,6 +1,5 @@
 package pl.jakubtworek.order;
 
-import pl.jakubtworek.common.vo.Money;
 import pl.jakubtworek.order.dto.ItemDto;
 
 import java.math.BigDecimal;
@@ -10,7 +9,7 @@ import java.util.Set;
 class OrderItem {
     private Long id;
     private String name;
-    private Money price;
+    private BigDecimal price;
     private Integer amount;
     private Order order;
 
@@ -19,7 +18,7 @@ class OrderItem {
 
     private OrderItem(final Long id,
                       final String name,
-                      final Money price,
+                      final BigDecimal price,
                       final Integer amount,
                       final Order order
     ) {
@@ -35,7 +34,7 @@ class OrderItem {
             return new OrderItem(
                     snapshot.getId(),
                     snapshot.getName(),
-                    new Money(snapshot.getPrice()),
+                    snapshot.getPrice(),
                     snapshot.getAmount(),
                     null
             );
@@ -43,7 +42,7 @@ class OrderItem {
         return new OrderItem(
                 snapshot.getId(),
                 snapshot.getName(),
-                new Money(snapshot.getPrice()),
+                snapshot.getPrice(),
                 snapshot.getAmount(),
                 Order.restore(snapshot.getOrder(), depth - 1)
         );
@@ -51,19 +50,19 @@ class OrderItem {
 
     OrderItemSnapshot getSnapshot(int depth) {
         if (depth <= 0) {
-            return new OrderItemSnapshot(id, name, price.value(), amount, null);
+            return new OrderItemSnapshot(id, name, price, amount, null);
         }
 
         return new OrderItemSnapshot(
                 id,
                 name,
-                price.value(),
+                price,
                 amount,
                 order != null ? order.getSnapshot(depth - 1) : null
         );
     }
 
-    void updateInfo(String name, Set<ItemDto> items, Integer amount) {
+    void setInfo(String name, Set<ItemDto> items, Integer amount) {
         this.name = name;
         this.price = getPriceForItem(name, items);
         this.amount = amount;
@@ -75,18 +74,18 @@ class OrderItem {
 
     BigDecimal calculatePrice() {
         if (price != null && amount != null) {
-            return price.value().multiply(BigDecimal.valueOf(amount));
+            return price.multiply(BigDecimal.valueOf(amount));
         } else {
             return BigDecimal.ZERO;
         }
     }
 
-    private Money getPriceForItem(String itemName, Set<ItemDto> menuItems) {
+    private BigDecimal getPriceForItem(String itemName, Set<ItemDto> menuItems) {
         return menuItems.stream()
                 .filter(mi -> mi.getName().equals(itemName))
                 .findFirst()
-                .map(mi -> new Money(mi.getPrice()))
-                .orElse(new Money(BigDecimal.valueOf(0)));
+                .map(ItemDto::getPrice)
+                .orElse(BigDecimal.valueOf(0));
     }
 
     @Override
