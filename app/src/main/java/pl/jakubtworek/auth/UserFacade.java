@@ -57,14 +57,38 @@ public class UserFacade {
         final var user = getUserByUsername(loginRequest.username());
         validPasswords(loginRequest.password(), user.getPassword());
 
-        final var expirationDate = Instant.now().toEpochMilli() + TOKEN_EXPIRATION_TIME;
-        final var token = jwtService.buildJwt(user.getUsername(), expirationDate);
+        final var tokenExpirationDate = Instant.now().toEpochMilli() + 300000;
+        final var refreshTokenExpirationDate = Instant.now().toEpochMilli() + 600000;
+        final var token = jwtService.buildJwt(user.getUsername(), tokenExpirationDate);
+        final var refreshToken = jwtService.buildJwt(user.getUsername(), refreshTokenExpirationDate);
 
         return new LoginResponse(
                 user.getUsername(),
                 user.getRole(),
                 token,
-                expirationDate
+                refreshToken,
+                tokenExpirationDate,
+                refreshTokenExpirationDate
+        );
+    }
+
+    LoginResponse refreshAccessToken(final String jwt) {
+        final var claims = jwtService.parseJwtClaims(jwt);
+        final var username = claims.get("username").toString();
+        final var user = getUserByUsername(username);
+
+        final var tokenExpirationDate = Instant.now().toEpochMilli() + 300000;
+        final var refreshTokenExpirationDate = Instant.now().toEpochMilli() + 600000;
+        final var token = jwtService.buildJwt(user.getUsername(), tokenExpirationDate);
+        final var refreshToken = jwtService.buildJwt(user.getUsername(), refreshTokenExpirationDate);
+
+        return new LoginResponse(
+                user.getUsername(),
+                user.getRole(),
+                token,
+                refreshToken,
+                tokenExpirationDate,
+                refreshTokenExpirationDate
         );
     }
 
@@ -80,7 +104,7 @@ public class UserFacade {
 
     private User createUserFromRequest(RegisterRequest registerRequest) {
         User user = new User();
-        user.updateInfo(registerRequest.username(), registerRequest.password(), registerRequest.role());
+        user.updateInfo(registerRequest.username(), registerRequest.password(), registerRequest.role(), registerRequest.firstName(), registerRequest.lastName(), registerRequest.email(), registerRequest.phone());
         return user;
     }
 

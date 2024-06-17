@@ -34,9 +34,10 @@ abstract class AbstractDelivery {
                 employee.employeeId(),
                 order.orderType(),
                 order.amountOfMenuItems(),
+                order.district(),
                 OrderEvent.State.START_DELIVERY
         ));
-        delivering(employee, order, timeToDelivery);
+        delivering(employee, order, timeToDelivery * order.district().getDeliveryTime());
     }
 
     private void delivering(EmployeeDelivery employee, OrderDelivery order, Long time) {
@@ -48,6 +49,7 @@ abstract class AbstractDelivery {
                         employee.employeeId(),
                         order.orderType(),
                         order.amountOfMenuItems(),
+                        order.district(),
                         OrderEvent.State.DELIVERED
                 ));
                 publisher.publish(new EmployeeEvent(

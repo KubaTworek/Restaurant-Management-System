@@ -77,7 +77,7 @@ class Order {
                     snapshot.getHourReceived(),
                     snapshot.getTypeOfOrder(),
                     snapshot.getStatus(),
-                    snapshot.getDelivery() != null ? OrderDelivery.restore(snapshot.getDelivery()) : null,
+                    snapshot.getDelivery() != null && snapshot.getTypeOfOrder().equals(TypeOfOrder.DELIVERY) ? OrderDelivery.restore(snapshot.getDelivery()) : null,
                     Collections.emptySet(),
                     snapshot.getEmployees(),
                     snapshot.getClientId()
@@ -91,7 +91,7 @@ class Order {
                 snapshot.getHourReceived(),
                 snapshot.getTypeOfOrder(),
                 snapshot.getStatus(),
-                snapshot.getDelivery() != null ? OrderDelivery.restore(snapshot.getDelivery()) : null,
+                snapshot.getDelivery() != null && snapshot.getTypeOfOrder().equals(TypeOfOrder.DELIVERY) ? OrderDelivery.restore(snapshot.getDelivery()) : null,
                 snapshot.getOrderItems().stream().map(oi -> OrderItem.restore(oi, depth - 1)).collect(Collectors.toSet()),
                 snapshot.getEmployees(),
                 snapshot.getClientId()
@@ -108,7 +108,7 @@ class Order {
                     hourReceived,
                     typeOfOrder,
                     status,
-                    delivery != null ? delivery.getSnapshot() : null,
+                    null,
                     Collections.emptySet(),
                     employees,
                     user
@@ -122,7 +122,7 @@ class Order {
                 hourReceived,
                 typeOfOrder,
                 status,
-                delivery != null ? delivery.getSnapshot() : null,
+                typeOfOrder == TypeOfOrder.DELIVERY ? delivery.getSnapshot() : null,
                 orderItems.stream().map(oi -> oi.getSnapshot(depth - 1)).collect(Collectors.toSet()),
                 employees,
                 user
@@ -145,12 +145,16 @@ class Order {
         this.user = customerId;
         if (this.typeOfOrder.equals(TypeOfOrder.DELIVERY)) {
             this.delivery = OrderDeliveryFactory.from(address);
+            this.price = OrderPriceFactory.from(calculateTotalPrice(), address);
         }
         return this.repository.save(this);
     }
 
     Order confirm(Long orderId, String decision, Long customerId) {
         final var order = this.getById(orderId);
+        if (order.delivery == null && order.typeOfOrder.equals(TypeOfOrder.DELIVERY)) {
+            order.delivery = this.delivery;
+        }
         if (!order.status.equals(OrderStatus.NEW)) {
             throw new RuntimeException("Order should be in status NEW");
         }
@@ -158,7 +162,7 @@ class Order {
             order.status = OrderStatus.ACCEPT;
             this.publisher.publish(
                     new OrderEvent(
-                            order.id, null, order.typeOfOrder, order.orderItems.size(), OrderEvent.State.TODO
+                            order.id, null, order.typeOfOrder, order.orderItems.size(), order.delivery != null ? order.delivery.getDistrict() : null, OrderEvent.State.TODO
                     )
             );
         } else {
@@ -181,6 +185,7 @@ class Order {
                     null,
                     order.typeOfOrder,
                     order.orderItems.size(),
+                    order.delivery.getDistrict(),
                     OrderEvent.State.TO_DELIVER
             ));
         }

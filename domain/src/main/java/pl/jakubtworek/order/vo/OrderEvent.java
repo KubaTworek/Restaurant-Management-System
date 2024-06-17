@@ -11,12 +11,14 @@ public class OrderEvent implements DomainEvent {
     private final Long employeeId;
     private final TypeOfOrder orderType;
     private final Integer amountOfMenuItems;
+    private final District district;
     private final State state;
 
     public OrderEvent(final Long orderId,
                       final Long employeeId,
                       final TypeOfOrder orderType,
                       final Integer amountOfMenuItems,
+                      final District district,
                       final State state
     ) {
         this.occurredOn = Instant.now();
@@ -24,6 +26,7 @@ public class OrderEvent implements DomainEvent {
         this.employeeId = employeeId;
         this.orderType = orderType;
         this.amountOfMenuItems = amountOfMenuItems;
+        this.district = district;
         this.state = state;
     }
 
@@ -48,6 +51,10 @@ public class OrderEvent implements DomainEvent {
         return amountOfMenuItems;
     }
 
+    public District getDistrict() {
+        return district;
+    }
+
     public State getState() {
         return state;
     }
@@ -64,6 +71,7 @@ public class OrderEvent implements DomainEvent {
                 ", employeeId=" + employeeId +
                 ", orderType=" + orderType +
                 ", amountOfMenuItems=" + amountOfMenuItems +
+                ", district=" + district +
                 ", state=" + state +
                 '}';
     }

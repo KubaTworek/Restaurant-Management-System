@@ -13,7 +13,7 @@ class DeliveryHandler extends AbstractDelivery {
 
     @Override
     void handle(final OrderEvent event) {
-        queues.add(new OrderDelivery(event.getOrderId(), event.getOrderType(), event.getAmountOfMenuItems()));
+        queues.add(new OrderDelivery(event.getOrderId(), event.getOrderType(), event.getAmountOfMenuItems(), event.getDistrict()));
         processDeliveries();
     }
 

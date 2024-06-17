@@ -3,6 +3,7 @@ package pl.jakubtworek.order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ class OrderController {
         this.orderFacade = orderFacade;
     }
 
+    @CrossOrigin(origins = "http://localhost:4200/")
     @PostMapping
     ResponseEntity<OrderDto> create(@RequestHeader("Authorization") String jwt, @RequestBody OrderRequest orderRequest) {
         logger.info("Received a request to create a new order.");
@@ -38,6 +40,7 @@ class OrderController {
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200/")
     @PostMapping ("/confirm")
     ResponseEntity<OrderDto> confirm(@RequestHeader("Authorization") String jwt, @RequestBody OrderConfirmRequest orderRequest) {
         logger.info("Received a request to confirm an order.");
@@ -46,6 +49,7 @@ class OrderController {
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200/")
     @GetMapping("/ongoing")
     List<OrderDto> getOngoingOrders(@RequestHeader("Authorization") String jwt) {
         logger.info("Received a request for ongoing orders:");
@@ -54,6 +58,7 @@ class OrderController {
         return orders;
     }
 
+    @CrossOrigin(origins = "http://localhost:4200/")
     @PostMapping("/receive")
     ResponseEntity<OrderDto> received(@RequestHeader("Authorization") String jwt, @RequestBody OrderReceiveRequest orderRequest) {
         logger.info("Received a request to receive a delivered order.");
@@ -84,12 +89,14 @@ class OrderController {
         return orders;
     }
 
+    @CrossOrigin(origins = "http://localhost:4200/")
     @GetMapping
     List<OrderDto> get(@RequestHeader("Authorization") String jwt) {
         logger.info("Received a request to get the list of all orders.");
         return orderFacade.findAllByToken(jwt);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200/")
     @GetMapping("/{id}")
     ResponseEntity<OrderDto> getById(@PathVariable Long id) {
         logger.info("Received a request to get order details for ID: {}", id);

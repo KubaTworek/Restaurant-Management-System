@@ -7,5 +7,7 @@ public record LoginResponse(
         @JsonProperty("username") String username,
         @JsonProperty("role") Role role,
         @JsonProperty("token") String token,
-        @JsonProperty("tokenExpirationDate") Long tokenExpirationDate
+        @JsonProperty("refreshToken") String refreshToken,
+        @JsonProperty("tokenExpirationDate") Long tokenExpirationDate,
+        @JsonProperty("refreshTokenExpirationDate") Long refreshTokenExpirationDate
 ) { }

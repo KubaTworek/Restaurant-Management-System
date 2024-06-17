@@ -4,6 +4,7 @@ import pl.jakubtworek.DomainEventPublisher;
 import pl.jakubtworek.common.vo.Status;
 import pl.jakubtworek.employee.vo.EmployeeEvent;
 import pl.jakubtworek.employee.vo.Job;
+import pl.jakubtworek.order.vo.OrderDeliveryId;
 import pl.jakubtworek.order.vo.OrderId;
 
 import java.util.HashSet;
@@ -21,6 +22,7 @@ class Employee {
     private Job job;
     private Status status;
     private Set<OrderId> orders = new HashSet<>();
+    private Set<OrderDeliveryId> deliveries = new HashSet<>();
     private DomainEventPublisher publisher;
     private EmployeeRepository repository;
 
@@ -32,7 +34,8 @@ class Employee {
                      final String lastName,
                      final Job job,
                      final Status status,
-                     final Set<OrderId> orders
+                     final Set<OrderId> orders,
+                     final Set<OrderDeliveryId> deliveries
     ) {
         this.id = id;
         this.firstName = firstName;
@@ -40,6 +43,7 @@ class Employee {
         this.job = job;
         this.status = status;
         this.orders = orders;
+        this.deliveries = deliveries;
     }
 
     static Employee restore(EmployeeSnapshot snapshot) {
@@ -49,7 +53,8 @@ class Employee {
                 snapshot.getLastName(),
                 snapshot.getJob(),
                 snapshot.getStatus(),
-                snapshot.getOrders()
+                snapshot.getOrders(),
+                snapshot.getDeliveries()
         );
     }
 
@@ -60,7 +65,8 @@ class Employee {
                 lastName,
                 job,
                 status,
-                orders
+                orders,
+                deliveries
         );
     }
 

@@ -67,7 +67,11 @@ public interface OrderDto {
             this.hourReceived = hourReceived;
             this.typeOfOrder = typeOfOrder;
             this.status = status;
-            this.delivery = delivery;
+            if (this.typeOfOrder.equals(TypeOfOrder.ON_SITE)) {
+                this.delivery = null;
+            } else {
+                this.delivery = delivery;
+            }
             this.orderItems = orderItems;
         }
 

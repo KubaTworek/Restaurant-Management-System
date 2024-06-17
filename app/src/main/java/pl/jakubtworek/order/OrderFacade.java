@@ -12,6 +12,7 @@ import pl.jakubtworek.order.dto.OrderItemDto;
 import pl.jakubtworek.order.dto.OrderPriceDto;
 import pl.jakubtworek.order.dto.OrderReceiveRequest;
 import pl.jakubtworek.order.dto.OrderRequest;
+import pl.jakubtworek.order.vo.Address;
 import pl.jakubtworek.order.vo.TypeOfOrder;
 
 import java.time.ZonedDateTime;
@@ -43,7 +44,7 @@ public class OrderFacade {
                 items,
                 toSave.typeOfOrder(),
                 new CustomerId(user.getId()),
-                toSave.address()
+                toSave.address() != null ? new Address(toSave.address().district(), toSave.address().street(), toSave.address().houseNumber()) : null
         );
 
         return toDto(created);

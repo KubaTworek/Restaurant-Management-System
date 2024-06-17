@@ -20,7 +20,7 @@ class Kitchen {
 
     void handle(final OrderEvent event) {
         queues.add(new OrderDelivery(
-                event.getOrderId(), event.getOrderType(), event.getAmountOfMenuItems())
+                event.getOrderId(), event.getOrderType(), event.getAmountOfMenuItems(), event.getDistrict())
         );
         processCooking();
     }
@@ -54,6 +54,7 @@ class Kitchen {
                         cook.employeeId(),
                         order.orderType(),
                         order.amountOfMenuItems(),
+                        order.district(),
                         OrderEvent.State.READY
                 ));
                 publisher.publish(new EmployeeEvent(

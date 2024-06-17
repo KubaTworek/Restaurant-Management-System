@@ -137,12 +137,6 @@
             <many-to-one name="employee" fetch="LAZY">
                 <join-column name="EMPLOYEE_ID"/>
             </many-to-one>
-            <one-to-one name="order" fetch="EAGER">
-                <join-column name="ORDER_DELIVERY_ID"/>
-                <cascade>
-                    <cascade-all/>
-                </cascade>
-            </one-to-one>
         </attributes>
     </entity>
 
@@ -226,6 +220,22 @@
             </basic>
             <basic name="password">
                 <column name="PASSWORD" nullable="false"/>
+            </basic>
+            <basic name="role">
+                <column name="ROLE" nullable="false"/>
+                <enumerated>STRING</enumerated>
+            </basic>
+            <basic name="firstName">
+                <column name="FIRST_NAME"/>
+            </basic>
+            <basic name="lastName">
+                <column name="LAST_NAME"/>
+            </basic>
+            <basic name="email">
+                <column name="PHONE"/>
+            </basic>
+            <basic name="email">
+                <column name="EMAIL"/>
             </basic>
         </attributes>
     </entity>

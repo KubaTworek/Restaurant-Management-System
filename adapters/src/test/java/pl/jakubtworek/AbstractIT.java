@@ -52,8 +52,8 @@ public class AbstractIT {
 
     @BeforeEach
     void setup() {
-        registerUser(new RegisterRequest("testuser", "password", "USER"));
-        registerUser(new RegisterRequest("admin", "admin", "ADMIN"));
+        registerUser(new RegisterRequest("testuser", "password", "USER", "John", "Doe", "john.doe@mail.com", "450642154"));
+        registerUser(new RegisterRequest("admin", "admin", "ADMIN", null, null, null, null));
         userToken = loginUserAndGetToken(new LoginRequest("testuser", "password"));
         adminToken = loginUserAndGetToken(new LoginRequest("admin", "admin"));
         createMenuItems();

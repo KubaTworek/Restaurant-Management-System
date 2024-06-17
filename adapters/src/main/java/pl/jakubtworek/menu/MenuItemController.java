@@ -3,6 +3,7 @@ package pl.jakubtworek.menu;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +40,7 @@ class MenuItemController {
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200/")
     @GetMapping
     List<MenuDto> get() {
         logger.info("Received a request to get the list of all menus.");

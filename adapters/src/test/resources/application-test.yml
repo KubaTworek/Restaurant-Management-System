@@ -1,6 +1,6 @@
 timeToWaitForReceive: 1
 multiplierTimeToCook: 200
-timeToDelivery: 200
+multiplierTimeToDelivery: 5
 spring:
   h2.console:
     enabled: true

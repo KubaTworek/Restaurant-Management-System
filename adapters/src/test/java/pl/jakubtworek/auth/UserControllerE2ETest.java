@@ -16,7 +16,7 @@ class UserControllerE2ETest extends AbstractIT {
     @DirtiesContext
     void shouldRegisterUser() {
         // given
-        final var request = new RegisterRequest("user", "password", "USER");
+        final var request = new RegisterRequest("user", "password", "USER", "John", "Doe", "john.doe@mail.com", "450642154");
 
         // when
         final var response = registerUser(request);

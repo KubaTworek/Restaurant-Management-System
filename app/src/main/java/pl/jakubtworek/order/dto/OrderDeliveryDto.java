@@ -2,6 +2,7 @@ package pl.jakubtworek.order.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import pl.jakubtworek.order.vo.DeliveryStatus;
+import pl.jakubtworek.order.vo.District;
 
 import java.time.ZonedDateTime;
 
@@ -11,7 +12,7 @@ public interface OrderDeliveryDto {
                                    final ZonedDateTime hourStart,
                                    final ZonedDateTime hourEnd,
                                    final DeliveryStatus status,
-                                   final String district,
+                                   final District district,
                                    final String street,
                                    final String houseNumber
 
@@ -27,7 +28,7 @@ public interface OrderDeliveryDto {
 
     DeliveryStatus getStatus();
 
-    String getDistrict();
+    District getDistrict();
 
     String getStreet();
 
@@ -38,7 +39,7 @@ public interface OrderDeliveryDto {
         private ZonedDateTime hourStart;
         private ZonedDateTime hourEnd;
         private DeliveryStatus status;
-        private String district;
+        private District district;
         private String street;
         private String houseNumber;
 
@@ -46,7 +47,7 @@ public interface OrderDeliveryDto {
                             final ZonedDateTime hourStart,
                             final ZonedDateTime hourEnd,
                             final DeliveryStatus status,
-                            final String district,
+                            final District district,
                             final String street,
                             final String houseNumber
         ) {
@@ -80,7 +81,7 @@ public interface OrderDeliveryDto {
         }
 
         @Override
-        public String getDistrict() {
+        public District getDistrict() {
             return district;
         }
 

@@ -11,8 +11,8 @@ class DeliveryConfiguration {
     @Value("${multiplierTimeToCook}")
     private Long multiplierTimeToCook;
 
-    @Value("${timeToDelivery}")
-    private Long timeToDelivery;
+    @Value("${multiplierTimeToDelivery}")
+    private Long multiplierTimeToDelivery;
 
     @Bean
     Kitchen kitchen(
@@ -30,7 +30,7 @@ class DeliveryConfiguration {
     ) {
         return new DeliveryHandler(
                 publisher,
-                timeToDelivery
+                multiplierTimeToDelivery
         );
     }
 }

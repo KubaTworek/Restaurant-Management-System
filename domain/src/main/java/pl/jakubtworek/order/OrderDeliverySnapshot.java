@@ -2,6 +2,7 @@ package pl.jakubtworek.order;
 
 import pl.jakubtworek.employee.vo.EmployeeId;
 import pl.jakubtworek.order.vo.DeliveryStatus;
+import pl.jakubtworek.order.vo.District;
 
 import java.time.ZonedDateTime;
 
@@ -10,11 +11,10 @@ class OrderDeliverySnapshot {
     private ZonedDateTime hourStart;
     private ZonedDateTime hourEnd;
     private DeliveryStatus status;
-    private String district;
+    private District district;
     private String street;
     private String houseNumber;
     private EmployeeId employee;
-    private OrderSnapshot order;
 
     OrderDeliverySnapshot() {
     }
@@ -23,11 +23,10 @@ class OrderDeliverySnapshot {
                           final ZonedDateTime hourStart,
                           final ZonedDateTime hourEnd,
                           final DeliveryStatus status,
-                          final String district,
+                          final District district,
                           final String street,
                           final String houseNumber,
-                          final EmployeeId employee,
-                          final OrderSnapshot order
+                          final EmployeeId employee
     ) {
         this.id = id;
         this.hourStart = hourStart;
@@ -37,7 +36,6 @@ class OrderDeliverySnapshot {
         this.street = street;
         this.houseNumber = houseNumber;
         this.employee = employee;
-        this.order = order;
     }
 
     Long getId() {
@@ -56,7 +54,7 @@ class OrderDeliverySnapshot {
         return status;
     }
 
-    String getDistrict() {
+    District getDistrict() {
         return district;
     }
 
@@ -70,9 +68,5 @@ class OrderDeliverySnapshot {
 
     EmployeeId getEmployee() {
         return employee;
-    }
-
-    OrderSnapshot getOrder() {
-        return order;
     }
 }

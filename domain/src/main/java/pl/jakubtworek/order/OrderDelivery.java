@@ -3,6 +3,7 @@ package pl.jakubtworek.order;
 import pl.jakubtworek.employee.vo.EmployeeId;
 import pl.jakubtworek.order.vo.Address;
 import pl.jakubtworek.order.vo.DeliveryStatus;
+import pl.jakubtworek.order.vo.District;
 
 import java.time.ZonedDateTime;
 
@@ -52,8 +53,7 @@ class OrderDelivery {
                 address.getDistrict(),
                 address.getStreet(),
                 address.getHouseNumber(),
-                employee,
-                null
+                employee
         );
     }
 
@@ -73,5 +73,9 @@ class OrderDelivery {
     void end() {
         this.status = DeliveryStatus.END;
         this.hourEnd = ZonedDateTime.now();
+    }
+
+    District getDistrict() {
+        return address.getDistrict();
     }
 }

@@ -1,5 +1,7 @@
 package pl.jakubtworek.order;
 
+import pl.jakubtworek.order.vo.Address;
+
 import java.math.BigDecimal;
 
 class OrderPrice {
@@ -47,15 +49,23 @@ class OrderPrice {
         this.tip = BigDecimal.ZERO;
     }
 
+    void calculatePrice(final BigDecimal price, Address address) {
+        this.price = price;
+        this.deliveryFee = address.getDistrict().getDeliveryFee();
+        calculateMinimumBasketFee();
+        this.tip = BigDecimal.ZERO;
+    }
+
     void addTip(final BigDecimal tip) {
         this.tip = tip;
     }
 
     private void calculateMinimumBasketFee() {
-        if (this.price.compareTo(BigDecimal.valueOf(30)) < 0)  {
-            this.minimumBasketFee = BigDecimal.valueOf(30).subtract(this.price.add(this.deliveryFee));
+        final var fullPrice = this.price.add(this.deliveryFee);
+        if (fullPrice.compareTo(BigDecimal.valueOf(30)) < 0)  {
+            this.minimumBasketFee = BigDecimal.valueOf(30).subtract(fullPrice);
         } else {
-            this.minimumBasketFee = BigDecimal.ONE;
+            this.minimumBasketFee = BigDecimal.ZERO;
         }
     }
 }

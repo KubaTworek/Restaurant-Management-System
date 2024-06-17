@@ -16,6 +16,8 @@ interface SqlOrderRepository extends JpaRepository<OrderSnapshot, Long> {
     @Query("SELECT o FROM OrderSnapshot o " +
             "LEFT JOIN FETCH o.orderItems " +
             "LEFT JOIN FETCH o.employees " +
+            "LEFT JOIN FETCH o.delivery " +
+            "LEFT JOIN FETCH o.price " +
             "WHERE o.id = :orderId")
     Optional<OrderSnapshot> findById(@Param("orderId") Long id);
 }
@@ -24,18 +26,21 @@ interface SqlOrderQueryRepository extends OrderQueryRepository, JpaRepository<Or
     @Query("SELECT o FROM OrderSnapshot o " +
             "LEFT JOIN FETCH o.orderItems " +
             "LEFT JOIN FETCH o.delivery " +
+            "LEFT JOIN FETCH o.price " +
             "WHERE o.id = :orderId")
     Optional<OrderDto> findDtoById(@Param("orderId") Long id);
 
     @Query("SELECT o FROM OrderSnapshot o " +
             "LEFT JOIN FETCH o.orderItems " +
             "LEFT JOIN FETCH o.delivery " +
+            "LEFT JOIN FETCH o.price " +
             "WHERE o.customerId = :customerId")
     List<OrderDto> findDtoByCustomerId(@Param("customerId") CustomerId customerId);
 
     @Query("SELECT o FROM OrderSnapshot o " +
             "LEFT JOIN FETCH o.orderItems " +
             "LEFT JOIN FETCH o.delivery " +
+            "LEFT JOIN FETCH o.price " +
             "WHERE o.customerId = :customerId " +
             "AND o.status = 'TO_RECEIVE' OR o.status = 'READY' OR o.status = 'ACCEPT'")
     List<OrderDto> findOngoingDtoByCustomerId(@Param("customerId") CustomerId customerId);
@@ -44,6 +49,7 @@ interface SqlOrderQueryRepository extends OrderQueryRepository, JpaRepository<Or
             "LEFT JOIN FETCH o.orderItems " +
             "LEFT JOIN FETCH o.delivery d " +
             "LEFT JOIN FETCH o.employees e " +
+            "LEFT JOIN FETCH o.price " +
             "WHERE " +
             "(:fromDate IS NULL OR o.hourOrder >= :fromDate) " +
             "AND (:toDate IS NULL OR o.hourOrder <= :toDate) " +

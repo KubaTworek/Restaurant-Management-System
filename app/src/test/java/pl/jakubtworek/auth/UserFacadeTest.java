@@ -62,8 +62,8 @@ class UserFacadeTest {
     @Test
     void shouldRegisterUser() {
         // given
-        final var request = new RegisterRequest("john.doe", "password123", "USER");
-        final var expectedUser = createUser(request.username(), request.password(), request.role());
+        final var request = new RegisterRequest("john.doe", "password123", "USER", "John", "Doe", "john.doe@mail.com", "450642154");
+        final var expectedUser = createUser(request.username(), request.password(), request.role(), request.firstName(), request.lastName(), request.email(), request.phone());
 
         when(userRepository.save(any())).thenReturn(expectedUser);
 
@@ -95,7 +95,7 @@ class UserFacadeTest {
     @Test
     void shouldThrowException_whenRegisterUserWithSameUsername() {
         // given
-        final var request = new RegisterRequest("existing_user", "password123", "USER");
+        final var request = new RegisterRequest("existing_user", "password123", "USER", "John", "Doe", "john.doe@mail.com", "450642154");
 
         when(userQueryRepository.existsByUsername("existing_user")).thenReturn(true);
 
@@ -115,9 +115,9 @@ class UserFacadeTest {
         assertThrows(IllegalStateException.class, () -> userFacade.login(request));
     }
 
-    private User createUser(String username, String password, String role) {
+    private User createUser(String username, String password, String role, String firstName, String lastName, String email, String phone) {
         return User.restore(new UserSnapshot(
-                1L, username, password, Role.valueOf(role)
+                1L, username, password, Role.valueOf(role), firstName, lastName, email, phone
         ));
     }
 

@@ -8,11 +8,11 @@ import org.springframework.test.annotation.DirtiesContext;
 import pl.jakubtworek.AbstractIT;
 import pl.jakubtworek.employee.dto.EmployeeDto;
 import pl.jakubtworek.employee.dto.EmployeeRequest;
+import pl.jakubtworek.order.dto.AddressRequest;
 import pl.jakubtworek.order.dto.OrderConfirmRequest;
 import pl.jakubtworek.order.dto.OrderDto;
 import pl.jakubtworek.order.dto.OrderReceiveRequest;
 import pl.jakubtworek.order.dto.OrderRequest;
-import pl.jakubtworek.order.vo.Address;
 import pl.jakubtworek.order.vo.DeliveryStatus;
 import pl.jakubtworek.order.vo.OrderStatus;
 import pl.jakubtworek.order.vo.TypeOfOrder;
@@ -32,19 +32,55 @@ class OrderControllerE2ETest extends AbstractIT {
 
     @Test
     @DirtiesContext
+    void happyFlow_deliveryOrderX() throws InterruptedException {
+        postEmployee(new EmployeeRequest("John", "Doe", "COOK"));
+        postEmployee(new EmployeeRequest("Bob", "Dylan", "DELIVERY"));
+
+        // create order
+        final var createRequest = new OrderRequest("DELIVERY", List.of("Burger", "Cola", "Cola"), new AddressRequest("OCHOTA", "TEST", "TEST"));
+        final var created = postOrder(createRequest, userToken);
+        final var createdId = created.getId();
+        final var request2 = new OrderConfirmRequest(createdId, "ACCEPT");
+        final var confirmed = confirmOrder(request2, userToken);
+        assertNotNull(confirmed.getDelivery());
+
+        // wait for all processes
+        Thread.sleep(500);
+        final var createRequestX = new OrderRequest("ON_SITE", List.of("Burger", "Cola", "Cola"), null);
+        final var createdX = postOrder(createRequestX, userToken);
+        final var createdIdX = createdX.getId();
+        final var request2X = new OrderConfirmRequest(createdIdX, "ACCEPT");
+        final var confirmedX = confirmOrder(request2X, userToken);
+        assertNull(confirmedX.getDelivery());
+
+        // wait for all processes
+        Thread.sleep(500);
+        final var createRequestY = new OrderRequest("DELIVERY", List.of("Burger", "Cola", "Cola"), new AddressRequest("OCHOTA", "TEST", "TEST"));
+        final var createdY = postOrder(createRequestY, userToken);
+        final var createdIdY = createdY.getId();
+        final var request2Y = new OrderConfirmRequest(createdIdY, "ACCEPT");
+        final var confirmedY = confirmOrder(request2Y, userToken);
+        assertNotNull(confirmedY.getDelivery());
+
+        final var onsite = getOrderById(createdX.getId(), userToken);
+        assertNull(onsite.getDelivery());
+    }
+
+    @Test
+    @DirtiesContext
     void happyFlow_deliveryOrder() throws InterruptedException {
         final var cook = postEmployee(new EmployeeRequest("John", "Doe", "COOK"));
         final var delivery = postEmployee(new EmployeeRequest("Bob", "Dylan", "DELIVERY"));
 
         // create order
-        final var createRequest = new OrderRequest("DELIVERY", List.of("Burger", "Cola", "Cola"), new Address("TEST", "TEST", "TEST"));
+        final var createRequest = new OrderRequest("DELIVERY", List.of("Burger", "Cola", "Cola"), new AddressRequest("OCHOTA", "TEST", "TEST"));
         final var created = postOrder(createRequest, userToken);
         final var createdId = created.getId();
         assertEquals(TypeOfOrder.DELIVERY, created.getTypeOfOrder());
         assertEquals(OrderStatus.NEW, created.getStatus());
         assertEquals(BigDecimal.valueOf(22.97), created.getPrice().getPrice());
-        assertEquals(BigDecimal.valueOf(0), created.getPrice().getDeliveryFee());
-        assertEquals(BigDecimal.valueOf(7.03), created.getPrice().getMinimumBasketFee());
+        assertEquals(3.00, created.getPrice().getDeliveryFee().doubleValue());
+        assertEquals(BigDecimal.valueOf(4.03), created.getPrice().getMinimumBasketFee());
         assertEquals(BigDecimal.valueOf(0), created.getPrice().getTip());
         assertNotNull(created.getHourOrder());
         assertNull(created.getHourPrepared());
@@ -58,7 +94,7 @@ class OrderControllerE2ETest extends AbstractIT {
         assertEquals(2, cola.getAmount());
         assertEquals(BigDecimal.valueOf(5.99), cola.getPrice());
         final var deliveryDto = created.getDelivery();
-        assertEquals("TEST", deliveryDto.getDistrict());
+        assertEquals("OCHOTA", deliveryDto.getDistrict().name());
         assertEquals("TEST", deliveryDto.getStreet());
         assertEquals("TEST", deliveryDto.getHouseNumber());
         assertNull(deliveryDto.getHourStart());
@@ -201,7 +237,7 @@ class OrderControllerE2ETest extends AbstractIT {
         final var delivery = postEmployee(new EmployeeRequest("Bob", "Dylan", "DELIVERY"));
 
         // create order
-        final var request1 = new OrderRequest("DELIVERY", List.of("Burger", "Cola", "Cola"), new Address("TEST", "TEST", "TEST"));
+        final var request1 = new OrderRequest("DELIVERY", List.of("Burger", "Cola", "Cola"), new AddressRequest("SRODMIESCIE", "TEST", "TEST"));
         final var created = postOrder(request1, userToken);
         final var createdId = created.getId();
         assertEquals(TypeOfOrder.DELIVERY, created.getTypeOfOrder());
@@ -222,7 +258,7 @@ class OrderControllerE2ETest extends AbstractIT {
         assertEquals(2, cola.getAmount());
         assertEquals(BigDecimal.valueOf(5.99), cola.getPrice());
         final var deliveryDto = created.getDelivery();
-        assertEquals("TEST", deliveryDto.getDistrict());
+        assertEquals("SRODMIESCIE", deliveryDto.getDistrict().name());
         assertEquals("TEST", deliveryDto.getStreet());
         assertEquals("TEST", deliveryDto.getHouseNumber());
         assertNull(deliveryDto.getHourStart());
@@ -260,7 +296,7 @@ class OrderControllerE2ETest extends AbstractIT {
     @DirtiesContext
     void shouldVerifyIsOrderAreComparedAndIsCookAssigned_whenThereIsMoreThanOneOrderInQueue() throws InterruptedException {
         // given
-        final var delivery = postOrder(new OrderRequest("DELIVERY", List.of("Burger", "Cola"), new Address("TEST", "TEST", "TEST")), userToken);
+        final var delivery = postOrder(new OrderRequest("DELIVERY", List.of("Burger", "Cola"), new AddressRequest("SRODMIESCIE", "TEST", "TEST")), userToken);
         final var onSite = postOrder(new OrderRequest("ON_SITE", List.of("Pasta", "Sprite"), null), userToken);
         confirmOrder(new OrderConfirmRequest(delivery.getId(), "ACCEPT"), userToken);
         confirmOrder(new OrderConfirmRequest(onSite.getId(), "ACCEPT"), userToken);
@@ -281,7 +317,7 @@ class OrderControllerE2ETest extends AbstractIT {
     @DirtiesContext
     void shouldGetAllOrders() {
         // given
-        postOrder(new OrderRequest("DELIVERY", List.of("Burger", "Cola"), new Address("TEST", "TEST", "TEST")), userToken);
+        postOrder(new OrderRequest("DELIVERY", List.of("Burger", "Cola"), new AddressRequest("SRODMIESCIE", "TEST", "TEST")), userToken);
         postOrder(new OrderRequest("ON_SITE", List.of("Pasta", "Sprite"), null), userToken);
 
         // when
@@ -295,7 +331,7 @@ class OrderControllerE2ETest extends AbstractIT {
     @DirtiesContext
     void shouldGetOrderById() {
         // given
-        final var createdId = postOrder(new OrderRequest("DELIVERY", List.of("Burger", "Cola", "Cola"), new Address("TEST", "TEST", "TEST")), userToken).getId();
+        final var createdId = postOrder(new OrderRequest("DELIVERY", List.of("Burger", "Cola", "Cola"), new AddressRequest("SRODMIESCIE", "TEST", "TEST")), userToken).getId();
 
         // when
         final var response = getOrderById(createdId, userToken);
@@ -309,7 +345,7 @@ class OrderControllerE2ETest extends AbstractIT {
     @DirtiesContext
     void shouldGetOrdersByParams(int expectedAmountOfOrders, Map<String, String> params) {
         // given
-        postOrder(new OrderRequest("DELIVERY", List.of("Burger", "Cola"), new Address("TEST", "TEST", "TEST")), userToken);
+        postOrder(new OrderRequest("DELIVERY", List.of("Burger", "Cola"), new AddressRequest("SRODMIESCIE", "TEST", "TEST")), userToken);
         postOrder(new OrderRequest("ON_SITE", List.of("Pasta", "Sprite"), null), userToken);
 
         // when
