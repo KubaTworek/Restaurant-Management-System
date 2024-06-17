@@ -8,10 +8,10 @@ spring:
     enabled: true
     path: '/console'
   datasource:
-    url: 'jdbc:h2:mem:test-db;DB_CLOSE_DELAY=-1'
+    url: 'jdbc:h2:file:./test-db;DB_CLOSE_ON_EXIT=FALSE;AUTO_RECONNECT=TRUE;DB_CLOSE_DELAY=-1'
     username: 'sa'
     password: 'pass'
   jpa:
     show-sql: false
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update

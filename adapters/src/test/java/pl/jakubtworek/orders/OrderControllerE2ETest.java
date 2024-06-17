@@ -32,42 +32,6 @@ class OrderControllerE2ETest extends AbstractIT {
 
     @Test
     @DirtiesContext
-    void happyFlow_deliveryOrderX() throws InterruptedException {
-        postEmployee(new EmployeeRequest("John", "Doe", "COOK"));
-        postEmployee(new EmployeeRequest("Bob", "Dylan", "DELIVERY"));
-
-        // create order
-        final var createRequest = new OrderRequest("DELIVERY", List.of("Burger", "Cola", "Cola"), new AddressRequest("OCHOTA", "TEST", "TEST"));
-        final var created = postOrder(createRequest, userToken);
-        final var createdId = created.getId();
-        final var request2 = new OrderConfirmRequest(createdId, "ACCEPT");
-        final var confirmed = confirmOrder(request2, userToken);
-        assertNotNull(confirmed.getDelivery());
-
-        // wait for all processes
-        Thread.sleep(500);
-        final var createRequestX = new OrderRequest("ON_SITE", List.of("Burger", "Cola", "Cola"), null);
-        final var createdX = postOrder(createRequestX, userToken);
-        final var createdIdX = createdX.getId();
-        final var request2X = new OrderConfirmRequest(createdIdX, "ACCEPT");
-        final var confirmedX = confirmOrder(request2X, userToken);
-        assertNull(confirmedX.getDelivery());
-
-        // wait for all processes
-        Thread.sleep(500);
-        final var createRequestY = new OrderRequest("DELIVERY", List.of("Burger", "Cola", "Cola"), new AddressRequest("OCHOTA", "TEST", "TEST"));
-        final var createdY = postOrder(createRequestY, userToken);
-        final var createdIdY = createdY.getId();
-        final var request2Y = new OrderConfirmRequest(createdIdY, "ACCEPT");
-        final var confirmedY = confirmOrder(request2Y, userToken);
-        assertNotNull(confirmedY.getDelivery());
-
-        final var onsite = getOrderById(createdX.getId(), userToken);
-        assertNull(onsite.getDelivery());
-    }
-
-    @Test
-    @DirtiesContext
     void happyFlow_deliveryOrder() throws InterruptedException {
         final var cook = postEmployee(new EmployeeRequest("John", "Doe", "COOK"));
         final var delivery = postEmployee(new EmployeeRequest("Bob", "Dylan", "DELIVERY"));
@@ -180,6 +144,34 @@ class OrderControllerE2ETest extends AbstractIT {
         assertNotNull(received.getHourReceived());
 
         assertCookAssignment(cook);
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldApplyDelivery_whenOrderIsDelivery() throws InterruptedException {
+        postEmployee(new EmployeeRequest("John", "Doe", "COOK"));
+        postEmployee(new EmployeeRequest("Bob", "Dylan", "DELIVERY"));
+
+        // create first delivery
+        final var createdDelivery = postOrder(new OrderRequest("DELIVERY", List.of("Burger", "Cola", "Cola"), new AddressRequest("OCHOTA", "TEST", "TEST")), userToken);
+        final var confirmedDelivery = confirmOrder(new OrderConfirmRequest(createdDelivery.getId(), "ACCEPT"), userToken);
+        assertNotNull(confirmedDelivery.getDelivery());
+
+        // create first onsite
+        Thread.sleep(500);
+        final var createdOnsite = postOrder(new OrderRequest("ON_SITE", List.of("Burger", "Cola", "Cola"), null), userToken);
+        final var confirmedOnsite = confirmOrder(new OrderConfirmRequest(createdOnsite.getId(), "ACCEPT"), userToken);
+        assertNull(confirmedOnsite.getDelivery());
+
+        // create second delivery
+        Thread.sleep(500);
+        final var createdDelivery2 = postOrder(new OrderRequest("DELIVERY", List.of("Burger", "Cola", "Cola"), new AddressRequest("OCHOTA", "TEST", "TEST")), userToken);
+        final var confirmedDelivery2 = confirmOrder(new OrderConfirmRequest(createdDelivery2.getId(), "ACCEPT"), userToken);
+        assertNotNull(confirmedDelivery2.getDelivery());
+
+        // verify onsite
+        final var onsite = getOrderById(confirmedOnsite.getId(), userToken);
+        assertNull(onsite.getDelivery());
     }
 
     @Test
