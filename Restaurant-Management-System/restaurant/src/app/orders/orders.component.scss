@@ -1,0 +1,29 @@
+@import '../../colors.scss';
+
+.container {
+  display: flex;
+}
+
+.orders-categories {
+  margin-right: 20px;
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .order-categories {
+    list-style: none;
+    padding: 0;
+
+    li {
+      padding: 10px 0;
+      border-bottom: 1px solid $restaurant-white;
+      cursor: pointer;
+
+      &.active-link {
+        font-weight: bold;
+        text-decoration: underline;
+      }
+    }
+  }
+}

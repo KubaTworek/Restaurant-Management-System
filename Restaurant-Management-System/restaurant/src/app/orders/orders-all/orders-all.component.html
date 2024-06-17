@@ -1,0 +1,33 @@
+<section class="orders-section">
+  <ul class="order-items">
+    <li *ngFor="let order of orders">
+      <span class="order-number">{{ 'ORDER_WITH' | translate }} {{ order.typeOfOrder === 'DELIVERY' ? 'dostawą' : 'odbiorem' }}</span>
+      <span class="order-status">{{ order.status | translate }}</span>
+      <span class="order-price">{{ formatPrice(calculateTotalPrice(order)) }} PLN</span>
+      <button (click)="showOrderDetails(order)" class="details-button">{{ 'DETAILS' | translate }}</button>
+    </li>
+  </ul>
+</section>
+
+<div [class.show-modal]="showOrderDetailsModal" class="modal">
+  <div class="modal-content">
+    <span (click)="closeOrderDetailsModal()" class="close-button">&times;</span>
+    <h2>{{ 'ORDER_DETAILS' | translate }}</h2>
+    <div *ngIf="selectedOrder">
+      <p><strong>{{ 'ORDER_ID' | translate }}:</strong> {{ selectedOrder.id }}</p>
+      <p><strong>{{ 'ORDER_TYPE' | translate }}:</strong> {{ selectedOrder.typeOfOrder | translate }}</p>
+      <p><strong>{{ 'ORDER_STATUS' | translate }}:</strong> {{ selectedOrder.status | translate }}</p>
+      <p><strong>{{ 'TOTAL_PRICE' | translate }}:</strong> {{ formatPrice(calculateTotalPrice(selectedOrder)) }} PLN</p>
+      <div *ngIf="selectedOrder.typeOfOrder == 'DELIVERY'">
+        <h3>{{ 'DELIVERY_ADDRESS' | translate }}</h3>
+        <p><strong>{{ 'DISTRICT' | translate }}:</strong> {{ getDistrictValue(selectedOrder.delivery.district) }}</p>
+        <p><strong>{{ 'STREET' | translate }}:</strong> {{ selectedOrder.delivery.street }}</p>
+        <p><strong>{{ 'HOUSE_NUMBER' | translate }}:</strong> {{ selectedOrder.delivery.houseNumber }}</p>
+      </div>
+      <h3>{{ 'POSITIONS' | translate }}</h3>
+      <ul>
+        <li *ngFor="let item of selectedOrder.orderItems">{{ item.name }} ({{ item.amount }})</li>
+      </ul>
+    </div>
+  </div>
+</div>

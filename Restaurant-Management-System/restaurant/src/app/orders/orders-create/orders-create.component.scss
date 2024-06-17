@@ -1,0 +1,260 @@
+@import '../../../colors.scss';
+
+.container {
+  display: flex;
+  padding: 20px;
+}
+
+.categories-section {
+  flex: 0 0 200px;
+  margin-right: 20px;
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .menu-categories {
+    list-style: none;
+    padding: 0;
+
+    li {
+      padding: 10px 0;
+      border-bottom: 1px solid $restaurant-white;
+      cursor: pointer;
+
+      &.selected {
+        font-weight: bold;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.menu-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+
+  .menu-items {
+    list-style: none;
+    padding: 0;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid $restaurant-gray;
+      width: 400px;
+
+      .item-name {
+        flex: 2;
+      }
+
+      .item-price {
+        flex: 1;
+        text-align: right;
+      }
+
+      .add-button {
+        background-color: $restaurant-black;
+        color: $restaurant-white;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        font-size: 1.5rem;
+        cursor: pointer;
+        margin-left: 10px;
+      }
+    }
+  }
+}
+
+.order-summary {
+  flex: 0 0 300px;
+  background-color: $restaurant-white-hover;
+  padding: 20px;
+  border-radius: 8px;
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+
+  .order-items {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid $restaurant-white;
+
+      .remove-button {
+        background-color: $restaurant-black;
+        color: $restaurant-white;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        font-size: 1.5rem;
+        cursor: pointer;
+        margin-left: 10px;
+      }
+    }
+  }
+
+  .order-delivery {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid $restaurant-white;
+    margin-bottom: 20px;
+
+    input[type="checkbox"] {
+      margin-right: 10px;
+    }
+  }
+
+  .order-button {
+    background-color: $restaurant-black;
+    color: $restaurant-white;
+    border: none;
+    border-radius: 8px;
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+
+    &.inactive {
+      background-color: $restaurant-gray;
+      color: $restaurant-white-hover;
+    }
+  }
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding-top: 60px;
+
+  &.show-modal {
+    display: block;
+  }
+
+  .modal-content {
+    background-color: $restaurant-white-hover;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid $restaurant-gray;
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+
+    .close-button {
+      color: $restaurant-white-hover;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+
+      &:hover,
+      &:focus {
+        color: $restaurant-black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+
+      label {
+        margin-top: 1rem;
+      }
+
+      input {
+        padding: 0.5rem;
+        margin-top: 0.25rem;
+        border: 1px solid $restaurant-gray;
+        border-radius: 0.25rem;
+      }
+
+      button {
+        margin-top: 1.5rem;
+        background-color: $restaurant-black;
+        color: $restaurant-white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .summary-section {
+    display: flex;
+    justify-content: space-between;
+
+    .address-summary, .order-summary-details {
+      flex: 1;
+      margin-right: 20px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      h3 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+      }
+
+      p {
+        margin: 5px 0;
+        border-bottom: 1px solid $restaurant-white;
+        padding-bottom: 5px;
+      }
+
+      strong {
+        font-size: 1.2rem;
+      }
+    }
+  }
+
+  .modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+
+    button {
+      background-color: $restaurant-black;
+      color: $restaurant-white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+
+      &.accept-button {
+        background-color: #28a745;
+      }
+
+      &.cancel-button {
+        background-color: #dc3545;
+      }
+    }
+  }
+}

@@ -1,0 +1,98 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa;
+}
+
+header {
+  background-color: #343a40;
+  color: #fff;
+  padding: 1rem;
+}
+
+header nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 1rem;
+}
+
+main {
+  padding: 2rem;
+}
+
+main section {
+  margin-bottom: 2rem;
+}
+
+main section h2 {
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+main section ul {
+  list-style: none;
+  padding: 0;
+}
+
+main section ul li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #dee2e6;
+}
+
+main .order-summary, main .delivery-address, main .order-summary-final {
+  background-color: #fff;
+  padding: 1rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+}
+
+main .order-summary p, main .delivery-address p, main .order-summary-final p {
+  margin: 0.5rem 0;
+}
+
+main .order-summary button, main .delivery-address button, main .order-summary-final button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+main .order-summary button.confirm-order, main .delivery-address button.confirm-order, main .order-summary-final button.confirm-order {
+  background-color: #28a745;
+}
+
+main .order-summary button.accept-order, main .delivery-address button.accept-order, main .order-summary-final button.accept-order {
+  background-color: #17a2b8;
+}
+
+main .order-summary button.cancel-order, main .delivery-address button.cancel-order, main .order-summary-final button.cancel-order {
+  background-color: #dc3545;
+}
+
+main .order-summary form, main .delivery-address form, main .order-summary-final form {
+  display: flex;
+  flex-direction: column;
+}
+
+main .order-summary form label, main .delivery-address form label, main .order-summary-final form label {
+  margin-top: 0.5rem;
+}
+
+main .order-summary form input, main .delivery-address form input, main .order-summary-final form input {
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+}
+
+main .order-summary form button, main .delivery-address form button, main .order-summary-final form button {
+  margin-top: 1rem;
+}
+
+/*# sourceMappingURL=app.component.css.map */

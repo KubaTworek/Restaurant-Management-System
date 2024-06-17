@@ -1,0 +1,79 @@
+<div class="container">
+  <aside class="categories-section">
+    <h1>{{ 'MENU' | translate }}</h1>
+    <ul class="menu-categories">
+      <li (click)="selectCategory(menu)" *ngFor="let menu of menus" [class.selected]="menu === selectedCategory">
+        {{ menu.name }}
+      </li>
+    </ul>
+  </aside>
+  <section class="menu-section">
+    <ul *ngIf="selectedCategory" class="menu-items">
+      <li *ngFor="let item of selectedCategory.menuItems">
+        <span class="item-name">{{ item.name }}</span>
+        <span class="item-price">{{ formatPrice(item.price) }} PLN</span>
+        <button (click)="addItemToOrder(item)" class="add-button">+</button>
+      </li>
+    </ul>
+  </section>
+  <section class="order-summary">
+    <h2>{{ 'YOUR_ORDERS' | translate }}</h2>
+    <ul class="order-items">
+      <li *ngFor="let orderedItem of getOrderedItems()">
+        <span>{{ orderedItem.quantity }}x {{ orderedItem.item.name }}</span>
+        <span>{{ formatPrice(getTotalPriceForItem(orderedItem.item, orderedItem.quantity)) }} PLN</span>
+        <button (click)="removeItemFromOrder(orderedItem.item)" class="remove-button">-</button>
+      </li>
+    </ul>
+    <div class="order-delivery">
+      <input [(ngModel)]="deliveryChecked" id="delivery" name="delivery" type="checkbox">
+      <label for="delivery">{{ 'DELIVERY' | translate }}</label>
+    </div>
+    <button (click)="startOrder()"
+            [class.inactive]="getOrderedItems().length === 0" class="order-button">{{ 'ORDER' | translate }}</button>
+  </section>
+</div>
+
+<div [class.show-modal]="showAddressModal" class="modal">
+  <div class="modal-content">
+    <span (click)="closeAddressModal()" class="close-button">&times;</span>
+    <h2>{{ 'ADD_ADDRESS' | translate }}</h2>
+    <form (submit)="submitAddress($event)">
+      <label for="district">{{ 'DISTRICT' | translate }}</label>
+      <select [(ngModel)]="address.district" class="input" id="district" name="district">
+        <option *ngFor="let district of districts" [value]="district.name">{{ district.value }}</option>
+      </select>
+      <label for="street">{{ 'STREET' | translate }}</label>
+      <input [(ngModel)]="address.street" class="input" id="street" name="street" type="text">
+      <label for="apartment">{{ 'HOUSE_NUMBER' | translate }}</label>
+      <input [(ngModel)]="address.houseNumber" class="input" id="apartment" name="apartment" type="text">
+      <button class="button hoverable" type="submit">{{ 'CONFIRM_ADDRESS' | translate }}</button>
+    </form>
+  </div>
+</div>
+
+<div [class.show-modal]="showSummaryModal" class="modal">
+  <div class="modal-content">
+    <span (click)="closeSummaryModal()" class="close-button">&times;</span>
+    <h2>{{ 'SUMMARY' | translate }}</h2>
+    <div *ngIf="orderResponse" class="summary-section">
+      <div *ngIf="deliveryChecked" class="address-summary">
+        <h3>{{ 'DELIVERY_ADDRESS' | translate }}</h3>
+        <p>{{ 'DISTRICT' | translate }}<br>{{ orderResponse.delivery.district }}</p>
+        <p>{{ 'STREET' | translate }}<br>{{ orderResponse.delivery.street }}</p>
+        <p>{{ 'HOUSE_NUMBER' | translate }}<br>{{ orderResponse.delivery.houseNumber }}</p>
+      </div>
+      <div class="order-summary-details">
+        <h3>{{ 'ORDER' | translate }}</h3>
+        <p>{{ 'PRODUCTS' | translate }}<br>{{ formatPrice(orderResponse.price.price) }} PLN</p>
+        <p>{{ 'DELIVERY' | translate }}<br>{{ formatPrice(orderResponse.price.deliveryFee) }} PLN</p>
+        <p>{{ 'MINIMUM_BASKET_FEE' | translate }}<br>{{ formatPrice(orderResponse.price.minimumBasketFee) }} PLN</p>
+        <p>{{ 'TOTAL' | translate }}<br><strong>{{ formatPrice(calculateTotalPrice()) }} PLN</strong></p>
+      </div>
+    </div>
+    <div class="modal-buttons">
+      <button (click)="acceptOrder()" class="accept-button">{{ 'ACCEPT_BUTTON' | translate }}</button>
+      <button (click)="cancelOrder()" class="cancel-button">{{ 'CANCEL' | translate }}</button>
+    </div>
+  </div>
+</div>

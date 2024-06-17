@@ -1,0 +1,12 @@
+<div class="container">
+  <aside class="orders-categories">
+    <h1>{{ 'YOUR_ORDERS' | translate }}</h1>
+    <ul class="order-categories">
+      <li routerLink="/orders/all" routerLinkActive="active-link">{{ 'ALL_ORDERS' | translate }}</li>
+      <li routerLink="/orders/ongoing" routerLinkActive="active-link">{{ 'ONGOING_ORDERS' | translate }}</li>
+    </ul>
+  </aside>
+  <section class="orders-section">
+    <router-outlet></router-outlet>
+  </section>
+</div>

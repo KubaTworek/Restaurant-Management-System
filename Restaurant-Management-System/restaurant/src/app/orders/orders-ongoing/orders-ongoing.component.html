@@ -1,0 +1,41 @@
+<section class="orders-section">
+  <ul class="order-items">
+    <li *ngFor="let order of orders">
+      <span class="order-number">{{ 'ORDER_WITH' | translate }} {{ order.typeOfOrder === 'DELIVERY' ? 'dostawą' : 'odbiorem' }}</span>
+      <span class="order-status">{{ order.status | translate }}</span>
+      <span class="order-price">{{ formatPrice(calculateTotalPrice(order, '0.00')) }} PLN</span>
+      <button (click)="openSummaryModal(order)" *ngIf="order.status === 'TO_RECEIVE'" class="pickup-button">{{ 'RECEIVE' | translate }}</button>
+    </li>
+  </ul>
+
+  <div [class.show-modal]="showSummaryModal" class="modal">
+    <div class="modal-content">
+      <span (click)="closeSummaryModal()" class="close-button">&times;</span>
+      <h2>{{ 'SUMMARY' | translate }}</h2>
+      <div class="summary-section">
+        <div class="tip-section">
+          <h3>{{ 'TIP_ASK' | translate }}</h3>
+          <input [(ngModel)]="tip" class="input" placeholder="0.00 PLN" type="number">
+        </div>
+        <div *ngIf="selectedOrder" class="order-summary-details">
+          <h3>{{ 'ORDER' | translate }}</h3>
+          <p>{{ 'PRODUCTS' | translate }}<br>{{ formatPrice(selectedOrder.price.price) }} PLN</p>
+          <p>{{ 'DELIVERY' | translate }}<br>{{ formatPrice(selectedOrder.price.deliveryFee) }} PLN</p>
+          <p>{{ 'MINIMUM_BASKET_FEE' | translate }}<br>{{ formatPrice(selectedOrder.price.minimumBasketFee) }} PLN</p>
+          <p>{{ 'TOTAL' | translate }}<br><strong>{{ formatPrice(calculateTotalPrice(selectedOrder, tip)) }} PLN</strong></p>
+        </div>
+      </div>
+      <div class="modal-buttons">
+        <button (click)="receiveOrder()" class="pickup-button">{{ 'RECEIVE' | translate }}</button>
+      </div>
+    </div>
+  </div>
+
+  <div [class.show-modal]="showSuccessModal" class="modal">
+    <div class="modal-content">
+      <span (click)="closeSuccessModal()" class="close-button">&times;</span>
+      <h2>{{ 'SUCCESS_ORDER' | translate }}</h2>
+      <button (click)="closeSuccessModal()" class="exit-button">{{ 'EXIT' | translate }}</button>
+    </div>
+  </div>
+</section>

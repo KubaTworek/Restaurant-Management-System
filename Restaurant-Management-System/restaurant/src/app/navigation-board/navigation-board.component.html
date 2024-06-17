@@ -1,0 +1,8 @@
+<div class="button-container">
+  <button *ngIf="(isLoggedIn$ | async)" id="home-button" routerLink="/orders">
+    🏠 {{ 'YOUR_ORDERS' | translate }}</button>
+  <button *ngIf="(isLoggedIn$ | async)" id="notifications-button" routerLink="/orders/create">
+    🔔 {{ 'CREATE_ORDER' | translate }}</button>
+  <button *ngIf="!(isLoggedIn$ | async)" id="login-button" routerLink="/auth/login">🔐 {{ 'LOGIN' | translate }}</button>
+  <button (click)="logout()" *ngIf="(isLoggedIn$ | async)" id="logout-button">🚪 {{ 'LOGOUT' | translate }}</button>
+</div>

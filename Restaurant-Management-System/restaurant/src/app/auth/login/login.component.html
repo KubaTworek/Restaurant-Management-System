@@ -1,0 +1,20 @@
+<form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" class="auth-form">
+  <div *ngIf="loading" class="overlay"></div>
+  <div>
+    <label for="username">{{ 'USERNAME' | translate }}</label>
+    <input id="username" name="username" ngModel type="text"/>
+  </div>
+  <div>
+    <label for="password">{{ 'PASSWORD' | translate }}</label>
+    <input id="password" name="password" ngModel type="password"/>
+  </div>
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+  <div class="submit-button-container">
+    <button type="submit">{{ 'LOGIN' | translate }}</button>
+  </div>
+  <div class="link">
+    <p>{{ 'ASK_FOR_REGISTER' | translate }} <a routerLink="/auth/register">{{ 'SIGN_UP' | translate }}</a></p>
+  </div>
+</form>

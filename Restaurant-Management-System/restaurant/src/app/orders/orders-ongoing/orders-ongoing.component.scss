@@ -1,0 +1,135 @@
+@import '../../../colors.scss';
+
+.orders-section {
+  min-width: 30rem;
+
+  .order-items {
+    list-style: none;
+    padding: 0;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid $restaurant-gray;
+
+      .order-number {
+        flex: 2;
+      }
+
+      .order-status, .order-price {
+        flex: 1;
+        text-align: right;
+      }
+
+      .pickup-button {
+        background-color: $restaurant-black;
+        color: $restaurant-white;
+        border: none;
+        border-radius: 8px;
+        width: 100px;
+        height: 30px;
+        font-size: 1rem;
+        cursor: pointer;
+        margin-left: 10px;
+      }
+    }
+  }
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding-top: 60px;
+
+  &.show-modal {
+    display: block;
+  }
+
+  .modal-content {
+    background-color: $restaurant-white-hover;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid $restaurant-gray;
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+
+    .close-button {
+      color: $restaurant-white-hover;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+
+      &:hover,
+      &:focus {
+        color: $restaurant-black;
+        text-decoration: none;
+      }
+    }
+
+    .summary-section {
+      .tip-section {
+        margin-bottom: 20px;
+
+        h3 {
+          margin-bottom: 10px;
+        }
+
+        input {
+          width: 100%;
+          padding: 8px;
+          margin-top: 5px;
+          border: 1px solid $restaurant-white;
+          border-radius: 4px;
+        }
+      }
+
+      .order-summary-details {
+        h3 {
+          font-size: 1.5rem;
+          margin-bottom: 10px;
+        }
+
+        p {
+          margin: 5px 0;
+          border-bottom: 1px solid $restaurant-white;
+          padding-bottom: 5px;
+        }
+
+        strong {
+          font-size: 1.2rem;
+        }
+      }
+    }
+
+    .modal-buttons {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 20px;
+
+      .pickup-button, .exit-button {
+        background-color: $restaurant-black;
+        color: $restaurant-white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-size: 1rem;
+        cursor: pointer;
+
+        &.exit-button {
+          background-color: #dc3545;
+        }
+      }
+    }
+  }
+}
